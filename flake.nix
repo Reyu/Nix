@@ -2,40 +2,52 @@
   description = "Reyu Zenfold's Nix Configurations";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-21.05";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     flake-utils.url = "github:numtide/flake-utils";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nur.url = "github:nix-community/NUR";
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
-      nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
+      inherit (builtins) attrValues;
+      inherit (nixpkgs) lib;
+
+      pkgs = (import nixpkgs) {
+        system = "x86_64-linux";
+        overlays = attrValues self.overlays;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+             "steam"
+             "steam-original"
+             "steam-runtime"
+           ];
+      };
+      nixosSystem = lib.makeOverridable lib.nixosSystem;
       defSystem = hostname:
         nixosSystem {
           system = "x86_64-linux";
           modules = [
             ({ ... }: {
               imports = [
-                { nix.nixPath = [ "nixpkgs=${nixpkgs}" ]; }
+                # { nix.nixPath = [ "nixpkgs=${pkgs}" ]; }
                 home-manager.nixosModules.home-manager
                 { home-manager.useUserPackages = true; }
                 (./hosts + "/${hostname}" + /configuration.nix)
               ];
               # Let 'nixos-version --json' know the Git revision of this flake.
               system.configurationRevision =
-                nixpkgs.lib.mkIf (self ? rev) self.rev;
+                lib.mkIf (self ? rev) self.rev;
             })
           ];
+          inherit pkgs;
         };
-      overlays = [ inputs.neovim-nightly-overlay.overlay inputs.nur.overlay ];
       defConfiguration = imports:
         home-manager.lib.homeManagerConfiguration {
           configuration = { pkgs, ... }: {
             xdg.configFile."nix/nix.conf".source = ./configs/nix/nix.conf;
             nixpkgs.config = import ./configs/nix/config.nix;
-            nixpkgs.overlays = overlays;
             imports = [
               ./modules/home-manager.nix
               ./modules/shell.nix
@@ -47,8 +59,27 @@
           system = "x86_64-linux";
           homeDirectory = "/home/reyu";
           username = "reyu";
+          inherit pkgs;
         };
     in {
+      overlays = {
+        nur = final: prev: {
+          nur = import inputs.nur {
+            nurpkgs = final.unstable;
+            pkgs = final.unstable;
+          };
+        };
+        neovim-nightly = final: prev: {
+          neovim-nightly =
+            import inputs.neovim-overlay { pkgs = final.unstable; };
+        };
+        unstable = final: prev: {
+          unstable = import inputs.unstable { system = final.system; };
+        };
+        master = final: prev: {
+          master = import inputs.master { system = final.system; };
+        };
+      };
       nixosConfigurations = {
         loki = defSystem "loki";
         burrow = defSystem "burrow";
@@ -69,7 +100,7 @@
       };
     } // inputs.flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" ]
     (system:
-      let pkgs = import nixpkgs { inherit system overlays; };
+      let pkgs = import nixpkgs { inherit system pkgs; };
       in {
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
