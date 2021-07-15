@@ -9,7 +9,7 @@
     };
   };
 
-  outputs = {self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, ... }:
     let
       nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
       defFlakeSystem = baseCfg:
@@ -20,9 +20,7 @@
               imports = [
                 { nix.nixPath = [ "nixpkgs=${nixpkgs}" ]; }
                 home-manager.nixosModules.home-manager
-                {
-                  home-manager.useUserPackages = true;
-                }
+                { home-manager.useUserPackages = true; }
                 baseCfg
               ];
               # Let 'nixos-version --json' know the Git revision of this flake.
@@ -35,6 +33,8 @@
       nixosConfigurations = {
         inherit nixpkgs;
         loki = defFlakeSystem { imports = [ ./hosts/loki/configuration.nix ]; };
+        burrow =
+          defFlakeSystem { imports = [ ./hosts/burrow/configuration.nix ]; };
         traveler =
           defFlakeSystem { imports = [ ./hosts/traveler/configuration.nix ]; };
         ismene = nixosSystem {
