@@ -2,48 +2,37 @@
 
 {
   imports = [
+    ./hardware-configuration.nix
+    ./modesetting.nix
     ../../common
+    ../../common/users.nix
   ];
 
-  # bzip2 compression takes loads of time with emulation, skip it.
-  sdImage.compressImage = false;
-
   boot = {
-    # kernelPackages = pkgs.linuxPackages_rpi4;
-    tmpOnTmpfs = true;
-    initrd.availableKernelModules = [ "usbhid" "usb_storage" ];
-    kernelParams = [
-      "8250.nr_uarts=1"
-      "console=ttyAMA0,115200"
-      "console=tty1"
-    ];
+    kernelPackages = pkgs.linuxPackages_rpi4;
+    initrd.availableKernelModules = [ "usbhid" "usb_storage" "vc4" ];
+    loader = {
+      grub.enable = false;
+      generic-extlinux-compatible.enable = true;
+    };
+    # loader = {
+    #   grub.enable = false;
+    #   raspberryPi.enable = true;
+    #   raspberryPi.version = 4;
+    # };
+    # kernelParams = [
+    #   "cma=64M"
+    #   "console=tty0"
+    #   "8250.nr_uarts=1"
+    # ];
   };
-
-  boot.loader.raspberryPi = {
-    enable = true;
-    version = 4;
-  };
-  boot.loader.grub.enable = false;
-  boot.loader.generic-extlinux-compatible.enable = true;
 
   networking = {
     hostName = "ismene";
-    networkmanager = { enable = true; };
     tcpcrypt.enable = true;
-  };
-
-  environment.systemPackages = with pkgs; [ neovim ];
-
-  users = {
-    defaultUserShell = pkgs.zsh;
-    mutableUsers = false;
-    users.reyu = {
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPxK6wj41rJ00x3SSA8qw/c7WjmUW4Z1xshAQxAciS8"
-      ];
-      extraGroups = [ "wheel" ];
-    };
+    useDHCP = false;
+    interfaces.eth0.useDHCP = true;
+    interfaces.wlan0.useDHCP = true;
   };
 
   nix = {
@@ -60,12 +49,16 @@
     '';
   };
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
-      options = [ "noatime" ];
-    };
+  fileSystems = lib.mkForce {
+      # There is no U-Boot on the Pi 4, thus the firmware partition needs to be mounted as /boot.
+      "/boot" = {
+          device = "/dev/disk/by-label/FIRMWARE";
+          fsType = "vfat";
+      };
+      "/" = {
+          device = "/dev/disk/by-label/NIXOS_SD";
+          fsType = "ext4";
+      };
   };
 
   nixpkgs.config = { allowUnfree = true; };
