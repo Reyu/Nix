@@ -15,33 +15,34 @@
       inherit (builtins) attrValues;
       inherit (nixpkgs) lib;
 
-      pkgs = (import nixpkgs) {
-        system = "x86_64-linux";
-        overlays = attrValues self.overlays;
-        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-             "steam"
-             "steam-original"
-             "steam-runtime"
-           ];
-      };
+      pkgs = { system ? "x86_64-linux" }:
+        (import nixpkgs) {
+          system = "${system}";
+          overlays = attrValues self.overlays;
+          config.allowUnfreePredicate = pkg:
+            builtins.elem (lib.getName pkg) [
+              "steam"
+              "steam-original"
+              "steam-runtime"
+            ];
+        };
       nixosSystem = lib.makeOverridable lib.nixosSystem;
-      defSystem = hostname:
+      defSystem = { hostname, system ? "x86_64-linux" }:
         nixosSystem {
-          system = "x86_64-linux";
+          system = "${system}";
           modules = [
             ({ ... }: {
               imports = [
-                # { nix.nixPath = [ "nixpkgs=${pkgs}" ]; }
                 home-manager.nixosModules.home-manager
                 { home-manager.useUserPackages = true; }
                 (./hosts + "/${hostname}" + /configuration.nix)
               ];
               # Let 'nixos-version --json' know the Git revision of this flake.
-              system.configurationRevision =
-                lib.mkIf (self ? rev) self.rev;
+              system.configurationRevision = lib.mkIf (self ? rev) self.rev;
             })
           ];
-          inherit pkgs;
+          inherit (pkgs { system = "${system}"; })
+          ;
         };
       defConfiguration = imports:
         home-manager.lib.homeManagerConfiguration {
@@ -81,10 +82,13 @@
         };
       };
       nixosConfigurations = {
-        loki = defSystem "loki";
-        burrow = defSystem "burrow";
-        traveler = defSystem "traveler";
-        ismene = defSystem "ismene" // { system = "aarch64-linux"; };
+        loki = defSystem { hostname = "loki"; };
+        burrow = defSystem { hostname = "burrow"; };
+        traveler = defSystem { hostname = "traveler"; };
+        ismene = defSystem {
+          hostname = "ismene";
+          system = "aarch64-linux";
+        };
       };
       homeConfigurations = {
         nixos-desktop = defConfiguration [
