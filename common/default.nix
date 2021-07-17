@@ -120,6 +120,7 @@ with lib; {
 
     services = {
       fcron.enable = true;
+      sshd.enable = true;
       sanoid = mkIf config.reyu.zfs.common {
         enable = true;
         interval = "*-*-* *:0..59/15 UTC";
