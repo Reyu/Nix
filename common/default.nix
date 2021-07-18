@@ -1,6 +1,10 @@
 { lib, config, pkgs, ... }:
-
-with lib; {
+let
+  cfg = config.reyu;
+in with lib; {
+  imports = [
+    ./crypto
+  ];
   options.reyu = {
     gui.enable = mkEnableOption "Enables GUI programs";
 
@@ -27,17 +31,19 @@ with lib; {
   config = {
     nix = {
       trustedUsers = [ "root" "reyu" ];
-      package = mkIf config.reyu.flakes.enable pkgs.nixFlakes;
-      extraOptions = mkIf config.reyu.flakes.enable
+      package = mkIf cfg.flakes.enable pkgs.nixFlakes;
+      extraOptions = mkIf cfg.flakes.enable
         (lib.optionalString (config.nix.package == pkgs.nixFlakes)
           "experimental-features = nix-command flakes");
     };
 
     i18n.defaultLocale = "en_US.UTF-8";
+    time.timeZone = "America/New_York";
+
     console.font = "Lat2-Terminus16";
     environment = {
       homeBinInPath = true;
-      systemPackages = with pkgs; [ cachix git neovim niv tmux zsh ];
+      systemPackages = with pkgs; [ rage cachix git neovim niv tmux zsh ];
       variables = {
         EDITOR = "nvim";
         VISUAL = "nvim";
@@ -65,7 +71,7 @@ with lib; {
       };
     };
 
-    fileSystems = mkIf config.reyu.zfs.common {
+    fileSystems = mkIf cfg.zfs.common {
       "/" = {
         device = "rpool/ROOT/nixos";
         fsType = "zfs";
@@ -121,7 +127,7 @@ with lib; {
     services = {
       fcron.enable = true;
       sshd.enable = true;
-      sanoid = mkIf config.reyu.zfs.common {
+      sanoid = mkIf cfg.zfs.common {
         enable = true;
         interval = "*-*-* *:0..59/15 UTC";
         datasets = {
