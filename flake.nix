@@ -26,23 +26,36 @@
               "steam-runtime"
             ];
         };
+      sysConfigRevision = { ... }: {
+        # Let 'nixos-version --json' know the Git revision of this flake.
+        system.configurationRevision = lib.mkIf (self ? rev) self.rev;
+      };
       nixosSystem = lib.makeOverridable lib.nixosSystem;
-      defSystem = { hostname, system ? "x86_64-linux" }:
+      defHost = { host, system ? "x86_64-linux" }:
         nixosSystem {
           system = "${system}";
           modules = [
+            sysConfigRevision
             ({ ... }: {
               imports = [
                 home-manager.nixosModules.home-manager
                 { home-manager.useUserPackages = true; }
-                (./hosts + "/${hostname}" + /configuration.nix)
+                (./hosts + "/${host}" + /configuration.nix)
               ];
-              # Let 'nixos-version --json' know the Git revision of this flake.
-              system.configurationRevision = lib.mkIf (self ? rev) self.rev;
             })
           ];
           inherit (pkgs { system = "${system}"; })
           ;
+        };
+      defSystem = { system ? "x86_64-linux", extraModules ? [] }:
+        nixosSystem {
+          system = "${system}";
+          modules = [
+            sysConfigRevision
+            ({ ... }: {
+              imports = [ ./common ./cachix.nix ];
+            })
+          ] ++ extraModules;
         };
       defConfiguration = imports:
         home-manager.lib.homeManagerConfiguration {
@@ -82,12 +95,27 @@
         };
       };
       nixosConfigurations = {
-        loki = defSystem { hostname = "loki"; };
-        burrow = defSystem { hostname = "burrow"; };
-        traveler = defSystem { hostname = "traveler"; };
-        ismene = defSystem {
-          hostname = "ismene";
+        loki = defHost { host = "loki"; };
+        burrow = defHost { host = "burrow"; };
+        traveler = defHost { host = "traveler"; };
+        ismene = defHost {
+          host = "ismene";
           system = "aarch64-linux";
+        };
+        hashi-server = nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            sysConfigRevision
+            ({ pkgs, ... }: {
+              config = {
+                services = {
+                  consul.enable = true;
+                  vault.enable = true;
+                  nomad.enable = true;
+                };
+              };
+            })
+          ];
         };
       };
       homeConfigurations = {

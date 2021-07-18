@@ -27,6 +27,8 @@
     # ];
   };
 
+  environment.systemPackages = with pkgs; [ consul-template ];
+
   networking = {
     hostName = "ismene";
     tcpcrypt.enable = true;
@@ -63,5 +65,11 @@
 
   nixpkgs.config = { allowUnfree = true; };
   powerManagement.cpuFreqGovernor = "ondemand";
+  services = {
+    consul.enable = true;
+    vault.enable = true;
+    salt.master.enable = true;
+    salt.minion.enable = true;
+  };
   system.stateVersion = "20.09";
 }

@@ -3,9 +3,9 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../cachix.nix
     ../../common
     ../../common/desktop.nix
-    ../../common/cachix.nix
     ../../common/users.nix
     ../../extra/hydra.nix
     ../../extra/steam.nix
