@@ -1,61 +1,112 @@
-{ config, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
     ../../common
     ../../common/users.nix
   ];
-  reyu.flakes.enable = true;
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
+
+  config = {
+    reyu.flakes.enable = true;
+    boot = {
+      loader = {
+        systemd-boot.enable = true;
+        efi.canTouchEfiVariables = true;
+      };
+      supportedFilesystems = [ "zfs" ];
     };
-    supportedFilesystems = [ "zfs" ];
-  };
-  time.timeZone = "America/New_York";
-  networking = {
-    hostName = "burrow";
-    hostId = "34376a36";
-    useDHCP = false;
-    interfaces = {
-      eno1.useDHCP = true;
-      eno2.useDHCP = false;
-      eno3.useDHCP = false;
-      eno4.useDHCP = false;
+    networking = {
+      hostName = "burrow";
+      hostId = "34376a36";
+      useDHCP = false;
+      interfaces = {
+        eno1.useDHCP = true;
+        eno2.useDHCP = false;
+        eno3.useDHCP = false;
+        eno4.useDHCP = false;
+      };
     };
-  };
-  i18n.defaultLocale = "en_US.UTF-8";
-  users.users = {
-    syncoid = {
+    users.users.syncoid = {
       description = "Sanoid/Syncoid Transfer";
       isSystemUser = true;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFBXVIGn3L1+6QdDGOxnB7anLHtEf2xV/jk5adJ/Q9WJ"
       ];
     };
-  };
-  services = {
-    nfs.server = {
-      enable = true;
-      exports = ''
-        /data/media/ISO              loki(rw)
-        /data/media/audio/music      loki(rw)
-        /data/media/video/movies     loki(rw)
-        /data/media/video/television loki(rw)
-      '';
+    services = {
+      consul = {
+        enable = true;
+        extraConfig = {
+          datacenter = "home";
+          domain = "consul.reyuzenfold.com";
+          server = true;
+          bootstrap = true;
+          bind_addr = ''{{ GetInterfaceIP "eno1" }}'';
+        };
+      };
+      vault = {
+        enable = true;
+        storageBackend = "consul";
+        extraSettingsPaths = [ /etc/vault.d ];
+      };
+      nfs.server = {
+        enable = true;
+        exports = ''
+          /data/media/ISO              loki(rw)
+          /data/media/audio/music      loki(rw)
+          /data/media/video/movies     loki(rw)
+          /data/media/video/television loki(rw)
+        '';
+      };
+      syncoid.user = "syncoid";
+      zfs.trim.enable = true;
     };
-    syncoid.user = "syncoid";
-    zfs.trim.enable = true;
-  };
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;
-    autoPrune = {
+    virtualisation.docker = {
       enable = true;
-      dates = "weekly";
+      enableOnBoot = true;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+      };
+    };
+    networking.firewall = let
+      consul = config.services.consul;
+      consulPorts = consul.extraConfig.ports or { };
+    in {
+      allowedTCPPorts = [
+        2049 # NFS
+      ] ++ (if (consul.enable or false) then
+        [
+          (consulPorts.server or 8300)
+          (consulPorts.serf_lan or 8301)
+          (consulPorts.serf_wan or 8302)
+          (consulPorts.http or 8500)
+          (consulPorts.dns or 8600)
+        ] ++ (if consulPorts ? https then [ consulPorts.https ] else [ ])
+        ++ (if consulPorts ? grpc then [ consulPorts.grpc ] else [ ])
+      else
+        [ ]);
+      allowedTCPPortRanges = if (consul.enable or false) then [
+        {
+          from = consulPorts.sidecar_min_port or 21000;
+          to = consulPorts.sidecar_max or 21255;
+        }
+        {
+          from = consulPorts.expose_min_port or 21500;
+          to = consulPorts.expose_max or 21755;
+        }
+      ] else
+        [ ];
+
+      allowedUDPPorts = if (consul.enable or false) then [
+        (consulPorts.serf_lan or 8301)
+        (consulPorts.serf_wan or 8302)
+        (consulPorts.dns or 8600)
+      ] else
+        [ ];
+    };
+    within.secrets.consul = lib.mkIf (config.services.consul.enable or false) {
+      source = ../../secrets/consul.hcl;
+      dest = "/etc/consul.d/secure.hcl";
     };
   };
-  networking.firewall.allowedTCPPorts = [ 2049 ];
-  system.stateVersion = "21.05";
 }

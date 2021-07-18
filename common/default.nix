@@ -2,6 +2,9 @@
 let
   cfg = config.reyu;
 in with lib; {
+  imports = [
+    ./crypto
+  ];
   options.reyu = {
     gui.enable = mkEnableOption "Enables GUI programs";
 
@@ -35,10 +38,12 @@ in with lib; {
     };
 
     i18n.defaultLocale = "en_US.UTF-8";
+    time.timeZone = "America/New_York";
+
     console.font = "Lat2-Terminus16";
     environment = {
       homeBinInPath = true;
-      systemPackages = with pkgs; [ cachix git neovim niv tmux zsh ];
+      systemPackages = with pkgs; [ rage cachix git neovim niv tmux zsh ];
       variables = {
         EDITOR = "nvim";
         VISUAL = "nvim";
