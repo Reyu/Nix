@@ -38,6 +38,21 @@
       fsType = "zfs";
     };
 
+  fileSystems."/data/service" =
+    { device = "data/service";
+      fsType = "zfs";
+    };
+
+  fileSystems."/data/service/slapd" =
+    { device = "data/service/slapd";
+      fsType = "zfs";
+    };
+
+  fileSystems."/data/service/dns" =
+    { device = "data/service/dns";
+      fsType = "zfs";
+    };
+
   fileSystems."/data/media" =
     { device = "data/media";
       fsType = "zfs";

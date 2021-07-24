@@ -4,9 +4,11 @@ let
 in with lib; {
   imports = [
     ./crypto
+    ./ldap
   ];
   options.reyu = {
     gui.enable = mkEnableOption "Enables GUI programs";
+    ldap.enable = mkEnableOption "LDAP Authentication";
 
     flakes.enable = mkEnableOption "Enable Flakes";
 
@@ -51,6 +53,21 @@ in with lib; {
     };
 
     fonts.fonts = with pkgs; [ nerdfonts powerline-fonts terminus-nerdfont ];
+
+    krb5 = {
+      enable = true;
+      realms = {
+        "REYUZENFOLD.COM" = {
+          admin_server = "burrow.home.reyuzenfold.com";
+          kdc = [ "burrow.home.reyuzenfold.com" ];
+        };
+      };
+      domain_realm = {
+        "reyuzenfold.com" = "REYUZENFOLD.COM";
+        ".reyuzenfold.com" = "REYUZENFOLD.COM";
+      };
+      libdefaults = { "default_realm" = "REYUZENFOLD.COM"; };
+    };
 
     programs = {
       gnupg.agent = {
@@ -124,6 +141,9 @@ in with lib; {
 
     };
 
+    security.pki.certificateFiles = [
+      ../certs/ReyuZenfold.crt
+    ];
     services = {
       fcron.enable = true;
       sshd.enable = true;
