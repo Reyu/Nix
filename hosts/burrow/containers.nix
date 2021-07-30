@@ -2,11 +2,22 @@
   config.containers = {
     kerberos = {
       autoStart = true;
+      bindMounts = {
+        "/var/heimdal" = { hostPath = "/data/service/krb5";
+                           isReadOnly = false; };
+      };
       config = { config, pkgs, ... }: {
         imports = [ ../../common ];
         config = {
           krb5 = {
             kerberos = pkgs.heimdal;
+            extraConfig = ''
+              [kdc]
+                database = {
+                  mkey_file = /var/heimdal/m-key
+                  acl_file = /var/heimdal/kadm5.acl
+                }
+              '';
           };
           systemd.services = {
             kadmind = {

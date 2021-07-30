@@ -53,6 +53,11 @@
       fsType = "zfs";
     };
 
+  fileSystems."/data/service/krb5" =
+    { device = "data/service/krb5";
+      fsType = "zfs";
+    };
+
   fileSystems."/data/media" =
     { device = "data/media";
       fsType = "zfs";
