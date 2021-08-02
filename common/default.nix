@@ -9,9 +9,7 @@ in with lib; {
   options.reyu = {
     gui.enable = mkEnableOption "Enables GUI programs";
     ldap.enable = mkEnableOption "LDAP Authentication";
-
     flakes.enable = mkEnableOption "Enable Flakes";
-
     git = {
       name = mkOption rec {
         type = types.str;
@@ -26,8 +24,6 @@ in with lib; {
         description = "Email to use with git commits";
       };
     };
-
-    zfs.common = mkEnableOption "Enable default ZFS layout";
   };
 
   config = {
@@ -54,21 +50,6 @@ in with lib; {
 
     fonts.fonts = with pkgs; [ nerdfonts powerline-fonts terminus-nerdfont ];
 
-    krb5 = {
-      enable = true;
-      realms = {
-        "REYUZENFOLD.COM" = {
-          admin_server = "burrow.home.reyuzenfold.com";
-          kdc = [ "burrow.home.reyuzenfold.com" ];
-        };
-      };
-      domain_realm = {
-        "reyuzenfold.com" = "REYUZENFOLD.COM";
-        ".reyuzenfold.com" = "REYUZENFOLD.COM";
-      };
-      libdefaults = { "default_realm" = "REYUZENFOLD.COM"; };
-    };
-
     programs = {
       gnupg.agent = {
         enable = true;
@@ -88,107 +69,12 @@ in with lib; {
       };
     };
 
-    fileSystems = mkIf cfg.zfs.common {
-      "/" = {
-        device = "rpool/ROOT/nixos";
-        fsType = "zfs";
-      };
-
-      "/usr" = {
-        device = "rpool/ROOT/nixos/USR";
-        fsType = "zfs";
-      };
-
-      "/var" = {
-        device = "rpool/ROOT/nixos/VAR";
-        fsType = "zfs";
-      };
-
-      "/nix" = {
-        device = "rpool/NIX";
-        fsType = "zfs";
-      };
-
-      "/nix/store" = {
-        device = "rpool/NIX/store";
-        fsType = "zfs";
-      };
-
-      "/nix/var" = {
-        device = "rpool/NIX/var";
-        fsType = "zfs";
-      };
-
-      "/opt" = {
-        device = "rpool/ROOT/nixos/OPT";
-        fsType = "zfs";
-      };
-
-      "/home" = {
-        device = "rpool/HOME";
-        fsType = "zfs";
-      };
-
-      "/home/reyu" = {
-        device = "rpool/HOME/reyu";
-        fsType = "zfs";
-      };
-
-      "/root" = {
-        device = "rpool/HOME/root";
-        fsType = "zfs";
-      };
-
-    };
-
     security.pki.certificateFiles = [
       ../certs/ReyuZenfold.crt
     ];
     services = {
       fcron.enable = true;
       sshd.enable = true;
-      sanoid = mkIf cfg.zfs.common {
-        enable = true;
-        interval = "*-*-* *:0..59/15 UTC";
-        datasets = {
-          "rpool/ROOT" = {
-            useTemplate = [ "system" ];
-            recursive = true;
-          };
-          "rpool/HOME" = { useTemplate = [ "system" ]; };
-          "rpool/HOME/reyu" = { useTemplate = [ "user" ]; };
-        };
-        templates = {
-          "system" = {
-            hourly = 12;
-            daily = 7;
-            monthly = 1;
-            yearly = 1;
-            autoprune = true;
-            autosnap = true;
-          };
-          "service" = {
-            hourly = 24;
-            daily = 14;
-            monthly = 3;
-            yearly = 2;
-            autoprune = true;
-            autosnap = true;
-          };
-          "user" = {
-            hourly = 36;
-            daily = 30;
-            monthly = 3;
-            yearly = 0;
-            autoprune = true;
-            autosnap = true;
-          };
-          "ignore" = {
-            autoprune = false;
-            autosnap = false;
-          };
-        };
-      };
     };
   };
 }

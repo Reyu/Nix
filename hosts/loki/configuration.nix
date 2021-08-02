@@ -1,16 +1,4 @@
-{ config, pkgs, lib, ... }:
-
-{
-  imports = [
-    ./hardware-configuration.nix
-    ../../cachix.nix
-    ../../common
-    ../../common/desktop.nix
-    ../../common/users.nix
-    ../../extra/hydra.nix
-    ../../extra/steam.nix
-  ];
-
+{ pkgs, ... }: {
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ];
     loader = {
@@ -25,7 +13,6 @@
   environment.systemPackages = with pkgs; [ minicom ];
 
   reyu.flakes.enable = true;
-  reyu.zfs.common = true;
 
   fileSystems = {
     "/home/reyu/Mail" = {
@@ -75,58 +62,8 @@
 
   services = {
     openssh.enable = true;
-    sanoid = {
-      enable = true;
-      interval = "*-*-* *:0..59/15 UTC";
-      datasets = {
-        "projects" = {
-          useTemplate = [ "user" ];
-          recursive = true;
-        };
-        "data/DOCKER" = {
-          useTemplate = [ "service" ];
-          recursive = true;
-        };
-        "data/DB" = {
-          useTemplate = [ "service" ];
-          recursive = true;
-        };
-        "data/lxd" = {
-          useTemplate = [ "service" ];
-          recursive = true;
-        };
-        "data/BACKUP" = {
-          recursive = true;
-          autosnap = false;
-        };
-      };
-    };
-    syncoid = {
-      enable = true;
-      interval = "hourly";
-      sshKey = "/root/.ssh/syncoid";
-      commonArgs = [ "--no-sync-snap" ];
-      commands = {
-        "rpool/ROOT".target =
-          "root@burrow.home.reyuzenfold.com:data/BACKUP/loki/ROOT";
-        "rpool/HOME".target =
-          "root@burrow.home.reyuzenfold.com:data/BACKUP/loki/HOME";
-        "data/DB".target =
-          "root@burrow.home.reyuzenfold.com:data/BACKUP/loki/DB";
-      };
-    };
-    zfs.trim.enable = true;
+    sanoid.enable = true;
   };
 
-  virtualisation = {
-    libvirtd.enable = true;
-    docker = {
-      enable = true;
-      enableOnBoot = true;
-      autoPrune = {
-        enable = true;
-        dates = "weekly";
-      };
-    };
-  };
+  virtualisation.libvirtd.enable = true;
 }

@@ -81,7 +81,7 @@ in
       # Completion
       { plugin = deoplete-nvim;
         config = ''
-          let g:deoplete#enable_at_startup = 1
+          let g:deoplete#enable_at_startup = 0
           call deoplete#custom#option('num_processes', 16)
           call deoplete#custom#var('omni', 'input_patterns', {
             \ 'pandoc': '@'
