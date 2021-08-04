@@ -1,11 +1,4 @@
 { config, lib, pkgs, ... }: {
-  imports = [
-    ./hardware-configuration.nix
-    ./containers.nix
-    ../../common
-    ../../common/users.nix
-  ];
-
   config = {
     reyu.flakes.enable = true;
     boot = {
@@ -55,6 +48,11 @@
         enable = true;
         storageBackend = "consul";
         extraSettingsPaths = [ /etc/vault.d ];
+      };
+      nomad = {
+        enable = true;
+        enableDocker = true;
+        dropPrivileges = true;
       };
       nfs.server = {
         enable = true;

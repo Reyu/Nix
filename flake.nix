@@ -14,9 +14,7 @@
     let
       inherit (builtins) attrValues listToAttrs removeSuffix attrNames readDir;
       inherit (nixpkgs) lib;
-      pkgs = { system ? "x86_64-linux" }:
-        (import nixpkgs) {
-          system = "${system}";
+      pkgs = (import nixpkgs) {
           overlays = attrValues self.overlays;
           config.allowUnfreePredicate = pkg:
             builtins.elem (lib.getName pkg) [
@@ -74,13 +72,22 @@
               };
             }
           ];
-          inherit (pkgs { system = "x86_64-linux"; })
-          ;
+          inherit ( system pkgs);
         };
         burrow = nixosSystem {
           system = "x86_64-linux";
-          modules = [ sysConfigRevision (./hosts/burrow/configuration.nix) ];
-          inherit pkgs;
+          modules = [
+            sysConfigRevision
+            ./hosts/burrow/configuration.nix
+            ./hosts/burrow/hardware-configuration.nix
+            ./hosts/burrow/containers.nix
+            ./common
+            ./common/users.nix
+            ./modules/docker.nix
+            ./modules/hydra.nix
+            ./modules/kerberos.nix
+          ];
+          inherit (system pkgs);
         };
       };
     } // inputs.flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" ]

@@ -3,17 +3,15 @@
     kerberos = {
       autoStart = true;
       bindMounts = {
-        "/var/heimdal" = { hostPath = "/data/service/krb5";
-                           isReadOnly = false; };
+        "/var/heimdal" = {
+          hostPath = "/data/service/krb5";
+          isReadOnly = false;
+        };
       };
       config = { config, pkgs, ... }: {
-        imports = [
-          ../../common
-          ../../modules/kerberos.nix
-          ];
-        };
+        imports = [ ../../common ../../modules/kerberos.nix ];
         config = {
-          krb5 = {
+          foxnet.krb = {
             kdc.enabled = true;
             kadmind.enabled = true;
           };
@@ -28,14 +26,11 @@
           services.openldap = {
             enable = true;
             configDir = "/var/db/slapd.d";
-            urlList = [
-              "ldapi:///"
-              "ldaps:///"
-            ];
+            urlList = [ "ldapi:///" "ldaps:///" ];
           };
           networking.firewall = {
             allowedTCPPorts = [
-              636  # LDAPS
+              636 # LDAPS
             ];
           };
         };
