@@ -9,7 +9,7 @@
         };
       };
       config = { config, pkgs, ... }: {
-        imports = [ ../../common ../../modules/kerberos.nix ];
+        imports = [ ../../modules/common ../../modules/kerberos.nix ];
         config = {
           foxnet.krb = {
             kdc.enabled = true;
@@ -21,7 +21,7 @@
     ldap = {
       autoStart = true;
       config = { config, pkgs, ... }: {
-        imports = [ ../../common ];
+        imports = [ ../../modules/common ];
         config = {
           services.openldap = {
             enable = true;

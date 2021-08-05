@@ -70,7 +70,7 @@ in with lib; {
     };
 
     security.pki.certificateFiles = [
-      ../certs/ReyuZenfold.crt
+      ../../certs/ReyuZenfold.crt
     ];
     services = {
       fcron.enable = true;

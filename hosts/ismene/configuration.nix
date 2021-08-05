@@ -3,9 +3,9 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../common
-    ../../common/raspberrypi
-    ../../common/users.nix
+    ../../modules/common
+    ../../modules/common/raspberrypi
+    ../../modules/common/users.nix
   ];
 
   environment.systemPackages = with pkgs; [ consul-template ];

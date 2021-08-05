@@ -50,9 +50,9 @@
             ./hosts/loki/configuration.nix
             ./hosts/loki/hardware-configuration.nix
             ./cachix.nix
-            ./common
-            ./common/desktop.nix
-            ./common/users.nix
+            ./modules/common
+            ./modules/common/desktop.nix
+            ./modules/common/users.nix
             ./modules/docker.nix
             ./modules/hydra.nix
             ./modules/kerberos.nix
@@ -91,8 +91,8 @@
             ./hosts/burrow/configuration.nix
             ./hosts/burrow/hardware-configuration.nix
             ./hosts/burrow/containers.nix
-            ./common
-            ./common/users.nix
+            ./modules/common
+            ./modules/common/users.nix
             ./modules/docker.nix
             ./modules/hydra.nix
             ./modules/kerberos.nix
