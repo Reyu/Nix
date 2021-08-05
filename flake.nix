@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-21.05";
     home-manager.url = "github:nix-community/home-manager/release-21.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    master.url = "github:nixos/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
     neovim-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nur.url = "github:nix-community/NUR";
@@ -12,17 +13,13 @@
 
   outputs = { self, nixpkgs, ... }@inputs:
     let
-      inherit (builtins) attrValues listToAttrs removeSuffix attrNames readDir;
+      inherit (builtins) attrNames attrValues listToAttrs readDir removeSuffix;
       inherit (nixpkgs) lib;
+
       pkgs = (import nixpkgs) {
-          overlays = attrValues self.overlays;
-          config.allowUnfreePredicate = pkg:
-            builtins.elem (lib.getName pkg) [
-              "steam"
-              "steam-original"
-              "steam-runtime"
-            ];
-        };
+        system = "x86_64-linux";
+        overlays = attrValues self.overlays;
+      };
       sysConfigRevision = { ... }: {
         # Let 'nixos-version --json' know the Git revision of this flake.
         system.configurationRevision = lib.mkIf (self ? rev) self.rev;
@@ -36,12 +33,8 @@
       #   }) (attrNames (readDir ./overlays)));
       # in overlayFiles // {
       overlays = {
-        nur = final: prev: {
-          nur = import inputs.nur {
-            nurpkgs = final.unstable;
-            pkgs = final.unstable;
-          };
-        };
+        # neovim-nightly = inputs.neovim-overlay.overlay;
+        nur = inputs.nur.overlay;
         unstable = final: prev: {
           unstable = import inputs.unstable { system = final.system; };
         };
@@ -53,6 +46,7 @@
         loki = nixosSystem {
           system = "x86_64-linux";
           modules = [
+            sysConfigRevision
             ./hosts/loki/configuration.nix
             ./hosts/loki/hardware-configuration.nix
             ./cachix.nix
@@ -62,17 +56,33 @@
             ./modules/docker.nix
             ./modules/hydra.nix
             ./modules/kerberos.nix
-            ./modules/steam.nix
-            ./modules/zfs.nix
-            sysConfigRevision
+            # ./modules/steam.nix
+            ({ pkgs, config, ... }: {
+              imports = [ ./modules/zfs.nix ];
+              config.foxnet.zfs.common = true;
+            })
+            ({ pkgs, ... }: {
+              config.environment.systemPackages = [ pkgs.neovim pkgs.firefox ];
+            })
             inputs.home-manager.nixosModules.home-manager
-            {
-              foxnet = {
-                zfs.common = true;
+            ({
+              home-manager = {
+                useGlobalPkgs = true;
+                users.reyu = { pkgs, ... }: {
+                  imports = [
+                    ./modules/chat.nix
+                    ./modules/firefox.nix
+                    ./modules/nvim.nix
+                    ./modules/shell.nix
+                    ./modules/tmux.nix
+                    ./modules/xsession.nix
+                    ./modules/zsh.nix
+                  ];
+                };
               };
-            }
+            })
           ];
-          inherit ( system pkgs);
+          inherit pkgs;
         };
         burrow = nixosSystem {
           system = "x86_64-linux";
@@ -87,7 +97,7 @@
             ./modules/hydra.nix
             ./modules/kerberos.nix
           ];
-          inherit (system pkgs);
+          inherit pkgs;
         };
       };
     } // inputs.flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" ]

@@ -1,5 +1,4 @@
-{ config, pkgs, libs, ... }: {
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (pkgs.lib.getName pkg) [ "discord" ];
-  home.packages = with pkgs; [ discord element-desktop tdesktop ];
+{ config, pkgs, libs, ... }:
+{
+  home.packages = with pkgs; [ element-desktop tdesktop ];
 }
