@@ -11,7 +11,6 @@
     nix-prefetch-github
     nixfmt
     feh
-    scrot
     ripgrep
   ];
   programs = {
@@ -39,10 +38,10 @@
       settings = {
         colorScheme = 6;
         showCpuUsage = true;
-      #   meters = {
-      #     left_meters  = [ "LeftCPUs2" "Memory" "Swap" ];
-      #     right_meters = [ "RightCPUs2" "Tasks" "LoadAverage" "Uptime" ];
-      #   };
+        #   meters = {
+        #     left_meters  = [ "LeftCPUs2" "Memory" "Swap" ];
+        #     right_meters = [ "RightCPUs2" "Tasks" "LoadAverage" "Uptime" ];
+        #   };
         vimMode = true;
       };
     };
@@ -66,5 +65,9 @@
         };
       };
     };
+  };
+  xdg.configFile = {
+    "direnv/lib/use_flake.sh".source = ../configs/direnv/use_flake.sh;
+    "neofetch/config.conf".source = ../configs/neofetch/config.conf;
   };
 }

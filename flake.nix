@@ -98,6 +98,29 @@
           inherit pkgs;
         };
       };
+      homeConfigurations = {
+        work = inputs.home-manager.lib.homeManagerConfiguration {
+          configuration = { pkgs, ... }: {
+            imports = [
+              ./modules/shell.nix
+              ./modules/zsh.nix
+              ./modules/nvim.nix
+              ./modules/tmux.nix
+            ];
+            config = {
+              programs.home-manager.enable = true;
+              home.extraOutputsToInstall = [ "man" ];
+              nixpkgs.config = import ./configs/nix/config.nix;
+              xdg.configFile."nix/nix.conf".source = ./configs/nix/nix.conf;
+            };
+          };
+          homeDirectory = "/Users/t0m00fc";
+          system = "x86_64-darwin";
+          username = "t0m00fc";
+          inherit (pkgs "x86_64-linux")
+          ;
+        };
+      };
     } // inputs.flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" ]
     (system:
       let pkgs = import nixpkgs { inherit system pkgs; };
