@@ -3,11 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-21.05";
-    home-manager.url = "github:nix-community/home-manager/release-21.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     master.url = "github:nixos/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
-    neovim-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    home-manager.url = "github:nix-community/home-manager/release-21.05";
     nur.url = "github:nix-community/NUR";
   };
 
@@ -33,7 +32,6 @@
       #   }) (attrNames (readDir ./overlays)));
       # in overlayFiles // {
       overlays = {
-        # neovim-nightly = inputs.neovim-overlay.overlay;
         nur = inputs.nur.overlay;
         unstable = final: prev: {
           unstable = import inputs.unstable { system = final.system; };

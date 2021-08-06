@@ -5,7 +5,7 @@
  in
 {
   programs.neovim = {
-    # package = pkgs.unstable.neovim;
+    package = pkgs.unstable.neovim-unwrapped;
 
     enable = true;
     viAlias = true;
@@ -46,25 +46,25 @@
       { plugin = vim-lion;
         config = "let g:lion_squeeze_spaces = 1";
       }
-      # { plugin = telescope-nvim;
-      #   config = ''
-      #   nnoremap <silent> <Leader>ts :Telescope builtins<CR>
-      #   nnoremap <silent> <Leader>ff :Telescope find_files<CR>
-      #   nnoremap <silent> <Leader>fg :Telescope git_files<CR>
-      #   nnoremap <silent> <Leader>fb :Telescope file_browser<CR>
-      #   nnoremap <silent> <Leader><Leader>b :Telescope buffers<CR>
-      #   nnoremap <silent> <Leader><Leader>m :Telescope marks<CR>
-      #   # nnoremap <silent> <<Leader>Leader>t :Telescope treesitter<CR>
-      #   nnoremap <silent> <<Leader>Leader>q :Telescope quickfix<CR>
-      #   nnoremap <silent> <<Leader>Leader>l :Telescope loclist<CR>
-      #   nnoremap <silent> <<Leader>Leader>s :Telescope spell_suggest<CR>
-      #   '';
-      # }
-      # { plugin = galaxyline-nvim;
-      #   config = ''
-      #     lua require 'reyu/galaxyline'
-      #   '';
-      # }
+      { plugin = telescope-nvim;
+        config = ''
+        nnoremap <silent> <Leader>ts :Telescope builtins<CR>
+        nnoremap <silent> <Leader>ff :Telescope find_files<CR>
+        nnoremap <silent> <Leader>fg :Telescope git_files<CR>
+        nnoremap <silent> <Leader>fb :Telescope file_browser<CR>
+        nnoremap <silent> <Leader><Leader>b :Telescope buffers<CR>
+        nnoremap <silent> <Leader><Leader>m :Telescope marks<CR>
+        nnoremap <silent> <<Leader>Leader>t :Telescope treesitter<CR>
+        nnoremap <silent> <<Leader>Leader>q :Telescope quickfix<CR>
+        nnoremap <silent> <<Leader>Leader>l :Telescope loclist<CR>
+        nnoremap <silent> <<Leader>Leader>s :Telescope spell_suggest<CR>
+        '';
+      }
+      { plugin = galaxyline-nvim;
+        config = ''
+          lua require 'reyu/galaxyline'
+        '';
+      }
       nvim-web-devicons
 
       # Must have T.Pope plugins
@@ -80,27 +80,27 @@
 
       # Completion
       { plugin = deoplete-nvim;
-        # config = ''
-        #   let g:deoplete#enable_at_startup = 0
-        #   call deoplete#custom#option('num_processes', 16)
-        #   call deoplete#custom#var('omni', 'input_patterns', {
-        #     \ 'pandoc': '@'
-        #     \})
-        # '';
+        config = ''
+          " let g:deoplete#enable_at_startup = 0
+          " call deoplete#custom#option('num_processes', 16)
+          call deoplete#custom#var('omni', 'input_patterns', {
+            \ 'pandoc': '@'
+            \})
+        '';
       }
-      # deoplete-lsp
+      deoplete-lsp
       deoplete-emoji
       deoplete-zsh
-      # { plugin = nvim-lspconfig;
-      #   config = "lua require('reyu.lsp_config')";
-      # }
-      # { plugin = nvim-treesitter;
-      #   config = ''
-      #     lua require('reyu/treesitter_config');
-      #     set foldmethod=expr
-      #     set foldexpr=nvim_treesitter#foldexpr()
-      #   '';
-      # }
+      { plugin = nvim-lspconfig;
+        config = "lua require('reyu.lsp_config')";
+      }
+      { plugin = nvim-treesitter;
+        config = ''
+          lua require('reyu/treesitter_config');
+          set foldmethod=expr
+          set foldexpr=nvim_treesitter#foldexpr()
+        '';
+      }
 
       # Snippets
       { plugin = vim-vsnip;
@@ -139,37 +139,41 @@
       vim-pandoc-syntax
 
       # Debugging
-      # { plugin = nvim-dap;
-      #   config = ''
-      #   nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
-      #   nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
-      #   nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
-      #   nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
-      #   nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
-      #   nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
-      #   nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
-      #   nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
-      #   nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
-      #   lua require('reyu/dap')
-      #   '';
-      # }
-      # { plugin = nvim-dap-ui;
-      #   config = ''
-      #   lua require('dapui').setup()
-      #   nnoremap <silent> <Leaduer>du :lua require'dapui'.toggle()<CR>
-      #   '';
-      # }
-      # nvim-dap-virtual-text
-      # telescope-dap-nvim
+      { plugin = nvim-dap;
+        config = ''
+        nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+        nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
+        nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
+        nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
+        nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+        nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+        nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+        nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+        nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+        lua require('reyu/dap')
+        '';
+      }
+      { plugin = nvim-dap-ui;
+        config = ''
+        lua require('dapui').setup()
+        nnoremap <silent> <Leaduer>du :lua require'dapui'.toggle()<CR>
+        '';
+      }
+      nvim-dap-virtual-text
+      telescope-dap-nvim
     ];
     extraPackages = with pkgs; [
-      # # for treesitter
-      # gcc
-      # tree-sitter
+      # for treesitter
+      gcc
+      tree-sitter
       # Language servers
+      terraform-ls
       nodePackages.bash-language-server
       nodePackages.vim-language-server
       nodePackages.yaml-language-server
+      nodePackages.dockerfile-language-server-nodejs
+      nodePackages.vscode-html-languageserver-bin
+      nodePackages.vscode-json-languageserver
     ];
      extraConfig = ''
        " General Settings {{{

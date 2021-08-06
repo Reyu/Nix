@@ -53,7 +53,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "bashls", "dockerls", "hls", "html", "jedi_language_server", "jsonls", "pyls", "terraformls", "vimls", "yamlls" }
+local servers = { "bashls", "dockerls", "hls", "html", "jsonls", "pyls", "terraformls", "vimls", "yamlls" }
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
@@ -63,7 +63,3 @@ for _, lsp in ipairs(servers) do
         message_level = vim.lsp.protocol.MessageType.Log
     }
 end
-nvim_lsp.sqlls.setup{
-    on_attach = on_attach,
-    cmd = {'sql-language-server', 'up', '--method', 'stdio'}
-}
