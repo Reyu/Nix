@@ -54,10 +54,10 @@
         nnoremap <silent> <Leader>fb :Telescope file_browser<CR>
         nnoremap <silent> <Leader><Leader>b :Telescope buffers<CR>
         nnoremap <silent> <Leader><Leader>m :Telescope marks<CR>
-        nnoremap <silent> <<Leader>Leader>t :Telescope treesitter<CR>
-        nnoremap <silent> <<Leader>Leader>q :Telescope quickfix<CR>
-        nnoremap <silent> <<Leader>Leader>l :Telescope loclist<CR>
-        nnoremap <silent> <<Leader>Leader>s :Telescope spell_suggest<CR>
+        nnoremap <silent> <Leader><Leader>t :Telescope treesitter<CR>
+        nnoremap <silent> <Leader><Leader>q :Telescope quickfix<CR>
+        nnoremap <silent> <Leader><Leader>l :Telescope loclist<CR>
+        nnoremap <silent> <Leader><Leader>s :Telescope spell_suggest<CR>
         '';
       }
       { plugin = galaxyline-nvim;
