@@ -21,4 +21,14 @@
       fetchSubmodules = true;
     };
   };
+  telescope-emoji = pkgs.vimUtils.buildVimPlugin {
+    name = "telescope-emoji";
+    src = pkgs.fetchFromGitHub {
+      owner = "xiyaowong";
+      repo = "telescope-emoji";
+      rev = "645bf59d8c3f9b6ace27b29bcd8741dffbab6e3b";
+      sha256 = "NlnNitRrolfVRDHt33tGNMnz4h4Cp3LAHzAA+ZJI6FQ=";
+      fetchSubmodules = true;
+    };
+  };
 }
