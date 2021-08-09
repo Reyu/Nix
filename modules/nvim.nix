@@ -94,14 +94,19 @@ in {
       nvim-web-devicons
 
       # Must have T.Pope plugins
+      vim-capslock
       vim-commentary
       vim-dispatch
+      # vim-dotenv
       vim-eunuch
       vim-fugitive
       vim-obsession
       vim-projectionist
       vim-repeat
+      vim-rhubarb
+      vim-speeddating
       vim-surround
+      vim-tbone
       vim-unimpaired
 
       # Completion
