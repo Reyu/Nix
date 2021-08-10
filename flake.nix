@@ -5,32 +5,32 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-21.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     master.url = "github:nixos/nixpkgs/master";
-    flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager/release-21.05";
     nur.url = "github:nix-community/NUR";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
     let
-      inherit (builtins) attrNames attrValues listToAttrs readDir removeSuffix;
-      inherit (nixpkgs) lib;
+      nameValuePair = name: value: { inherit name value; };
+      genAttrs = names: f:
+        builtins.listToAttrs (map (n: nameValuePair n (f n)) names);
 
-      pkgs = (import nixpkgs) {
-        system = "x86_64-linux";
-        overlays = attrValues self.overlays;
-      };
+      supportedSystems = [ "x86_64-linux" "x86_64-darwin" ];
+      forAllSystems = genAttrs supportedSystems;
+
+      pkgsFor = forAllSystems (system: pkgsFor_ system);
+      pkgsFor_ = system:
+        (import nixpkgs) {
+          inherit system;
+          overlays = builtins.attrValues self.overlays;
+        };
+
       sysConfigRevision = { ... }: {
         # Let 'nixos-version --json' know the Git revision of this flake.
-        system.configurationRevision = lib.mkIf (self ? rev) self.rev;
+        system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
       };
-      nixosSystem = lib.makeOverridable lib.nixosSystem;
+      nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
     in {
-      # overlays = let
-      #   overlayFiles = listToAttrs (map (name: {
-      #     name = removeSuffix ".nix" name;
-      #     value = import (./overlays + "/${name}");
-      #   }) (attrNames (readDir ./overlays)));
-      # in overlayFiles // {
       overlays = {
         nur = inputs.nur.overlay;
         unstable = final: prev: {
@@ -80,7 +80,7 @@
               };
             })
           ];
-          inherit pkgs;
+          inherit (pkgsFor_ "x86_64-linux") pkgs;
         };
         burrow = nixosSystem {
           system = "x86_64-linux";
@@ -95,7 +95,7 @@
             ./modules/hydra.nix
             ./modules/kerberos.nix
           ];
-          inherit pkgs;
+          inherit (pkgsFor_ "x86_64-linux") pkgs;
         };
       };
       homeConfigurations = {
@@ -117,21 +117,18 @@
           homeDirectory = "/Users/t0m00fc";
           system = "x86_64-darwin";
           username = "t0m00fc";
-          inherit (pkgs "x86_64-linux")
-          ;
+          inherit (pkgsFor_ "x86_64-darwin") pkgs;
         };
       };
-    } // inputs.flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" ]
-    (system:
-      let pkgs = import nixpkgs { inherit system pkgs; };
-      in {
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
+
+      devShell = forAllSystems (system:
+        pkgsFor.${system}.mkShell {
+          buildInputs = with pkgsFor.${system}; [
             nixfmt
             # For XMonad and related Haskell files
             haskellPackages.brittany
             haskellPackages.haskell-language-server
           ];
-        };
-      });
+        });
+    };
 }
