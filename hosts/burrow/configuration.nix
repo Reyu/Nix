@@ -57,10 +57,10 @@
       nfs.server = {
         enable = true;
         exports = ''
-          /data/media/ISO              loki(rw)
-          /data/media/audio/music      loki(rw)
-          /data/media/video/movies     loki(rw)
-          /data/media/video/television loki(rw)
+          /data/media/ISO              *(rw)
+          /data/media/audio/music      *(rw)
+          /data/media/video/movies     *(rw)
+          /data/media/video/television *(rw)
         '';
       };
       syncoid.user = "syncoid";

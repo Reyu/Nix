@@ -8,7 +8,7 @@ import qualified Codec.Binary.UTF8.String as UTF8
 import Text.Printf
 import System.Directory               ( getHomeDirectory )
 import System.Exit
-import System.IO                            -- for xmonbar
+import System.IO
 
 import XMonad hiding ( (|||) )              -- from X.L.LayoutCombinators
 import qualified XMonad.StackSet as W       -- myManageHookShift
@@ -79,7 +79,7 @@ main = do
     dbus <- D.connectSession
     _ <- D.requestName dbus (D.busName_ "org.xmonad.Log")
         [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
-    xmonad 
+    xmonad
         $ dynamicProjects projects
         $ withNavigation2DConfig myNav2DConf
         $ withUrgencyHook LibNotifyUrgencyHook
@@ -139,7 +139,6 @@ dbusOutput dbus str = do
 ---------------------------------------------------------------------------
 
 wsWEB   = "web"
-wsNIX   = "nix-config"
 wsVID   = "video"
 wsVIRT  = "virt"
 wsSTL   = "modeling"
@@ -147,7 +146,7 @@ wsNET   = "foxnet"
 wsWRK   = "work"
 wsFLOAT = "float"
 
-myWorkspaces = [wsWEB, wsNIX, wsVID, wsVIRT, wsSTL, wsNET, wsWRK, wsFLOAT]
+myWorkspaces = [wsWEB, wsVID, wsVIRT, wsSTL, wsNET, wsWRK, wsFLOAT]
 
 projects =
   [ Project { projectName      = wsWEB
@@ -161,10 +160,6 @@ projects =
   , Project { projectName      = wsWRK
             , projectDirectory = "~/Projects/Capacity"
             , projectStartHook = Just $ spawnOn wsWRK "firefox -P work"
-            }
-  , Project { projectName = wsNIX
-            , projectDirectory = "~/Projects/NIX"
-            , projectStartHook = Just $ spawnOn wsNET (myTerminal ++ " -c XMonad -e 'tmux new -A NixConfig")
             }
   , Project { projectName = wsVID
             , projectDirectory = "~"
@@ -191,17 +186,17 @@ myLauncher          = "rofi -matching fuzzy -modi combi -show combi -combi-modi 
 
 
 scratchpads
-  = [ term "htop" "htop"           mySPFloat
-    , term "mail" "zsh -c neomutt" mySPLargeFloat
-    , term "irc"  "zsh -c weechat" mySPLargeFloat
-    , NS "volume" "pavucontrol"        (className =? "Pavucontrol")     mySPLargeFloat
-    , NS "element" "element-desktop"   (className =? "Element")         mySPLargeFloat
-    , NS "discord" "Discord"           (className =? "discord")         mySPLargeFloat
-    , NS "telegram" "telegram-desktop" (className =? "TelegramDesktop") mySPLargeFloat
+  = [ term "htop"    "htop"              mySPFloat
+    , term "mail"    "zsh -c neomutt"    mySPLargeFloat
+    , term "ncmpcpp" "ncmpcpp"           mySPLargeFloat
+    , NS "volume"    "pavucontrol"      (className =? "Pavucontrol")     mySPLargeFloat
+    , NS "element"   "element-desktop"  (className =? "Element")         mySPLargeFloat
+    , NS "discord"   "Discord"          (className =? "discord")         mySPLargeFloat
+    , NS "telegram"  "telegram-desktop" (className =? "TelegramDesktop") mySPLargeFloat
     ]
  where
     -- Run in Terminal
-  term n c = NS n (printf "%s -c %s %s" myTerminal n c) (className =? n)
+  term n c = NS n (printf "%s -t %s --class %s,scratchpad -e %s" myTerminal n n c) (resource =? n)
   -- Helpers
   mySPFloat      = customFloating $ W.RationalRect (1 / 4) (1 / 4) (1 / 2) (1 / 2)
   mySPLargeFloat = customFloating $ W.RationalRect (1 / 8) (1 / 8) (3 / 4) (3 / 4)
@@ -443,23 +438,16 @@ myKeys conf = let
     , ("M-<Return>"             , addName "Terminal"                        $ do
         name <- withWindowSet (pure . W.currentTag)
         spawn $ myTerminal ++ " -e tmux new -At " ++ name)
-        -- wsName <- getCurrentWorkspaceName
-        -- let wsName' = case wsName of
-        --               Nothing -> "EXTRA"
-        --               Just name -> name
-        --  in spawn (myTerminal ++ " -e tmux new -At " ++ wsName'))
     , ("M-\\"                   , addName "Browser"                         $ bindOn [ (wsWRK, spawn $ myBrowser ++ " -P Work")
                                                                                      , (""   , spawn myBrowser)
                                                                                      ])
     , ("M-s s"                  , addName "Cancel submap"                   $ return ())
     , ("M-s M-s"                , addName "Cancel submap"                   $ return ())
     , ("M-e"                    , addName "NSP Element"                     $ namedScratchpadAction scratchpads "element")
-    , ("M-i"                    , addName "NSP Element"                     $ namedScratchpadAction scratchpads "irc")
     , ("M-m"                    , addName "NSP NeoMutt"                     $ namedScratchpadAction scratchpads "mail")
     , ("M-v"                    , addName "NSP Volume Control"              $ namedScratchpadAction scratchpads "volume")
     , ("M-t"                    , addName "NSP HTOP"                        $ namedScratchpadAction scratchpads "htop")
-    , ("M-c d"                  , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
-    , ("M-c t"                  , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
+    , ("M-n"                    , addName "NSP ncmpcpp"                     $ namedScratchpadAction scratchpads "ncmpcpp")
     , ("M-c M-d"                , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
     , ("M-c M-t"                , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
     ] ^++^
@@ -476,7 +464,7 @@ myKeys conf = let
     , ("M-p"                    , addName "Hide window to stack"            $ withFocused hideWindow)
     , ("M-S-p"                  , addName "Restore hidden window (FIFO)"      popOldestHiddenWindow)
 
-    , ("M-b"                    , addName "Promote"                           promote) 
+    , ("M-b"                    , addName "Promote"                           promote)
 
     , ("M-g"                    , addName "Un-merge from sublayout"         $ withFocused (sendMessage . UnMerge))
     , ("M-S-g"                  , addName "Merge all into sublayout"        $ withFocused (sendMessage . MergeAll))
@@ -539,10 +527,10 @@ myKeys conf = let
     , ("M-f"                    , addName "Fullscreen"                  $ sequence_ [ withFocused $ windows . W.sink
                                                                         , sendMessage $ XMonad.Layout.MultiToggle.Toggle FULL ])
 
-    , ("C-S-h"                  , addName "Ctrl-h passthrough"          $ P.sendKey controlMask xK_h)
-    , ("C-S-j"                  , addName "Ctrl-j passthrough"          $ P.sendKey controlMask xK_j)
-    , ("C-S-k"                  , addName "Ctrl-k passthrough"          $ P.sendKey controlMask xK_k)
-    , ("C-S-l"                  , addName "Ctrl-l passthrough"          $ P.sendKey controlMask xK_l)
+    , ("M-S-h"                  , addName "Meta-h passthrough"          $ P.sendKey mod4Mask xK_h)
+    , ("M-S-j"                  , addName "Meta-j passthrough"          $ P.sendKey mod4Mask xK_j)
+    , ("M-S-k"                  , addName "Meta-k passthrough"          $ P.sendKey mod4Mask xK_k)
+    , ("M-S-l"                  , addName "Meta-l passthrough"          $ P.sendKey mod4Mask xK_l)
     ]
     where
     toggleCopyToAll = wsContainingCopies >>= \case
@@ -578,10 +566,7 @@ myMouseBindings XConfig{} = M.fromList
 -- Startup                                                              {{{
 ---------------------------------------------------------------------------
 
-myStartupHook = do
-        spawn "polybar -r primary"
-        spawnOnce "~/.xmonad/AutoStart/AutoStart.zsh"
-        setDefaultCursor xC_left_ptr
+myStartupHook = setDefaultCursor xC_left_ptr
 
 quitXmonad :: X ()
 quitXmonad = confirmPrompt hotPromptTheme "Quit XMonad" $ io exitSuccess

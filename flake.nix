@@ -68,8 +68,10 @@
                 useGlobalPkgs = true;
                 users.reyu = { pkgs, ... }: {
                   imports = [
+                    ./modules/home.nix
                     ./modules/chat.nix
                     ./modules/firefox.nix
+                    ./modules/music.nix
                     ./modules/nvim.nix
                     ./modules/shell.nix
                     ./modules/tmux.nix
@@ -125,10 +127,14 @@
         pkgsFor.${system}.mkShell {
           buildInputs = with pkgsFor.${system}; [
             nixfmt
+          ] ++ (with pkgsFor.${system}.haskellPackages; [
             # For XMonad and related Haskell files
-            haskellPackages.brittany
-            haskellPackages.haskell-language-server
-          ];
+            brittany
+            haskell-language-server
+            xmonad
+            xmonad-contrib
+            xmonad-extras
+          ]);
         });
     };
 }

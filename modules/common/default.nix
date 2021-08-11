@@ -33,6 +33,7 @@ in with lib; {
       extraOptions = mkIf cfg.flakes.enable
         (lib.optionalString (config.nix.package == pkgs.nixFlakes)
           "experimental-features = nix-command flakes");
+      daemonNiceLevel = 10;
     };
 
     i18n.defaultLocale = "en_US.UTF-8";
