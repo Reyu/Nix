@@ -2,7 +2,6 @@
 
 {
   home.packages = with pkgs; with lib; [
-    polybar
     xmonad-log
     radeontop
     radeon-profile
@@ -51,18 +50,13 @@
     };
     rofi = {
       enable = true;
-      terminal = "${pkgs.st}/bin/st";
+      theme = ../configs/rofi/nord.rasi;
     };
   };
 
   services = {
     dunst = {
       enable = true;
-      iconTheme = {
-        name = "Adwaita";
-        package = pkgs.gnome3.adwaita-icon-theme;
-        size = "16x16";
-      };
       settings = {
         global = {
           monitor = 0;
@@ -71,7 +65,7 @@
           transparency = 10;
           padding = 16;
           horizontal_padding = 16;
-          font = "JetBrainsMono Nerd Font 10";
+          font = "SauceCodePro Nerd Font 10";
           line_height = 4;
           format = ''<b>%s</b>\n%b'';
         };
@@ -81,15 +75,25 @@
       enable = true;
       activeOpacity = "1.0";
       inactiveOpacity = "0.8";
+      blur = true;
       backend = "glx";
-      fade = true;
-      fadeDelta = 5;
       opacityRule = [
         "100:name *= 'i3lock'"
         "100:name *= 'Firefox'"
       ];
       shadow = true;
       shadowOpacity = "0.75";
+    };
+    polybar = {
+      enable = true;
+      config = ../configs/polybar/linux-desktop;
+      script = "polybar -r primary";
+    };
+    redshift = {
+      enable = true;
+      tray = true;
+      dawnTime = "7:00-8:00";
+      duskTime = "18:20-20:00";
     };
     udiskie = {
       enable = true;
@@ -98,18 +102,15 @@
     screen-locker = {
       enable = true;
       inactiveInterval = 30;
-      lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l dim";
+      lockCmd = "${pkgs.unstable.i3lock-fancy-rapid} 8 2";
       xautolockExtraOptions = [
         "Xautolock.killer: systemctl suspend"
       ];
     };
-  };
-
-  xdg = {
-    enable = true;
-    configFile = {
-      "polybar/config" = {
-        source = ../configs/polybar/linux-desktop;
+    xcape = {
+      enable = true;
+      mapExpression = {
+        Super_R = "Escape";
       };
     };
   };
