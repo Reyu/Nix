@@ -23,6 +23,11 @@
         (import nixpkgs) {
           inherit system;
           overlays = builtins.attrValues self.overlays;
+          config = {
+            allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+              "discord"
+              ];
+          };
         };
 
       sysConfigRevision = { ... }: {

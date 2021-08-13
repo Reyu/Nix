@@ -1,4 +1,4 @@
 { config, pkgs, libs, ... }:
 {
-  home.packages = with pkgs; [ element-desktop tdesktop ];
+  home.packages = with pkgs; [ element-desktop discord tdesktop ];
 }
