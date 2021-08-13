@@ -96,6 +96,25 @@
             ./modules/docker.nix
             ./modules/hydra.nix
             ./modules/kerberos.nix
+            inputs.home-manager.nixosModules.home-manager
+            ({
+              home-manager = {
+                useGlobalPkgs = true;
+                users.reyu = { pkgs, ... }: {
+                  imports = [
+                    ./modules/home.nix
+                    ./modules/chat.nix
+                    ./modules/firefox.nix
+                    ./modules/music.nix
+                    ./modules/nvim.nix
+                    ./modules/shell.nix
+                    ./modules/tmux.nix
+                    ./modules/xsession.nix
+                    ./modules/zsh.nix
+                  ];
+                };
+              };
+            })
           ];
           inherit (pkgsFor_ "x86_64-linux") pkgs;
         };
