@@ -87,7 +87,7 @@
     polybar = {
       enable = true;
       config = ../configs/polybar/linux-desktop;
-      script = "polybar -r primary";
+      script = "polybar -r primary &";
     };
     redshift = {
       enable = true;

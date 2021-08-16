@@ -73,6 +73,7 @@
                 useGlobalPkgs = true;
                 users.reyu = { pkgs, ... }: {
                   imports = [
+                    ./modules/development.nix
                     ./modules/home.nix
                     ./modules/chat.nix
                     ./modules/firefox.nix
