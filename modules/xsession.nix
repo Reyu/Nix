@@ -71,6 +71,10 @@
         };
       };
     };
+    gnome-keyring = {
+      enable = true;
+      components = [ "ssh" "secrets" ];
+    };
     picom = {
       enable = true;
       activeOpacity = "1.0";

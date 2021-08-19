@@ -36,7 +36,12 @@
       };
       nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
     in {
-      overlays = {
+      overlays = with builtins; let
+        overlayFiles = listToAttrs (map (name: {
+          name = nixpkgs.lib.strings.removeSuffix ".nix" name;
+          value = import (./overlays + "/${name}");
+        }) (attrNames (readDir ./overlays)));
+      in overlayFiles // {
         nur = inputs.nur.overlay;
         unstable = final: prev: {
           unstable = import inputs.unstable { system = final.system; };
@@ -73,6 +78,7 @@
                 useGlobalPkgs = true;
                 users.reyu = { pkgs, ... }: {
                   imports = [
+                    ./modules/email.nix
                     ./modules/development.nix
                     ./modules/home.nix
                     ./modules/chat.nix

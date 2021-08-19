@@ -617,10 +617,10 @@ myManageHook =
     <+> manageSpawn
     where
         manageSpecific = composeOne
-            [ resource =? "desktop_window"    -?> doIgnore
-            , className=? "Polybar"           -?> doIgnore
-            , resource =? "stalonetray"       -?> doIgnore
-            , resource =? "vlc"               -?> doFloat
+            [ resource =? "desktop_window" -?> doIgnore
+            , className=? "Polybar"        -?> doIgnore
+            , resource =? "stalonetray"    -?> doIgnore
+            , appName =? "feh"  -?> forceCenterFloat
             , transience
             , isBrowserDialog -?> forceCenterFloat
             , isRole =? gtkFile  -?> forceCenterFloat
@@ -628,7 +628,6 @@ myManageHook =
             , isRole =? "pop-up" -?> doCenterFloat
             , isInProperty "_NET_WM_WINDOW_TYPE"
                            "_NET_WM_WINDOW_TYPE_SPLASH" -?> doCenterFloat
-            , resource =? "console" -?> tileBelowNoFocus
             , isFullscreen -?> doFullFloat
             , pure True -?> tileBelow ]
         isBrowserDialog = isDialog <&&> className =? myBrowserClass
