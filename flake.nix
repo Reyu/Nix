@@ -24,9 +24,8 @@
           inherit system;
           overlays = builtins.attrValues self.overlays;
           config = {
-            allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
-              "discord"
-              ];
+            allowUnfreePredicate = pkg:
+              builtins.elem (nixpkgs.lib.getName pkg) [ "discord" ];
           };
         };
 
@@ -34,33 +33,41 @@
         # Let 'nixos-version --json' know the Git revision of this flake.
         system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
       };
+      # sysOverlays = { ... }: {
+      #   nix.nixPath = builtins.attrValues (builtins.mapAttrs
+      #     (name: value: name + "=" + (builtins.toString value)) inputs);
+      # };
       nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
     in {
-      overlays = with builtins; let
-        overlayFiles = listToAttrs (map (name: {
-          name = nixpkgs.lib.strings.removeSuffix ".nix" name;
-          value = import (./overlays + "/${name}");
-        }) (attrNames (readDir ./overlays)));
-      in overlayFiles // {
-        nur = inputs.nur.overlay;
-        unstable = final: prev: {
-          unstable = import inputs.unstable { system = final.system; };
+      overlay = self.overlays.packages;
+      overlays = with builtins;
+        let
+          overlayFiles = listToAttrs (map (name: {
+            name = nixpkgs.lib.strings.removeSuffix ".nix" name;
+            value = import (./overlays + "/${name}");
+          }) (attrNames (readDir ./overlays)));
+        in overlayFiles // {
+          nur = inputs.nur.overlay;
+          unstable = final: prev: {
+            unstable = import inputs.unstable { system = final.system; };
+          };
+          master = final: prev: {
+            master = import inputs.master { system = final.system; };
+          };
         };
-        master = final: prev: {
-          master = import inputs.master { system = final.system; };
-        };
-      };
       nixosConfigurations = {
         loki = nixosSystem {
           system = "x86_64-linux";
           modules = [
             sysConfigRevision
+            # sysOverlays
             ./hosts/loki/configuration.nix
             ./hosts/loki/hardware-configuration.nix
             ./cachix.nix
             ./modules/common
             ./modules/common/desktop.nix
             ./modules/common/users.nix
+            ./modules/sysoverlay.nix
             ./modules/docker.nix
             ./modules/hydra.nix
             ./modules/kerberos.nix
@@ -130,6 +137,11 @@
           ];
           inherit (pkgsFor_ "x86_64-linux") pkgs;
         };
+        hashicorp = nixosSystem {
+          system = "x86_64-linux";
+          modules = [ sysConfigRevision ];
+          inherit (pkgsFor_ "x86_64-linux") pkgs;
+        };
       };
       homeConfigurations = {
         work = inputs.home-manager.lib.homeManagerConfiguration {
@@ -156,16 +168,15 @@
 
       devShell = forAllSystems (system:
         pkgsFor.${system}.mkShell {
-          buildInputs = with pkgsFor.${system}; [
-            nixfmt
-          ] ++ (with pkgsFor.${system}.haskellPackages; [
-            # For XMonad and related Haskell files
-            brittany
-            haskell-language-server
-            xmonad
-            xmonad-contrib
-            xmonad-extras
-          ]);
+          buildInputs = with pkgsFor.${system};
+            [ nixfmt ] ++ (with pkgsFor.${system}.haskellPackages; [
+              # For XMonad and related Haskell files
+              brittany
+              haskell-language-server
+              xmonad
+              xmonad-contrib
+              xmonad-extras
+            ]);
         });
     };
 }
