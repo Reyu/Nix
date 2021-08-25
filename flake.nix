@@ -33,10 +33,6 @@
         # Let 'nixos-version --json' know the Git revision of this flake.
         system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
       };
-      # sysOverlays = { ... }: {
-      #   nix.nixPath = builtins.attrValues (builtins.mapAttrs
-      #     (name: value: name + "=" + (builtins.toString value)) inputs);
-      # };
       nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
     in {
       overlay = self.overlays.packages;
@@ -60,7 +56,6 @@
           system = "x86_64-linux";
           modules = [
             sysConfigRevision
-            # sysOverlays
             ./hosts/loki/configuration.nix
             ./hosts/loki/hardware-configuration.nix
             ./cachix.nix

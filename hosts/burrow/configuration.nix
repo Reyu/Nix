@@ -10,6 +10,7 @@
     };
     networking = {
       hostName = "burrow";
+      domain = "home.reyuzenfold.com";
       hostId = "34376a36";
       useDHCP = false;
       interfaces = {
@@ -63,6 +64,13 @@
           /data/media/video/television *(rw)
         '';
       };
+      gitea = {
+        enable = true;
+        domain = builtins.concatStringsSep "."
+          (with config.networking; [ hostName domain ]);
+        rootUrl = "http://" + config.services.gitea.domain;
+        httpPort = 3030;
+      };
       syncoid.user = "syncoid";
       zfs.trim.enable = true;
     };
@@ -80,6 +88,8 @@
       consulPorts = consul.extraConfig.ports or { };
     in {
       allowedTCPPorts = [
+        3000 # Hydra
+        3030 # Gitea
         2049 # NFS
         8200 # Vault
         8201 # Vault Cluster
