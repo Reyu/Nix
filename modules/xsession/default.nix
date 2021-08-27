@@ -1,7 +1,7 @@
 { config, pkgs, libs, ... }:
 
 {
-  home.packages = with pkgs; with lib; [
+  home.packages = with pkgs; [
     xmonad-log
     radeontop
     radeon-profile
@@ -50,7 +50,7 @@
     };
     rofi = {
       enable = true;
-      theme = ../configs/rofi/nord.rasi;
+      theme = ./rofi/nord.rasi;
     };
   };
 
@@ -67,7 +67,7 @@
           horizontal_padding = 16;
           font = "SauceCodePro Nerd Font 10";
           line_height = 4;
-          format = ''<b>%s</b>\n%b'';
+          format = "<b>%s</b>\\n%b";
         };
       };
     };
@@ -81,23 +81,30 @@
       inactiveOpacity = "0.8";
       blur = true;
       backend = "glx";
-      opacityRule = [
-        "100:name *= 'i3lock'"
-        "100:name *= 'Firefox'"
-      ];
+      opacityRule = [ "100:name *= 'i3lock'" "100:name *= 'Firefox'" ];
       shadow = true;
       shadowOpacity = "0.75";
     };
     polybar = {
       enable = true;
-      config = ../configs/polybar/linux-desktop;
+      package = pkgs.polybar.override {
+        mpdSupport = true;
+        githubSupport = true;
+      };
+      config = ./polybar/linux-desktop;
+      extraConfig = ''
+        [module/xmonad]
+        type = custom/script
+        exec = ${pkgs.xmonad-log}/bin/xmonad-log
+        tail = true
+      '';
       script = "polybar -r primary &";
     };
     redshift = {
       enable = true;
       tray = true;
-      dawnTime = "7:00-8:00";
-      duskTime = "18:20-20:00";
+      latitude = "38.893956";
+      longitude = "-77.036539";
     };
     udiskie = {
       enable = true;
@@ -106,27 +113,21 @@
     screen-locker = {
       enable = true;
       inactiveInterval = 30;
-      lockCmd = "${pkgs.unstable.i3lock-fancy-rapid} 8 2";
-      xautolockExtraOptions = [
-        "Xautolock.killer: systemctl suspend"
-      ];
+      lockCmd = "${pkgs.i3lock-fancy-rapid} 8 2";
+      xautolockExtraOptions = [ "Xautolock.killer: systemctl suspend" ];
     };
     xcape = {
       enable = true;
-      mapExpression = {
-        Super_R = "Escape";
-      };
+      mapExpression = { Super_R = "Escape"; };
     };
   };
 
-  xresources.extraConfig = builtins.readFile (
-    pkgs.fetchFromGitHub {
-        owner = "solarized";
-        repo = "xresources";
-        rev = "025ceddbddf55f2eb4ab40b05889148aab9699fc";
-        sha256 = "0lxv37gmh38y9d3l8nbnsm1mskcv10g3i83j0kac0a2qmypv1k9f";
-    } + "/Xresources.dark"
-  );
+  xresources.extraConfig = builtins.readFile (pkgs.fetchFromGitHub {
+    owner = "solarized";
+    repo = "xresources";
+    rev = "025ceddbddf55f2eb4ab40b05889148aab9699fc";
+    sha256 = "0lxv37gmh38y9d3l8nbnsm1mskcv10g3i83j0kac0a2qmypv1k9f";
+  } + "/Xresources.dark");
 
   xsession = {
     enable = true;
@@ -138,15 +139,16 @@
 
     windowManager.xmonad = {
       enable = true;
-      extraPackages = haskellPackages: with haskellPackages; [
-        containers
-        dbus
-        directory
-        unix
-        utf8-string
-        xmonad-contrib
-      ];
-      config = ../configs/xmonad/xmonad.hs;
+      extraPackages = haskellPackages:
+        with haskellPackages; [
+          containers
+          dbus
+          directory
+          unix
+          utf8-string
+          xmonad-contrib
+        ];
+      config = ./xmonad/xmonad.hs;
     };
   };
 }

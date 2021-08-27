@@ -1,16 +1,6 @@
-{ config, lib, ... }:
-let cfg = config.foxnet.zfs;
-in with lib; {
-  options.foxnet.zfs = {
-    common = mkEnableOption "Enable default ZFS layout";
-    syncoid.backupHost = mkOption {
-      type = types.string;
-      example = "burrow.home.reyuzenfold.com";
-      description = "Syncoid destination host";
-    };
-  };
+{ config, lib, ... }: {
   config = {
-    fileSystems = mkIf cfg.common {
+    fileSystems = {
       "/" = {
         device = "rpool/ROOT/nixos";
         fsType = "zfs";
@@ -103,16 +93,6 @@ in with lib; {
             autoprune = false;
             autosnap = false;
           };
-        };
-      };
-      syncoid = {
-        interval = "hourly";
-        commonArgs = [ "--no-sync-snap" ];
-        commands = {
-          "rpool/ROOT".target =
-            "${cfg.syncoid.backupHost}:data/BACKUP/${config.networking.hostName}/ROOT";
-          "rpool/HOME".target =
-            "${cfg.syncoid.backupHost}:data/BACKUP/${config.networking.hostName}/HOME";
         };
       };
     };

@@ -2,176 +2,127 @@
   description = "Reyu Zenfold's Nix Configurations";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-21.05";
+    nixpkgs.url = "github:nixos/nixpkgs/release-21.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    master.url = "github:nixos/nixpkgs/master";
-    home-manager.url = "github:nix-community/home-manager/release-21.05";
     nur.url = "github:nix-community/NUR";
+    utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-21.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # NOTE / TODO
+    # neovim = {
+    #   url = "github:neovim/neovim?dir=contrib";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    # TODO
+    # powercord = {
+    #   url = "github:LavaDesu/powercord-overlay";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.utils.follows = "utils";
+    # };
+    # discord-tweaks = {
+    #   url = "github:NurMarvin/discord-tweaks";
+    #   flake = false;
+    # };
+
+    # NOTE Could be useful later (for raspberryPi)
+    # nixos-hardware.url = "github:nixos/nixos-hardware";
+
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
-    let
-      nameValuePair = name: value: { inherit name value; };
-      genAttrs = names: f:
-        builtins.listToAttrs (map (n: nameValuePair n (f n)) names);
+  outputs = inputs@{ self, nixpkgs, unstable, nur, utils, home-manager, ... }:
+    utils.lib.systemFlake {
+      inherit self inputs;
 
-      supportedSystems = [ "x86_64-linux" "x86_64-darwin" ];
-      forAllSystems = genAttrs supportedSystems;
+      supportedSystems = [ "x86_64-linux" ];
 
-      pkgsFor = forAllSystems (system: pkgsFor_ system);
-      pkgsFor_ = system:
-        (import nixpkgs) {
-          inherit system;
-          overlays = builtins.attrValues self.overlays;
-          config = {
-            allowUnfreePredicate = pkg:
-              builtins.elem (nixpkgs.lib.getName pkg) [ "discord" ];
-          };
-        };
+      hostDefaults = {
+        system = "x86_64-linux";
+        extraArgs = { inherit utils inputs; };
+        modules = [
+          utils.nixosModules.saneFlakeDefaults
+          home-manager.nixosModule
+          {
+            # Let 'nixos-version --json' know the Git revision of this flake.
+            system.configurationRevision =
+              nixpkgs.lib.mkIf (self ? rev) self.rev;
+            system.autoUpgrade.flags = [
+                "--option"
+                "extra-binary-caches"
+                "https://reyu.cachix.org"
+                "https://reyu-system.cachix.org"
+            ];
+          }
+          ./cachix.nix
+          ./modules/users
+          ./modules/common
+          ./modules/crypto
+          ./modules/security
+        ];
 
-      sysConfigRevision = { ... }: {
-        # Let 'nixos-version --json' know the Git revision of this flake.
-        system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
       };
-      nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
-    in {
-      overlay = self.overlays.packages;
-      overlays = with builtins;
-        let
-          overlayFiles = listToAttrs (map (name: {
-            name = nixpkgs.lib.strings.removeSuffix ".nix" name;
-            value = import (./overlays + "/${name}");
-          }) (attrNames (readDir ./overlays)));
-        in overlayFiles // {
-          nur = inputs.nur.overlay;
-          unstable = final: prev: {
-            unstable = import inputs.unstable { system = final.system; };
-          };
-          master = final: prev: {
-            master = import inputs.master { system = final.system; };
-          };
-        };
-      nixosConfigurations = {
-        loki = nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            sysConfigRevision
-            ./hosts/loki/configuration.nix
-            ./hosts/loki/hardware-configuration.nix
-            ./cachix.nix
-            ./modules/common
-            ./modules/common/desktop.nix
-            ./modules/common/users.nix
-            ./modules/sysoverlay.nix
-            ./modules/docker.nix
-            ./modules/hydra.nix
-            ./modules/kerberos.nix
-            # ./modules/steam.nix
-            ({ pkgs, config, ... }: {
-              imports = [ ./modules/zfs.nix ];
-              config.foxnet.zfs.common = true;
-            })
-            ({ pkgs, ... }: {
-              config.environment.systemPackages = [ pkgs.neovim pkgs.firefox ];
-            })
-            inputs.home-manager.nixosModules.home-manager
-            ({
-              home-manager = {
-                useGlobalPkgs = true;
-                users.reyu = { pkgs, ... }: {
-                  imports = [
-                    ./modules/email.nix
-                    ./modules/development.nix
-                    ./modules/home.nix
-                    ./modules/chat.nix
-                    ./modules/firefox.nix
-                    ./modules/music.nix
-                    ./modules/nvim.nix
-                    ./modules/shell.nix
-                    ./modules/tmux.nix
-                    ./modules/xsession.nix
-                    ./modules/zsh.nix
-                  ];
-                };
-              };
-            })
-          ];
-          inherit (pkgsFor_ "x86_64-linux") pkgs;
-        };
-        burrow = nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            sysConfigRevision
-            ./hosts/burrow/configuration.nix
-            ./hosts/burrow/hardware-configuration.nix
-            ./hosts/burrow/containers.nix
-            ./modules/common
-            ./modules/common/users.nix
-            ./modules/docker.nix
-            ./modules/hydra.nix
-            ./modules/kerberos.nix
-            inputs.home-manager.nixosModules.home-manager
-            ({
-              home-manager = {
-                useGlobalPkgs = true;
-                users.reyu = { pkgs, ... }: {
-                  imports = [
-                    ./modules/home.nix
-                    ./modules/chat.nix
-                    ./modules/firefox.nix
-                    ./modules/music.nix
-                    ./modules/nvim.nix
-                    ./modules/shell.nix
-                    ./modules/tmux.nix
-                    ./modules/xsession.nix
-                    ./modules/zsh.nix
-                  ];
-                };
-              };
-            })
-          ];
-          inherit (pkgsFor_ "x86_64-linux") pkgs;
-        };
-        hashicorp = nixosSystem {
-          system = "x86_64-linux";
-          modules = [ sysConfigRevision ];
-          inherit (pkgsFor_ "x86_64-linux") pkgs;
-        };
-      };
+
+      sharedOverlays = [ self.overlay nur.overlay ];
+
+      # Channel defaults
+      channelsConfig.allowUnfree = true;
+
+      # Channel definitions. `channels.<name>.{input,overlaysBuilder,config,patches}`
+      channels.nixpkgs.input = nixpkgs;
+      channels.nixpkgs.overlaysBuilder = channels:
+        [
+          (final: prev: {
+            unstable = import inputs.unstable { system = prev.system; };
+          })
+        ];
+      channels.unstable.input = unstable;
+      # channels.unstable.overlaysBuilder = channels:
+      #   [
+      #     (final: prev: {
+      #       neovim-nightly = inputs.neovim.defaultPackage.${prev.system};
+      #     })
+      #   ];
+
+
+      # Host Configurations
+      # hosts.loki.channelName = "unstable";
+      hosts.loki.modules =
+        [ ./hosts/loki ./profiles/desktop.nix ./modules/zfs ];
+
+      hosts.Burrow.modules = [ ./host/burrow ./modules/zfs ];
+
+      overlay = import ./overlays;
+
+      # For non-NixOS Systems
       homeConfigurations = {
-        work = inputs.home-manager.lib.homeManagerConfiguration {
+        work = home-manager.lib.homeManagerConfiguration {
           configuration = { pkgs, ... }: {
             imports = [
-              ./modules/shell.nix
-              ./modules/zsh.nix
-              ./modules/nvim.nix
-              ./modules/tmux.nix
+              ./modules/neovim
+              ./modules/shell
+              ./modules/zsh
+              ./modules/tmux
             ];
             config = {
               programs.home-manager.enable = true;
               home.extraOutputsToInstall = [ "man" ];
-              nixpkgs.config = import ./configs/nix/config.nix;
-              xdg.configFile."nix/nix.conf".source = ./configs/nix/nix.conf;
+              nixpkgs.config = import ./moduls/nix/config.nix;
+              xdg.configFile."nix/nix.conf".source = ./modules/nix/nix.conf;
             };
           };
           homeDirectory = "/Users/t0m00fc";
           system = "x86_64-darwin";
           username = "t0m00fc";
-          inherit (pkgsFor_ "x86_64-darwin") pkgs;
         };
       };
 
-      devShell = forAllSystems (system:
-        pkgsFor.${system}.mkShell {
-          buildInputs = with pkgsFor.${system};
-            [ nixfmt ] ++ (with pkgsFor.${system}.haskellPackages; [
-              # For XMonad and related Haskell files
-              brittany
-              haskell-language-server
-              xmonad
-              xmonad-contrib
-              xmonad-extras
-            ]);
-        });
+      devShellBuilder = channels:
+        channels.nixpkgs.mkShell {
+          buildInputs = with channels.nixpkgs; [ nixfmt ];
+        };
     };
 }

@@ -62,11 +62,6 @@ modules-right = mpd pulseaudio eth date powermenu
 tray-position = right
 tray-padding = 2
 
-[module/xmonad]
-type = custom/script
-exec = ~/.nix-profile/bin/xmonad-log
-tail = true
-
 [module/filesystem]
 type = internal/fs
 interval = 25

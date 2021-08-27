@@ -1,7 +1,5 @@
 { config, pkgs, ... }:
-
-let plugins = pkgs.callPackage ../configs/nvim/custom-plugins.nix { };
-in {
+{
   programs.neovim = {
     package = pkgs.unstable.neovim-unwrapped;
 
@@ -12,7 +10,7 @@ in {
     withPython3 = true;
     withNodeJs = true;
     extraPython3Packages = ps: with ps; [ rope jedi ];
-    plugins = with pkgs.vimPlugins // plugins; [
+    plugins = with pkgs.vimPlugins; [
       # General
       {
         plugin = vim-solarized8;
@@ -301,7 +299,7 @@ in {
       endfunction
     '';
   };
-  xdg.configFile = { "nvim/lua" = { source = ../configs/nvim/lua; }; };
+  xdg.configFile = { "nvim/lua" = { source = ./lua; }; };
   home.file = {
     # We just want the directories, file contents doesn't matter.
     nvimBackup = {

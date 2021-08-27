@@ -67,7 +67,7 @@
     };
   };
   xdg.configFile = {
-    "direnv/lib/use_flake.sh".source = ../configs/direnv/use_flake.sh;
-    "neofetch/config.conf".source = ../configs/neofetch/config.conf;
+    "direnv/lib/use_flake.sh".source = ./direnv/use_flake.sh;
+    "neofetch/config.conf".source = ./neofetch/config.conf;
   };
 }

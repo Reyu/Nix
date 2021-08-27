@@ -1,15 +1,23 @@
 { config, lib, pkgs, ... }: {
+  imports = [
+    ./mounts.nix
+    ./containers.nix
+  ];
   config = {
-    reyu.flakes.enable = true;
     boot = {
+      initrd.availableKernelModules =
+        [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
+      initrd.kernelModules = [ ];
+      kernelModules = [ "kvm-intel" ];
+      supportedFilesystems = [ "zfs" ];
+      extraModulePackages = [ ];
       loader = {
         systemd-boot.enable = true;
         efi.canTouchEfiVariables = true;
       };
-      supportedFilesystems = [ "zfs" ];
     };
+
     networking = {
-      hostName = "burrow";
       domain = "home.reyuzenfold.com";
       hostId = "34376a36";
       useDHCP = false;
@@ -71,6 +79,10 @@
         rootUrl = "http://" + config.services.gitea.domain;
         httpPort = 3030;
       };
+      hydra.package = pkgs.master.hydra-unstable;
+      hydra.extraConfig = ''
+        Include /etc/hydra/gitea_authorization.conf
+      '';
       syncoid.user = "syncoid";
       zfs.trim.enable = true;
     };

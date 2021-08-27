@@ -208,9 +208,9 @@
     };
   };
   home.file = {
-    ".mailcap".source = ../configs/mailcap;
+    ".mailcap".source = ../mailcap;
   };
   xdg.configFile = {
-    "neomutt/color".source = ../configs/neomutt/colors;
+    "neomutt/color".source = ../neomutt/colors;
   };
 }

@@ -1,9 +1,10 @@
 { config, lib, pkgs, ... }: {
+  nix.extraOptions = "experimental-features = nix-command flakes";
   nix.trustedUsers = [ "@wheel" ];
 
   environment = {
     homeBinInPath = true;
-    systemPackages = with pkgs; [ cachix neovim ];
+    systemPackages = with pkgs; [ neovim ];
     shells = [ pkgs.zsh ];
     variables = {
       EDITOR = "nvim";
