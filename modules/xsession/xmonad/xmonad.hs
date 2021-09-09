@@ -383,26 +383,14 @@ showKeybindings x = addName "Show Keybindings" $ io $ do
     hClose h
     return ()
 
-wsKeys = ["1","2","3","4","5","6","7","8","9","0"] 
+wsKeys = ["1","2","3","4","5","6","7","8","9","0"]
 
--- any workspace but scratchpad
--- notSP = (return $ ("NSP" /=) . W.tag) :: X (WindowSpace -> Bool)
--- shiftAndView dir = findWorkspace getSortByIndex dir (WSIs notSP) 1
---         >>= \t -> (windows . W.shift $ t) >> (windows . W.greedyView $ t)
-
--- hidden, non-empty workspaces less scratchpad
--- shiftAndView' dir = findWorkspace getSortByIndexNoSP dir HiddenNonEmptyWS 1
---         >>= \t -> (windows . W.shift $ t) >> (windows . W.greedyView $ t)
 nextNonEmptyWS = findWorkspace getSortByIndexNoSP Next HiddenNonEmptyWS 1
         >>= \t -> windows . W.view $ t
 prevNonEmptyWS = findWorkspace getSortByIndexNoSP Prev HiddenNonEmptyWS 1
         >>= \t -> windows . W.view $ t
 getSortByIndexNoSP =
         fmap (.namedScratchpadFilterOutWorkspace) getSortByIndex
-
--- toggle any workspace but scratchpad
--- myToggle = windows $ W.view =<< W.tag . head . filter 
---         ((\x -> x /= "NSP" && x /= "SP") . W.tag) . W.hidden
 
 myKeys conf = let
 
@@ -526,11 +514,6 @@ myKeys conf = let
     -- Not perfect, but works.
     , ("M-f"                    , addName "Fullscreen"                  $ sequence_ [ withFocused $ windows . W.sink
                                                                         , sendMessage $ XMonad.Layout.MultiToggle.Toggle FULL ])
-
-    , ("M-S-h"                  , addName "Meta-h passthrough"          $ P.sendKey mod4Mask xK_h)
-    , ("M-S-j"                  , addName "Meta-j passthrough"          $ P.sendKey mod4Mask xK_j)
-    , ("M-S-k"                  , addName "Meta-k passthrough"          $ P.sendKey mod4Mask xK_k)
-    , ("M-S-l"                  , addName "Meta-l passthrough"          $ P.sendKey mod4Mask xK_l)
     ]
     where
     toggleCopyToAll = wsContainingCopies >>= \case
