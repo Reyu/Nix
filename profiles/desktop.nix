@@ -19,7 +19,6 @@
   };
 
   services.dbus.enable = true;
-  services.dbus.packages = [ pkgs.gnome3.dconf ];
   services.unclutter.enable = true;
 
   services.xserver = {

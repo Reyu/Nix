@@ -2,11 +2,12 @@
 
 {
   home.packages = with pkgs; [
-    xmonad-log
-    radeontop
-    radeon-profile
     cpu-x
+    keepassxc
     pavucontrol
+    radeon-profile
+    radeontop
+    xmonad-log
   ];
 
   programs = {
@@ -70,10 +71,6 @@
           format = "<b>%s</b>\\n%b";
         };
       };
-    };
-    gnome-keyring = {
-      enable = true;
-      components = [ "ssh" "secrets" ];
     };
     picom = {
       enable = true;
