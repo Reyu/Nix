@@ -193,6 +193,7 @@ scratchpads
     , NS "element"   "element-desktop"  (className =? "Element")         mySPLargeFloat
     , NS "discord"   "Discord"          (className =? "discord")         mySPLargeFloat
     , NS "telegram"  "telegram-desktop" (className =? "TelegramDesktop") mySPLargeFloat
+    , NS "keepassxc" "keepassxc"        (className =? "KeePassXC")       mySPLargeFloat
     ]
  where
     -- Run in Terminal
@@ -431,13 +432,14 @@ myKeys conf = let
                                                                                      ])
     , ("M-s s"                  , addName "Cancel submap"                   $ return ())
     , ("M-s M-s"                , addName "Cancel submap"                   $ return ())
-    , ("M-e"                    , addName "NSP Element"                     $ namedScratchpadAction scratchpads "element")
-    , ("M-m"                    , addName "NSP NeoMutt"                     $ namedScratchpadAction scratchpads "mail")
-    , ("M-v"                    , addName "NSP Volume Control"              $ namedScratchpadAction scratchpads "volume")
     , ("M-t"                    , addName "NSP HTOP"                        $ namedScratchpadAction scratchpads "htop")
-    , ("M-n"                    , addName "NSP ncmpcpp"                     $ namedScratchpadAction scratchpads "ncmpcpp")
-    , ("M-c M-d"                , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
-    , ("M-c M-t"                , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
+    , ("M-s e"                  , addName "NSP Element"                     $ namedScratchpadAction scratchpads "element")
+    , ("M-s m"                  , addName "NSP NeoMutt"                     $ namedScratchpadAction scratchpads "mail")
+    , ("M-s v"                  , addName "NSP Volume Control"              $ namedScratchpadAction scratchpads "volume")
+    , ("M-s n"                  , addName "NSP ncmpcpp"                     $ namedScratchpadAction scratchpads "ncmpcpp")
+    , ("M-s d"                  , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
+    , ("M-s t"                  , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
+    , ("M-s k"                  , addName "NSP KeePassXC"                   $ namedScratchpadAction scratchpads "keepassxc")
     ] ^++^
 
     -----------------------------------------------------------------------

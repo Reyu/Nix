@@ -34,6 +34,8 @@
       tridactyl
       ublock-origin
       xbrowsersync
+      keepassxc-browser
+      keepass-helper
     ];
   };
 }
