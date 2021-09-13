@@ -20,5 +20,6 @@
 
   security.pki.certificateFiles = [
     ../../certs/ReyuZenfold.crt
+    ../../certs/CAcert.crt
   ];
 }
