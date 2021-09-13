@@ -7,6 +7,7 @@
     pavucontrol
     radeon-profile
     radeontop
+    syncthing-tray
     xmonad-log
   ];
 

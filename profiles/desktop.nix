@@ -3,6 +3,13 @@
 {
   fonts.fonts = with pkgs; [ nerdfonts powerline-fonts terminus-nerdfont ];
 
+  services.tailscale = { enable = true; };
+  networking.firewall.allowedUDPPorts = [ 41641 ];
+  environment.systemPackages = [
+    pkgs.syncthing
+    pkgs.tailscale
+  ];
+
   programs.gnupg.agent.enable = true;
   programs.gnupg.agent.enableSSHSupport = true;
   programs.tmux = {
