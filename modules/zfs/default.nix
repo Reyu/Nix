@@ -1,6 +1,11 @@
-{ config, lib, ... }: {
-  config = {
-    fileSystems = {
+{ config, options, lib, ... }: {
+  options.foxnet.zfs = {
+    defaultMounts = lib.mkEnableOption "defaultMounts";
+  };
+  config = let
+    cfg = config.foxnet.zfs;
+  in {
+    fileSystems = lib.mkIf cfg.defaultMounts {
       "/" = {
         device = "rpool/ROOT/nixos";
         fsType = "zfs";

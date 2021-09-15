@@ -51,10 +51,10 @@
             system.configurationRevision =
               nixpkgs.lib.mkIf (self ? rev) self.rev;
             system.autoUpgrade.flags = [
-                "--option"
-                "extra-binary-caches"
-                "https://reyu.cachix.org"
-                "https://reyu-system.cachix.org"
+              "--option"
+              "extra-binary-caches"
+              "https://reyu.cachix.org"
+              "https://reyu-system.cachix.org"
             ];
           }
           ./cachix.nix
@@ -87,18 +87,11 @@
       #     })
       #   ];
 
-
       # Host Configurations
-      # hosts.loki.channelName = "unstable";
       hosts.loki.modules =
-        [
-          ./hosts/loki
-          ./profiles/desktop.nix
-          ./modules/docker
-          ./modules/zfs
-          ];
+        [ ./hosts/loki ./profiles/desktop.nix ./modules/docker ./modules/zfs ];
 
-      hosts.Burrow.modules = [ ./host/burrow ./modules/zfs ];
+      hosts.burrow.modules = [ ./hosts/burrow ./modules/zfs ];
 
       overlay = import ./overlays;
 
@@ -106,12 +99,8 @@
       homeConfigurations = {
         work = home-manager.lib.homeManagerConfiguration {
           configuration = { pkgs, ... }: {
-            imports = [
-              ./modules/neovim
-              ./modules/shell
-              ./modules/zsh
-              ./modules/tmux
-            ];
+            imports =
+              [ ./modules/neovim ./modules/shell ./modules/zsh ./modules/tmux ];
             config = {
               programs.home-manager.enable = true;
               home.extraOutputsToInstall = [ "man" ];

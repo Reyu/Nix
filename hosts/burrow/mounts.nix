@@ -1,4 +1,5 @@
 {
+  foxnet.zfs.defaultMounts = false;
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-uuid/de8df3f7-09e8-4955-a781-be1188d1d4c1";
@@ -8,6 +9,21 @@
     "/boot" = {
       device = "/dev/disk/by-uuid/1DA2-3ADD";
       fsType = "vfat";
+    };
+
+    "/nix" = {
+      device = "data/NIX";
+      fsType = "zfs";
+    };
+
+    "/nix/store" = {
+      device = "data/NIX/store";
+      fsType = "zfs";
+    };
+
+    "/nix/var" = {
+      device = "data/NIX/var";
+      fsType = "zfs";
     };
 
     "/data" = {

@@ -20,7 +20,7 @@
           };
         };
         config = { config, pkgs, ... }: {
-          imports = [ ../../modules/common ../../modules/kerberos.nix ];
+          imports = [ ../../modules/common ../../modules/kerberos];
           config = {
             foxnet.krb = {
               kdc.enabled = true;
