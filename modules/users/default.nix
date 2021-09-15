@@ -30,13 +30,14 @@
   home-manager.useUserPackages = true;
   home-manager.users.reyu = { pkgs, ... }: {
     imports = [
-      ../neovim
-      ../home
       ../chat
       ../firefox
+      ../home
       ../music
+      ../neovim
       ../shell
       ../tmux
+      ../vscode
       ../xsession
       ../zsh
     ];

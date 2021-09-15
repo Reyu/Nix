@@ -4,6 +4,10 @@
   fonts.fonts = with pkgs; [ nerdfonts powerline-fonts terminus-nerdfont ];
 
   services.tailscale = { enable = true; };
+  services.tor = {
+    enable = true;
+    client.enable = true;
+  };
   networking.firewall.allowedUDPPorts = [ 41641 ];
   environment.systemPackages = [
     pkgs.syncthing
@@ -31,8 +35,10 @@
   services.xserver = {
     enable = true;
     layout = "us";
-    xkbVariant = "dvorak";
+    # xkbVariant = "dvorak";
     libinput.enable = true;
     windowManager.xmonad.enable = true;
   };
+
+  security.sudo.wheelNeedsPassword = false;
 }

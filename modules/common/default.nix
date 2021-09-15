@@ -14,7 +14,12 @@
   i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "America/New_York";
 
-  services.fcron.enable = true;
+  services.fcron = {
+    enable = true;
+    systab = ''
+    %nightly,nice(10) * 1-5 ${pkgs.findutils}/bin/updatedb
+    '';
+  };
   services.sshd.enable = true;
 
   security.pki.certificateFiles = [

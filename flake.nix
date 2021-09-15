@@ -91,7 +91,12 @@
       # Host Configurations
       # hosts.loki.channelName = "unstable";
       hosts.loki.modules =
-        [ ./hosts/loki ./profiles/desktop.nix ./modules/zfs ];
+        [
+          ./hosts/loki
+          ./profiles/desktop.nix
+          ./modules/docker
+          ./modules/zfs
+          ];
 
       hosts.Burrow.modules = [ ./host/burrow ./modules/zfs ];
 
