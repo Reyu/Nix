@@ -12,10 +12,10 @@
   environment.systemPackages = [
     pkgs.syncthing
     pkgs.tailscale
+    pkgs.pinentry-gtk2
   ];
 
   programs.gnupg.agent.enable = true;
-  programs.gnupg.agent.enableSSHSupport = true;
   programs.tmux = {
     enable = true;
     aggressiveResize = true;
@@ -35,7 +35,6 @@
   services.xserver = {
     enable = true;
     layout = "us";
-    # xkbVariant = "dvorak";
     libinput.enable = true;
     windowManager.xmonad.enable = true;
   };

@@ -25,6 +25,7 @@
 
   networking.hostId = "d540cb4f";
 
+  foxnet.zfs.defaultMounts = true;
   fileSystems = {
     "/home/reyu/Mail" = {
       device = "data/Mail";
