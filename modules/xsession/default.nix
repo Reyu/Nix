@@ -4,6 +4,7 @@
   home.packages = with pkgs; [
     cpu-x
     keepassxc
+    libsecret
     pavucontrol
     radeon-profile
     radeontop

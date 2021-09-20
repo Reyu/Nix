@@ -2,16 +2,12 @@
 
 {
   home.packages = with pkgs; [
-    bitwarden-cli
     curl
-    neofetch
-    tree
-    bc
-    nix-prefetch-git
-    nix-prefetch-github
-    nixfmt
     feh
+    keychain
+    neofetch
     ripgrep
+    tree
   ];
   programs = {
     bat = {
@@ -38,10 +34,6 @@
       settings = {
         colorScheme = 6;
         showCpuUsage = true;
-        #   meters = {
-        #     left_meters  = [ "LeftCPUs2" "Memory" "Swap" ];
-        #     right_meters = [ "RightCPUs2" "Tasks" "LoadAverage" "Uptime" ];
-        #   };
         vimMode = true;
       };
     };

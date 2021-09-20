@@ -34,6 +34,14 @@
     '';
     loginExtra = ''
       neofetch
+
+      ${pkgs.keychain}/bin/keychain --quiet --agents gpg,ssh --systemd
+      source ~/.keychain/$(hostname -s)-sh
+      source ~/.keychain/$(hostname -s)-sh-gpg
+
+      # Link the socket at a known location
+      ln -s $SSH_AUTH_SOCK ~/.keychain/$(hostname -s)-ssh.sock
+
     '';
     shellAliases = {
       nix-env = "noglob nix-env";
