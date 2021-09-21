@@ -64,5 +64,7 @@
       options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" "noauto" ];
     };
   };
-}
 
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "reyu" ];
+}
