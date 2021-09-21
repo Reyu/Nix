@@ -4,7 +4,7 @@
   boot = {
     initrd.availableKernelModules =
       [ "xhci_pci" "nvme" "ahci" "usbhid" "sd_mod" ];
-    initrd.kernelModules = [ ];
+    initrd.kernelModules = [ "amdgpu" ];
     binfmt.emulatedSystems = [ "aarch64-linux" ];
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
@@ -19,9 +19,17 @@
     zfs.extraPools = [ "projects" ];
   };
 
-  # high-resolution display
+  services.xserver.videoDrivers = [ "amdgpu" ];
   hardware.video.hidpi.enable = lib.mkDefault true;
   hardware.pulseaudio.enable = true;
+  hardware.opengl = {
+    driSupport = true;
+    extraPackages = with pkgs; [
+      rocm-opencl-icd
+      rocm-opencl-runtime
+      amdvlk
+    ];
+  };
 
   networking.hostId = "d540cb4f";
 
