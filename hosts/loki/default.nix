@@ -1,5 +1,9 @@
 { config, lib, pkgs, modulesPath, ... }: {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    ./filesystems.nix
+    ./services.nix
+  ];
 
   boot = {
     initrd.availableKernelModules =
@@ -18,6 +22,7 @@
     };
     zfs.extraPools = [ "projects" ];
   };
+  networking.hostId = "d540cb4f";
 
   services.xserver.videoDrivers = [ "amdgpu" ];
   hardware.video.hidpi.enable = lib.mkDefault true;
@@ -29,40 +34,6 @@
       rocm-opencl-runtime
       amdvlk
     ];
-  };
-
-  networking.hostId = "d540cb4f";
-
-  foxnet.zfs.defaultMounts = true;
-  fileSystems = {
-    "/home/reyu/Mail" = {
-      device = "data/Mail";
-      fsType = "zfs";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-uuid/FA23-833F";
-      fsType = "vfat";
-    };
-    "/media/ISO" = {
-      device = "burrow:/data/media/ISO";
-      fsType = "nfs";
-      options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" "noauto" ];
-    };
-    "/media/Music" = {
-      device = "burrow:/data/media/audio/music";
-      fsType = "nfs";
-      options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" "noauto" ];
-    };
-    "/media/Movies" = {
-      device = "burrow:/data/media/video/movies";
-      fsType = "nfs";
-      options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" "noauto" ];
-    };
-    "/media/Television" = {
-      device = "burrow:/data/media/video/television";
-      fsType = "nfs";
-      options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" "noauto" ];
-    };
   };
 
   virtualisation.virtualbox.host.enable = true;

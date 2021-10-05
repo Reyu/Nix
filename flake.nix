@@ -89,7 +89,7 @@
 
       # Host Configurations
       hosts.loki.modules =
-        [ ./hosts/loki ./profiles/desktop.nix ./modules/docker ./modules/zfs ];
+        [ ./hosts/loki ./profiles/desktop.nix ./modules/docker ./modules/steam ./modules/zfs ];
 
       hosts.burrow.modules = [ ./hosts/burrow ./modules/zfs ];
 
