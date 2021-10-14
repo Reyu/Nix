@@ -39,9 +39,8 @@
       source ~/.keychain/$(hostname -s)-sh
       source ~/.keychain/$(hostname -s)-sh-gpg
 
-      # Link the socket at a known location
-      ln -s $SSH_AUTH_SOCK ~/.keychain/$(hostname -s)-ssh.sock
-
+      # Link the socket at a known location for KeePass
+      ln -fs $SSH_AUTH_SOCK ~/.keychain/$(hostname -s)-ssh.sock
     '';
     shellAliases = {
       nix-env = "noglob nix-env";
