@@ -47,7 +47,7 @@
       {
         plugin = telescope-nvim;
         config = ''
-          nnoremap <Leader>tt :Telescope 
+          nnoremap <Leader>tt :Telescope
           nnoremap <leader>ff <cmd>Telescope find_files<cr>
           nnoremap <leader>fg <cmd>Telescope live_grep<cr>
           nnoremap <leader>fb <cmd>Telescope buffers<cr>
@@ -61,27 +61,12 @@
       }
       popup-nvim
       plenary-nvim
-      telescope-dap-nvim
+      # telescope-dap-nvim
       {
         plugin = telescope-hoogle;
         config = ''
           lua require("telescope").load_extension("hoogle")
         '';
-      }
-      {
-        plugin = telescope-emoji;
-        config = ''
-          lua <<EOF
-          require("telescope").load_extension("emoji")
-          require("telescope-emoji").setup({
-            action = function(emoji)
-              -- argument emoji is a table.
-              -- {name="", value="", cagegory="", description=""}
-              vim.fn.setreg("e", emoji.value)
-            end,
-          })
-          EOF
-                    '';
       }
       {
         plugin = galaxyline-nvim;
@@ -109,72 +94,19 @@
 
       # Completion
       {
-        plugin = coc-nvim;
+        plugin = nvim-lspconfig;
         config = ''
-          autocmd FileType json syntax match Comment +\/\/.\+$+
-
-          " use <tab> for trigger completion and navigate to the next complete item
-          function! s:check_back_space() abort
-            let col = col('.') - 1
-            return !col || getline('.')[col - 1]  =~ '\s'
-          endfunction
-
-          inoremap <silent><expr> <Tab>
-                \ pumvisible() ? "\<C-n>" :
-                \ <SID>check_back_space() ? "\<Tab>" :
-                \ coc#refresh()
-
-          " use <c-space>for trigger completion
-          " inoremap <silent><expr> <c-space> coc#refresh()
+        lua require('reyu/lsp_config')
         '';
       }
-      coc-diagnostic
-      coc-git
       {
-        plugin = coc-highlight;
+        plugin = nvim-cmp;
         config = ''
-          autocmd CursorHold * silent call CocActionAsync('highlight')
+        lua require('reyu/cmp')
         '';
       }
-      coc-html
-      coc-json
-      coc-lists
-      coc-lua
-      coc-markdownlint
-      {
-        plugin = coc-prettier;
-        config = ''
-          vmap <leader>f  <Plug>(coc-format-selected)
-          nmap <leader>f  <Plug>(coc-format-selected)
-        '';
-      }
-      coc-pyright
-      {
-        plugin = coc-snippets;
-        config = ''
-          " Use <C-l> for trigger snippet expand.
-          imap <C-l> <Plug>(coc-snippets-expand)
-
-          " Use <C-j> for select text for visual placeholder of snippet.
-          vmap <C-j> <Plug>(coc-snippets-select)
-
-          " Use <C-j> for jump to next placeholder, it's default of coc.nvim
-          let g:coc_snippet_next = '<c-j>'
-
-          " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-          let g:coc_snippet_prev = '<c-k>'
-
-          " Use <C-j> for both expand and jump (make expand higher priority.)
-          imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-          " Use <leader>x for convert visual selected code to snippet
-          xmap <leader>x  <Plug>(coc-convert-snippet)
-        '';
-      }
-      coc-vimlsp
-      coc-vimtex
-      coc-yaml
-      coc-yank
+      cmp-nvim-lsp
+      cmp-buffer
 
       # Snippets
       ultisnips
@@ -182,39 +114,36 @@
       # Filetypes
       vim-polyglot
       vim-pandoc
-
       {
         plugin = vim-pandoc-after;
-        config = ''
-          let g:pandoc#after#modules#enabled = ['neosnippet']
-        '';
+        config = ''let g:pandoc#after#modules#enabled = ["ultisnips"]'';
       }
       vim-pandoc-syntax
 
       # Debugging
-      {
-        plugin = nvim-dap;
-        config = ''
-          nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
-          nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
-          nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
-          nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
-          nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
-          nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
-          nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
-          nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
-          nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
-          lua require('reyu/dap')
-        '';
-      }
-      {
-        plugin = nvim-dap-ui;
-        config = ''
-          lua require('dapui').setup()
-          nnoremap <silent> <Leaduer>du :lua require'dapui'.toggle()<CR>
-        '';
-      }
-      nvim-dap-virtual-text
+      # {
+      #   plugin = nvim-dap;
+      #   config = ''
+      #     nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+      #     nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
+      #     nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
+      #     nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
+      #     nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+      #     nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+      #     nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+      #     nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+      #     nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+      #     lua require('reyu/dap')
+      #   '';
+      # }
+      # {
+      #   plugin = nvim-dap-ui;
+      #   config = ''
+      #     lua require('dapui').setup()
+      #     nnoremap <silent> <Leaduer>du :lua require'dapui'.toggle()<CR>
+      #   '';
+      # }
+      # nvim-dap-virtual-text
     ];
     extraPackages = with pkgs; [
       # Language servers
