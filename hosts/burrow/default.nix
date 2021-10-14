@@ -7,13 +7,24 @@
     boot = {
       initrd.availableKernelModules =
         [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
-      initrd.kernelModules = [ ];
+      initrd.kernelModules = [ "igb" ];
       kernelModules = [ "kvm-intel" ];
       supportedFilesystems = [ "zfs" ];
       extraModulePackages = [ ];
       loader = {
         systemd-boot.enable = true;
         efi.canTouchEfiVariables = true;
+        grub.mirroredBoots = [
+          { path = "/boot"; }
+          { path = "/boot-alternate"; }
+        ];
+      };
+      initrd.network = {
+        enable = true;
+        ssh = {
+          port = 2222;
+          hostKeys = [ /root/.ssh/boot_host_ed25519_key ];
+        };
       };
     };
 
@@ -38,40 +49,32 @@
       };
     };
     services = {
-      consul = {
-        enable = true;
-        extraConfig = {
-          datacenter = "home";
-          domain = "consul.reyuzenfold.com";
-          server = true;
-          bootstrap = true;
-          bind_addr = ''{{ GetInterfaceIP "eno1" }}'';
-          acl = {
-            enabled = true;
-            default_policy = "deny";
-            down_policy = "extend-cache";
-          };
-        };
-      };
-      vault = {
-        enable = true;
-        storageBackend = "consul";
-        extraSettingsPaths = [ /etc/vault.d ];
-      };
-      nomad = {
-        enable = true;
-        enableDocker = true;
-        dropPrivileges = true;
-      };
-      nfs.server = {
-        enable = true;
-        exports = ''
-          /data/media/ISO              *(rw)
-          /data/media/audio/music      *(rw)
-          /data/media/video/movies     *(rw)
-          /data/media/video/television *(rw)
-        '';
-      };
+      # consul = {
+      #   enable = true;
+      #   extraConfig = {
+      #     datacenter = "home";
+      #     domain = "consul.reyuzenfold.com";
+      #     server = true;
+      #     bootstrap = true;
+      #     bind_addr = ''{{ GetInterfaceIP "eno1" }}'';
+      #     acl = {
+      #       enabled = true;
+      #       default_policy = "deny";
+      #       down_policy = "extend-cache";
+      #     };
+      #   };
+      # };
+      # vault = {
+      #   enable = true;
+      #   storageBackend = "consul";
+      #   extraSettingsPaths = [ /etc/vault.d ];
+      # };
+      # nomad = {
+      #   enable = true;
+      #   enableDocker = true;
+      #   dropPrivileges = true;
+      # };
+      nfs.server.enable = true;
       gitea = {
         enable = true;
         domain = builtins.concatStringsSep "."
@@ -103,41 +106,42 @@
         3000 # Hydra
         3030 # Gitea
         2049 # NFS
-        8200 # Vault
-        8201 # Vault Cluster
-        (consulPorts.server or 8300)
-        (consulPorts.serf_lan or 8301)
-        (consulPorts.serf_wan or 8302)
-        (consulPorts.http or 8500)
-        (consulPorts.dns or 8600)
-      ] ++ (if consulPorts ? https then [ consulPorts.https ] else [ ])
-        ++ (if consulPorts ? grpc then [ consulPorts.grpc ] else [ ]);
-      allowedTCPPortRanges = [
-        {
-          from = consulPorts.sidecar_min_port or 21000;
-          to = consulPorts.sidecar_max or 21255;
-        }
-        {
-          from = consulPorts.expose_min_port or 21500;
-          to = consulPorts.expose_max or 21755;
-        }
+        # 8200 # Vault
+        # 8201 # Vault Cluster
+        # (consulPorts.server or 8300)
+        # (consulPorts.serf_lan or 8301)
+        # (consulPorts.serf_wan or 8302)
+        # (consulPorts.http or 8500)
+        # (consulPorts.dns or 8600)
       ];
+      # ] ++ (if consulPorts ? https then [ consulPorts.https ] else [ ])
+      #   ++ (if consulPorts ? grpc then [ consulPorts.grpc ] else [ ]);
+      # allowedTCPPortRanges = [
+      #   {
+      #     from = consulPorts.sidecar_min_port or 21000;
+      #     to = consulPorts.sidecar_max or 21255;
+      #   }
+      #   {
+      #     from = consulPorts.expose_min_port or 21500;
+      #     to = consulPorts.expose_max or 21755;
+      #   }
+      # ];
 
-      allowedUDPPorts = [
-        (consulPorts.serf_lan or 8301)
-        (consulPorts.serf_wan or 8302)
-        (consulPorts.dns or 8600)
-      ];
+      # allowedUDPPorts = [
+      #   (consulPorts.serf_lan or 8301)
+      #   (consulPorts.serf_wan or 8302)
+      #   (consulPorts.dns or 8600)
+      # ];
     };
-    within.secrets.consul = lib.mkIf (config.services.consul.enable or false) {
-      source = ../../secrets/consul.hcl;
-      dest = "/etc/consul.d/secure.hcl";
-      owner = "consul";
-    };
-    within.secrets.vault = lib.mkIf (config.services.vault.enable or false) {
-      source = ../../secrets/vault.hcl;
-      dest = "/etc/vault.d/secure.hcl";
-      owner = "vault";
-    };
+    # within.secrets.consul = lib.mkIf (config.services.consul.enable or false) {
+    #   source = ../../secrets/consul.hcl;
+    #   dest = "/etc/consul.d/secure.hcl";
+    #   owner = "consul";
+    # };
+    # within.secrets.vault = lib.mkIf (config.services.vault.enable or false) {
+    #   source = ../../secrets/vault.hcl;
+    #   dest = "/etc/vault.d/secure.hcl";
+    #   owner = "vault";
+    # };
   };
 }
