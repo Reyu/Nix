@@ -2,6 +2,29 @@
 
 {
   ## System security tweaks
+  security.sudo.execWheelOnly = true;
+  environment.defaultPackages = lib.mkForce [];
+
+  # security.auditd.enable = true;
+  # security.audit.enable = true;
+  # security.audit.rules = [
+  #   "-a exit,always -F arch=b64 -S execve"
+  # ];
+
+  # Configure OpenSSH to be a bit more secure
+  services.openssh = {
+    passwordAuthentication = false;
+    allowSFTP = lib.mkDefault false;
+    challengeResponseAuthentication = false;
+    extraConfig = ''
+      AllowTcpForwarding yes
+      X11Forwarding no
+      AllowAgentForwarding no
+      AllowStreamLocalForwarding no
+      AuthenticationMethods publickey
+    '';
+  };
+
   # Prevent replacing the running kernel w/o reboot
   security.protectKernelImage = true;
 
@@ -32,7 +55,7 @@
     # Do not accept IP source route packets (we're not a router)
     "net.ipv4.conf.all.accept_source_route" = 0;
     "net.ipv6.conf.all.accept_source_route" = 0;
-    # Don't send ICMP redirects (again, we're on a router)
+    # Don't send ICMP redirects (again, we're not a router)
     "net.ipv4.conf.all.send_redirects" = 0;
     "net.ipv4.conf.default.send_redirects" = 0;
     # Refuse ICMP redirects (MITM mitigations)

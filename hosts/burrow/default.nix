@@ -49,21 +49,6 @@
       };
     };
     services = {
-      # consul = {
-      #   enable = true;
-      #   extraConfig = {
-      #     datacenter = "home";
-      #     domain = "consul.reyuzenfold.com";
-      #     server = true;
-      #     bootstrap = true;
-      #     bind_addr = ''{{ GetInterfaceIP "eno1" }}'';
-      #     acl = {
-      #       enabled = true;
-      #       default_policy = "deny";
-      #       down_policy = "extend-cache";
-      #     };
-      #   };
-      # };
       # vault = {
       #   enable = true;
       #   storageBackend = "consul";
@@ -133,15 +118,5 @@
       #   (consulPorts.dns or 8600)
       # ];
     };
-    # within.secrets.consul = lib.mkIf (config.services.consul.enable or false) {
-    #   source = ../../secrets/consul.hcl;
-    #   dest = "/etc/consul.d/secure.hcl";
-    #   owner = "consul";
-    # };
-    # within.secrets.vault = lib.mkIf (config.services.vault.enable or false) {
-    #   source = ../../secrets/vault.hcl;
-    #   dest = "/etc/vault.d/secure.hcl";
-    #   owner = "vault";
-    # };
   };
 }

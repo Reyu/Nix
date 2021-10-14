@@ -116,7 +116,7 @@
 
       devShellBuilder = channels:
         channels.nixpkgs.mkShell {
-          buildInputs = with channels.nixpkgs; [ nixfmt ];
+          buildInputs = with channels.nixpkgs; [ rage nixfmt ];
         };
     };
 }

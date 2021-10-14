@@ -1,4 +1,7 @@
 { config, pkgs, ... }: {
+  imports = [
+    ./consul.nix
+  ];
   config = {
     networking.firewall = {
       allowedTCPPorts = [
@@ -20,7 +23,7 @@
           };
         };
         config = { config, pkgs, ... }: {
-          imports = [ ../../modules/common ../../modules/kerberos];
+          imports = [ ../../modules/common ../../modules/kerberos ];
           config = {
             foxnet.krb = {
               kdc.enabled = true;

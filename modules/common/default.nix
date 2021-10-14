@@ -20,7 +20,7 @@
     %nightly,nice(10) * 1-5 ${pkgs.findutils}/bin/updatedb
     '';
   };
-  services.sshd.enable = true;
+  services.sshd.enable = lib.mkDefault true;
 
   security.pki.certificateFiles = [
     ../../certs/ReyuZenfold.crt
