@@ -7,7 +7,9 @@
     keychain
     neofetch
     ripgrep
+    todo-txt-cli
     tree
+    perl
   ];
   programs = {
     bat = {

@@ -48,6 +48,7 @@
       cp = "nocorrect cp";
       mkdir = "nocorrect mkdir";
       tree = "lsd --tree";
+      t = "todo.sh";
     };
     shellGlobalAliases = {
       ISODATE = "$(date --iso-8601=date)";
