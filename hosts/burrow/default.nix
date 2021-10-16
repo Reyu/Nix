@@ -2,6 +2,8 @@
   imports = [
     ./mounts.nix
     ./containers.nix
+    ./consul.nix
+    ./vault.nix
   ];
   config = {
     boot = {
@@ -49,11 +51,6 @@
       };
     };
     services = {
-      # vault = {
-      #   enable = true;
-      #   storageBackend = "consul";
-      #   extraSettingsPaths = [ /etc/vault.d ];
-      # };
       # nomad = {
       #   enable = true;
       #   enableDocker = true;
@@ -91,32 +88,7 @@
         3000 # Hydra
         3030 # Gitea
         2049 # NFS
-        # 8200 # Vault
-        # 8201 # Vault Cluster
-        # (consulPorts.server or 8300)
-        # (consulPorts.serf_lan or 8301)
-        # (consulPorts.serf_wan or 8302)
-        # (consulPorts.http or 8500)
-        # (consulPorts.dns or 8600)
       ];
-      # ] ++ (if consulPorts ? https then [ consulPorts.https ] else [ ])
-      #   ++ (if consulPorts ? grpc then [ consulPorts.grpc ] else [ ]);
-      # allowedTCPPortRanges = [
-      #   {
-      #     from = consulPorts.sidecar_min_port or 21000;
-      #     to = consulPorts.sidecar_max or 21255;
-      #   }
-      #   {
-      #     from = consulPorts.expose_min_port or 21500;
-      #     to = consulPorts.expose_max or 21755;
-      #   }
-      # ];
-
-      # allowedUDPPorts = [
-      #   (consulPorts.serf_lan or 8301)
-      #   (consulPorts.serf_wan or 8302)
-      #   (consulPorts.dns or 8600)
-      # ];
     };
   };
 }

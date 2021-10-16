@@ -5,8 +5,6 @@
         8300 # Consul
         8301 # Consul Serf LAN
         8302 # Consul Serf WAN
-        8500 # Consul HTTP
-        8501 # Consul HTTPS
       ];
       allowedUDPPorts = [
         8301 # Consul Serf LAN
@@ -26,24 +24,22 @@
     services = {
       consul = {
         enable = true;
-        interface.bind = "eno1";
+        interface.bind = "enp73s0";
         extraConfig = {
           datacenter = "home";
           domain = "consul.reyuzenfold.com";
-          server = true;
-          bootstrap = true;
+          retry_join = [
+            "burrow.home.reyuzenfold.com"
+          ];
           acl = {
             enabled = true;
             default_policy = "allow";
             down_policy = "extend-cache";
           };
-          addresses = {
-            http = "127.0.0.1 {{ GetInterfaceIP \"eno1\" }}";
-          };
         };
       };
     };
-    within.secrets.consul_encrypt_key = {
+    within.secrets.consul = {
       source = ../../secrets/consul/encrypt.hcl;
       dest = "/etc/consul.d/encrypt.hcl";
       owner = "consul";

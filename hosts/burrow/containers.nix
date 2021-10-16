@@ -1,7 +1,4 @@
 { config, pkgs, ... }: {
-  imports = [
-    ./consul.nix
-  ];
   config = {
     networking.firewall = {
       allowedTCPPorts = [

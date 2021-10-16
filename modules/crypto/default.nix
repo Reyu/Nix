@@ -54,6 +54,7 @@ let
       serviceConfig.Type = "oneshot";
 
       script = with pkgs; ''
+        mkdir -p $(dirname ${dest})
         rm -rf ${dest}
         "${rage}"/bin/rage -d -i /etc/ssh/ssh_host_ed25519_key -o '${dest}' '${source}'
         chown '${owner}':'${group}' '${dest}'
