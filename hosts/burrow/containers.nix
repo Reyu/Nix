@@ -4,6 +4,7 @@
       allowedTCPPorts = [
         88 # KDC
         749 # KAdmin
+        636 # LDAP
       ];
       allowedUDPPorts = [
         88 # KDC
@@ -31,13 +32,23 @@
       };
       ldap = {
         autoStart = true;
+        bindMounts = {
+          "/var/db/slapd" = {
+            hostPath = "/data/service/openldap/db";
+            isReadOnly = false;
+          };
+          "/etc/slapd.d" = {
+            hostPath = "/data/service/openldap/config";
+            isReadOnly = false;
+          };
+        };
         config = { config, pkgs, ... }: {
           imports = [ ../../modules/common ];
           config = {
             services.openldap = {
               enable = true;
-              configDir = "/var/db/slapd.d";
-              urlList = [ "ldapi:///" "ldaps:///" ];
+              configDir = "/etc/slapd.d";
+              urlList = [ "ldapi:///" "ldap:///" ];
             };
           };
         };
