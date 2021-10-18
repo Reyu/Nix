@@ -17,13 +17,12 @@
   services.fcron = {
     enable = true;
     systab = ''
-    %nightly,nice(10) * 1-5 ${pkgs.findutils}/bin/updatedb
+      %nightly,nice(10) * 1-5 ${pkgs.findutils}/bin/updatedb
     '';
   };
+
   services.sshd.enable = lib.mkDefault true;
 
-  security.pki.certificateFiles = [
-    ../../certs/ReyuZenfold.crt
-    ../../certs/CAcert.crt
-  ];
+  security.pki.certificateFiles =
+    [ ../../certs/ReyuZenfold.crt ../../certs/CAcert.crt ];
 }

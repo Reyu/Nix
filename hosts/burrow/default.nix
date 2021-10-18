@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }: {
   imports = [
     ./mounts.nix
-    ./containers.nix
+    # ./containers.nix
     ./consul.nix
     ./vault.nix
   ];

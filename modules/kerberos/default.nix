@@ -26,8 +26,8 @@
       libdefaults = { "default_realm" = "REYUZENFOLD.COM"; };
       realms = {
         "REYUZENFOLD.COM" = {
-          admin_server = "burrow.home.reyuzenfold.com";
-          kdc = [ "burrow.home.reyuzenfold.com" ];
+          admin_server = "ismene.home.reyuzenfold.com";
+          kdc = [ "ismene.home.reyuzenfold.com" ];
         };
       };
       domain_realm = {

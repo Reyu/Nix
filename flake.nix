@@ -88,10 +88,20 @@
       #   ];
 
       # Host Configurations
-      hosts.loki.modules =
-        [ ./hosts/loki ./profiles/desktop.nix ./modules/docker ./modules/keybase ./modules/zfs ];
+      hosts.loki.modules = [
+          ./hosts/loki
+          ./modules/docker
+          ./modules/kerberos
+          ./modules/keybase
+          ./modules/zfs
+          ./profiles/desktop.nix
+        ];
 
-      hosts.burrow.modules = [ ./hosts/burrow ./modules/zfs ];
+        hosts.burrow.modules = [
+          ./hosts/burrow
+          ./modules/kerberos
+          ./modules/zfs
+        ];
 
       overlay = import ./overlays;
 
