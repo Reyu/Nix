@@ -22,7 +22,10 @@
     };
     zfs.extraPools = [ "projects" ];
   };
-  networking.hostId = "d540cb4f";
+  networking = {
+    domain = "home.reyuzenfold.com";
+    hostId = "d540cb4f";
+  };
 
   services.xserver.videoDrivers = [ "amdgpu" ];
   hardware.video.hidpi.enable = lib.mkDefault true;
