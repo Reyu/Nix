@@ -93,6 +93,7 @@
           ./modules/docker
           ./modules/kerberos
           ./modules/keybase
+          ./modules/ldap
           ./modules/zfs
           ./profiles/desktop.nix
         ];

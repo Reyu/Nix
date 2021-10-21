@@ -22,7 +22,6 @@
   in {
     krb5 = {
       enable = true;
-      kerberos = pkgs.heimdal;
       libdefaults = { "default_realm" = "REYUZENFOLD.COM"; };
       realms = {
         "REYUZENFOLD.COM" = {
@@ -34,13 +33,6 @@
         "reyuzenfold.com" = "REYUZENFOLD.COM";
         ".reyuzenfold.com" = "REYUZENFOLD.COM";
       };
-      extraConfig = lib.mkIf cfg.kdc.enabled ''
-        [kdc]
-        database = {
-          mkey_file = /var/heimdal/m-key
-          acl_file = /var/heimdal/kadm5.acl
-        }
-      '';
     };
     systemd.services = {
       kdc = lib.mkIf cfg.kdc.enabled {
