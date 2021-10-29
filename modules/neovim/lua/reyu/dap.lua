@@ -21,8 +21,8 @@ dap.configurations.haskell = {
     logFile = vim.fn.stdpath('data') .. '/haskell-dap.log',
     logLevel = 'WARNING',
     ghciEnv = vim.empty_dict(),
-    ghciPrompt = "λ: ",
-    ghciInitialPrompt = "λ: ",
-    ghciCmd= "cabal exec -- ghci-dap --interactive -i -i${workspaceFolder}",
+    ghciPrompt = "H>>= ",
+    ghciInitialPrompt = "H>>= ",
+    ghciCmd = "ghci-dap --interactive -i -i${workspaceFolder}",
   },
 }
