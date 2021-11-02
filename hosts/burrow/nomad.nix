@@ -3,6 +3,9 @@
     networking.firewall = {
       allowedTCPPorts = [
         4646 # Nomad
+        80   # Traefik HTTP
+        443  # Traefik HTTPS
+        8081 # Traefik API
       ];
       allowedTCPPortRanges = [{
         from = 20000;
