@@ -43,6 +43,7 @@
       ln -fs $SSH_AUTH_SOCK ~/.keychain/$(hostname -s)-ssh.sock
     '';
     shellAliases = {
+      cat = "bat --theme 'Solarized (dark)'";
       nix-env = "noglob nix-env";
       mv = "nocorrect mv";
       cp = "nocorrect cp";
