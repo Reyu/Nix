@@ -77,10 +77,14 @@
     picom = {
       enable = true;
       activeOpacity = "1.0";
-      inactiveOpacity = "0.8";
+      inactiveOpacity = "0.9";
       blur = true;
       backend = "glx";
-      opacityRule = [ "100:name *= 'i3lock'" "100:name *= 'Firefox'" ];
+      opacityRule = [
+        "100:name *= 'i3lock'"
+        "100:name *= 'Firefox'"
+        "100:class_g = 'Clementine'"
+      ];
       shadow = true;
       shadowOpacity = "0.75";
     };
