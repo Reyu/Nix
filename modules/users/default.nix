@@ -1,4 +1,7 @@
 { config, pkgs, modulesPath, ... }: {
+  users.users.root = {
+    shell = pkgs.zsh;
+  };
   users.users.reyu = {
     isNormalUser = true;
     description = "Reyu Zenfold";
@@ -28,6 +31,14 @@
   };
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
+  home-manager.users.root = { pkgs, ... }: {
+    imports = [
+      ../neovim
+      ../shell
+      ../tmux
+      ../zsh
+    ];
+  };
   home-manager.users.reyu = { pkgs, ... }: {
     imports = [
       ../chat
