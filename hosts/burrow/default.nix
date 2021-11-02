@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }: {
   imports = [
     ./mounts.nix
-    # ./containers.nix
     ./consul.nix
     ./vault.nix
+    ./nomad.nix
   ];
   config = {
     boot = {
@@ -51,11 +51,6 @@
       };
     };
     services = {
-      # nomad = {
-      #   enable = true;
-      #   enableDocker = true;
-      #   dropPrivileges = true;
-      # };
       nfs.server.enable = true;
       gitea = {
         enable = true;
