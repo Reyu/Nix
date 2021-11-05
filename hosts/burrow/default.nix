@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }: {
   imports = [
-    ./mounts.nix
+    ./filesystems.nix
     ./consul.nix
     ./vault.nix
     ./nomad.nix
@@ -64,6 +64,7 @@
         Include /etc/hydra/gitea_authorization.conf
       '';
       syncoid.user = "syncoid";
+      target.enable = true;
       zfs.trim.enable = true;
     };
     virtualisation.docker = {
@@ -83,6 +84,10 @@
         3000 # Hydra
         3030 # Gitea
         2049 # NFS
+
+        # Nomad - Media
+        32400 # pms
+        8181 # tautulli
       ];
     };
   };

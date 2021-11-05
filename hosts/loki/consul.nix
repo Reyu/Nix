@@ -36,6 +36,8 @@
             default_policy = "allow";
             down_policy = "extend-cache";
           };
+          ports.grpc = 8502;
+          connect.enabled = true;
         };
       };
     };

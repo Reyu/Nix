@@ -3,8 +3,8 @@
     networking.firewall = {
       allowedTCPPorts = [
         4646 # Nomad
-        80   # Traefik HTTP
-        443  # Traefik HTTPS
+        80 # Traefik HTTP
+        443 # Traefik HTTPS
         8081 # Traefik API
       ];
       allowedTCPPortRanges = [{
@@ -19,9 +19,19 @@
     services = {
       nomad = {
         enable = true;
+        extraPackages = [ pkgs.consul ];
+        dropPrivileges = false;
         settings = {
           datacenter = "home";
           region = "global";
+          plugin = {
+            docker = {
+              config = {
+                allow_privileged = true;
+                volumes = { enabled = true; };
+              };
+            };
+          };
           server = {
             enabled = true;
             bootstrap_expect = 1;
@@ -38,9 +48,7 @@
             create_from_role = "nomad-cluster";
           };
         };
-        extraSettingsPaths = [
-          "/etc/nomad.d/encrypt.hcl"
-        ];
+        extraSettingsPaths = [ "/etc/nomad.d/encrypt.hcl" ];
       };
     };
     within.secrets.nomad-encrypt = {

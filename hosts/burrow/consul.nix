@@ -7,6 +7,7 @@
         8302 # Consul Serf WAN
         8500 # Consul HTTP
         8501 # Consul HTTPS
+        8502 # Consul gRPC
       ];
       allowedUDPPorts = [
         8301 # Consul Serf LAN
@@ -40,6 +41,8 @@
           addresses = {
             http = "127.0.0.1 {{ GetInterfaceIP \"eno1\" }}";
           };
+          ports.grpc = 8502;
+          connect.enabled = true;
         };
       };
     };
