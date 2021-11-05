@@ -5,11 +5,13 @@
     curl
     feh
     keychain
+    keychain
+    libsecret
     neofetch
+    perl
     ripgrep
     todo-txt-cli
     tree
-    perl
   ];
   programs = {
     bat = {

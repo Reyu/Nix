@@ -8,6 +8,7 @@
     pavucontrol
     radeon-profile
     radeontop
+    scrot
     syncthing-tray
     xmonad-log
   ];
