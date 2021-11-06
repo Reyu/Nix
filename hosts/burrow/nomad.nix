@@ -54,7 +54,7 @@
     within.secrets.nomad-encrypt = {
       source = ../../secrets/nomad/encrypt.hcl;
       dest = "/etc/nomad.d/encrypt.hcl";
-      owner = "nomad";
+      owner = "root";
     };
   };
 }
