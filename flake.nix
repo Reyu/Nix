@@ -35,7 +35,10 @@
   };
 
   outputs = inputs@{ self, nixpkgs, unstable, nur, utils, home-manager, ... }:
-    utils.lib.systemFlake {
+  let
+    inherit (utils.lib) exportOverlays exportPackages exportModules;
+  in
+    utils.lib.mkFlake {
       inherit self inputs;
 
       supportedSystems = [ "x86_64-linux" ];
@@ -44,7 +47,6 @@
         system = "x86_64-linux";
         extraArgs = { inherit utils inputs; };
         modules = [
-          utils.nixosModules.saneFlakeDefaults
           home-manager.nixosModule
           {
             # Let 'nixos-version --json' know the Git revision of this flake.
@@ -80,12 +82,6 @@
           })
         ];
       channels.unstable.input = unstable;
-      # channels.unstable.overlaysBuilder = channels:
-      #   [
-      #     (final: prev: {
-      #       neovim-nightly = inputs.neovim.defaultPackage.${prev.system};
-      #     })
-      #   ];
 
       # Host Configurations
       hosts.loki.modules = [
@@ -103,6 +99,16 @@
           ./modules/kerberos
           ./modules/zfs
         ];
+
+      # export overlays automatically for all packages defined in overlaysBuilder of each channel
+      overlays = exportOverlays {
+        inherit (self) pkgs inputs;
+      };
+
+      outputsBuilder = channels: {
+        # construct packagesBuilder to export all packages defined in overlays
+        packages = exportPackages self.overlays channels;
+      };
 
       overlay = import ./overlays;
 
@@ -124,10 +130,5 @@
           username = "t0m00fc";
         };
       };
-
-      devShellBuilder = channels:
-        channels.nixpkgs.mkShell {
-          buildInputs = with channels.nixpkgs; [ rage nixfmt ];
-        };
     };
 }
