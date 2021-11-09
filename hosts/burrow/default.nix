@@ -50,6 +50,11 @@
         ];
       };
     };
+
+  environment.systemPackages = [
+    pkgs.syncthing
+    pkgs.tailscale
+  ];
     services = {
       nfs.server.enable = true;
       gitea = {
@@ -65,6 +70,7 @@
       '';
       syncoid.user = "syncoid";
       target.enable = true;
+      tailscale.enable = true;
       zfs.trim.enable = true;
     };
     virtualisation.docker = {
