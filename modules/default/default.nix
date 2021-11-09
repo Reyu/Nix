@@ -9,6 +9,7 @@
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
+      GOPATH = "~/.go";
     };
   };
 
