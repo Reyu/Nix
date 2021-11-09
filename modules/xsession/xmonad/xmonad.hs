@@ -605,11 +605,13 @@ myManageHook =
             [ resource =? "desktop_window" -?> doIgnore
             , className=? "Polybar"        -?> doIgnore
             , resource =? "stalonetray"    -?> doIgnore
-            , appName =? "feh"  -?> forceCenterFloat
+            , appName  =? "feh"            -?> forceCenterFloat
+            , className=? "KeePassXC" <&&> title =? "KeePassXC - Browser Access Request" -?> doIgnore
+            , className=? "KeePassXC" <&&> title =? "Timed Password" -?> doIgnore
             , transience
-            , isBrowserDialog -?> forceCenterFloat
+            , isBrowserDialog    -?> forceCenterFloat
             , isRole =? gtkFile  -?> forceCenterFloat
-            , isDialog -?> doCenterFloat
+            , isDialog           -?> doCenterFloat
             , isRole =? "pop-up" -?> doCenterFloat
             , isInProperty "_NET_WM_WINDOW_TYPE"
                            "_NET_WM_WINDOW_TYPE_SPLASH" -?> doCenterFloat
