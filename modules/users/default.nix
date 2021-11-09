@@ -42,6 +42,7 @@
   home-manager.users.reyu = { pkgs, ... }: {
     imports = [
       ../chat
+      ../email
       ../firefox
       ../home
       ../music
