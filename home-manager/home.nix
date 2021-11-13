@@ -1,5 +1,4 @@
-{ config, pkgs, lib, nur, flake-inputs, ... }:
-{
+{ config, pkgs, lib, nur, flake-inputs, ... }: {
   # Imports
   imports = [
     ./modules/alacritty
@@ -34,6 +33,7 @@
     htop
     keepassxc
     libsecret
+    (discord-plugged.override { plugins = [ flake-inputs.discord-tweaks ]; })
   ];
 
   # Include man-pages

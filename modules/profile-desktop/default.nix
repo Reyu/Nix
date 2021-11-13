@@ -43,7 +43,7 @@ in {
         ../../home-manager/home.nix
         {
           nixpkgs.overlays =
-            [ self-overlay inputs.nur.overlay inputs.neovim-nightly.overlay ];
+            [ self-overlay inputs.nur.overlay inputs.neovim-nightly.overlay inputs.powercord.overlay ];
         }
       ];
     };
@@ -52,6 +52,8 @@ in {
       defaults = {
         nix.enable = true;
         sound.enable = true;
+        locale.enable = true;
+        ldap.enable = true;
       };
       services = {
         xserver.enable = true;
@@ -59,6 +61,8 @@ in {
       };
 
     };
+
+    krb5.enable = true;
 
     environment.systemPackages = with pkgs; [
       binutils
@@ -68,6 +72,7 @@ in {
       neovim
       nixfmt
       ripgrep
+      scrot
     ];
 
     boot = {
@@ -85,15 +90,9 @@ in {
     networking.hostId = cfg.hostId;
 
     programs.dconf.enable = true;
-    
+
     services.tailscale.enable = true;
 
-    # This value determines the NixOS release from which the default
-    # settings for stateful data, like file locations and database versions
-    # on your system were taken. It‘s perfectly fine and recommended to leave
-    # this value at the release version of the first install of this system.
-    # Before changing this value read the documentation for this option
-    # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-    system.stateVersion = cfg.stateVersion; # Did you read the comment?
+    system.stateVersion = cfg.stateVersion;
   };
 }

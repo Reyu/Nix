@@ -191,7 +191,7 @@ scratchpads
     , term "ncmpcpp" "ncmpcpp"           mySPLargeFloat
     , NS "volume"    "pavucontrol"      (className =? "Pavucontrol")     mySPLargeFloat
     , NS "element"   "element-desktop"  (className =? "Element")         mySPLargeFloat
-    , NS "discord"   "Discord"          (className =? "discord")         mySPLargeFloat
+    , NS "discord"   "discordcannary"   (className =? "discord")         mySPLargeFloat
     , NS "telegram"  "telegram-desktop" (className =? "TelegramDesktop") mySPLargeFloat
     , NS "keepassxc" "keepassxc"        (className =? "KeePassXC")       mySPLargeFloat
     ]
@@ -430,16 +430,14 @@ myKeys conf = let
     , ("M-\\"                   , addName "Browser"                         $ bindOn [ (wsWRK, spawn $ myBrowser ++ " -P Work")
                                                                                      , (""   , spawn myBrowser)
                                                                                      ])
-    , ("M-s s"                  , addName "Cancel submap"                   $ return ())
-    , ("M-s M-s"                , addName "Cancel submap"                   $ return ())
+    , ("M-S-v"                  , addName "NSP Volume Control"              $ namedScratchpadAction scratchpads "volume")
+    , ("M-S-n"                  , addName "NSP ncmpcpp"                     $ namedScratchpadAction scratchpads "ncmpcpp")
+    , ("M-j"                    , addName "NSP NeoMutt"                     $ namedScratchpadAction scratchpads "mail")
     , ("M-t"                    , addName "NSP HTOP"                        $ namedScratchpadAction scratchpads "htop")
-    , ("M-s e"                  , addName "NSP Element"                     $ namedScratchpadAction scratchpads "element")
-    , ("M-s m"                  , addName "NSP NeoMutt"                     $ namedScratchpadAction scratchpads "mail")
-    , ("M-s v"                  , addName "NSP Volume Control"              $ namedScratchpadAction scratchpads "volume")
-    , ("M-s n"                  , addName "NSP ncmpcpp"                     $ namedScratchpadAction scratchpads "ncmpcpp")
-    , ("M-s d"                  , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
-    , ("M-s t"                  , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
-    , ("M-s k"                  , addName "NSP KeePassXC"                   $ namedScratchpadAction scratchpads "keepassxc")
+    , ("M-e"                    , addName "NSP Element"                     $ namedScratchpadAction scratchpads "element")
+    , ("M-d"                    , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
+    , ("M-c"                    , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
+    , ("M-s"                    , addName "NSP KeePassXC"                   $ namedScratchpadAction scratchpads "keepassxc")
     ] ^++^
 
     -----------------------------------------------------------------------
@@ -450,7 +448,7 @@ myKeys conf = let
     (
     [ ("M-<Backspace>"          , addName "Kill"                              kill1)
     , ("M-S-<Backspace>"        , addName "Kill all"                        $ confirmPrompt hotPromptTheme "kill all" killAll)
-    , ("M-d"                    , addName "Duplicate w to all ws"             toggleCopyToAll)
+    , ("M-v"                    , addName "Duplicate w to all ws"             toggleCopyToAll)
     , ("M-p"                    , addName "Hide window to stack"            $ withFocused hideWindow)
     , ("M-S-p"                  , addName "Restore hidden window (FIFO)"      popOldestHiddenWindow)
 

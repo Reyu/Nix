@@ -19,6 +19,7 @@ in {
       layout = "us";
       dpi = 125;
       xkbVariant = "dvorak";
+      xkbOptions = "caps:escape";
 
       libinput = {
         enable = true;

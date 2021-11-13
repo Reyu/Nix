@@ -40,6 +40,14 @@
     mutt-trim.url = "github:Konfekt/mutt-trim";
     mutt-trim.flake = false;
 
+    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
+
+    powercord.url = "github:LavaDesu/powercord-overlay";
+    powercord.inputs.nixpkgs.follows = "nixpkgs";
+    powercord.inputs.utils.follows = "flake-utils-plus";
+    discord-tweaks.url = "github:NurMarvin/discord-tweaks";
+    discord-tweaks.flake = false;
+
   };
   outputs = { self, ... }@inputs:
     with inputs;
@@ -60,7 +68,7 @@
                 {
                   nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
                   nixpkgs.overlays =
-                    [ self.overlay nur.overlay neovim-nightly.overlay ];
+                    [ self.overlay nur.overlay neovim-nightly.overlay powercord.overlay ];
 
                   home-manager.useUserPackages = true;
 

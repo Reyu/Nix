@@ -47,13 +47,10 @@
       cp = "nocorrect cp";
       mkdir = "nocorrect mkdir";
 
-      # Exa ls replacement
-      ls = "${pkgs.exa}/bin/exa --group-directories-first";
-      l = "${ls} -lbF --git --icons";
-      ll = "${l} -G";
-      la =
-        "${ls} -lbhHigmuSa@ --time-style=long-iso --git --color-scale --icons";
-      lt = "${ls} --tree --level=2 --icons";
+      # ls replacement
+      ls = "${pkgs.lsd}/bin/lsd --group-dirs first";
+      ll = "${ls} -lF";
+      tree = "${ls} --tree";
 
       # Git
       gs = "${pkgs.git}/bin/git status";

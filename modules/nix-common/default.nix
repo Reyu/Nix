@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 with lib;
 let cfg = config.foxnet.defaults.nix;
 in {
