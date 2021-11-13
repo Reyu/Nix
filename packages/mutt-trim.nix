@@ -1,8 +1,6 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ stdenv, perl, inputs }:
 
-with pkgs.lib;
-
-pkgs.stdenv.mkDerivation rec {
+stdenv.mkDerivation rec {
   name = "mutt-trim";
 
   meta = {
@@ -10,15 +8,9 @@ pkgs.stdenv.mkDerivation rec {
     homepage = "https://github.com/Konfekt/mutt-trim";
   };
 
-  buildInputs = [ pkgs.perl ];
+  buildInputs = [ perl ];
 
-  src = pkgs.fetchFromGitHub {
-    owner = "Konfekt";
-    repo = "mutt-trim";
-    rev = "08ef5faf07b06b9abda7909f5b15cf84150f821a";
-    sha256 = "Rd51+XPa3L7t+6dlWaHcaY7hBKKWeg5hQhBekFsQcOw=";
-  };
-
+  src = inputs.mutt-trim;
   installPhase = ''
     mkdir -p $out/bin
     cp mutt-trim $out/bin

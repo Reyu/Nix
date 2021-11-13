@@ -1,6 +1,9 @@
 { config, lib, ... }:
 
 {
+  # Enable GPG Agent by default
+  programs.gnupg.agent.enable = true;
+
   ## System security tweaks
   security.sudo.execWheelOnly = true;
   environment.defaultPackages = lib.mkForce [];

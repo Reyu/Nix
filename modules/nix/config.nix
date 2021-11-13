@@ -1,4 +1,0 @@
-{
-  keep-derivations = true;
-  keep-outputs = true;
-}

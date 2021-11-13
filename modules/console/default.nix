@@ -1,4 +1,0 @@
-{ ... }:
-{
-  console.keyMap = "dvorak";
-}

@@ -1,134 +1,127 @@
 {
-  description = "Reyu Zenfold's Nix Configurations";
+  description = "Reyu Zenfold's NixOS Flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-21.05";
-    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    flake-utils.url = "github:numtide/flake-utils";
+
+    flake-compat.url = "github:edolstra/flake-compat";
+    flake-compat.flake = false;
+
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     nur.url = "github:nix-community/NUR";
-    utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager = {
-      url = "github:nix-community/home-manager/release-21.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
+    neovim-nightly.inputs.flake-utils.follows = "flake-utils";
 
-    # NOTE / TODO
-    # neovim = {
-    #   url = "github:neovim/neovim?dir=contrib";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    # Vim Plugins
+    cmp-buffer.url = "github:hrsh7th/cmp-buffer";
+    cmp-buffer.flake = false;
 
-    # TODO
-    # powercord = {
-    #   url = "github:LavaDesu/powercord-overlay";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    #   inputs.utils.follows = "utils";
-    # };
-    # discord-tweaks = {
-    #   url = "github:NurMarvin/discord-tweaks";
-    #   flake = false;
-    # };
+    cmp-nvim-lsp.url = "github:hrsh7th/cmp-nvim-lsp";
+    cmp-nvim-lsp.flake = false;
 
-    # NOTE Could be useful later (for raspberryPi)
-    # nixos-hardware.url = "github:nixos/nixos-hardware";
+    nvim-cmp.url = "github:hrsh7th/nvim-cmp";
+    nvim-cmp.flake = false;
+
+    telescope-hoogle.url = "github:luc-tielen/telescope_hoogle";
+    telescope-hoogle.flake = false;
+
+    vim-solarized8.url = "github:lifepillar/vim-solarized8";
+    vim-solarized8.flake = false;
+
+    # Other Sources
+    mutt-trim.url = "github:Konfekt/mutt-trim";
+    mutt-trim.flake = false;
 
   };
+  outputs = { self, ... }@inputs:
+    with inputs;
+    let
+      # Function to create default (common) system config options
+      defFlakeSystem = baseCfg:
+        nixpkgs.lib.nixosSystem {
 
-  outputs = inputs@{ self, nixpkgs, unstable, nur, utils, home-manager, ... }:
-  let
-    inherit (utils.lib) exportOverlays exportPackages exportModules;
-  in
-    utils.lib.mkFlake {
-      inherit self inputs;
+          system = "x86_64-linux";
+          modules = [
 
-      supportedSystems = [ "x86_64-linux" ];
+            # Make inputs and overlay accessible as module parameters
+            { _module.args.inputs = inputs; }
+            { _module.args.self-overlay = self.overlay; }
 
-      hostDefaults = {
-        system = "x86_64-linux";
-        extraArgs = { inherit utils inputs; };
-        modules = [
-          home-manager.nixosModule
-          {
-            # Let 'nixos-version --json' know the Git revision of this flake.
-            system.configurationRevision =
-              nixpkgs.lib.mkIf (self ? rev) self.rev;
-            system.autoUpgrade.flags = [
-              "--option"
-              "extra-binary-caches"
-              "https://reyu.cachix.org"
-              "https://reyu-system.cachix.org"
-            ];
-          }
-          ./cachix.nix
-          ./modules/users
-          ./modules/common
-          ./modules/crypto
-          ./modules/security
-        ];
+            ({ ... }: {
+              imports = builtins.attrValues self.nixosModules ++ [
+                {
+                  nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
+                  nixpkgs.overlays =
+                    [ self.overlay nur.overlay neovim-nightly.overlay ];
 
-      };
+                  home-manager.useUserPackages = true;
 
-      sharedOverlays = [ self.overlay nur.overlay ];
+                  # Extra Certs
+                  security.pki.certificateFiles =
+                    [ ./certs/ReyuZenfold.crt ./certs/CAcert.crt ];
+                }
+                baseCfg
+                home-manager.nixosModules.home-manager
+              ];
 
-      # Channel defaults
-      channelsConfig.allowUnfree = true;
-
-      # Channel definitions. `channels.<name>.{input,overlaysBuilder,config,patches}`
-      channels.nixpkgs.input = nixpkgs;
-      channels.nixpkgs.overlaysBuilder = channels:
-        [
-          (final: prev: {
-            unstable = import inputs.unstable { system = prev.system; };
-          })
-        ];
-      channels.unstable.input = unstable;
-
-      # Host Configurations
-      hosts.loki.modules = [
-          ./hosts/loki
-          ./modules/docker
-          ./modules/kerberos
-          ./modules/keybase
-          ./modules/ldap
-          ./modules/zfs
-          ./profiles/desktop.nix
-        ];
-
-        hosts.burrow.modules = [
-          ./hosts/burrow
-          ./modules/kerberos
-          ./modules/zfs
-        ];
-
-      # export overlays automatically for all packages defined in overlaysBuilder of each channel
-      overlays = exportOverlays {
-        inherit (self) pkgs inputs;
-      };
-
-      outputsBuilder = channels: {
-        # construct packagesBuilder to export all packages defined in overlays
-        packages = exportPackages self.overlays channels;
-      };
-
-      overlay = import ./overlays;
-
-      # For non-NixOS Systems
-      homeConfigurations = {
-        work = home-manager.lib.homeManagerConfiguration {
-          configuration = { pkgs, ... }: {
-            imports =
-              [ ./modules/neovim ./modules/shell ./modules/zsh ./modules/tmux ];
-            config = {
-              programs.home-manager.enable = true;
-              home.extraOutputsToInstall = [ "man" ];
-              nixpkgs.config = import ./moduls/nix/config.nix;
-              xdg.configFile."nix/nix.conf".source = ./modules/nix/nix.conf;
-            };
-          };
-          homeDirectory = "/Users/t0m00fc";
-          system = "x86_64-darwin";
-          username = "t0m00fc";
+              # Let 'nixos-version --json' know the Git revision of this flake.
+              system.configurationRevision =
+                nixpkgs.lib.mkIf (self ? rev) self.rev;
+              nix.registry.nixpkgs.flake = nixpkgs;
+              nix.registry.pinpox.flake = self;
+            })
+          ];
         };
-      };
-    };
+
+    in {
+
+      overlay = final: prev: (import ./overlays inputs) final prev;
+
+      nixosModules = builtins.listToAttrs (map (x: {
+        name = x;
+        value = import (./modules + "/${x}");
+      }) (builtins.attrNames (builtins.readDir ./modules)));
+
+      nixosConfigurations = builtins.listToAttrs (map (x: {
+        name = x;
+        value = defFlakeSystem {
+          imports = [
+            (import (./hosts + "/${x}/configuration.nix") { inherit self; })
+          ];
+        };
+      }) (builtins.attrNames (builtins.readDir ./hosts)));
+    } //
+
+    (flake-utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ]) (system:
+      let pkgs = nixpkgs.legacyPackages.${system}.extend self.overlay;
+      in rec {
+        # Custom packages added via the overlay are selectively added here, to
+        # allow using them from other flakes that import this one.
+        packages = flake-utils.lib.flattenTree { mutt-trim = pkgs.mutt-trim; };
+
+        # Checks to run with `nix flake check -L`, will run in a QEMU VM.
+        # Looks for all ./modules/<module name>/test.nix files and adds them to
+        # the flake's checks output. The test.nix file is optional and may be
+        # added to any module.
+        checks = builtins.listToAttrs (map (x: {
+          name = x;
+          value = (import (./modules + "/${x}/test.nix")) {
+            pkgs = nixpkgs;
+            inherit system self;
+          };
+        }) (
+          # Filter list of modules, leaving only modules which contain a
+          # `test.nix` file
+          builtins.filter
+          (p: builtins.pathExists (./modules + "/${p}/test.nix"))
+          (builtins.attrNames (builtins.readDir ./modules))));
+      });
 }
