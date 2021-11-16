@@ -1,6 +1,5 @@
 { config, pkgs, lib, ... }: {
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.reyu = {
     isNormalUser = true;
     home = "/home/reyu";
@@ -9,6 +8,5 @@
     shell = pkgs.zsh;
   };
 
-  # Allow to run nix
   nix.allowedUsers = [ "reyu" ];
 }
