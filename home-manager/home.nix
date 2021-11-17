@@ -34,6 +34,7 @@
     keepassxc
     libsecret
     (discord-plugged.override { plugins = [ flake-inputs.discord-tweaks ]; })
+    syncthing
   ];
 
   # Include man-pages
