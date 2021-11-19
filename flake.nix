@@ -67,8 +67,12 @@
               imports = builtins.attrValues self.nixosModules ++ [
                 {
                   nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
-                  nixpkgs.overlays =
-                    [ self.overlay nur.overlay neovim-nightly.overlay powercord.overlay ];
+                  nixpkgs.overlays = [
+                    self.overlay
+                    nur.overlay
+                    neovim-nightly.overlay
+                    powercord.overlay
+                  ];
 
                   home-manager.useUserPackages = true;
 
@@ -106,9 +110,33 @@
           ];
         };
       }) (builtins.attrNames (builtins.readDir ./hosts)));
+
+      homeConfigurations = let
+        homeConfig = path:
+          home-manager.lib.homeConfigurations {
+            # Pass inputs to home-manager modules
+            _module.args.flake-inputs = inputs;
+
+            imports = [
+              path
+              {
+                nixpkgs.overlays = [
+                  self.overlay
+                  nur.overlay
+                  neovim-nightly.overlay
+                  powercord.overlay
+                ];
+              }
+            ];
+          };
+      in {
+        desktop = homeConfig home-manager/home.nix;
+        server = homeConfig home-manager/home-server.nix;
+      };
     } //
 
-    (flake-utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ]) (system:
+    # (flake-utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ]) (system:
+    flake-utils.lib.eachDefaultSystem (system:
       let pkgs = nixpkgs.legacyPackages.${system}.extend self.overlay;
       in rec {
         # Custom packages added via the overlay are selectively added here, to
