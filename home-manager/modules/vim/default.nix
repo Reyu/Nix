@@ -72,6 +72,12 @@
         '';
       }
       nvim-web-devicons
+      {
+        plugin = vimwiki;
+        config = ''
+          let g:vimwiki_list = [{'path': '~/Notes', 'syntax': 'markdown', 'ext': '.md'}]
+        '';
+      }
 
       # Must have T.Pope plugins
       vim-capslock

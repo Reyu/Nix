@@ -35,6 +35,7 @@
     libsecret
     (discord-plugged.override { plugins = [ flake-inputs.discord-tweaks ]; })
     syncthing
+    obsidian
   ];
 
   # Include man-pages

@@ -194,6 +194,7 @@ scratchpads
     , NS "discord"   "discordcannary"   (className =? "discord")         mySPLargeFloat
     , NS "telegram"  "telegram-desktop" (className =? "TelegramDesktop") mySPLargeFloat
     , NS "keepassxc" "keepassxc"        (className =? "KeePassXC")       mySPLargeFloat
+    , NS "obsidian"  "obsidian"         (className =? "obsidian")        mySPLargeFloat
     ]
  where
     -- Run in Terminal
@@ -438,6 +439,7 @@ myKeys conf = let
     , ("M-d"                    , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
     , ("M-c"                    , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
     , ("M-s"                    , addName "NSP KeePassXC"                   $ namedScratchpadAction scratchpads "keepassxc")
+    , ("M-o"                    , addName "NSP Obsidian"                    $ namedScratchpadAction scratchpads "obsidian")
     ] ^++^
 
     -----------------------------------------------------------------------
