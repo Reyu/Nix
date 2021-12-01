@@ -40,7 +40,7 @@ in {
       _module.args.flake-inputs = inputs;
 
       imports = [
-        ../../home-manager/home.nix
+        ../../home-manager/home-desktop.nix
         {
           nixpkgs.overlays =
             [ self-overlay inputs.nur.overlay inputs.neovim-nightly.overlay inputs.powercord.overlay ];

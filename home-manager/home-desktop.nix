@@ -48,6 +48,13 @@
 
   programs.neovim.package = pkgs.neovim-nightly;
 
+  services = {
+    udiskie.enable = true;
+    unclutter.enable = true;
+    volnoti.enable = true;
+    dunst.enable = true;
+  };
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 

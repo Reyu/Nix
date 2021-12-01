@@ -186,9 +186,10 @@ myLauncher          = "rofi -matching fuzzy -modi combi -show combi -combi-modi 
 
 
 scratchpads
-  = [ term "htop"    "htop"              mySPFloat
-    , term "mail"    "zsh -c neomutt"    mySPLargeFloat
-    , term "ncmpcpp" "ncmpcpp"           mySPLargeFloat
+  = [ term "htop"    "htop"                 mySPLargeFloat
+    , term "mail"    "zsh -c neomutt"       mySPLargeFloat
+    , term "ncmpcpp" "ncmpcpp"              mySPLargeFloat
+    , term "neovim"  "nvim -c VimwikiIndex" mySPLargeFloat
     , NS "volume"    "pavucontrol"      (className =? "Pavucontrol")     mySPLargeFloat
     , NS "element"   "element-desktop"  (className =? "Element")         mySPLargeFloat
     , NS "discord"   "discordcannary"   (className =? "discord")         mySPLargeFloat
@@ -440,6 +441,7 @@ myKeys conf = let
     , ("M-c"                    , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
     , ("M-s"                    , addName "NSP KeePassXC"                   $ namedScratchpadAction scratchpads "keepassxc")
     , ("M-o"                    , addName "NSP Obsidian"                    $ namedScratchpadAction scratchpads "obsidian")
+    , ("M-n"                    , addName "NSP NeoVim"                      $ namedScratchpadAction scratchpads "neovim")
     ] ^++^
 
     -----------------------------------------------------------------------
