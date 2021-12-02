@@ -418,7 +418,7 @@ myKeys conf = let
     , ("M-C-q"                  , addName "Rebuild & restart XMonad"          rebuildXmonad)
     , ("M-S-q"                  , addName "Quit XMonad"                       quitXmonad)
     , ("M-x"                    , addName "Lock screen"                     $ spawn "xset s activate")
-    , ("M-<F4>"                 , addName "Print Screen"                    $ return ())
+    , ("M-<F4>"                 , addName "Print Screen"                    $ spawn "flameshot")
     ] ^++^
 
     -----------------------------------------------------------------------
@@ -452,7 +452,8 @@ myKeys conf = let
     (
     [ ("M-<Backspace>"          , addName "Kill"                              kill1)
     , ("M-S-<Backspace>"        , addName "Kill all"                        $ confirmPrompt hotPromptTheme "kill all" killAll)
-    , ("M-v"                    , addName "Duplicate w to all ws"             toggleCopyToAll)
+    -- , ("M-v"                    , addName "Duplicate w to all ws"             toggleCopyToAll)
+    -- Have I ever actually used this intentionally?
     , ("M-p"                    , addName "Hide window to stack"            $ withFocused hideWindow)
     , ("M-S-p"                  , addName "Restore hidden window (FIFO)"      popOldestHiddenWindow)
 

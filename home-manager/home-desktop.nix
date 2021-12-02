@@ -30,12 +30,13 @@
 
   # Install these packages for my user
   home.packages = with pkgs; [
-    htop
-    keepassxc
-    libsecret
     (discord-plugged.override { plugins = [ flake-inputs.discord-tweaks ]; })
-    syncthing
+    keepassxc
     obsidian
+    spotify
+    syncthing
+    xfce.thunar
+    volctl
   ];
 
   # Include man-pages
@@ -51,8 +52,8 @@
   services = {
     udiskie.enable = true;
     unclutter.enable = true;
-    volnoti.enable = true;
     dunst.enable = true;
+    flameshot.enable = true;
   };
 
   # Let Home Manager install and manage itself.

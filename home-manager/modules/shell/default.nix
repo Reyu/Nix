@@ -7,6 +7,7 @@
   ];
 
   home.packages = with pkgs; [
+    htop
     keychain
     libsecret
     perl
