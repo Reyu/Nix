@@ -3,18 +3,27 @@
     [ ./hardware-configuration.nix ./consul.nix ./vault.nix ./nomad.nix ];
   config = {
     boot = {
-      initrd.kernelModules = [ "igb" ];
       supportedFilesystems = [ "zfs" ];
       loader = {
-        systemd-boot.enable = true;
+        systemd-boot = {
+          enable = true;
+          editor = false;
+          consoleMode = "max";
+        };
         efi.canTouchEfiVariables = true;
       };
+      initrd.kernelModules = [ "igb" "ixgbe" ];
       initrd.network = {
         enable = true;
         ssh = {
-          port = 2222;
-          hostKeys = [ /root/.ssh/boot_host_ed25519_key ];
+          enable = true;
+          port = 2233;
+          hostKeys = [ "/etc/ssh/initrd_ssh_host_ed25519_key" ];
+          authorizedKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPxK6wj41rJ00x3SSA8qw/c7WjmUW4Z1xshAQxAciS8" ];
         };
+        postCommands = ''
+          echo "zfs load-key -a; killall zfs; exit" >> /root/.profile
+        '';
       };
     };
 
@@ -56,5 +65,12 @@
       server.enable = true;
       server.hostname = "burrow";
     };
+
+  fileSystems."/".options = [ "zfsutil" ];
+  fileSystems."/nix".options = [ "zfsutil" ];
+  fileSystems."/var".options = [ "zfsutil" ];
+  fileSystems."/usr".options = [ "zfsutil" ];
+  fileSystems."/home".options = [ "zfsutil" ];
+  fileSystems."/opt".options = [ "zfsutil" ];
   };
 }

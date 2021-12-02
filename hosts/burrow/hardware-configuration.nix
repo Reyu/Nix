@@ -19,17 +19,17 @@
     };
 
   fileSystems."/nix" =
-    { device = "rpool/LOCAL/nix";
+    { device = "rpool/NIX";
       fsType = "zfs";
     };
 
   fileSystems."/var" =
-    { device = "rpool/ROOT/nixos/var";
+    { device = "rpool/ROOT/nixos/VAR";
       fsType = "zfs";
     };
 
   fileSystems."/usr" =
-    { device = "rpool/ROOT/nixos/usr";
+    { device = "rpool/ROOT/nixos/USR";
       fsType = "zfs";
     };
 
@@ -39,13 +39,8 @@
     };
 
   fileSystems."/opt" =
-    { device = "rpool/ROOT/nixos/opt";
+    { device = "rpool/ROOT/nixos/OPT";
       fsType = "zfs";
-    };
-
-  fileSystems."/boot-alternate" =
-    { device = "/dev/disk/by-uuid/6825-97EC";
-      fsType = "vfat";
     };
 
   fileSystems."/boot" =
