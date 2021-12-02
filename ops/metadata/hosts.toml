@@ -2,4 +2,4 @@
 ssh_pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKnHNzgn/8WNjzUpjBJe3fWe7lFkvT8/v0nwEqvEtiOb"
 
 [hosts.burrow]
-ssh_pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYVDZQ6gxbDU4kpfLoA9qulQxMsPPT4E9xXdC7zSZUP"
+ssh_pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTxnWiWCer2tijhkTDA9RfxELHy0/HxY7zA8VgbnnFl"
