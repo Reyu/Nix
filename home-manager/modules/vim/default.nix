@@ -75,9 +75,18 @@
       {
         plugin = vimwiki;
         config = ''
-          let g:vimwiki_list = [{'path': '~/Notes', 'syntax': 'markdown', 'ext': '.md'}]
+          let g:vimwiki_filetypes = ['markdown', 'pandoc']
+
+          let g:vimwiki_list = [
+            \ { 'path': '~/Notes'
+            \ , 'ext': '.md'
+            \ , 'syntax': 'markdown'
+            \ , 'list_margin': 0
+            \ , 'links_space_char': '_'
+            \ }]
         '';
       }
+      mattn-calendar-vim
 
       # Must have T.Pope plugins
       vim-capslock

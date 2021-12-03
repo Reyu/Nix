@@ -35,8 +35,9 @@
     obsidian
     spotify
     syncthing
-    xfce.thunar
     volctl
+    xfce.thunar
+    xsel
   ];
 
   # Include man-pages

@@ -554,7 +554,8 @@ myMouseBindings XConfig{} = M.fromList
 -- Startup                                                              {{{
 ---------------------------------------------------------------------------
 
-myStartupHook = setDefaultCursor xC_left_ptr
+myStartupHook :: X ()
+myStartupHook = spawn "systemctl restart --user polybar"
 
 quitXmonad :: X ()
 quitXmonad = confirmPrompt hotPromptTheme "Quit XMonad" $ io exitSuccess
