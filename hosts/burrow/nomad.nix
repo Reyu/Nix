@@ -19,6 +19,7 @@
     services = {
       nomad = {
         enable = true;
+        enableDocker = true;
         extraPackages = [ pkgs.consul ];
         dropPrivileges = false;
         settings = {
