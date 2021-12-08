@@ -30,9 +30,19 @@
 
   # Install these packages for my user
   home.packages = with pkgs; [
-    (discord-plugged.override { plugins = [ flake-inputs.discord-tweaks ]; })
+    (discord-plugged.override {
+      plugins = [
+        flake-inputs.discord-better-status
+        flake-inputs.discord-read-all
+        flake-inputs.discord-theme-toggler
+        flake-inputs.discord-tweaks
+        flake-inputs.discord-vc-timer
+      ];
+      themes = [ flake-inputs.discord-theme-slate ];
+    })
     keepassxc
     obsidian
+    slack
     spotify
     syncthing
     volctl

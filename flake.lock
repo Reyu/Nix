@@ -32,6 +32,86 @@
         "type": "github"
       }
     },
+    "discord-better-status": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1638530151,
+        "narHash": "sha256-DhTne4HdDpxEgBquFzw3jraL1SX2HiG791HdKd9s9Xw=",
+        "owner": "GriefMoDz",
+        "repo": "better-status-indicators",
+        "rev": "545a0b9d837fc6178bc6df4476f88ed0397ad74c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "GriefMoDz",
+        "repo": "better-status-indicators",
+        "type": "github"
+      }
+    },
+    "discord-read-all": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1573235933,
+        "narHash": "sha256-Lu202rUBNG0knHmGrenrLyv9uElBCkpzl89fPGZoQ/c=",
+        "owner": "intrnl",
+        "repo": "powercord-read-all",
+        "rev": "60dac33fe5bea3bcdaa5f02ffa9500ef1958c709",
+        "type": "github"
+      },
+      "original": {
+        "owner": "intrnl",
+        "repo": "powercord-read-all",
+        "type": "github"
+      }
+    },
+    "discord-safe-embed": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1612724875,
+        "narHash": "sha256-G/XGGeTF3ocDfe40jm9W8XFvmrBZEEXSMgXtiJp6drw=",
+        "owner": "TheShadowGamer",
+        "repo": "Safe-Embed-Generator",
+        "rev": "cbf6d6a1df410b3de9425bd8f886d72b4898d9c6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TheShadowGamer",
+        "repo": "Safe-Embed-Generator",
+        "type": "github"
+      }
+    },
+    "discord-theme-slate": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1638693318,
+        "narHash": "sha256-CS+y3zvJ0tT+bky7Q6HazuWmXqymMZ8wZ8MXyRbAIWw=",
+        "owner": "DiscordStyles",
+        "repo": "Slate",
+        "rev": "75e4cdd1004cbe3a626cd8d18827c4e5ad1de71f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DiscordStyles",
+        "repo": "Slate",
+        "type": "github"
+      }
+    },
+    "discord-theme-toggler": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1636501799,
+        "narHash": "sha256-wq1x1rNBkcTuATDbR9yLykUmMRGGRPg6fDfPxl4qE2Q=",
+        "owner": "redstonekasi",
+        "repo": "theme-toggler",
+        "rev": "c8063b35ec9d42064d36845950a53cd6e2099458",
+        "type": "github"
+      },
+      "original": {
+        "owner": "redstonekasi",
+        "repo": "theme-toggler",
+        "type": "github"
+      }
+    },
     "discord-tweaks": {
       "flake": false,
       "locked": {
@@ -45,6 +125,22 @@
       "original": {
         "owner": "NurMarvin",
         "repo": "discord-tweaks",
+        "type": "github"
+      }
+    },
+    "discord-vc-timer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1621410072,
+        "narHash": "sha256-Mz3YrpXLPjYbGifL1UUP534E2drbl7mx3WQnM3s+dlI=",
+        "owner": "RazerMoon",
+        "repo": "vcTimer",
+        "rev": "2a1860380b442f15070173a6f3c678bf60873eb1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RazerMoon",
+        "repo": "vcTimer",
         "type": "github"
       }
     },
@@ -316,7 +412,13 @@
       "inputs": {
         "cmp-buffer": "cmp-buffer",
         "cmp-nvim-lsp": "cmp-nvim-lsp",
+        "discord-better-status": "discord-better-status",
+        "discord-read-all": "discord-read-all",
+        "discord-safe-embed": "discord-safe-embed",
+        "discord-theme-slate": "discord-theme-slate",
+        "discord-theme-toggler": "discord-theme-toggler",
         "discord-tweaks": "discord-tweaks",
+        "discord-vc-timer": "discord-vc-timer",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "flake-utils-plus": "flake-utils-plus",

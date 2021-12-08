@@ -45,8 +45,19 @@
     powercord.url = "github:LavaDesu/powercord-overlay";
     powercord.inputs.nixpkgs.follows = "nixpkgs";
     powercord.inputs.utils.follows = "flake-utils-plus";
+
+    discord-better-status.url = "github:GriefMoDz/better-status-indicators";
+    discord-better-status.flake = false;
+    discord-read-all.url = "github:intrnl/powercord-read-all";
+    discord-read-all.flake = false;
+    discord-theme-slate.url = "github:DiscordStyles/Slate";
+    discord-theme-slate.flake = false;
+    discord-theme-toggler.url = "github:redstonekasi/theme-toggler";
+    discord-theme-toggler.flake = false;
     discord-tweaks.url = "github:NurMarvin/discord-tweaks";
     discord-tweaks.flake = false;
+    discord-vc-timer.url = "github:RazerMoon/vcTimer";
+    discord-vc-timer.flake = false;
 
   };
   outputs = { self, ... }@inputs:
