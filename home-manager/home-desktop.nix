@@ -45,7 +45,6 @@
     slack
     spotify
     syncthing
-    volctl
     xfce.thunar
     xsel
     zoom-us
