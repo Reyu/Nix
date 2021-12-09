@@ -2,6 +2,8 @@
 {
   programs.rofi = {
     enable = true;
-    theme = ./nord.rasi;
+    # TODO Fix Me
+    # Theme broken
+    # theme = ./nord.rasi;
   };
 }
