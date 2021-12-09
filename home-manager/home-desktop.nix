@@ -48,6 +48,7 @@
     volctl
     xfce.thunar
     xsel
+    zoom-us
   ];
 
   # Include man-pages
