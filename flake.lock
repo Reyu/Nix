@@ -64,22 +64,6 @@
         "type": "github"
       }
     },
-    "discord-safe-embed": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1612724875,
-        "narHash": "sha256-G/XGGeTF3ocDfe40jm9W8XFvmrBZEEXSMgXtiJp6drw=",
-        "owner": "TheShadowGamer",
-        "repo": "Safe-Embed-Generator",
-        "rev": "cbf6d6a1df410b3de9425bd8f886d72b4898d9c6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "TheShadowGamer",
-        "repo": "Safe-Embed-Generator",
-        "type": "github"
-      }
-    },
     "discord-theme-slate": {
       "flake": false,
       "locked": {
@@ -414,7 +398,6 @@
         "cmp-nvim-lsp": "cmp-nvim-lsp",
         "discord-better-status": "discord-better-status",
         "discord-read-all": "discord-read-all",
-        "discord-safe-embed": "discord-safe-embed",
         "discord-theme-slate": "discord-theme-slate",
         "discord-theme-toggler": "discord-theme-toggler",
         "discord-tweaks": "discord-tweaks",
