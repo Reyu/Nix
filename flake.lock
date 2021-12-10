@@ -223,6 +223,22 @@
         "type": "github"
       }
     },
+    "git-cal": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1424562899,
+        "narHash": "sha256-z1uMj8B++GWKlvlhjmQdj5SntX9DvX8gRGt0zCRoPRg=",
+        "owner": "k4rthik",
+        "repo": "git-cal",
+        "rev": "b3bb376e46ebf3d09820b95b3426e9c58ad6cdc9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "k4rthik",
+        "repo": "git-cal",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -405,6 +421,7 @@
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "flake-utils-plus": "flake-utils-plus",
+        "git-cal": "git-cal",
         "home-manager": "home-manager",
         "mutt-trim": "mutt-trim",
         "neovim-nightly": "neovim-nightly",
@@ -413,7 +430,8 @@
         "nvim-cmp": "nvim-cmp",
         "powercord": "powercord",
         "telescope-hoogle": "telescope-hoogle",
-        "vim-solarized8": "vim-solarized8"
+        "vim-solarized8": "vim-solarized8",
+        "zsh-vimode-visual": "zsh-vimode-visual"
       }
     },
     "telescope-hoogle": {
@@ -445,6 +463,22 @@
       "original": {
         "owner": "lifepillar",
         "repo": "vim-solarized8",
+        "type": "github"
+      }
+    },
+    "zsh-vimode-visual": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1553504063,
+        "narHash": "sha256-rVFWVouNHBswDplmTlswy79OPTY74vdl5Xyg5RVAgFQ=",
+        "owner": "b4b4r07",
+        "repo": "zsh-vimode-visual",
+        "rev": "1e39cf896d87e367f76d84f8db4a79506fc556c1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "b4b4r07",
+        "repo": "zsh-vimode-visual",
         "type": "github"
       }
     }

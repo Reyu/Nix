@@ -43,6 +43,8 @@
     enable = true;
   };
 
+  services.lorri.enable = true;
+
   xdg.configFile = {
     "direnv/lib/use_flake.sh".source = ./use_flake.sh;
     "neofetch/config.conf".source = ./neofetch.conf;

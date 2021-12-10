@@ -3,9 +3,11 @@
 
   inputs = {
 
+    # Core
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
+    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
@@ -16,32 +18,27 @@
     nur.url = "github:nix-community/NUR";
     nur.inputs.nixpkgs.follows = "nixpkgs";
 
+    # ZSH Plugins
+    zsh-vimode-visual.url = "github:b4b4r07/zsh-vimode-visual";
+    zsh-vimode-visual.flake = false;
+
+    # Vim + Plugins
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly.inputs.flake-utils.follows = "flake-utils";
 
-    # Vim Plugins
     cmp-buffer.url = "github:hrsh7th/cmp-buffer";
     cmp-buffer.flake = false;
-
     cmp-nvim-lsp.url = "github:hrsh7th/cmp-nvim-lsp";
     cmp-nvim-lsp.flake = false;
-
     nvim-cmp.url = "github:hrsh7th/nvim-cmp";
     nvim-cmp.flake = false;
-
     telescope-hoogle.url = "github:luc-tielen/telescope_hoogle";
     telescope-hoogle.flake = false;
-
     vim-solarized8.url = "github:lifepillar/vim-solarized8";
     vim-solarized8.flake = false;
 
-    # Other Sources
-    mutt-trim.url = "github:Konfekt/mutt-trim";
-    mutt-trim.flake = false;
-
-    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
-
+    # Discord + Plugins
     powercord.url = "github:LavaDesu/powercord-overlay";
     powercord.inputs.nixpkgs.follows = "nixpkgs";
     powercord.inputs.utils.follows = "flake-utils-plus";
@@ -58,6 +55,10 @@
     discord-tweaks.flake = false;
     discord-vc-timer.url = "github:RazerMoon/vcTimer";
     discord-vc-timer.flake = false;
+
+    # Other Sources
+    mutt-trim.url = "github:Konfekt/mutt-trim";
+    mutt-trim.flake = false;
 
   };
   outputs = { self, ... }@inputs:

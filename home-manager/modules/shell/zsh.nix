@@ -1,21 +1,27 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, flake-inputs, ... }: {
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
+    enableSyntaxHighlighting = true;
+    enableVteIntegration = true;
     autocd = true;
     dotDir = ".config/zsh";
+    defaultKeymap = "viins";
 
     sessionVariables = {
-      ZDOTDIR = "/home/reyu/.config/zsh";
       EDITOR = "nvim";
       VISUAL = "nvim";
       ENHANCD_FILTER = "fzf-tmux --height 50% --reverse --ansi --preview 'lsd -l --color=always {}'";
       ENHANCD_DOT_SHOW_FULLPATH = "1";
+      BAT_THEME = "Solarized (dark)";
+      GOPATH = "~/.go";
     };
 
-    initExtraBeforeCompInit = builtins.readFile ./zshrc;
-    #initExtra = builtins.readFile ./zshrc-extra;
+    # initExtraBeforeCompInit
+    initExtra = ''
+      [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+    '';
     loginExtra = ''
       ${pkgs.neofetch}/bin/neofetch
       ${pkgs.keychain}/bin/keychain --quiet --agents gpg,ssh --systemd
@@ -28,7 +34,7 @@
 
     history = {
       expireDuplicatesFirst = true;
-      ignoreSpace = false;
+      ignoreSpace = true;
       save = 15000;
       share = true;
     };
@@ -37,10 +43,10 @@
       # Allows addressing directorys by shortname
       docs = "$HOME/Documents";
       projects = "$HOME/Projects";
+      nix = "$HOME/Projects/FoxNet/Nix";
     };
 
     shellAliases = rec {
-
       # Prevent globbing/autocorrect on some commands
       nix-env = "noglob nix-env";
       mv = "nocorrect mv";
@@ -54,6 +60,8 @@
 
       # Git
       gs = "${pkgs.git}/bin/git status";
+      gc = "${pkgs.git}/bin/git commit";
+      gl = "${pkgs.git}/bin/git log";
 
       # Other
       lsblk = "lsblk -o name,mountpoint,label,size,type,uuid";
@@ -75,43 +83,14 @@
       PN2 = "2> /dev/null";
       PN = "&> /dev/null";
 
-      # Clipboard access
-      CLIP = "xclip -sel clip";
-      CSEL = "xclip -sel primary";
-
       # Other
       ISODATE = "$(date --iso-8601=date)";
     };
 
-    zplug = {
-      enable = true;
-      plugins = [
-        {
-          name = "zsh-users/zsh-syntax-highlighting";
-          tags = [ "defer:2" ];
-        }
-        { name = "zsh-users/zsh-history-substring-search"; }
-        {
-          name = "b4b4r07/zsh-vimode-visual";
-          tags = [ "use:'*.zsh'" "defer:3" ];
-        }
-        { name = "zsh-users/zsh-completions"; }
-        { name = "greymd/tmux-xpanes"; }
-        {
-          name = "k4rthik/git-cal";
-          tags = [ "as:command" ];
-        }
-        { name = "rimraf/k"; }
-        { name = "Valodim/zsh-curl-completion"; }
-        {
-          name = "plugins/mosh";
-          tags = [ "from:'oh-my-zsh'" ];
-        }
-        {
-          name = "zsh-users/zaw";
-          tags = [ "as:plugin" "use:'zaw.zsh'" ];
-        }
-      ];
-    };
+    plugins = [
+      { name = "zsh-vimode-visual";
+        src = flake-inputs.zsh-vimode-visual; }
+    ];
+
   };
 }
