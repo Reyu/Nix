@@ -64,4 +64,22 @@
       };
     };
   };
+
+  systemd.user.services = {
+    autorandr = {
+      Unit = {
+        Description="autorandr execution hook";
+        After="sleep.target";
+        StartLimitIntervalSec="5";
+        StartLimitBurst="1";
+      };
+      Service = {
+        ExecStart="${pkgs.autorandr} --change --default home";
+        Type="oneshot";
+        RemainAfterExit="false";
+        KillMode="process";
+      };
+      Install = { WantedBy = "default.target"; };
+    };
+  };
 }

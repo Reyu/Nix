@@ -1,8 +1,12 @@
 { config, pkgs, lib, ... }:
 {
 
-  xsession.scriptPath = ".hm-xsession";
   xsession.enable = true;
+  xsession.scriptPath = ".hm-xsession";
+  xsession.numlock.enable = true;
+  xsession.initExtra = ''
+    ${pkgs.autorandr} -c
+  '';
 
   xsession.windowManager.xmonad = {
     enable = true;
@@ -17,5 +21,4 @@
       ];
     config = ./xmonad.hs;
   };
-
 }
