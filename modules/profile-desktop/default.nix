@@ -77,9 +77,14 @@ in {
 
     boot = {
       supportedFilesystems = [ "zfs" ];
+      kernelParams = [ "elevator=none" ];
       loader = {
         efi.canTouchEfiVariables = true;
-        systemd-boot.enable = true;
+        grub = {
+          efiSupport = true;
+          device = "nodev";
+          zfsSupport = true;
+        };
       };
       tmpOnTmpfs = true;
     };
