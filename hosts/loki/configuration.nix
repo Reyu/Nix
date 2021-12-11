@@ -29,4 +29,5 @@
     hostId = "d540cb4f";
   };
   foxnet.services = { docker.enable = true; };
+  foxnet.steam.enable = true;
 }
