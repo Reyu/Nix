@@ -6,48 +6,36 @@ in {
 
   config = mkIf cfg.enable {
 
-    # Browserpass
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox;
+      package =
+        pkgs.firefox.override { cfg = { enableTridactylNative = true; }; };
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-        keepassxc-browser
+        betterttv
+        darkreader
+        decentraleyes
+        https-everywhere
         keepass-helper
+        keepassxc-browser
+        multi-account-containers
         temporary-containers
         terms-of-service-didnt-read
         tridactyl
-        multi-account-containers
-        decentraleyes
-        darkreader
-        https-everywhere
         ublock-origin
       ];
 
       profiles = {
         personal = {
-
-          # Extra preferences to add to user.js.
-          # extraConfig = "";
-
+          id = 0;
           isDefault = true;
           settings = {
-
-            # Set the homepage
             "browser.startup.homepage" = "https://nixos.org";
-
-            # Export bookmarks to bookmarks.html when closing firefox
             "browser.bookmarks.autoExportHTML" = "true";
-
-            "browser.display.use_system_colors" = "true";
             "devtools.theme" = "dark";
           };
         };
-	video = {
-          id = 1;
-	};
-          work = {
-          id = 2;
-	};
+        video = { id = 1; };
+        work = { id = 2; };
       };
     };
   };

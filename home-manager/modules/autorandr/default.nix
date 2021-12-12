@@ -79,7 +79,7 @@
         RemainAfterExit="false";
         KillMode="process";
       };
-      Install = { WantedBy = "default.target"; };
+      Install = { WantedBy = [ "default.target" "sleep.target" ]; };
     };
   };
 }

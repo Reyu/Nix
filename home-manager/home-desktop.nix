@@ -71,12 +71,12 @@
     keepassxc = {
       Unit = { Description = "KeePassXC - Password Manager"; };
       Service = { ExecStart = "${pkgs.keepassxc}/bin/keepassxc"; };
-      Install = { WantedBy = "default.target"; };
+      Install = { WantedBy = [ "default.target" ]; };
     };
     syncthingtray = {
       Unit = { Description = "SyncThing Tray"; };
       Service = { ExecStart = "${pkgs.syncthingtray}/bin/syncthingtray"; };
-      Install = { WantedBy = "default.target"; };
+      Install = { WantedBy = [ "default.target" ]; };
     };
   };
 
