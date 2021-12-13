@@ -72,7 +72,6 @@ in {
       neovim
       nixfmt
       ripgrep
-      scrot
     ];
 
     boot = {

@@ -14,6 +14,11 @@ in {
       example = "deepblue";
       description = "hostname to identify the instance";
     };
+
+    domain = mkOption {
+      type = types.str;
+      default = "reyuzenfold.com";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -27,6 +32,7 @@ in {
     };
 
     networking.hostName = cfg.hostname;
+    networking.domain = cfg.domain;
 
     home-manager.users.reyu = {
       _module.args.flake-inputs = inputs;

@@ -13,7 +13,6 @@
     ./modules/rofi
     ./modules/shell
     ./modules/tmux
-    ./modules/tmux
     ./modules/vim
     ./modules/xdg
     ./modules/xmonad
