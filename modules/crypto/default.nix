@@ -6,7 +6,7 @@
 with lib;
 
 let
-  cfg = config.within.secrets;
+  cfg = config.foxnet.secrets;
 
   secret = types.submodule {
     options = {
@@ -62,7 +62,7 @@ let
       '';
     };
 in {
-  options.within.secrets = mkOption {
+  options.foxnet.secrets = mkOption {
     type = types.attrsOf secret;
     description = "secret configuration";
     default = { };

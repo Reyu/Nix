@@ -14,7 +14,7 @@
         extraSettingsPaths = [ /etc/vault.d ];
       };
     };
-    within.secrets.vault-storage = {
+    foxnet.secrets.vault-storage = {
       source = ../../secrets/vault/burrow-storage.hcl;
       dest = "/etc/vault.d/storage.hcl";
       owner = "vault";

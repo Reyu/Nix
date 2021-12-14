@@ -46,7 +46,7 @@
         };
       };
     };
-    within.secrets.consul_encrypt_key = {
+    foxnet.secrets.consul_encrypt_key = {
       source = ../../secrets/consul/encrypt.hcl;
       dest = "/etc/consul.d/encrypt.hcl";
       owner = "consul";

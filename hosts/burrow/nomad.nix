@@ -52,7 +52,7 @@
         extraSettingsPaths = [ "/etc/nomad.d/encrypt.hcl" ];
       };
     };
-    within.secrets.nomad-encrypt = {
+    foxnet.secrets.nomad-encrypt = {
       source = ../../secrets/nomad/encrypt.hcl;
       dest = "/etc/nomad.d/encrypt.hcl";
       owner = "root";
