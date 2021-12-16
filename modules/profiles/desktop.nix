@@ -3,7 +3,7 @@ with lib;
 let cfg = config.foxnet.desktop;
 in {
 
-  imports = [ ../../users/reyu.nix ];
+  imports = [ ../../users/root.nix ../../users/reyu.nix ];
 
   options.foxnet.desktop = {
 
@@ -35,15 +35,15 @@ in {
   config = mkIf cfg.enable {
 
     home-manager.users.reyu = {
-
-      # Pass inputs to home-manager modules
-      _module.args.flake-inputs = inputs;
-
       imports = [
         ../../home-manager/home-desktop.nix
         {
-          nixpkgs.overlays =
-            [ self-overlay inputs.nur.overlay inputs.neovim-nightly.overlay inputs.powercord.overlay ];
+          nixpkgs.overlays = [
+            self-overlay
+            inputs.nur.overlay
+            inputs.neovim-nightly.overlay
+            inputs.powercord.overlay
+          ];
         }
       ];
     };

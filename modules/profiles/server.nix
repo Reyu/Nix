@@ -34,16 +34,16 @@ in {
     networking.hostName = cfg.hostname;
     networking.domain = cfg.domain;
 
-    home-manager.users.reyu = {
-      _module.args.flake-inputs = inputs;
-      imports = [
-        ../../home-manager/home-server.nix
-        {
-          nixpkgs.overlays =
-            [ self-overlay inputs.nur.overlay inputs.neovim-nightly.overlay ];
-        }
-      ];
-    };
+    # home-manager.users.reyu = {
+    #   _module.args.flake-inputs = inputs;
+    #   imports = [
+    #     ../../home-manager/home-server.nix
+    #     {
+    #       nixpkgs.overlays =
+    #         [ self-overlay inputs.nur.overlay inputs.neovim-nightly.overlay ];
+    #     }
+    #   ];
+    # };
 
     environment.systemPackages = with pkgs; [
       git

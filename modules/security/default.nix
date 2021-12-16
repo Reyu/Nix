@@ -11,7 +11,8 @@
   # security.auditd.enable = true;
   # security.audit.enable = true;
   # security.audit.rules = [
-  #   "-a exit,always -F arch=b64 -S execve"
+  #   "-w /etc/passwd -p wa -k passwd_changes"
+  #   "-w /sbin/insmod -p x -k module_insertion"
   # ];
 
   # Configure OpenSSH to be a bit more secure

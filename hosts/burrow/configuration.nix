@@ -35,7 +35,6 @@
     };
 
     networking = {
-      domain = "home.reyuzenfold.com";
       hostId = "34376a36";
       useDHCP = false;
       interfaces = {
@@ -102,6 +101,7 @@
     foxnet = {
       server.enable = true;
       server.hostname = "burrow";
+      server.domain = "home.reyuzenfold.com";
     };
 
     fileSystems."/".options = [ "zfsutil" ];

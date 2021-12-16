@@ -13,4 +13,6 @@
 
   # Allow to run nix
   nix.allowedUsers = [ "reyu" ];
+  # Trust user to allow importing closures and configuring binary caches
+  nix.trustedUsers = [ "reyu" ];
 }
