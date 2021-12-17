@@ -8,6 +8,8 @@ in {
         window.decorations = "none";
         scrolling.history = 0;
         font.normal.family = "SauceCodePro Nerd Font";
+        font.size = 12;
+        background_opacity = 0.9;
         colors = {
           primary = {
             background = "#002b36";

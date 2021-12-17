@@ -9,6 +9,7 @@
     ./modules/fonts
     ./modules/git
     ./modules/gpg
+    ./modules/picom
     ./modules/polybar
     ./modules/rofi
     ./modules/shell
