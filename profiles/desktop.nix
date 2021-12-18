@@ -1,43 +1,60 @@
-{ config, pkgs, lib, ... }:
+{ lib, pkgs, config, inputs, self-overlay, ... }: {
+  imports = [ ../users/root.nix ../users/reyu.nix ];
+  config = {
+    # TODO: Remove this in favor of deploy-rs profiles
+    # home-manager.users.reyu = {
+    #   imports = [
+    #     ../home-manager/home-desktop.nix
+    #     {
+    #       nixpkgs.overlays = [
+    #         self-overlay
+    #         inputs.nur.overlay
+    #         inputs.neovim-nightly.overlay
+    #         inputs.powercord.overlay
+    #       ];
+    #     }
+    #   ];
+    # };
+    foxnet = {
+      defaults = {
+        nix.enable = true;
+        sound.enable = true;
+        locale.enable = true;
+        ldap.enable = true;
+      };
+      services = {
+        xserver.enable = true;
+        openssh.enable = true;
+      };
+    };
 
-{
-  fonts.fonts = with pkgs; [ nerdfonts powerline-fonts terminus-nerdfont ];
+    krb5.enable = true;
 
-  services.tailscale = { enable = true; };
-  services.tor = {
-    enable = true;
-    client.enable = true;
+    environment.systemPackages = with pkgs; [
+      binutils
+      git
+      killall
+      lm_sensors
+      neovim
+      nixfmt
+      ripgrep
+    ];
+
+    boot = {
+      loader = {
+        efi.canTouchEfiVariables = true;
+        grub = {
+          efiSupport = true;
+          device = "nodev";
+        };
+      };
+      tmpOnTmpfs = true;
+    };
+
+    console.useXkbConfig = true;
+
+    programs.dconf.enable = true;
+
+    services.tailscale.enable = true;
   };
-  networking.firewall.allowedUDPPorts = [ 41641 ];
-  environment.systemPackages = [
-    pkgs.syncthing
-    pkgs.tailscale
-    pkgs.pinentry-gtk2
-  ];
-
-  programs.gnupg.agent.enable = true;
-  programs.tmux = {
-    enable = true;
-    aggressiveResize = true;
-    clock24 = true;
-    keyMode = "vi";
-  };
-  programs.zsh = {
-    enable = true;
-    enableBashCompletion = true;
-    enableCompletion = true;
-    syntaxHighlighting.enable = true;
-  };
-
-  services.dbus.enable = true;
-  services.unclutter.enable = true;
-
-  services.xserver = {
-    enable = true;
-    layout = "us";
-    libinput.enable = true;
-    windowManager.xmonad.enable = true;
-  };
-
-  security.sudo.wheelNeedsPassword = false;
 }

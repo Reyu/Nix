@@ -2,8 +2,7 @@
 with lib;
 let cfg = config.foxnet.server;
 in {
-
-  imports = [ ../../users/reyu.nix ];
+  imports = [ ../users/root.nix ../users/reyu.nix ];
 
   options.foxnet.server = {
     enable = mkEnableOption "the default server configuration";

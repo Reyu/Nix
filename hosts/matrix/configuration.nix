@@ -24,10 +24,12 @@
   networking.usePredictableInterfaceNames = false;
   networking.interfaces.eth0.useDHCP = true;
 
-  foxnet = {
-    server.enable = true;
-    server.hostname = "matrix";
-  };
+  # foxnet = {
+  #   server.enable = true;
+  #   server.hostname = "matrix";
+  # };
+  networking.hostName = "matrix";
+  networking.domain = "reyuzenfold.com";
 
   system.stateVersion = "21.05";
 }

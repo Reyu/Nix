@@ -27,8 +27,10 @@
     apiKeyFile = "/var/lib/longview/apiKeyFile";
   };
 
-  foxnet.server.enable = true;
-  foxnet.server.hostname = "hashi";
+  # foxnet.server.enable = true;
+  # foxnet.server.hostname = "hashi";
+  networking.hostName = "hashi";
+  networking.domain = "reyuzenfold.com";
 
   system.stateVersion = "21.05";
 }

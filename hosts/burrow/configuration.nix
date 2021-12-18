@@ -98,11 +98,13 @@
 
     virtualisation.docker.enable = true;
 
-    foxnet = {
-      server.enable = true;
-      server.hostname = "burrow";
-      server.domain = "home.reyuzenfold.com";
-    };
+    # foxnet = {
+    #   server.enable = true;
+    #   server.hostname = "burrow";
+    #   server.domain = "home.reyuzenfold.com";
+    # };
+    networking.hostName = "burrow";
+    networking.domain = "home.reyuzenfold.com";
 
     fileSystems."/".options = [ "zfsutil" ];
     fileSystems."/nix".options = [ "zfsutil" ];

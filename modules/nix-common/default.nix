@@ -1,10 +1,8 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let cfg = config.foxnet.defaults.nix;
 in {
-
   options.foxnet.defaults.nix = { enable = mkEnableOption "Nix defaults"; };
-
   config = mkIf cfg.enable {
 
     # Allow unfree licenced packages

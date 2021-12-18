@@ -24,10 +24,10 @@
   networking.usePredictableInterfaceNames = false;
   networking.interfaces.eth0.useDHCP = true;
 
-  foxnet = {
-    server.enable = true;
-    server.hostname = "nixos";
-  };
+  # foxnet = {
+  #   server.enable = true;
+  #   server.hostname = "nixos";
+  # };
 
   system.stateVersion = "21.05";
 }
