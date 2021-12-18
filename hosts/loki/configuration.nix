@@ -15,7 +15,7 @@
         path = "/boot2";
       }
     ];
-    users.reyu.hashedPasswordFile = builtins.toString ../secrets/grub-reyu.passwd;
+    users.reyu.hashedPasswordFile = builtins.toString ../../secrets/grub-reyu.passwd;
     zfsSupport = true;
   };
   boot.supportedFilesystems = [ "zfs" ];
