@@ -1,4 +1,4 @@
-{ config, pkgs, lib, flake-inputs, ... }: {
+{ config, pkgs, lib, inputs, ... }: {
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
@@ -92,7 +92,7 @@
 
     plugins = [
       { name = "zsh-vimode-visual";
-        src = flake-inputs.zsh-vimode-visual; }
+        src = inputs.zsh-vimode-visual; }
     ];
 
   };

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nur, flake-inputs, ... }: {
+{ config, pkgs, lib, nur, inputs, ... }: {
   # Imports
   imports = [
     ../modules/alacritty
@@ -32,13 +32,13 @@
   home.packages = with pkgs; [
     (discord-plugged.override {
       plugins = [
-        flake-inputs.discord-better-status
-        flake-inputs.discord-read-all
-        flake-inputs.discord-theme-toggler
-        flake-inputs.discord-tweaks
-        flake-inputs.discord-vc-timer
+        inputs.discord-better-status
+        inputs.discord-read-all
+        inputs.discord-theme-toggler
+        inputs.discord-tweaks
+        inputs.discord-vc-timer
       ];
-      themes = [ flake-inputs.discord-theme-slate ];
+      themes = [ inputs.discord-theme-slate ];
     })
     keepassxc
     obsidian

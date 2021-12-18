@@ -1,4 +1,4 @@
-{ config, pkgs, flake-inputs, ... }:
+{ config, pkgs, ... }:
 {
   programs.neovim = {
     enable = true;

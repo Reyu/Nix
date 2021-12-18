@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nur, flake-inputs, ... }: {
+{ config, pkgs, lib, nur, ... }: {
   imports = [
     ../modules/git
     ../modules/shell

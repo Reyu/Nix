@@ -97,7 +97,8 @@
   };
   outputs = { self, ... }@inputs:
     with inputs;
-    utils.lib.mkFlake {
+    let extraSpecialArgs = { inherit inputs self; };
+    in utils.lib.mkFlake {
       inherit self inputs;
 
       sharedOverlays =
@@ -108,12 +109,8 @@
       channels.nixpkgs.overlaysBuilder = channels:
         [ (final: prev: { inherit (channels.unstable) neovim-unwrapped; }) ];
 
-      # All local modules have an `enable` option, so it is safe to add
-      # everything
       hostDefaults.modules = builtins.attrValues self.nixosModules ++ [
-        home-manager.nixosModules.home-manager
         ({ ... }: {
-          home-manager.useUserPackages = true;
 
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
@@ -127,8 +124,7 @@
         inherit (nixpkgs.lib) head splitString;
 
         # Gather available profiles
-        profiles = listToAttrs
-        (map (x: {
+        profiles = listToAttrs (map (x: {
           name = (head (splitString "." x));
           value = (./profiles + "/${x}");
         }) (attrNames (readDir ./profiles)));
@@ -140,36 +136,31 @@
           value = { modules = [ (./hosts + "/${x}/configuration.nix") ]; };
         }) (attrNames (readDir ./hosts)));
 
-      in defaults // {
+      in defaults // (with profiles; {
         loki = {
           channelName = "unstable";
-          modules = with profiles; [
-            ./hosts/loki/configuration.nix
-            desktop
-          ];
+          modules = [ ./hosts/loki/configuration.nix desktop ];
         };
-        burrow = {
-          modules = with profiles; [
-            ./hosts/burrow/configuration.nix
-            server
-          ];
-        };
-      };
+        burrow = { modules = [ ./hosts/burrow/configuration.nix server ]; };
+      });
 
       homeConfigurations = let
-        homeConfig = { profile, system ? "x86_64-linux", username ? "reyu"
-          , homeDirectory ? "/home/${username}" }:
-          home-manager.lib.homeManagerConfiguration {
-            inherit system username homeDirectory;
-            pkgs = self.pkgs.${system}.nixpkgs;
-            extraSpecialArgs = { flake-inputs = inputs; };
-            configuration = {
-              imports = [ (./home-manager + "/home-${profile}.nix") ];
-            };
-          };
+        inherit extraSpecialArgs;
+        configuration = { };
+        hmConfig = home-manager.lib.homeManagerConfiguration;
+        homeDirectory = "/home/${username}";
+        pkgs = self.pkgs.${system}.nixpkgs;
+        system = "x86_64-linux";
+        username = "reyu";
       in {
-        desktop = homeConfig { profile = "desktop"; };
-        server = homeConfig { profile = "server"; };
+        desktop = hmConfig {
+          inherit configuration extraSpecialArgs homeDirectory pkgs system username;
+          extraModules = [ ./home-manager/home-desktop.nix ];
+        };
+        server = hmConfig {
+          inherit configuration extraSpecialArgs homeDirectory pkgs system username;
+          extraModules = [ ./home-manager/home-server.nix ];
+        };
       };
 
       deploy.nodes = {
@@ -181,13 +172,11 @@
               path = deploy-rs.lib.x86_64-linux.activate.nixos
                 self.nixosConfigurations.loki;
             };
-            # TODO: Wait for home-manager to support new nix-profile
-            #   OR: Figure out why desktop is forcing profiles...
-            # hm-reyu = {
-            #   user = "reyu";
-            #   path = deploy-rs.lib.x86_64-linux.activate.home-manager
-            #     self.homeConfigurations.desktop;
-            # };
+            hm-reyu = {
+              user = "reyu";
+              path = deploy-rs.lib.x86_64-linux.activate.home-manager
+                self.homeConfigurations.desktop;
+            };
           };
         };
         burrow = {
