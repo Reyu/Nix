@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, ... }: {
   config.krb5 = {
     libdefaults = { "default_realm" = "REYUZENFOLD.COM"; };
     realms = {

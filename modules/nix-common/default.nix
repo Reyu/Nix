@@ -1,16 +1,10 @@
-{ config, pkgs, lib, ... }:
-with lib;
-let cfg = config.foxnet.defaults.nix;
-in {
-  options.foxnet.defaults.nix = { enable = mkEnableOption "Nix defaults"; };
-  config = mkIf cfg.enable {
-
+{ config, pkgs, ... }: {
+  config = {
     # Allow unfree licenced packages
     nixpkgs.config.allowUnfree = true;
 
     # Enable flakes
     nix = {
-
       # Save space by hardlinking store files
       autoOptimiseStore = true;
 

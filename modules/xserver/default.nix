@@ -1,18 +1,7 @@
 { config, pkgs, lib, ... }:
-with lib;
-let cfg = config.foxnet.services.xserver;
-in {
-
-  options.foxnet.services.xserver = {
-    enable = mkEnableOption "X server";
-  };
-
-  config = mkIf cfg.enable {
-
-    services.physlock = {
-      enable = true;
-      #lockOn.extraTargets = [ "display-manager.service" ];
-    };
+with lib; {
+  config = {
+    services.physlock = { enable = true; };
     services.xserver = {
       enable = true;
       autorun = true;
@@ -21,9 +10,7 @@ in {
       xkbVariant = "dvorak";
       xkbOptions = "caps:escape";
 
-      libinput = {
-        enable = true;
-      };
+      libinput = { enable = true; };
 
       config = ''
         Section "InputClass"

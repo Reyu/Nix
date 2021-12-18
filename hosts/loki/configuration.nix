@@ -22,8 +22,13 @@
   boot.kernelParams = [ "elevator=noop" ];
   boot.tmpOnTmpfs = true;
 
+  console.useXkbConfig = true;
+  programs.dconf.enable = true;
+
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
   services = {
-    zfs.autoScrub.enable = true;
+    tailscale.enable = true;
     sanoid = {
       interval = "*-*-* *:0..59/15 UTC";
       datasets = {
@@ -42,6 +47,7 @@
         };
       };
     };
+    zfs.autoScrub.enable = true;
   };
 
   networking.hostName = "loki";

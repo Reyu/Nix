@@ -1,12 +1,11 @@
 { config, lib, ... }:
-
-{
+with lib; {
   # Enable GPG Agent by default
   programs.gnupg.agent.enable = true;
 
   ## System security tweaks
   security.sudo.execWheelOnly = true;
-  environment.defaultPackages = lib.mkForce [];
+  environment.defaultPackages = mkForce [ ];
 
   # security.auditd.enable = true;
   # security.audit.enable = true;
@@ -17,8 +16,9 @@
 
   # Configure OpenSSH to be a bit more secure
   services.openssh = {
+    enable = mkDefault true;
     passwordAuthentication = false;
-    allowSFTP = lib.mkDefault false;
+    allowSFTP = mkDefault false;
     challengeResponseAuthentication = false;
     extraConfig = ''
       AllowTcpForwarding yes
@@ -29,15 +29,21 @@
     '';
   };
 
+  # Block anything that is not SSH, by default
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 22 ];
+  };
+
   # Prevent replacing the running kernel w/o reboot
   security.protectKernelImage = true;
 
   # tmpfs = /tmp is mounted in ram. Doing so makes temp file management speedy
   # on ssd systems, and volatile! Because it's wiped on reboot.
-  boot.tmpOnTmpfs = lib.mkDefault true;
+  boot.tmpOnTmpfs = mkDefault true;
   # If not using tmpfs, which is naturally purged on reboot, we must clean it
   # /tmp ourselves. /tmp should be volatile storage!
-  boot.cleanTmpDir = lib.mkDefault (!config.boot.tmpOnTmpfs);
+  boot.cleanTmpDir = mkDefault (!config.boot.tmpOnTmpfs);
 
   # Fix a security hole in place for backwards compatibility. See desc in
   # nixpkgs/nixos/modules/system/boot/loader/systemd-boot/systemd-boot.nix

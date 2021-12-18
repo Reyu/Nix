@@ -1,14 +1,6 @@
 { config, pkgs, lib, ... }:
-with lib;
-let cfg = config.foxnet.services.openssh;
-in {
-
-  options.foxnet.services.openssh = {
-    enable = mkEnableOption "OpenSSH server";
-  };
-
-  config = mkIf cfg.enable {
-
+with lib; {
+  config = {
     # Enable the OpenSSH daemon.
     services.openssh = {
       enable = true;

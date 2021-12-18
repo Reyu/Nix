@@ -6,6 +6,7 @@
     nixpkgs.url = "github:nixos/nixpkgs";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    devshell.url = "github:numtide/devshell";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -94,6 +95,12 @@
       flake = false;
     };
 
+    # TODO: try this
+    # kmonad = {
+    #   url = "github:kmonad/kmonad?dir=nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
   };
   outputs = { self, ... }@inputs:
     with inputs;
@@ -101,17 +108,28 @@
     in utils.lib.mkFlake {
       inherit self inputs;
 
-      sharedOverlays =
-        [ self.overlay nur.overlay neovim-nightly.overlay powercord.overlay ];
+      sharedOverlays = [
+        devshell.overlay
+        neovim-nightly.overlay
+        nur.overlay
+        powercord.overlay
+        self.overlay
+      ];
 
       channelsConfig = { allowUnfree = true; };
 
       channels.nixpkgs.overlaysBuilder = channels:
         [ (final: prev: { inherit (channels.unstable) neovim-unwrapped; }) ];
 
-      hostDefaults.modules = builtins.attrValues self.nixosModules ++ [
+      hostDefaults.modules = with self.nixosModules; [
+        ./users/reyu.nix
+        cachix
+        crypto
+        environment
+        locale
+        nix-common
+        security
         ({ ... }: {
-
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
           nix.registry.nixpkgs.flake = nixpkgs;
@@ -119,63 +137,61 @@
         })
       ];
 
-      hosts = let
-        inherit (builtins) attrNames readDir listToAttrs;
-        inherit (nixpkgs.lib) head splitString;
-
-        # Gather available profiles
-        profiles = listToAttrs (map (x: {
-          name = (head (splitString "." x));
-          value = (./profiles + "/${x}");
-        }) (attrNames (readDir ./profiles)));
-
-        # Add all hosts under `./hosts` and import
-        # `./host/<name>/configuration.nix` by default
-        defaults = listToAttrs (map (x: {
-          name = x;
-          value = { modules = [ (./hosts + "/${x}/configuration.nix") ]; };
-        }) (attrNames (readDir ./hosts)));
-
-      in defaults // (with profiles; {
+      hosts = with self.nixosModules; {
         loki = {
           channelName = "unstable";
-          modules = [ ./hosts/loki/configuration.nix desktop ];
+          modules = [
+            ./hosts/loki/configuration.nix
+            docker
+            kerberos
+            ldap
+            sound
+            xserver
+          ];
         };
-        burrow = { modules = [ ./hosts/burrow/configuration.nix server ]; };
-      });
+        burrow = {
+          modules = [ ./hosts/burrow/configuration.nix docker kerberos ldap ];
+        };
+      };
 
       homeConfigurations = let
+        # Defaults
         inherit extraSpecialArgs;
         configuration = { };
-        hmConfig = home-manager.lib.homeManagerConfiguration;
         homeDirectory = "/home/${username}";
         pkgs = self.pkgs.${system}.nixpkgs;
         system = "x86_64-linux";
         username = "reyu";
+        # Function alias
+        hmConfig = home-manager.lib.homeManagerConfiguration;
       in {
         desktop = hmConfig {
-          inherit configuration extraSpecialArgs homeDirectory pkgs system username;
+          inherit configuration extraSpecialArgs homeDirectory pkgs system
+            username;
           extraModules = [ ./home-manager/home-desktop.nix ];
         };
         server = hmConfig {
-          inherit configuration extraSpecialArgs homeDirectory pkgs system username;
+          inherit configuration extraSpecialArgs homeDirectory pkgs system
+            username;
           extraModules = [ ./home-manager/home-server.nix ];
         };
       };
 
-      deploy.nodes = {
+      deploy.nodes = let
+        inherit (deploy-rs.lib.x86_64-linux.activate) nixos home-manager;
+        host = x: nixos self.nixosConfigurations."${x}";
+        user = x: home-manager self.homeConfigurations."${x}";
+      in {
         loki = {
           hostname = "loki.home.reyuzenfold.com";
           profiles = {
             system = {
               sshUser = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos
-                self.nixosConfigurations.loki;
+              path = host "loki";
             };
             hm-reyu = {
               user = "reyu";
-              path = deploy-rs.lib.x86_64-linux.activate.home-manager
-                self.homeConfigurations.desktop;
+              path = user "desktop";
             };
           };
         };
@@ -184,13 +200,11 @@
           profiles = {
             system = {
               sshUser = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos
-                self.nixosConfigurations.burrow;
+              path = host "burrow";
             };
             hm-reyu = {
               user = "reyu";
-              path = deploy-rs.lib.x86_64-linux.activate.home-manager
-                self.homeConfigurations.server;
+              path = user "server";
             };
           };
         };
@@ -201,7 +215,10 @@
         packages = utils.lib.exportPackages self.overlays channels;
 
         # Evaluates to `devShell.<system> = <nixpkgs-channel-reference>.mkShell { name = "devShell"; };`.
-        devShell = channels.nixpkgs.mkShell { name = "devShell"; };
+        devShell = channels.nixpkgs.devshell.mkShell {
+          name = "foxnet-flake";
+          packages = with channels.nixpkgs; [ cachix nixpkgs-fmt rnix-lsp ];
+        };
       };
 
       # Run deploy-rs as the default app

@@ -84,9 +84,11 @@
         configDir = "/data/etc/syncthing";
         guiAddress = "100.82.76.79:8384";
       };
+      tailscale.enable = true;
     };
 
     networking.firewall = {
+      trustedInterfaces = [ "tailscale0" ];
       allowedTCPPorts = [
         2049 # NFS
 

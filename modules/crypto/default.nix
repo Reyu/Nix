@@ -4,7 +4,6 @@
 # https://christine.website/blog/nixos-encrypted-secrets-2021-01-20
 
 with lib;
-
 let
   cfg = config.foxnet.secrets;
 

@@ -56,6 +56,21 @@
         "type": "github"
       }
     },
+    "devshell": {
+      "locked": {
+        "lastModified": 1639692811,
+        "narHash": "sha256-wOOBH0fVsfNqw/5ZWRoKspyesoXBgiwEOUBH4c7JKEo=",
+        "owner": "numtide",
+        "repo": "devshell",
+        "rev": "d3a1f5bec3632b33346865b1c165bf2420bb2f52",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "devshell",
+        "type": "github"
+      }
+    },
     "discord-better-status": {
       "flake": false,
       "locked": {
@@ -387,6 +402,7 @@
         "cmp-buffer": "cmp-buffer",
         "cmp-nvim-lsp": "cmp-nvim-lsp",
         "deploy-rs": "deploy-rs",
+        "devshell": "devshell",
         "discord-better-status": "discord-better-status",
         "discord-read-all": "discord-read-all",
         "discord-theme-slate": "discord-theme-slate",
