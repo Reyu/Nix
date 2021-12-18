@@ -2,7 +2,8 @@
 
 {
   imports =
-    [ ./hardware-configuration.nix
+    [
+      ./hardware-configuration.nix
     ];
 
   boot.kernelParams = [ "console=ttyS0,19200n8" ];

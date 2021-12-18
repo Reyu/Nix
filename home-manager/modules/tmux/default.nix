@@ -1,7 +1,8 @@
 { lib, pkgs, config, ... }:
 with lib;
 let cfg = config.reyu.programs.tmux;
-in {
+in
+{
   options.reyu.programs.tmux.enable =
     mkEnableOption "tmux terminal mutliplexer";
 

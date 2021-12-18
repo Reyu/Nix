@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/profiles/qemu-guest.nix")
+    [
+      (modulesPath + "/profiles/qemu-guest.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "ata_piix" "sd_mod" ];
@@ -14,12 +15,12 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/sda";
+    {
+      device = "/dev/sda";
       fsType = "ext4";
     };
 
   swapDevices =
-    [ { device = "/dev/sdb"; }
-    ];
+    [{ device = "/dev/sdb"; }];
 
 }

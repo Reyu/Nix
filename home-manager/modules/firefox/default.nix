@@ -1,7 +1,8 @@
 { config, pkgs, lib, nur, utils, ... }:
 with lib;
 let cfg = config.reyu.programs.firefox;
-in {
+in
+{
   options.reyu.programs.firefox.enable = mkEnableOption "firefox browser";
 
   config = mkIf cfg.enable {

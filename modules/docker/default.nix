@@ -1,7 +1,8 @@
 { pkgs, config, lib, ... }:
 with lib;
 let cfg = config.foxnet.services.docker;
-in {
+in
+{
   config = {
     environment.systemPackages =
       [ pkgs.docker-client pkgs.docker-credential-helpers ];

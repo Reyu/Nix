@@ -2,7 +2,8 @@
 let
   inherit (lib) mkIf mkDefault mkEnableOption mkOption;
   cfg = config.foxnet.consul;
-in {
+in
+{
   config = {
     services.consul = {
       extraConfig = {

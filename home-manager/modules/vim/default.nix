@@ -108,13 +108,13 @@
       {
         plugin = nvim-lspconfig;
         config = ''
-        lua require('reyu/lsp_config')
+          lua require('reyu/lsp_config')
         '';
       }
       {
         plugin = nvim-cmp;
         config = ''
-        lua require('reyu/cmp')
+          lua require('reyu/cmp')
         '';
       }
       cmp-nvim-lsp

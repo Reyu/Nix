@@ -91,8 +91,10 @@
     };
 
     plugins = [
-      { name = "zsh-vimode-visual";
-        src = inputs.zsh-vimode-visual; }
+      {
+        name = "zsh-vimode-visual";
+        src = inputs.zsh-vimode-visual;
+      }
     ];
 
   };

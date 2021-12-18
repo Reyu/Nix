@@ -36,7 +36,7 @@
             000000000000000000000000000c1'');
         };
         config = {
-          DisplayPort-0= {
+          DisplayPort-0 = {
             enable = true;
             mode = "2560x1440";
             crtc = 1;
@@ -44,7 +44,7 @@
             rate = "59.95";
           };
 
-          DisplayPort-1= {
+          DisplayPort-1 = {
             enable = true;
             primary = true;
             crtc = 0;
@@ -53,7 +53,7 @@
             rate = "85.00";
           };
 
-          DisplayPort-2= {
+          DisplayPort-2 = {
             enable = true;
             crtc = 2;
             mode = "2560x1440";
@@ -68,16 +68,16 @@
   systemd.user.services = {
     autorandr = {
       Unit = {
-        Description="autorandr execution hook";
-        After="sleep.target";
-        StartLimitIntervalSec="5";
-        StartLimitBurst="1";
+        Description = "autorandr execution hook";
+        After = "sleep.target";
+        StartLimitIntervalSec = "5";
+        StartLimitBurst = "1";
       };
       Service = {
-        ExecStart="${pkgs.autorandr} --change --default home";
-        Type="oneshot";
-        RemainAfterExit="false";
-        KillMode="process";
+        ExecStart = "${pkgs.autorandr} --change --default home";
+        Type = "oneshot";
+        RemainAfterExit = "false";
+        KillMode = "process";
       };
       Install = { WantedBy = [ "default.target" "sleep.target" ]; };
     };

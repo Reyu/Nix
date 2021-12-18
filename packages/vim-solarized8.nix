@@ -5,7 +5,8 @@ pkgs.vimUtils.buildVimPluginFrom2Nix {
   src = inputs.vim-solarized8;
 
   meta = {
-    description = "Optimized Solarized colorschemes. Best served with true-color terminals!";
+    description =
+      "Optimized Solarized colorschemes. Best served with true-color terminals!";
     homepage = "https://github.com/lifepillar/vim-solarized8";
   };
 }

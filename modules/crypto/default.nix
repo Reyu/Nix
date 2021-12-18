@@ -60,17 +60,22 @@ let
         chmod '${permissions}' '${dest}'
       '';
     };
-in {
+in
+{
   options.foxnet.secrets = mkOption {
     type = types.attrsOf secret;
     description = "secret configuration";
     default = { };
   };
 
-  config.systemd.services = let
-    units = mapAttrs' (name: info: {
-      name = "${name}-key";
-      value = (mkService name info);
-    }) cfg;
-  in units;
+  config.systemd.services =
+    let
+      units = mapAttrs'
+        (name: info: {
+          name = "${name}-key";
+          value = (mkService name info);
+        })
+        cfg;
+    in
+    units;
 }
