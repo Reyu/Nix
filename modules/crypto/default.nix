@@ -43,7 +43,7 @@ let
     };
   };
 
-  metadata = lib.importTOML ../../ops/metadata/hosts.toml;
+  metadata = lib.importTOML ../../hosts/metadata.toml;
 
   mkService = name:
     { source, dest, owner, group, permissions, ... }: {
