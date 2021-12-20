@@ -217,21 +217,35 @@
           };
         };
 
-      outputsBuilder = channels: {
-        # construct packagesBuilder to export all packages defined in overlays
-        packages = utils.lib.exportPackages self.overlays channels;
+      outputsBuilder = channels:
+        let
+          pkgs = channels.nixpkgs;
+        in
+        {
+          # construct packagesBuilder to export all packages defined in overlays
+          packages = utils.lib.exportPackages self.overlays channels;
 
-        # Evaluates to `devShell.<system> = <nixpkgs-channel-reference>.mkShell { name = "devShell"; };`.
-        devShell = channels.nixpkgs.devshell.mkShell {
-          name = "foxnet-flake";
-          packages = with channels.nixpkgs; [
-            cachix
-            nixpkgs-fmt
-            rnix-lsp
-            channels.nixpkgs.deploy-rs.deploy-rs # Need to differentiate between the package and the input
-          ];
+          # Evaluates to `devShell.<system> = <nixpkgs-channel-reference>.mkShell { name = "devShell"; };`.
+          devShell = pkgs.devshell.mkShell {
+            name = "FoxNet-Nix-Configs";
+            packages = with pkgs; [
+              cachix
+              nixpkgs-fmt
+              pkgs.deploy-rs.deploy-rs # Need to differentiate between the package and the input
+              rnix-lsp
+            ];
+            commands = [
+              {
+                name = "deploy";
+                package = pkgs.deploy-rs.deploy-rs;
+              }
+              {
+                package = pkgs.nixpkgs-fmt;
+                category = "formatters";
+              }
+            ];
+          };
         };
-      };
 
       # Run deploy-rs as the default app
       defaultApp = deploy-rs.defaultApp;
