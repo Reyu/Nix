@@ -11,10 +11,15 @@
         signByDefault = true;
       };
 
+      aliases = {
+        last = "cat-file commit HEAD";
+      };
+
       ignores = [ "_darcs" "Session.vim" "*~" ".env" ".env.local" ".direnv" ];
       extraConfig = {
         init.defaultBranch = "main";
         pull.rebase = false;
+        url."git@github.com:".insteadOf = "github:";
       };
     };
   };
