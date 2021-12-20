@@ -110,6 +110,7 @@
       inherit self inputs;
 
       sharedOverlays = [
+        deploy-rs.overlay
         devshell.overlay
         neovim-nightly.overlay
         nur.overlay
@@ -223,7 +224,12 @@
         # Evaluates to `devShell.<system> = <nixpkgs-channel-reference>.mkShell { name = "devShell"; };`.
         devShell = channels.nixpkgs.devshell.mkShell {
           name = "foxnet-flake";
-          packages = with channels.nixpkgs; [ cachix nixpkgs-fmt rnix-lsp ];
+          packages = with channels.nixpkgs; [
+            cachix
+            nixpkgs-fmt
+            rnix-lsp
+            channels.nixpkgs.deploy-rs.deploy-rs # Need to differentiate between the package and the input
+          ];
         };
       };
 
