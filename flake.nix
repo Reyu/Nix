@@ -278,9 +278,9 @@
                 pkgs = nixpkgs;
                 inherit self;
               };
-              # Filter list of modules, leaving only modules which contain a
-              # `test.nix` file
             })
+            # Filter list of modules, leaving only modules which contain a
+            # `test.nix` file
             (builtins.filter
               (p: builtins.pathExists (./modules + "/${p}/test.nix"))
               (builtins.attrNames (builtins.readDir ./modules))));
