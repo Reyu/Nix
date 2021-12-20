@@ -123,6 +123,7 @@
         [ (final: prev: { inherit (channels.unstable) neovim-unwrapped; }) ];
 
       hostDefaults.modules = with self.nixosModules; [
+        ./users/root.nix
         ./users/reyu.nix
         cachix
         crypto
