@@ -1,7 +1,6 @@
 { self, ... }: {
   imports = [
     ./hardware-configuration.nix
-    ./consul.nix
     ./vault.nix
     ./nomad.nix
     ./MAS.nix
@@ -43,6 +42,17 @@
         eno3.useDHCP = false;
         eno4.useDHCP = false;
       };
+    };
+
+    foxnet.consul.firewall.open = {
+      http = true;
+      server = true;
+    };
+    services.consul = {
+      interface.bind = "eno1";
+      extraConfig.addresses.http = ''
+          127.0.0.1 {{ GetInterfaceIP "eno1" }}
+      '';
     };
 
     users.groups = {
@@ -100,11 +110,6 @@
 
     virtualisation.docker.enable = true;
 
-    # foxnet = {
-    #   server.enable = true;
-    #   server.hostname = "burrow";
-    #   server.domain = "home.reyuzenfold.com";
-    # };
     networking.hostName = "burrow";
     networking.domain = "home.reyuzenfold.com";
 

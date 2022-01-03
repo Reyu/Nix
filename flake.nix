@@ -105,8 +105,7 @@
   outputs = { self, ... }@inputs:
     with inputs;
     let extraSpecialArgs = { inherit inputs self; };
-    in
-    utils.lib.mkFlake {
+    in utils.lib.mkFlake {
       inherit self inputs;
 
       sharedOverlays = [
@@ -153,75 +152,93 @@
           ];
         };
         burrow = {
-          modules = [ ./hosts/burrow/configuration.nix docker kerberos ldap ];
+          modules = [ ./hosts/burrow/configuration.nix consul docker kerberos ldap ];
         };
       };
 
-      homeConfigurations =
-        let
-          # Defaults
-          inherit extraSpecialArgs;
-          configuration = { };
-          homeDirectory = "/home/${username}";
-          pkgs = self.pkgs.${system}.nixpkgs;
-          system = "x86_64-linux";
-          username = "reyu";
-          # Function alias
-          hmConfig = home-manager.lib.homeManagerConfiguration;
-        in
-        {
-          desktop = hmConfig {
-            inherit configuration extraSpecialArgs homeDirectory pkgs system
-              username;
-            extraModules = [ ./home-manager/home-desktop.nix ];
-          };
-          server = hmConfig {
-            inherit configuration extraSpecialArgs homeDirectory pkgs system
-              username;
-            extraModules = [ ./home-manager/home-server.nix ];
+      homeConfigurations = let
+        # Defaults
+        inherit extraSpecialArgs;
+        configuration = { };
+        homeDirectory = "/home/${username}";
+        pkgs = self.pkgs.${system}.nixpkgs;
+        system = "x86_64-linux";
+        username = "reyu";
+        # Function alias
+        hmConfig = home-manager.lib.homeManagerConfiguration;
+      in {
+        desktop = hmConfig {
+          inherit configuration extraSpecialArgs homeDirectory pkgs system
+            username;
+          extraModules = [ ./home-manager/home-desktop.nix ];
+        };
+        server = hmConfig {
+          inherit configuration extraSpecialArgs homeDirectory pkgs system
+            username;
+          extraModules = [ ./home-manager/home-server.nix ];
+        };
+        minimalRoot = hmConfig {
+          inherit extraSpecialArgs pkgs system;
+          username = "root";
+          homeDirectory = "/root";
+          configuration = {
+            imports = [ ./home-manager/modules/shell ];
+            manual.manpages.enable = true;
+            home.packages = with pkgs; [ htop ];
+            home.sessionVariables = {
+              EDITOR = "nvim";
+              VISUAL = "nvim";
+            };
+            home.stateVersion = "20.09";
+            programs.home-manager.enable = true;
           };
         };
+      };
 
-      deploy.nodes =
-        let
-          inherit (deploy-rs.lib.x86_64-linux.activate) nixos home-manager;
-          host = x: nixos self.nixosConfigurations."${x}";
-          user = x: home-manager self.homeConfigurations."${x}";
-        in
-        {
-          loki = {
-            hostname = "loki.home.reyuzenfold.com";
-            profiles = {
-              system = {
-                sshUser = "root";
-                path = host "loki";
-              };
-              hm-reyu = {
-                user = "reyu";
-                path = user "desktop";
-              };
+      deploy.nodes = let
+        inherit (deploy-rs.lib.x86_64-linux.activate) nixos home-manager custom;
+        host = x: nixos self.nixosConfigurations."${x}";
+        user = x: home-manager self.homeConfigurations."${x}";
+      in {
+        loki = {
+          hostname = "loki.home.reyuzenfold.com";
+          profiles = {
+            system = {
+              sshUser = "root";
+              path = host "loki";
             };
-          };
-          burrow = {
-            hostname = "burrow.home.reyuzenfold.com";
-            profiles = {
-              system = {
-                sshUser = "root";
-                path = host "burrow";
-              };
-              hm-reyu = {
-                user = "reyu";
-                path = user "server";
-              };
+            hm-reyu = {
+              user = "reyu";
+              path = user "desktop";
+            };
+            hm-root = {
+              sshUser = "root";
+              path = user "minimalRoot";
             };
           };
         };
+        burrow = {
+          hostname = "burrow.home.reyuzenfold.com";
+          profiles = {
+            system = {
+              sshUser = "root";
+              path = host "burrow";
+            };
+            hm-reyu = {
+              user = "reyu";
+              path = user "server";
+            };
+            hm-root = {
+              sshUser = "root";
+              path = user "minimalRoot";
+            };
+          };
+        };
+      };
 
       outputsBuilder = channels:
-        let
-          pkgs = channels.nixpkgs;
-        in
-        {
+        let pkgs = channels.nixpkgs;
+        in {
           # construct packagesBuilder to export all packages defined in overlays
           packages = utils.lib.exportPackages self.overlays channels;
 
@@ -253,38 +270,32 @@
       overlay = import ./overlays { inherit inputs; };
       overlays = utils.lib.exportOverlays { inherit (self) pkgs inputs; };
 
-      nixosModules = builtins.listToAttrs (map
-        (x: {
+      nixosModules = builtins.listToAttrs (map (x: {
+        name = x;
+        value = import (./modules + "/${x}");
+      }) (builtins.attrNames (builtins.readDir ./modules)));
+
+      checks = let
+        # Sanity check for deploy-rs systems
+        deploments = builtins.mapAttrs
+          (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
+        # Checks to run with `nix flake check -L`, will run in a QEMU VM.
+        # Looks for all ./modules/<module name>/test.nix files and adds them to
+        # the flake's checks output. The test.nix file is optional and may be
+        # added to any module.
+        modules = builtins.listToAttrs (map (x: {
           name = x;
-          value = import (./modules + "/${x}");
+          value = (import (./modules + "/${x}/test.nix")) {
+            pkgs = nixpkgs;
+            inherit self;
+          };
         })
-        (builtins.attrNames (builtins.readDir ./modules)));
-
-      checks =
-        let
-          # Sanity check for deploy-rs systems
-          deploments = builtins.mapAttrs
-            (system: deployLib: deployLib.deployChecks self.deploy)
-            deploy-rs.lib;
-
-          # Checks to run with `nix flake check -L`, will run in a QEMU VM.
-          # Looks for all ./modules/<module name>/test.nix files and adds them to
-          # the flake's checks output. The test.nix file is optional and may be
-          # added to any module.
-          modules = builtins.listToAttrs (map
-            (x: {
-              name = x;
-              value = (import (./modules + "/${x}/test.nix")) {
-                pkgs = nixpkgs;
-                inherit self;
-              };
-            })
-            # Filter list of modules, leaving only modules which contain a
-            # `test.nix` file
-            (builtins.filter
-              (p: builtins.pathExists (./modules + "/${p}/test.nix"))
-              (builtins.attrNames (builtins.readDir ./modules))));
-        in
-        deploments // modules;
+        # Filter list of modules, leaving only modules which contain a
+        # `test.nix` file
+          (builtins.filter
+            (p: builtins.pathExists (./modules + "/${p}/test.nix"))
+            (builtins.attrNames (builtins.readDir ./modules))));
+      in deploments // modules;
     };
 }
