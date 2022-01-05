@@ -34,6 +34,7 @@ in
             "browser.bookmarks.autoExportHTML" = "true";
             "devtools.theme" = "dark";
           };
+          extraConfig = readFile ./user.js;
         };
         video = { id = 1; };
         work = { id = 2; };
