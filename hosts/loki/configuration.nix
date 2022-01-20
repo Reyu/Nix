@@ -52,4 +52,6 @@
 
   networking.hostName = "loki";
   networking.hostId = "d540cb4f";
+
+  virtualisation.podman.enable = true;
 }
