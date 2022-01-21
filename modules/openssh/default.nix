@@ -6,7 +6,6 @@ with lib; {
       enable = true;
       passwordAuthentication = false;
       startWhenNeeded = true;
-      challengeResponseAuthentication = false;
     };
 
     # Block anything that is not SSH.

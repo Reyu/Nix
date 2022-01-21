@@ -19,7 +19,7 @@ with lib; {
     enable = mkDefault true;
     passwordAuthentication = false;
     allowSFTP = mkDefault false;
-    challengeResponseAuthentication = false;
+    kbdInteractiveAuthentication = false;
     extraConfig = ''
       AllowTcpForwarding yes
       X11Forwarding no
