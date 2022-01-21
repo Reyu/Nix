@@ -11,7 +11,7 @@
       # Enable flakes
       package = pkgs.nixFlakes;
       extraOptions = ''
-        experimental-features = nix-command flakes ca-references
+        experimental-features = nix-command flakes
       '';
 
       # Clean up old generations after 30 days
