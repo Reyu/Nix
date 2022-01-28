@@ -43,7 +43,6 @@
     keepassxc
     obsidian
     slack
-    spotify
     syncthing
     xfce.thunar
     xsel
