@@ -2,3 +2,4 @@ result
 result-*
 .direnv
 secrets/*/*.raw
+regions/*/terraform.json
