@@ -47,6 +47,7 @@
         };
       };
     };
+    xserver.wacom.enable = true;
     zfs.autoScrub.enable = true;
   };
 
