@@ -259,6 +259,7 @@ cmp.setup({
         completeopt = "menu,menuone,noinsert,noselect",
     },
 })
+
 -- Use buffer source for `/`
 cmp.setup.cmdline('/', {
   sources = {

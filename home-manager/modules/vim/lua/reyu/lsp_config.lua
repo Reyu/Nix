@@ -6,7 +6,7 @@ local on_attach = function(client, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  require("which_key").register({
+  require("which-key").register({
       g = {
         name = "Goto",
         D = { function() vim.lsp.buf.declaration() end, "Goto Declaration" },
@@ -16,8 +16,8 @@ local on_attach = function(client, bufnr)
       },
       K = { function() vim.lsp.buf.hover() end, "Show hover menu" },
       ["<C-k>"] = { function() vim.lsp.buf.signature_help() end, "Signature Help" },
-      ["["] = { d = function() vim.lsp.diagnostic.goto_prev() end, "Goto previous diagnostic" },
-      ["]"] = { d = function() vim.lsp.diagnostic.goto_next() end, "Goto next diagnostic" },
+      -- ["["] = { d = function() vim.lsp.diagnostic.goto_prev() end, "Goto previous diagnostic" },
+      -- ["]"] = { d = function() vim.lsp.diagnostic.goto_next() end, "Goto next diagnostic" },
       ["<space>"] = {
         name = "LSP Actions",
         w = {
@@ -38,10 +38,10 @@ local on_attach = function(client, bufnr)
 
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
-    require("which_key").register({ f = { function vim.lsp.buf.formatting() end, "Formatt Buffer" } }, { prefix = "<space>" })
+    require("which-key").register({ f = { function() vim.lsp.buf.formatting() end, "Formatt Buffer" } }, { prefix = "<space>" })
   elseif client.resolved_capabilities.document_range_formatting then
     -- TODO: ??? why is this the same
-    require("which_key").register({ f = { function vim.lsp.buf.formatting() end, "Formatt Buffer" } }, { prefix = "<space>" })
+    require("which-key").register({ f = { function() vim.lsp.buf.formatting() end, "Formatt Buffer" } }, { prefix = "<space>" })
   end
 
   -- Set autocommands conditional on server_capabilities
@@ -65,7 +65,18 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- Use a loop to conveniently both setup defined servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "bashls", "dockerls", "hls", "html", "jsonls", "terraformls", "vimls", "yamlls", "jedi-language-server", "pylsp", "pyright" }
+local servers = {
+  "bashls",
+  "dockerls",
+  "hls",
+  "html",
+  "jedi_language_server",
+  "jsonls",
+  "pyright",
+  "terraformls",
+  "vimls",
+  "yamlls",
+}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
         on_attach = on_attach,

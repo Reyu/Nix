@@ -46,6 +46,8 @@
       vim-surround
       vim-tbone
       vim-unimpaired
+      vim-dadbod
+      vim-dadbod-ui
 
       # Completion
       cmp-buffer
@@ -76,21 +78,23 @@
     ];
     extraPackages = with pkgs; [
       # Language servers
-      rnix-lsp
-      terraform-ls
       nodePackages.bash-language-server
-      nodePackages.vim-language-server
-      nodePackages.yaml-language-server
       nodePackages.dockerfile-language-server-nodejs
+      nodePackages.vim-language-server
       nodePackages.vscode-html-languageserver-bin
       nodePackages.vscode-json-languageserver
+      nodePackages.yaml-language-server
+      rnix-lsp
+      terraform-ls
       # Linters
-      shellcheck
-      yamllint
       ansible-lint
+      editorconfig-checker
+      gitlint
       nix-linter
       nixpkgs-lint
+      shellcheck
       sqlint
+      yamllint
       # Formatters
       luaformatter
       nixfmt
