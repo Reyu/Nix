@@ -55,6 +55,7 @@
       null-ls-nvim
       nvim-cmp
       nvim-lspconfig
+      lspkind-nvim
 
       # Snippets
       luasnip

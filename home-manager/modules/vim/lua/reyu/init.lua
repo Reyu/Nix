@@ -212,30 +212,85 @@ require('reyu/lsp_config')
 -- Plugin: nvim-cmp {{{
 local cmp = require("cmp")
 cmp.setup({
-  mapping = {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
+    formatting = {
+        format = require("lspkind").cmp_format(),
+    },
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body)
+      end,
+    },
+    mapping = {
+      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      ['<CR>'] = cmp.mapping.confirm({ select = false }),
+      ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_next_item()
+        elseif luasnip.expand_or_jumpable() then
+          luasnip.expand_or_jump()
+        elseif has_words_before() then
+          cmp.complete()
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_prev_item()
+        elseif luasnip.jumpable(-1) then
+          luasnip.jump(-1)
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
+    },
+    sources = {
+        { name = "nvim_lsp" },
+        { name = "buffer" },
+        { name = 'luasnip' },
+    },
+    completion = {
+        completeopt = "menu,menuone,noinsert,noselect",
+    },
+})
+-- Use buffer source for `/`
+cmp.setup.cmdline('/', {
   sources = {
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-  },
-  completion = {
-    completeopt = 'menu,menuone,noinsert,noselect',
+    { name = 'buffer' }
   }
 })
+-- Use cmdline & path source for ':'
+-- cmp.setup.cmdline(':', {
+--   sources = cmp.config.sources({
+--     { name = 'path' }
+--   }, {
+--     { name = 'cmdline' }
+--   })
+-- })
 -- }}}
 -- Plugin: null-ls-nvim {{{
 local null_ls = require("null-ls")
 null_ls.setup({
   sources = {
+    null_ls.builtins.code_actions.gitrebase,
+    null_ls.builtins.code_actions.gitsigns,
+    null_ls.builtins.code_actions.proselint,
+    null_ls.builtins.code_actions.statix,
     null_ls.builtins.completion.luasnip,
-    null_ls.builtins.completion.spell,
+    null_ls.builtins.diagnostics.editorconfig_checker,
+    null_ls.builtins.diagnostics.gitlint,
+    null_ls.builtins.diagnostics.write_good,
+    null_ls.builtins.formatting.nixfmt,
+    null_ls.builtins.formatting.nixpkgs_fmt,
     null_ls.builtins.formatting.trim_newlines,
     null_ls.builtins.formatting.trim_whitespace,
+    null_ls.builtins.hover.dictionary,
   },
 })
 -- }}}
