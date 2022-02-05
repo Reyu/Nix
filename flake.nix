@@ -40,18 +40,18 @@
       inputs.flake-utils.follows = "utils";
     };
 
-    cmp-buffer = {
-      url = "github:hrsh7th/cmp-buffer";
-      flake = false;
-    };
-    cmp-nvim-lsp = {
-      url = "github:hrsh7th/cmp-nvim-lsp";
-      flake = false;
-    };
-    nvim-cmp = {
-      url = "github:hrsh7th/nvim-cmp";
-      flake = false;
-    };
+    # cmp-buffer = {
+    #   url = "github:hrsh7th/cmp-buffer";
+    #   flake = false;
+    # };
+    # cmp-nvim-lsp = {
+    #   url = "github:hrsh7th/cmp-nvim-lsp";
+    #   flake = false;
+    # };
+    # nvim-cmp = {
+    #   url = "github:hrsh7th/nvim-cmp";
+    #   flake = false;
+    # };
     telescope-hoogle = {
       url = "github:luc-tielen/telescope_hoogle";
       flake = false;

@@ -20,38 +20,6 @@
         "type": "github"
       }
     },
-    "cmp-buffer": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1641254550,
-        "narHash": "sha256-LXNckOkSqRMFWJhBaPUm8el0SgTS2XPvg3N8CEwHLHw=",
-        "owner": "hrsh7th",
-        "repo": "cmp-buffer",
-        "rev": "f83773e2f433a923997c5faad7ea689ec24d1785",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hrsh7th",
-        "repo": "cmp-buffer",
-        "type": "github"
-      }
-    },
-    "cmp-nvim-lsp": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1642242623,
-        "narHash": "sha256-itlKrCBo8wMNBCknW+7INOyVmwbcwmkGLzpc2lvvqk4=",
-        "owner": "hrsh7th",
-        "repo": "cmp-nvim-lsp",
-        "rev": "ebdfc204afb87f15ce3d3d3f5df0b8181443b5ba",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hrsh7th",
-        "repo": "cmp-nvim-lsp",
-        "type": "github"
-      }
-    },
     "deploy-rs": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -288,10 +256,7 @@
     "neovim-flake": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": [
-          "neovim-nightly",
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "dir": "contrib",
@@ -333,6 +298,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1643805626,
+        "narHash": "sha256-AXLDVMG+UaAGsGSpOtQHPIKB+IZ0KSd9WS77aanGzgc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "554d2d8aa25b6e583575459c297ec23750adb6cb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1643324901,
         "narHash": "sha256-h+2KX7Oxidaa5IG2KJWTR/zmTwwqIQ4KpKeyfa0zPxc=",
         "owner": "nixos",
@@ -358,22 +339,6 @@
       "original": {
         "owner": "nix-community",
         "repo": "NUR",
-        "type": "github"
-      }
-    },
-    "nvim-cmp": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1643095641,
-        "narHash": "sha256-wF1LDVSozWZOGL9J01/rRVdx2JsTpaaKHxMufG+pxL4=",
-        "owner": "hrsh7th",
-        "repo": "nvim-cmp",
-        "rev": "d93104244c3834fbd8f3dd01da9729920e0b5fe7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hrsh7th",
-        "repo": "nvim-cmp",
         "type": "github"
       }
     },
@@ -417,8 +382,6 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "cmp-buffer": "cmp-buffer",
-        "cmp-nvim-lsp": "cmp-nvim-lsp",
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",
         "discord-better-status": "discord-better-status",
@@ -430,9 +393,8 @@
         "home-manager": "home-manager",
         "mutt-trim": "mutt-trim",
         "neovim-nightly": "neovim-nightly",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "nur": "nur",
-        "nvim-cmp": "nvim-cmp",
         "powercord": "powercord",
         "telescope-hoogle": "telescope-hoogle",
         "unstable": "unstable",
