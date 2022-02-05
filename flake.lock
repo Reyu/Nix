@@ -256,15 +256,18 @@
     "neovim-flake": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "neovim-nightly",
+          "nixpkgs"
+        ]
       },
       "locked": {
         "dir": "contrib",
-        "lastModified": 1643812274,
-        "narHash": "sha256-CL1TK0bVwU+yDz3Y4enE2pb9Vw+NjzydbOiHbBRoHYs=",
+        "lastModified": 1643987241,
+        "narHash": "sha256-s94M2ta+BkdVUrrSQQvwz7kenc+GPP7W1vvkwBLD0zk=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "21cdecc8e0233d7a99d971327d21f701dbd65ba1",
+        "rev": "dcbf9f93e9038d9b4eb782aff2a07e2560f6e04e",
         "type": "github"
       },
       "original": {
@@ -283,11 +286,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1643876230,
-        "narHash": "sha256-0CH8laKh9tID6QQgPSxFehx6VETMxl/U4/YStcDUB2Y=",
+        "lastModified": 1644048646,
+        "narHash": "sha256-wYTDoEI+ImMZN9oYvoNGQcFTxTDvrrLZKwohRIS+SN4=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "0da25540a292fae703f281d81ff3c396778879da",
+        "rev": "002d0079996c03a318ee6ca389c4df87d3bbec31",
         "type": "github"
       },
       "original": {
@@ -297,22 +300,6 @@
       }
     },
     "nixpkgs": {
-      "locked": {
-        "lastModified": 1643805626,
-        "narHash": "sha256-AXLDVMG+UaAGsGSpOtQHPIKB+IZ0KSd9WS77aanGzgc=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "554d2d8aa25b6e583575459c297ec23750adb6cb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
       "locked": {
         "lastModified": 1643324901,
         "narHash": "sha256-h+2KX7Oxidaa5IG2KJWTR/zmTwwqIQ4KpKeyfa0zPxc=",
@@ -329,11 +316,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1643307918,
-        "narHash": "sha256-qHvUl1rL7bJMREgsmayrHJPqpS1D3fvdYkS77A70Jvk=",
+        "lastModified": 1644088903,
+        "narHash": "sha256-iPl5Sx6klTlsleXWUW8VYleXYmoZXtoMCSLmWlAweHg=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "84619f11eaa7b2a55b5ccdfa7242d4f05b2d06dd",
+        "rev": "a7add3703e212bc82c84bec786ef085d6bd769fb",
         "type": "github"
       },
       "original": {
@@ -393,7 +380,7 @@
         "home-manager": "home-manager",
         "mutt-trim": "mutt-trim",
         "neovim-nightly": "neovim-nightly",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "nur": "nur",
         "powercord": "powercord",
         "telescope-hoogle": "telescope-hoogle",
