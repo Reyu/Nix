@@ -30,6 +30,7 @@
       which-key-nvim
       gitsigns-nvim
       # symbols-outline-nvim
+      direnv-vim
 
       # Must have T.Pope plugins
       vim-capslock
