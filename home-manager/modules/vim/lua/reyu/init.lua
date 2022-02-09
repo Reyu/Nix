@@ -1,10 +1,7 @@
--- #############
--- NeoVim Config
--- #############
+-- ############# --
+-- NeoVim Config --
+-- ############# --
 require("impatient")
-
-local wk = require("which-key")
-local mappings = {}
 
 -- Plugin telescope-nvim {{{
 require("telescope").setup({
@@ -18,50 +15,49 @@ require("telescope").setup({
     },
 })
 
-local tb = require("telescope.builtin")
-wk.register({
+require("which-key").register({
     t = {
         name = "Telescope",
         t = { "<cmd>Telescope<space>", "Telescope prompt" },
         c = {
             function()
-                tb.colorscheme({})
+                require("telescope.builtin").colorscheme({})
             end,
             "Available colorschemes",
         },
         b = {
             function()
-                tb.buffers({})
+                require("telescope.builtin").buffers({})
             end,
             "Open buffers",
         },
         m = {
             function()
-                tb.marks({})
+                require("telescope.builtin").marks({})
             end,
             "Vim marks and their value",
         },
         r = {
             function()
-                tb.registers({})
+                require("telescope.builtin").registers({})
             end,
             "Vim registers",
         },
         q = {
             function()
-                tb.quickfix({})
+                require("telescope.builtin").quickfix({})
             end,
             "Items in the quickfix list",
         },
         l = {
             function()
-                tb.loclist({})
+                require("telescope.builtin").loclist({})
             end,
             "Items from the current window's location list",
         },
         j = {
             function()
-                tb.jumplist({})
+                require("telescope.builtin").jumplist({})
             end,
             "Jump List entries",
         },
@@ -70,16 +66,16 @@ wk.register({
         name = "Find Files",
         f = {
             function()
-              local ok = pcall(tb.git_files)
+              local ok = pcall(require("telescope.builtin").git_files)
               if not ok then
-                tb.find_files()
+                require("telescope.builtin").find_files()
               end
             end,
             "Files in your current working directory",
         },
         l = {
             function()
-                tb.live_grep({})
+                require("telescope.builtin").live_grep({})
             end,
             "Search for a string in current working directory",
         },
@@ -88,31 +84,31 @@ wk.register({
         name = "Git",
         c = {
             function()
-                tb.git_commits({})
+                require("telescope.builtin").git_commits({})
             end,
             "Lists git commits with diff preview",
         },
         d = {
             function()
-                tb.git_bcommits({})
+                require("telescope.builtin").git_bcommits({})
             end,
             "Lists buffer's git commits with diff",
         },
         b = {
             function()
-                tb.git_branches({})
+                require("telescope.builtin").git_branches({})
             end,
             "Lists all branches with log preview",
         },
         s = {
             function()
-                tb.git_status({})
+                require("telescope.builtin").git_status({})
             end,
             "Lists current changes per file with diff preview",
         },
         x = {
             function()
-                tb.git_stash({})
+                require("telescope.builtin").git_stash({})
             end,
             "Lists stash items in current repository",
         },
@@ -127,7 +123,7 @@ require("reyu/galaxyline")
 
 -- }}}
 -- Plugin: dashboard-nvim {{{
-wk.register({
+require("which-key").register({
     s = {
       name = "Session",
       s = { "<cmd>SessionSave<cr>", "Save current session" },
@@ -159,7 +155,7 @@ vim.g["tmux_navigator_disable_when_zoomed"] = 1
 vim.g["tmux_navigator_no_mappings"] = 1
 
 -- Normal mode
-wk.register({
+require("which-key").register({
     ["<A-h>"] = { "<cmd>TmuxNavigateLeft<cr>", "Navigate left one window (vim) or pane (tmux)" },
     ["<A-l>"] = { "<cmd>TmuxNavigateRight<cr>", "Navigate right one window (vim) or pane (tmux)" },
     ["<A-j>"] = { "<cmd>TmuxNavigateDown<cr>", "Navigate down one window (vim) or pane (tmux)" },
@@ -168,7 +164,7 @@ wk.register({
 }, { mode = "n" })
 
 -- Terminal Mode
-wk.register({
+require("which-key").register({
     ["<A-h>"] = { "<cmd>TmuxNavigateLeft<cr>", "Navigate left one window (vim) or pane (tmux)" },
     ["<A-l>"] = { "<cmd>TmuxNavigateRight<cr>", "Navigate right one window (vim) or pane (tmux)" },
     ["<A-j>"] = { "<cmd>TmuxNavigateDown<cr>", "Navigate down one window (vim) or pane (tmux)" },
@@ -210,6 +206,11 @@ require('gitsigns').setup()
 require('reyu/lsp_config')
 -- }}}
 -- Plugin: nvim-cmp {{{
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 local cmp = require("cmp")
 cmp.setup({
     formatting = {
@@ -232,8 +233,8 @@ cmp.setup({
       ["<Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
+        elseif require("luasnip").expand_or_locally_jumpable() then
+          require("luasnip").expand_or_jump()
         elseif has_words_before() then
           cmp.complete()
         else
@@ -243,17 +244,17 @@ cmp.setup({
       ["<S-Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
-          luasnip.jump(-1)
+        elseif require("luasnip").jumpable(-1) then
+          require("luasnip").jump(-1)
         else
           fallback()
         end
       end, { "i", "s" }),
     },
     sources = {
+        { name = 'luasnip' },
         { name = "nvim_lsp" },
         { name = "buffer" },
-        { name = 'luasnip' },
     },
     completion = {
         completeopt = "menu,menuone,noinsert,noselect",
@@ -267,13 +268,12 @@ cmp.setup.cmdline('/', {
   }
 })
 -- Use cmdline & path source for ':'
--- cmp.setup.cmdline(':', {
---   sources = cmp.config.sources({
---     { name = 'path' }
---   }, {
---     { name = 'cmdline' }
---   })
--- })
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' },
+    { name = 'cmdline' }
+  })
+})
 -- }}}
 -- Plugin: null-ls-nvim {{{
 local null_ls = require("null-ls")
@@ -284,51 +284,150 @@ null_ls.setup({
     null_ls.builtins.code_actions.proselint,
     null_ls.builtins.code_actions.statix,
     null_ls.builtins.completion.luasnip,
-    null_ls.builtins.diagnostics.editorconfig_checker,
     null_ls.builtins.diagnostics.gitlint,
     null_ls.builtins.diagnostics.write_good,
     null_ls.builtins.formatting.nixfmt,
-    null_ls.builtins.formatting.nixpkgs_fmt,
     null_ls.builtins.formatting.trim_newlines,
     null_ls.builtins.formatting.trim_whitespace,
     null_ls.builtins.hover.dictionary,
   },
 })
 -- }}}
+-- Plugin: luasnip {{{
+require("luasnip.loaders.from_vscode").load()
+require("luasnip.loaders.from_snipmate").load()
+require("luasnip").config.setup({
+	ext_opts = {
+		[require("luasnip.util.types").choiceNode] = {
+			active = {
+				virt_text = {{"●", "GruvboxOrange"}}
+			}
+		},
+		[require("luasnip.util.types").insertNode] = {
+			active = {
+				virt_text = {{"●", "GruvboxBlue"}}
+			}
+		}
+	},
+})
+
+local current_nsid = vim.api.nvim_create_namespace("LuaSnipChoiceListSelections")
+local current_win = nil
+
+local function window_for_choiceNode(choiceNode)
+    local buf = vim.api.nvim_create_buf(false, true)
+    local buf_text = {}
+    local row_selection = 0
+    local row_offset = 0
+    local text
+    for _, node in ipairs(choiceNode.choices) do
+        text = node:get_docstring()
+        -- find one that is currently showing
+        if node == choiceNode.active_choice then
+            -- current line is starter from buffer list which is length usually
+            row_selection = #buf_text
+            -- finding how many lines total within a choice selection
+            row_offset = #text
+        end
+        vim.list_extend(buf_text, text)
+    end
+
+    vim.api.nvim_buf_set_text(buf, 0,0,0,0, buf_text)
+    local w, h = vim.lsp.util._make_floating_popup_size(buf_text)
+
+    -- adding highlight so we can see which one is been selected.
+    local extmark = vim.api.nvim_buf_set_extmark(buf,current_nsid,row_selection ,0,
+        {hl_group = 'incsearch',end_line = row_selection + row_offset})
+
+    -- shows window at a beginning of choiceNode.
+    local win = vim.api.nvim_open_win(buf, false, {
+        relative = "win", width = w, height = h, bufpos = choiceNode.mark:pos_begin_end(), style = "minimal", border = 'rounded'})
+
+    -- return with 3 main important so we can use them again
+    return {win_id = win,extmark = extmark,buf = buf}
+end
+
+function choice_popup(choiceNode)
+	-- build stack for nested choiceNodes.
+	if current_win then
+		vim.api.nvim_win_close(current_win.win_id, true)
+                vim.api.nvim_buf_del_extmark(current_win.buf,current_nsid,current_win.extmark)
+	end
+        local create_win = window_for_choiceNode(choiceNode)
+	current_win = {
+		win_id = create_win.win_id,
+		prev = current_win,
+		node = choiceNode,
+                extmark = create_win.extmark,
+                buf = create_win.buf
+	}
+end
+
+function update_choice_popup(choiceNode)
+    vim.api.nvim_win_close(current_win.win_id, true)
+    vim.api.nvim_buf_del_extmark(current_win.buf,current_nsid,current_win.extmark)
+    local create_win = window_for_choiceNode(choiceNode)
+    current_win.win_id = create_win.win_id
+    current_win.extmark = create_win.extmark
+    current_win.buf = create_win.buf
+end
+
+function choice_popup_close()
+	vim.api.nvim_win_close(current_win.win_id, true)
+        vim.api.nvim_buf_del_extmark(current_win.buf,current_nsid,current_win.extmark)
+        -- now we are checking if we still have previous choice we were in after exit nested choice
+	current_win = current_win.prev
+	if current_win then
+		-- reopen window further down in the stack.
+                local create_win = window_for_choiceNode(current_win.node)
+                current_win.win_id = create_win.win_id
+                current_win.extmark = create_win.extmark
+                current_win.buf = create_win.buf
+	end
+end
+
+vim.cmd([[
+augroup choice_popup
+au!
+au User LuasnipChoiceNodeEnter lua choice_popup(require("luasnip").session.event_node)
+au User LuasnipChoiceNodeLeave lua choice_popup_close()
+au User LuasnipChangeChoice lua update_choice_popup(require("luasnip").session.event_node)
+augroup END
+]])
+-- }}}
 
 -- Filetypes
 -- Plugin: nvim-dap {{{
 require("reyu/dap")
-local dap = require("dap")
-wk.register({
-    ["<F5>"] = { function() dap.continue() end, "Start/Continue debug session" },
-    ["<F10>"] = { function() dap.step_over() end, "Run again for one step" },
-    ["<F11>"] = { function() dap.step_into() end, "Step into a function or method" },
-    ["<F11>"] = { function() dap.step_out() end, "Step out of a function or method" },
+require("which-key").register({
+    ["<F5>"] = { function() require("dap").continue() end, "Start/Continue debug session" },
+    ["<F10>"] = { function() require("dap").step_over() end, "Run again for one step" },
+    ["<F11>"] = { function() require("dap").step_into() end, "Step into a function or method" },
+    ["<F11>"] = { function() require("dap").step_out() end, "Step out of a function or method" },
 })
-wk.register({
+require("which-key").register({
     d = {
       name = "Debug",
-      b = { function() dap.toggle_breakpoint() end, "Creates or removes a breakpoint" },
-      B = { function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, "Set breakpoint w/ condition" },
-      e = { function() dap.set_exception_breakpoints() end, "Sets breakpoints on exceptions" },
-      l = { function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, "Set LogPoint" },
-      c = { function() dap.clear_breakpoints() end, "Clear all breakpoints" },
-      r = { function() dap.repl.open() end, "Open a REPL" },
-      R = { function() dap.run_last() end, "Re-runs the last debug-adapter/configuration" },
+      b = { function() require("dap").toggle_breakpoint() end, "Creates or removes a breakpoint" },
+      B = { function() require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, "Set breakpoint w/ condition" },
+      e = { function() require("dap").set_exception_breakpoints() end, "Sets breakpoints on exceptions" },
+      l = { function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, "Set LogPoint" },
+      c = { function() require("dap").clear_breakpoints() end, "Clear all breakpoints" },
+      r = { function() require("dap").repl.open() end, "Open a REPL" },
+      R = { function() require("dap").run_last() end, "Re-runs the last debug-adapter/configuration" },
       s = {
         name = "Step",
-        n = { function() dap.step_over() end, "Run again for one step" },
-        i = { function() dap.step_into() end, "Step into a function or method" },
-        o = { function() dap.step_out() end, "Step out of a function or method" },
-        b = { function() dap.step_back() end, "Step one step back" },
+        n = { function() require("dap").step_over() end, "Run again for one step" },
+        i = { function() require("dap").step_into() end, "Step into a function or method" },
+        o = { function() require("dap").step_out() end, "Step out of a function or method" },
+        b = { function() require("dap").step_back() end, "Step one step back" },
       },
     },
 }, { prefix = "<leader>" })
 -- }}}
 -- Plugin: nvim-dap-ui {{{
 require("dapui").setup()
-wk.register({ d = { u = { function() require("dapui").toggle() end, "Toggle DAP UI" } } }, { prefix = "<leader>" })
+require("which-key").register({ d = { u = { function() require("dapui").toggle() end, "Toggle DAP UI" } } }, { prefix = "<leader>" })
 -- }}}
 
 -- General Options {{{
@@ -364,27 +463,22 @@ vim.opt.scrolloff = 5
 vim.opt.sidescrolloff = 5
 
 -- Tell Vim which characters to show for expanded TABs,
--- trailing whitespace, and end-of-lines. VERY useful!
--- vim.opt.listchars = 'tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+'
--- vim.opt.list = true -- Show problematic characters.
+-- trailing whitespace, and end-of-lines.
+vim.opt.listchars = 'tab:> ,trail:-,extends:>,precedes:<,nbsp:+'
+vim.opt.list = true -- Show problematic characters.
 
 -- Also highlight all tabs and trailing whitespace characters.
---    highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
--- match ExtraWhitespace /\s\+$\|\t/
+vim.cmd([[
+highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+match ExtraWhitespace /\s\+$\|\t/
+]])
 
 -- Files, backups and undo
 -- Keep backups in cache folder, so as not to clutter filesystem.
-vim.opt.directory = "~/.cache/nvim/other,~/.cache/vim/other,."
-vim.opt.backupdir = "~/.cache/nvim/backup,~/.cache/vim/backup,."
-vim.opt.undodir = "~/.cache/nvim/undo,~/.cache/vim/undo,."
 
---    autocmd BufWritePost package.yaml call Hpack()
---    function Hpack()
---      let err = system('hpack ' . expand('%'))
---      if v:shell_error
---        echo err
---      endif
---    endfunction
+vim.opt.directory = "$XDG_DATA_HOME/nvim/other//,/tmp//"
+vim.opt.backupdir = "$XDG_DATA_HOME/nvim/backups//,/tmp//"
+vim.opt.undodir = "$XDG_DATA_HOME/nvim/undo//,/tmp//"
 --}}}
 -- Autocommands {{{
 function init_term()

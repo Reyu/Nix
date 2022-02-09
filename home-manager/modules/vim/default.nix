@@ -51,13 +51,14 @@
 
       # Completion
       cmp-buffer
+      cmp-cmdline
       cmp-nvim-lsp
       cmp-path
       cmp_luasnip
+      lspkind-nvim
       null-ls-nvim
       nvim-cmp
       nvim-lspconfig
-      lspkind-nvim
 
       # Snippets
       luasnip

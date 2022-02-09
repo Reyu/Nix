@@ -1,9 +1,6 @@
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
   require("which-key").register({
@@ -16,8 +13,8 @@ local on_attach = function(client, bufnr)
       },
       K = { function() vim.lsp.buf.hover() end, "Show hover menu" },
       ["<C-k>"] = { function() vim.lsp.buf.signature_help() end, "Signature Help" },
-      -- ["["] = { d = function() vim.lsp.diagnostic.goto_prev() end, "Goto previous diagnostic" },
-      -- ["]"] = { d = function() vim.lsp.diagnostic.goto_next() end, "Goto next diagnostic" },
+      ["["] = { d = function() vim.lsp.diagnostic.goto_prev() end, "Goto previous diagnostic" },
+      ["]"] = { d = function() vim.lsp.diagnostic.goto_next() end, "Goto next diagnostic" },
       ["<space>"] = {
         name = "LSP Actions",
         w = {
@@ -40,8 +37,7 @@ local on_attach = function(client, bufnr)
   if client.resolved_capabilities.document_formatting then
     require("which-key").register({ f = { function() vim.lsp.buf.formatting() end, "Formatt Buffer" } }, { prefix = "<space>" })
   elseif client.resolved_capabilities.document_range_formatting then
-    -- TODO: ??? why is this the same
-    require("which-key").register({ f = { function() vim.lsp.buf.formatting() end, "Formatt Buffer" } }, { prefix = "<space>" })
+    require("which-key").register({ f = { function() vim.lsp.buf.range_formatting() end, "Formatt Selection" } }, { mode = "v" })
   end
 
   -- Set autocommands conditional on server_capabilities
