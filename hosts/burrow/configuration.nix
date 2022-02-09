@@ -76,14 +76,14 @@
 
     services.nfs.server.enable = true;
     services.nfs.server.exports = ''
-      /data/media/ISO               *(rw,sec=krb5,all_squash,mp,subtree_check)
-      /data/media/audio/books       *(rw,sec=krb5,all_squash,mp,subtree_check)
-      /data/media/audio/music       *(rw,sec=krb5,all_squash,mp,subtree_check)
-      /data/media/books             *(rw,sec=krb5,all_squash,mp,subtree_check)
-      /data/media/pictures          *(rw,sec=krb5,all_squash,mp,subtree_check)
-      /data/media/video/movies      *(rw,sec=krb5,all_squash,mp,subtree_check)
-      /data/media/video/television  *(rw,sec=krb5,all_squash,mp,subtree_check)
-      /data/media/video/youtube     *(rw,sec=krb5,all_squash,mp,subtree_check)
+      /data/media/ISO               *(rw,all_squash,mp,subtree_check)
+      /data/media/audio/books       *(rw,all_squash,mp,subtree_check)
+      /data/media/audio/music       *(rw,all_squash,mp,subtree_check)
+      /data/media/books             *(rw,all_squash,mp,subtree_check)
+      /data/media/pictures          *(rw,all_squash,mp,subtree_check)
+      /data/media/video/movies      *(rw,all_squash,mp,subtree_check)
+      /data/media/video/television  *(rw,all_squash,mp,subtree_check)
+      /data/media/video/youtube     *(rw,all_squash,mp,subtree_check)
     '';
 
     services = {

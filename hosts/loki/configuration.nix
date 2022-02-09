@@ -54,5 +54,22 @@
   networking.hostName = "loki";
   networking.hostId = "d540cb4f";
 
+  fileSystems."/media/Anime" = {
+    device = "burrow.home.reyuzenfold.com:/data/media/video/anime";
+    fsType = "nfs";
+  };
+  fileSystems."/media/Television" = {
+    device = "burrow.home.reyuzenfold.com:/data/media/video/television";
+    fsType = "nfs";
+  };
+  fileSystems."/media/YouTube" = {
+    device = "burrow.home.reyuzenfold.com:/data/media/video/youtube";
+    fsType = "nfs";
+  };
+  fileSystems."/media/Music" = {
+    device = "burrow.home.reyuzenfold.com:/data/media/audio/music";
+    fsType = "nfs";
+  };
+
   virtualisation.podman.enable = true;
 }
