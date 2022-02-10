@@ -1,18 +1,9 @@
 { config, pkgs, lib, nur, ... }: {
-  imports = [
-    ../modules/git
-    ../modules/shell
-    ../modules/tmux
-    ../modules/vim
-  ];
+  imports = [ ../modules/git ../modules/shell ../modules/tmux ../modules/vim ];
 
-  reyu.programs = {
-    tmux.enable = true;
-  };
+  reyu.programs = { tmux.enable = true; };
 
-  home.packages = with pkgs; [
-    htop
-  ];
+  home.packages = with pkgs; [ htop ];
 
   manual.manpages.enable = true;
 

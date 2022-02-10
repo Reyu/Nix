@@ -40,18 +40,6 @@
       inputs.flake-utils.follows = "utils";
     };
 
-    # cmp-buffer = {
-    #   url = "github:hrsh7th/cmp-buffer";
-    #   flake = false;
-    # };
-    # cmp-nvim-lsp = {
-    #   url = "github:hrsh7th/cmp-nvim-lsp";
-    #   flake = false;
-    # };
-    # nvim-cmp = {
-    #   url = "github:hrsh7th/nvim-cmp";
-    #   flake = false;
-    # };
     telescope-hoogle = {
       url = "github:luc-tielen/telescope_hoogle";
       flake = false;
@@ -183,12 +171,12 @@
           desktop = hmConfig {
             inherit configuration extraSpecialArgs homeDirectory pkgs system
               username;
-            extraModules = [ ./home-manager/home-desktop.nix ];
+            extraModules = [ ./home-manager/profiles/desktop.nix ];
           };
           server = hmConfig {
             inherit configuration extraSpecialArgs homeDirectory pkgs system
               username;
-            extraModules = [ ./home-manager/home-server.nix ];
+            extraModules = [ ./home-manager/profiles/server.nix ];
           };
           minimalRoot = hmConfig {
             inherit extraSpecialArgs pkgs system;
