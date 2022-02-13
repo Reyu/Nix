@@ -49,7 +49,7 @@ in {
       extraConfig = {
         acl = {
           enabled = true;
-          default_policy = "allow";
+          default_policy = "deny";
           down_policy = "extend-cache";
         };
         ports.grpc = 8502;

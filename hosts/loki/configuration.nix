@@ -27,6 +27,17 @@
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
+  foxnet.consul.firewall.open = {
+    http = true;
+  };
+  services.consul = {
+    interface.bind = "enp73s0";
+    extraConfig = {
+      datacenter = "home";
+      retry_join = ["burrow.home.reyuzenfold.com"];
+    };
+  };
+
   services = {
     tailscale.enable = true;
     sanoid = {

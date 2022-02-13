@@ -143,6 +143,7 @@
           channelName = "unstable";
           modules = [
             ./hosts/loki/configuration.nix
+            consul
             docker
             kerberos
             ldap
@@ -151,7 +152,15 @@
           ];
         };
         burrow = {
-          modules = [ ./hosts/burrow/configuration.nix consul docker kerberos ldap ];
+          modules = [
+            ./hosts/burrow/configuration.nix
+            consul
+            vault
+            nomad
+            docker
+            kerberos
+            ldap
+          ];
         };
       };
 

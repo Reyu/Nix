@@ -14,6 +14,7 @@ let
   consul-jw88 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOfpNWcXCY6azaE3Lrcdj9HzCmpqeriM4iRLz3EBMz6B";
 in {
   "consul/encrypt.hcl".publicKeys = [ reyu ] ++ home ++ linode;
+  "nomad/burrow-consul.hcl".publicKeys = [ reyu burrow ];
   "nomad/burrow-vault.hcl".publicKeys = [ reyu burrow ];
   "nomad/encrypt.hcl".publicKeys = [ reyu ] ++ home;
   "vault/burrow-storage.hcl".publicKeys = [ reyu burrow ];

@@ -1,8 +1,6 @@
 { self, ... }: {
   imports = [
     ./hardware-configuration.nix
-    ./vault.nix
-    ./nomad.nix
     ./MAS.nix
   ];
   config = {
@@ -50,16 +48,80 @@
     };
     services.consul = {
       interface.bind = "eno1";
-      extraConfig.addresses.http = ''
+      extraConfig = {
+        server = true;
+        bootstrap = true;
+        datacenter = "home";
+        addresses.http = ''
           127.0.0.1 {{ GetInterfaceIP "eno1" }}
+        '';
+      };
+    };
+
+    foxnet.vault.firewall.open = {
+      http = true;
+      server = true;
+    };
+    services.vault = {
+      address = ''{{ GetInterfaceIP \"eno1\" }}:8200'';
+      storageBackend = "consul";
+      extraSettingsPaths = [ "/run/agenix/vault_storage_token.hcl" ];
+      extraConfig = ''
+        listener "tcp" {
+          address = "127.0.0.1:8200"
+          tls_disable = "true"
+        }
       '';
+    };
+
+    foxnet.nomad.firewall.open.http = true;
+    services.nomad = {
+      settings = {
+        server = {
+          enabled = true;
+          bootstrap_expect = 1;
+        };
+        client.enabled = true;
+        datacenter = "burrow";
+        region = "home";
+      };
+      extraSettingsPaths = [
+        "/run/agenix/nomad_encrypt.hcl"
+        "/run/agenix/nomad_consul.hcl"
+        "/run/agenix/nomad_vault.hcl"
+      ];
+    };
+
+    age.secrets = {
+      "vault_storage_token.hcl" = {
+        file = ../../secrets/vault/burrow-storage.hcl;
+        owner = "vault";
+      };
+      "nomad_encrypt.hcl" = {
+        file = ../../secrets/nomad/encrypt.hcl;
+        owner = "nomad";
+      };
+      "nomad_consul.hcl" = {
+        file = ../../secrets/nomad/burrow-consul.hcl;
+        owner = "nomad";
+      };
+      "nomad_vault.hcl" = {
+        file = ../../secrets/nomad/burrow-vault.hcl;
+        owner = "nomad";
+      };
     };
 
     users.groups = {
       media = { };
+      nomad = { };
     };
 
     users.users = {
+      nomad = {
+        shell = null;
+        group = "nomad";
+        isSystemUser = true;
+      };
       media = {
         shell = null;
         group = "media";
@@ -102,6 +164,9 @@
       allowedTCPPorts = [
         2049 # NFS
 
+        # Nomad - Traefik
+        80
+        8081
         # Nomad - Media
         32400 # pms
         8181 # tautulli
