@@ -21,6 +21,7 @@ in {
       extraPackages = with pkgs; [ cni-plugins ];
       settings = {
         acl.enabled = true;
+        client.cni_path = pkgs.cni-plugins + "/bin";
       };
     };
 

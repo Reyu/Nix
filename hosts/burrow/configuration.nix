@@ -56,6 +56,7 @@
           127.0.0.1 {{ GetInterfaceIP "eno1" }}
         '';
       };
+      extraConfigFiles = [ "/run/agenix/consul_extra.hcl" ];
     };
 
     foxnet.vault.firewall.open = {
@@ -76,6 +77,7 @@
 
     foxnet.nomad.firewall.open.http = true;
     services.nomad = {
+      dropPrivileges = false;
       settings = {
         server = {
           enabled = true;
@@ -93,6 +95,10 @@
     };
 
     age.secrets = {
+      "consul_extra.hcl" = {
+        file = ../../secrets/consul/burrow.hcl;
+        owner = "consul";
+      };
       "vault_storage_token.hcl" = {
         file = ../../secrets/vault/burrow-storage.hcl;
         owner = "vault";
