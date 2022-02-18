@@ -180,6 +180,7 @@
     };
 
     virtualisation.docker.enable = true;
+    virtualisation.docker.storageDriver = "zfs";
 
     networking.hostName = "burrow";
     networking.domain = "home.reyuzenfold.com";

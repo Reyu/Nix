@@ -83,4 +83,5 @@
   };
 
   virtualisation.podman.enable = true;
+  virtualisation.docker.storageDriver = "zfs";
 }
