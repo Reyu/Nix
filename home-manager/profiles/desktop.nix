@@ -26,7 +26,12 @@
   };
 
   # Allow "unfree" licenced packages
-  nixpkgs.config = { allowUnfree = true; };
+  nixpkgs.config = {
+    # allowUnfree = true;
+    permittedInsecurePackages = [
+      "electron-13.6.9" # TODO: Remove this once Discord updates
+    ];
+  };
 
   # Install these packages for my user
   home.packages = with pkgs; [
