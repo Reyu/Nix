@@ -1,13 +1,10 @@
 { config, pkgs, ... }: {
   config = {
     # Allow unfree licenced packages
-    nixpkgs.config.allowUnfree = true;
+    # nixpkgs.config.allowUnfree = true;
 
     # Enable flakes
     nix = {
-      # Save space by hardlinking store files
-      autoOptimiseStore = true;
-
       # Enable flakes
       package = pkgs.nixFlakes;
       extraOptions = ''
@@ -21,8 +18,11 @@
         options = "--delete-older-than 30d";
       };
 
+      # Save space by hardlinking store files
+      settings.auto-optimise-store = true;
+
       # Users allowed to run nix
-      allowedUsers = [ "root" ];
+      settings.allowed-users = [ "root" ];
     };
   };
 }
