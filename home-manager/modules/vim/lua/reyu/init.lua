@@ -481,14 +481,10 @@ vim.opt.backupdir = "$XDG_DATA_HOME/nvim/backups//,/tmp//"
 vim.opt.undodir = "$XDG_DATA_HOME/nvim/undo//,/tmp//"
 --}}}
 -- Autocommands {{{
+
 function init_term()
     vim.cmd("setlocal nonumber norelativenumber")
     vim.cmd("setlocal signcolumn=no")
 end
-
--- vim.tbl_map(function(c) vim.cmd(fmt('autocmd %s', c)) end, {
--- 'FileType * set formatoptions-=o',
--- 'TermOpen * lua init_term()',
--- 'BufRead,BufEnter /var/tmp/* setlocal nobackup noundofile nowritebackup'
--- })
+vim.cmd("autocmd TermOpen * lua init_term()")
 -- }}}

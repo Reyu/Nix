@@ -79,5 +79,10 @@ for _, lsp in ipairs(servers) do
         capabilities = capabilities,
         log_level = vim.lsp.protocol.MessageType.Log,
         message_level = vim.lsp.protocol.MessageType.Log
+        settings = {
+          haskell = {
+            formattingProvider = "stylish-haskell"
+          }
+        }
     }
 end
