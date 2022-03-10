@@ -45,7 +45,6 @@
     environment.systemPackages = with pkgs; [
       git
       pipes
-      terminal
       wget
     ];
 
@@ -58,8 +57,6 @@
     ##########################################################################
 
     networking = {
-      hostname = "kit";
-
       wireless.enable = false;
       networkmanager.enable = true;
 
@@ -113,24 +110,5 @@
 
     # No mutable users. This requires us to set passwords with hashedPassword.
     users.mutableUsers = false;
-
-    nix = {
-      gc = {
-        automatic = true;
-        options = "--delete-older-than 8d";
-      };
-
-      # nix flakes
-      package = pkgs.nixUnstable;
-      extraOptions = ''
-        experimental-features = nix-command flakes
-      '';
-    };
-
-    # This value determines the NixOS release with which your system is to be
-    # compatible, in order to avoid breaking some software such as database
-    # servers. You should change this only after NixOS release notes say you
-    # should.
-    system.stateVersion = "21.11"; # Did you read the comment?
   };
 }
