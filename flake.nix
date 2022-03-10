@@ -167,14 +167,9 @@
           ];
         };
         kit = {
+          system = "aarch64-linux";
           modules = [
             ./hosts/kit/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${defaultUserName} = import ./hm-user.nix;
-            }
             (import "${mobile-nixos}/lib/configuration.nix" {
               device = "pine64-pinephone";
             })
