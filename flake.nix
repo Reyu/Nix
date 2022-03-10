@@ -7,6 +7,10 @@
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
     devshell.url = "github:numtide/devshell";
+    mobile-nixos = {
+      url = github:NixOS/mobile-nixos;
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -160,6 +164,20 @@
             docker
             kerberos
             ldap
+          ];
+        };
+        kit = {
+          modules = [
+            ./hosts/kit/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${defaultUserName} = import ./hm-user.nix;
+            }
+            (import "${mobile-nixos}/lib/configuration.nix" {
+              device = "pine64-pinephone";
+            })
           ];
         };
       };
