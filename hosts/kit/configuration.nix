@@ -8,7 +8,7 @@
     powerManagement.enable = true;
     hardware.opengl.enable = true;
 
-    users.users.reyu.hashePassword = "$6$ilnpyf7xHLALBXwD$9oqaFEu13cxLjpij9ETEjGmQi4/yN/8EsXBFir8ZiLDfPtdkN7pobHk0B5dWazs2pdj6DFUZApnzGFDWL7CW..";
+    users.users.reyu.hashedPassword = "$6$ilnpyf7xHLALBXwD$9oqaFEu13cxLjpij9ETEjGmQi4/yN/8EsXBFir8ZiLDfPtdkN7pobHk0B5dWazs2pdj6DFUZApnzGFDWL7CW..";
 
     systemd.defaultUnit = "graphical.target";
     systemd.services.phosh = {

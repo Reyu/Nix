@@ -259,6 +259,23 @@
               };
             };
           };
+          kit = {
+            hostname = "172.16.128.9";
+            profiles = {
+              system = {
+                sshUser = "root";
+                path = host "kit";
+              };
+              hm-reyu = {
+                user = "reyu";
+                path = user "minimalRoot";
+              };
+              hm-root = {
+                sshUser = "root";
+                path = user "minimalRoot";
+              };
+            };
+          };
         };
 
       outputsBuilder = channels:
