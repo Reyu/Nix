@@ -149,6 +149,7 @@
             ./hosts/loki/configuration.nix
             consul
             docker
+            flatpak
             kerberos
             ldap
             sound
