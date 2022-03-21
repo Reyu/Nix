@@ -18,7 +18,7 @@
       plenary-nvim
       FixCursorHold-nvim
       telescope-hoogle
-      galaxyline-nvim
+      lualine-nvim
       nvim-web-devicons
       vimwiki
       mattn-calendar-vim

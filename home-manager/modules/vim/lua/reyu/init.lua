@@ -118,8 +118,8 @@ require("which-key").register({
 -- Plugin: telescope-hoogle {{{
 require('telescope').load_extension('hoogle')
 -- }}}
--- Plugin: galaxyline-nvim {{{
-require("reyu/galaxyline")
+-- Plugin: lualine-nvim {{{
+require("reyu/lualine")
 
 -- }}}
 -- Plugin: dashboard-nvim {{{
