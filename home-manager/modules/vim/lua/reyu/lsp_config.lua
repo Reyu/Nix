@@ -13,8 +13,8 @@ local on_attach = function(client, bufnr)
       },
       K = { function() vim.lsp.buf.hover() end, "Show hover menu" },
       ["<C-k>"] = { function() vim.lsp.buf.signature_help() end, "Signature Help" },
-      ["["] = { d = function() vim.lsp.diagnostic.goto_prev() end, "Goto previous diagnostic" },
-      ["]"] = { d = function() vim.lsp.diagnostic.goto_next() end, "Goto next diagnostic" },
+      ["["] = { d = { function() vim.lsp.diagnostic.goto_prev() end, "Goto previous diagnostic" }},
+      ["]"] = { d = { function() vim.lsp.diagnostic.goto_next() end, "Goto next diagnostic" }},
       ["<space>"] = {
         name = "LSP Actions",
         w = {
