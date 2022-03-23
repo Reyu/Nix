@@ -400,10 +400,11 @@ augroup END
 -- Plugin: nvim-dap {{{
 require("reyu/dap")
 require("which-key").register({
+    ["<F2>"] = { function() require("dapui").toggle() end, "Toggle debug UI" },
     ["<F5>"] = { function() require("dap").continue() end, "Start/Continue debug session" },
     ["<F10>"] = { function() require("dap").step_over() end, "Run again for one step" },
     ["<F11>"] = { function() require("dap").step_into() end, "Step into a function or method" },
-    ["<F11>"] = { function() require("dap").step_out() end, "Step out of a function or method" },
+    ["<F12>"] = { function() require("dap").step_out() end, "Step out of a function or method" },
 })
 require("which-key").register({
     d = {
@@ -428,6 +429,16 @@ require("which-key").register({
 -- Plugin: nvim-dap-ui {{{
 require("dapui").setup()
 require("which-key").register({ d = { u = { function() require("dapui").toggle() end, "Toggle DAP UI" } } }, { prefix = "<leader>" })
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
 -- }}}
 
 -- General Options {{{
