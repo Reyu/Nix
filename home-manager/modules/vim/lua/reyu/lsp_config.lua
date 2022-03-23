@@ -64,7 +64,7 @@ local servers = {
   "dockerls",
   "hls",
   "html",
-  "jedi_language_server",
+  -- "jedi_language_server",
   "jsonls",
   "pyright",
   "terraformls",
