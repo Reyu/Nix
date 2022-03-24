@@ -52,6 +52,10 @@
       url = "github:lifepillar/vim-solarized8";
       flake = false;
     };
+    one-small-step-for-vimkind = {
+      url = "github:jbyuki/one-small-step-for-vimkind";
+      flake = false;
+    };
 
     # Discord + Plugins
     powercord = {

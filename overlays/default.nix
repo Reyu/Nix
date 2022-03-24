@@ -9,6 +9,7 @@ final: prev: rec {
     # cmp-nvim-lsp =
     #   prev.callPackage ../packages/cmp-nvim-lsp.nix { inputs = inputs; };
     # nvim-cmp = prev.callPackage ../packages/nvim-cmp.nix { inputs = inputs; };
+    one-small-step-for-vimkind = prev.callPackage ../packages/one-small-step-for-vimkind.nix { inputs = inputs; };
     telescope-hoogle =
       prev.callPackage ../packages/telescope-hoogle.nix { inputs = inputs; };
     vim-solarized8 =

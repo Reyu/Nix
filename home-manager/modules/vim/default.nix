@@ -71,11 +71,14 @@
       vim-pandoc-after
       vim-pandoc-syntax
 
-      # Debugging
+      # Testing & Debugging
       nvim-dap
       nvim-dap-ui
-      telescope-dap-nvim
       nvim-dap-virtual-text
+      one-small-step-for-vimkind
+      telescope-dap-nvim
+      vim-test
+      vim-ultest
     ];
     extraPackages = with pkgs; [
       # Language servers

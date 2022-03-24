@@ -297,18 +297,18 @@ null_ls.setup({
 require("luasnip.loaders.from_vscode").load()
 require("luasnip.loaders.from_snipmate").load()
 require("luasnip").config.setup({
-	ext_opts = {
-		[require("luasnip.util.types").choiceNode] = {
-			active = {
-				virt_text = {{"●", "GruvboxOrange"}}
-			}
-		},
-		[require("luasnip.util.types").insertNode] = {
-			active = {
-				virt_text = {{"●", "GruvboxBlue"}}
-			}
-		}
-	},
+    ext_opts = {
+        [require("luasnip.util.types").choiceNode] = {
+            active = {
+                virt_text = {{"●", "GruvboxOrange"}}
+            }
+        },
+        [require("luasnip.util.types").insertNode] = {
+            active = {
+                virt_text = {{"●", "GruvboxBlue"}}
+            }
+        }
+    },
 })
 
 local current_nsid = vim.api.nvim_create_namespace("LuaSnipChoiceListSelections")
@@ -348,19 +348,19 @@ local function window_for_choiceNode(choiceNode)
 end
 
 function choice_popup(choiceNode)
-	-- build stack for nested choiceNodes.
-	if current_win then
-		vim.api.nvim_win_close(current_win.win_id, true)
+    -- build stack for nested choiceNodes.
+    if current_win then
+        vim.api.nvim_win_close(current_win.win_id, true)
                 vim.api.nvim_buf_del_extmark(current_win.buf,current_nsid,current_win.extmark)
-	end
+    end
         local create_win = window_for_choiceNode(choiceNode)
-	current_win = {
-		win_id = create_win.win_id,
-		prev = current_win,
-		node = choiceNode,
+    current_win = {
+        win_id = create_win.win_id,
+        prev = current_win,
+        node = choiceNode,
                 extmark = create_win.extmark,
                 buf = create_win.buf
-	}
+    }
 end
 
 function update_choice_popup(choiceNode)
@@ -373,17 +373,17 @@ function update_choice_popup(choiceNode)
 end
 
 function choice_popup_close()
-	vim.api.nvim_win_close(current_win.win_id, true)
+    vim.api.nvim_win_close(current_win.win_id, true)
         vim.api.nvim_buf_del_extmark(current_win.buf,current_nsid,current_win.extmark)
         -- now we are checking if we still have previous choice we were in after exit nested choice
-	current_win = current_win.prev
-	if current_win then
-		-- reopen window further down in the stack.
+    current_win = current_win.prev
+    if current_win then
+        -- reopen window further down in the stack.
                 local create_win = window_for_choiceNode(current_win.node)
                 current_win.win_id = create_win.win_id
                 current_win.extmark = create_win.extmark
                 current_win.buf = create_win.buf
-	end
+    end
 end
 
 vim.cmd([[
@@ -439,6 +439,9 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
+-- }}}
+-- Plugin: vim-ultest {{{
+vim.g.ultest_use_pty = 1;
 -- }}}
 
 -- General Options {{{

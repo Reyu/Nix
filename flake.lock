@@ -380,6 +380,22 @@
         "type": "github"
       }
     },
+    "one-small-step-for-vimkind": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1635280050,
+        "narHash": "sha256-bpYfScckecKSFj6ne0qiowza4fbkYxo7wsvHMypG1g4=",
+        "owner": "jbyuki",
+        "repo": "one-small-step-for-vimkind",
+        "rev": "59ec6f57545a42e68995994bfa57479da5e68b74",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jbyuki",
+        "repo": "one-small-step-for-vimkind",
+        "type": "github"
+      }
+    },
     "powercord": {
       "inputs": {
         "nixpkgs": [
@@ -434,6 +450,7 @@
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",
+        "one-small-step-for-vimkind": "one-small-step-for-vimkind",
         "powercord": "powercord",
         "telescope-hoogle": "telescope-hoogle",
         "unstable": "unstable",
