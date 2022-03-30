@@ -11,6 +11,10 @@
       url = github:NixOS/mobile-nixos;
       flake = false;
     };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -318,6 +322,12 @@
           value = import (./modules + "/${x}");
         })
         (builtins.attrNames (builtins.readDir ./modules)));
+
+      homeModules = builtins.listToAttrs (map (x: {
+        name = x;
+        value = import (./home-manager/modules + "/${x}");
+      })
+      (builtins.attrNames (builtins.readDir ./home-manager/modules)));
 
       checks =
         let

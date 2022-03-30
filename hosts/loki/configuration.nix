@@ -21,6 +21,7 @@
   boot.supportedFilesystems = [ "zfs" ];
   boot.kernelParams = [ "elevator=noop" ];
   boot.tmpOnTmpfs = true;
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   console.useXkbConfig = true;
   programs.dconf.enable = true;
