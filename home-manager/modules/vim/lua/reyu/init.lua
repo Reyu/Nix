@@ -490,12 +490,14 @@ match ExtraWhitespace /\s\+$\|\t/
 -- Files, backups and undo
 -- Keep backups in cache folder, so as not to clutter filesystem.
 
-vim.opt.directory = "$XDG_DATA_HOME/nvim/other//,/tmp//"
-vim.opt.backupdir = "$XDG_DATA_HOME/nvim/backups//,/tmp//"
-vim.opt.undodir = "$XDG_DATA_HOME/nvim/undo//,/tmp//"
+vim.opt.backup = true
+vim.opt.writebackup = true
+vim.opt.undofile = true
+vim.opt.directory = vim.fn.stdpath("cache") .. "/nvim/other//,/tmp//"
+vim.opt.backupdir = vim.fn.stdpath("cache") .. "/nvim/backups//,/tmp//"
+vim.opt.undodir = vim.fn.stdpath("cache") .. "/nvim/undo//,/tmp//"
 --}}}
 -- Autocommands {{{
-
 function init_term()
     vim.cmd("setlocal nonumber norelativenumber")
     vim.cmd("setlocal signcolumn=no")
