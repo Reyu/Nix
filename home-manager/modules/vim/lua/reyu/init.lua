@@ -9,111 +9,84 @@ require("telescope").setup({
         mappings = {
             i = {
                 ["<C-Down>"] = require("telescope.actions").cycle_history_next,
-                ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
-            },
-        },
-    },
+                ["<C-Up>"] = require("telescope.actions").cycle_history_prev
+            }
+        }
+    }
 })
 
 require("which-key").register({
     t = {
         name = "Telescope",
-        t = { "<cmd>Telescope<space>", "Telescope prompt" },
+        t = {"<cmd>Telescope<space>", "Telescope prompt"},
         c = {
-            function()
-                require("telescope.builtin").colorscheme({})
-            end,
-            "Available colorschemes",
+            function() require("telescope.builtin").colorscheme({}) end,
+            "Available colorschemes"
         },
         b = {
-            function()
-                require("telescope.builtin").buffers({})
-            end,
-            "Open buffers",
+            function() require("telescope.builtin").buffers({}) end,
+            "Open buffers"
         },
         m = {
-            function()
-                require("telescope.builtin").marks({})
-            end,
-            "Vim marks and their value",
+            function() require("telescope.builtin").marks({}) end,
+            "Vim marks and their value"
         },
         r = {
-            function()
-                require("telescope.builtin").registers({})
-            end,
-            "Vim registers",
+            function() require("telescope.builtin").registers({}) end,
+            "Vim registers"
         },
         q = {
-            function()
-                require("telescope.builtin").quickfix({})
-            end,
-            "Items in the quickfix list",
+            function() require("telescope.builtin").quickfix({}) end,
+            "Items in the quickfix list"
         },
         l = {
-            function()
-                require("telescope.builtin").loclist({})
-            end,
-            "Items from the current window's location list",
+            function() require("telescope.builtin").loclist({}) end,
+            "Items from the current window's location list"
         },
         j = {
-            function()
-                require("telescope.builtin").jumplist({})
-            end,
-            "Jump List entries",
-        },
+            function() require("telescope.builtin").jumplist({}) end,
+            "Jump List entries"
+        }
     },
     f = {
         name = "Find Files",
         f = {
             function()
-              local ok = pcall(require("telescope.builtin").git_files)
-              if not ok then
-                require("telescope.builtin").find_files()
-              end
-            end,
-            "Files in your current working directory",
+                local ok = pcall(require("telescope.builtin").git_files)
+                if not ok then
+                    require("telescope.builtin").find_files()
+                end
+            end, "Files in your current working directory"
         },
         l = {
-            function()
-                require("telescope.builtin").live_grep({})
-            end,
-            "Search for a string in current working directory",
-        },
+            function() require("telescope.builtin").live_grep({}) end,
+            "Search for a string in current working directory"
+        }
     },
     g = {
         name = "Git",
         c = {
-            function()
-                require("telescope.builtin").git_commits({})
-            end,
-            "Lists git commits with diff preview",
+            function() require("telescope.builtin").git_commits({}) end,
+            "Lists git commits with diff preview"
         },
         d = {
-            function()
-                require("telescope.builtin").git_bcommits({})
-            end,
-            "Lists buffer's git commits with diff",
+            function() require("telescope.builtin").git_bcommits({}) end,
+            "Lists buffer's git commits with diff"
         },
         b = {
-            function()
-                require("telescope.builtin").git_branches({})
-            end,
-            "Lists all branches with log preview",
+            function() require("telescope.builtin").git_branches({}) end,
+            "Lists all branches with log preview"
         },
         s = {
-            function()
-                require("telescope.builtin").git_status({})
-            end,
-            "Lists current changes per file with diff preview",
+            function() require("telescope.builtin").git_status({}) end,
+            "Lists current changes per file with diff preview"
         },
         x = {
-            function()
-                require("telescope.builtin").git_stash({})
-            end,
-            "Lists stash items in current repository",
-        },
-    },
-}, { mode = "n", prefix = "<leader>" })
+            function() require("telescope.builtin").git_stash({}) end,
+            "Lists stash items in current repository"
+        }
+    }
+}, {mode = "n", prefix = "<leader>"})
 -- }}}
 -- Plugin: telescope-hoogle {{{
 require('telescope').load_extension('hoogle')
@@ -125,11 +98,11 @@ require("reyu/lualine")
 -- Plugin: dashboard-nvim {{{
 require("which-key").register({
     s = {
-      name = "Session",
-      s = { "<cmd>SessionSave<cr>", "Save current session" },
-      l = { "<cmd>SessionLoad<cr>", "Load last session" },
-    },
-}, { mode = "n", prefix = "<leader>" })
+        name = "Session",
+        s = {"<cmd>SessionSave<cr>", "Save current session"},
+        l = {"<cmd>SessionLoad<cr>", "Load last session"}
+    }
+}, {mode = "n", prefix = "<leader>"})
 
 vim.g['dashboard_default_executive'] = 'telescope'
 vim.g["dashboard_custom_header"] = {
@@ -138,7 +111,7 @@ vim.g["dashboard_custom_header"] = {
     " ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
     " ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
     " ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
-    " ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
+    " ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝"
 }
 vim.g["dashboard_custom_shortcut"] = {
     book_marks = "\\ t m",
@@ -147,7 +120,7 @@ vim.g["dashboard_custom_shortcut"] = {
     find_history = "\\ f h",
     find_word = "\\ f a",
     last_session = "\\ s l",
-    new_file = "     ",
+    new_file = "     "
 }
 -- }}}
 -- Plugin: tmux-navigator {{{
@@ -156,20 +129,45 @@ vim.g["tmux_navigator_no_mappings"] = 1
 
 -- Normal mode
 require("which-key").register({
-    ["<A-h>"] = { "<cmd>TmuxNavigateLeft<cr>", "Navigate left one window (vim) or pane (tmux)" },
-    ["<A-l>"] = { "<cmd>TmuxNavigateRight<cr>", "Navigate right one window (vim) or pane (tmux)" },
-    ["<A-j>"] = { "<cmd>TmuxNavigateDown<cr>", "Navigate down one window (vim) or pane (tmux)" },
-    ["<A-k>"] = { "<cmd>TmuxNavigateUp<cr>", "Navigate up one window (vim) or pane (tmux)" },
-    ["<A-p>"] = { "<cmd>TmuxNavigatePrevious<cr>", "Navigate to previous window (vim) or pane (tmux)" },
-}, { mode = "n" })
+    ["<A-h>"] = {
+        "<cmd>TmuxNavigateLeft<cr>",
+        "Navigate left one window (vim) or pane (tmux)"
+    },
+    ["<A-l>"] = {
+        "<cmd>TmuxNavigateRight<cr>",
+        "Navigate right one window (vim) or pane (tmux)"
+    },
+    ["<A-j>"] = {
+        "<cmd>TmuxNavigateDown<cr>",
+        "Navigate down one window (vim) or pane (tmux)"
+    },
+    ["<A-k>"] = {
+        "<cmd>TmuxNavigateUp<cr>", "Navigate up one window (vim) or pane (tmux)"
+    },
+    ["<A-p>"] = {
+        "<cmd>TmuxNavigatePrevious<cr>",
+        "Navigate to previous window (vim) or pane (tmux)"
+    }
+}, {mode = "n"})
 
 -- Terminal Mode
 require("which-key").register({
-    ["<A-h>"] = { "<cmd>TmuxNavigateLeft<cr>", "Navigate left one window (vim) or pane (tmux)" },
-    ["<A-l>"] = { "<cmd>TmuxNavigateRight<cr>", "Navigate right one window (vim) or pane (tmux)" },
-    ["<A-j>"] = { "<cmd>TmuxNavigateDown<cr>", "Navigate down one window (vim) or pane (tmux)" },
-    ["<A-k>"] = { "<cmd>TmuxNavigateUp<cr>", "Navigate up one window (vim) or pane (tmux)" },
-}, { mode = "t" })
+    ["<A-h>"] = {
+        "<cmd>TmuxNavigateLeft<cr>",
+        "Navigate left one window (vim) or pane (tmux)"
+    },
+    ["<A-l>"] = {
+        "<cmd>TmuxNavigateRight<cr>",
+        "Navigate right one window (vim) or pane (tmux)"
+    },
+    ["<A-j>"] = {
+        "<cmd>TmuxNavigateDown<cr>",
+        "Navigate down one window (vim) or pane (tmux)"
+    },
+    ["<A-k>"] = {
+        "<cmd>TmuxNavigateUp<cr>", "Navigate up one window (vim) or pane (tmux)"
+    }
+}, {mode = "t"})
 -- }}}
 -- Plugin: FixCursorHold-nvim {{{
 vim.g['cursorhold_updatetime'] = 100
@@ -178,24 +176,28 @@ vim.g['cursorhold_updatetime'] = 100
 vim.g["lion_squeeze_spaces"] = 1
 -- }}}
 -- Plugin: vimwiki {{{
-vim.g['vimwiki_filetypes'] = { 'markdown', 'pandoc' }
+vim.g['vimwiki_filetypes'] = {'markdown', 'pandoc'}
 vim.g["vimwiki_list"] = {
-  { path = "~/Notes", ext = ".md", syntax = "markdown", list_margin = 0, links_space_char = "_" },
+    {
+        path = "~/Notes",
+        ext = ".md",
+        syntax = "markdown",
+        list_margin = 0,
+        links_space_char = "_"
+    }
 }
 -- }}}
 -- Plugin: nvim-ts-context-commentstring {{{
 require("nvim-treesitter.configs").setup({
-    context_commentstring = {
-        enable = true,
-    },
+    context_commentstring = {enable = true}
 })
 -- }}}
 -- Plugin: neoscroll-nvim {{{
-require("neoscroll").setup({ easing_function = 'quadratic' })
+require("neoscroll").setup({easing_function = 'quadratic'})
 -- }}}
 -- Plugin: nvim-tree-lua {{{
 vim.g['nvim_tree_git_hl'] = 1
-require('nvim-tree').setup{}
+require('nvim-tree').setup {}
 -- }}}
 -- Plugin: gitsigns-nvim {{{
 require('gitsigns').setup()
@@ -207,90 +209,76 @@ require('reyu/lsp_config')
 -- }}}
 -- Plugin: nvim-cmp {{{
 local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and
+               vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col,
+                                                                          col)
+                   :match("%s") == nil
 end
 
 local cmp = require("cmp")
 cmp.setup({
-    formatting = {
-        format = require("lspkind").cmp_format(),
-    },
+    formatting = {format = require("lspkind").cmp_format()},
     snippet = {
-      expand = function(args)
-        require('luasnip').lsp_expand(args.body)
-      end,
+        expand = function(args) require('luasnip').lsp_expand(args.body) end
     },
     mapping = {
-      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<C-e>'] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      ['<CR>'] = cmp.mapping.confirm({ select = false }),
-      ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        elseif require("luasnip").expand_or_locally_jumpable() then
-          require("luasnip").expand_or_jump()
-        elseif has_words_before() then
-          cmp.complete()
-        else
-          fallback()
-        end
-      end, { "i", "s" }),
-      ["<S-Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        elseif require("luasnip").jumpable(-1) then
-          require("luasnip").jump(-1)
-        else
-          fallback()
-        end
-      end, { "i", "s" }),
+        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i', 'c'}),
+        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), {'i', 'c'}),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), {'i', 'c'}),
+        ['<C-e>'] = cmp.mapping({
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close()
+        }),
+        ['<CR>'] = cmp.mapping.confirm({select = false}),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            elseif require("luasnip").expand_or_locally_jumpable() then
+                require("luasnip").expand_or_jump()
+            elseif has_words_before() then
+                cmp.complete()
+            else
+                fallback()
+            end
+        end, {"i", "s"}),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            elseif require("luasnip").jumpable(-1) then
+                require("luasnip").jump(-1)
+            else
+                fallback()
+            end
+        end, {"i", "s"})
     },
-    sources = {
-        { name = 'luasnip' },
-        { name = "nvim_lsp" },
-        { name = "buffer" },
-    },
-    completion = {
-        completeopt = "menu,menuone,noinsert,noselect",
-    },
+    sources = {{name = 'luasnip'}, {name = "nvim_lsp"}, {name = "buffer"}},
+    completion = {completeopt = "menu,menuone,noinsert,noselect"}
 })
 
 -- Use buffer source for `/`
-cmp.setup.cmdline('/', {
-  sources = {
-    { name = 'buffer' }
-  }
-})
+cmp.setup.cmdline('/', {sources = {{name = 'buffer'}}})
 -- Use cmdline & path source for ':'
 cmp.setup.cmdline(':', {
-  sources = cmp.config.sources({
-    { name = 'path' },
-    { name = 'cmdline' }
-  })
+    sources = cmp.config.sources({{name = 'path'}, {name = 'cmdline'}})
 })
 -- }}}
 -- Plugin: null-ls-nvim {{{
 local null_ls = require("null-ls")
 null_ls.setup({
-  sources = {
-    null_ls.builtins.code_actions.gitrebase,
-    null_ls.builtins.code_actions.gitsigns,
-    null_ls.builtins.code_actions.proselint,
-    null_ls.builtins.code_actions.statix,
-    null_ls.builtins.completion.luasnip,
-    null_ls.builtins.diagnostics.gitlint,
-    null_ls.builtins.diagnostics.write_good,
-    null_ls.builtins.formatting.nixfmt,
-    null_ls.builtins.formatting.trim_newlines,
-    null_ls.builtins.formatting.trim_whitespace,
-    null_ls.builtins.hover.dictionary,
-  },
+    sources = {
+        null_ls.builtins.code_actions.gitrebase,
+        null_ls.builtins.code_actions.gitsigns,
+        null_ls.builtins.code_actions.proselint,
+        null_ls.builtins.code_actions.statix,
+        null_ls.builtins.completion.luasnip,
+        null_ls.builtins.diagnostics.gitlint,
+        null_ls.builtins.diagnostics.write_good,
+        null_ls.builtins.formatting.nixfmt,
+        null_ls.builtins.formatting.trim_newlines,
+        null_ls.builtins.formatting.trim_whitespace,
+        null_ls.builtins.hover.dictionary
+    }
 })
 -- }}}
 -- Plugin: luasnip {{{
@@ -299,19 +287,16 @@ require("luasnip.loaders.from_snipmate").load()
 require("luasnip").config.setup({
     ext_opts = {
         [require("luasnip.util.types").choiceNode] = {
-            active = {
-                virt_text = {{"●", "GruvboxOrange"}}
-            }
+            active = {virt_text = {{"●", "GruvboxOrange"}}}
         },
         [require("luasnip.util.types").insertNode] = {
-            active = {
-                virt_text = {{"●", "GruvboxBlue"}}
-            }
+            active = {virt_text = {{"●", "GruvboxBlue"}}}
         }
-    },
+    }
 })
 
-local current_nsid = vim.api.nvim_create_namespace("LuaSnipChoiceListSelections")
+local current_nsid = vim.api
+                         .nvim_create_namespace("LuaSnipChoiceListSelections")
 local current_win = nil
 
 local function window_for_choiceNode(choiceNode)
@@ -332,40 +317,51 @@ local function window_for_choiceNode(choiceNode)
         vim.list_extend(buf_text, text)
     end
 
-    vim.api.nvim_buf_set_text(buf, 0,0,0,0, buf_text)
+    vim.api.nvim_buf_set_text(buf, 0, 0, 0, 0, buf_text)
     local w, h = vim.lsp.util._make_floating_popup_size(buf_text)
 
     -- adding highlight so we can see which one is been selected.
-    local extmark = vim.api.nvim_buf_set_extmark(buf,current_nsid,row_selection ,0,
-        {hl_group = 'incsearch',end_line = row_selection + row_offset})
+    local extmark = vim.api.nvim_buf_set_extmark(buf, current_nsid,
+                                                 row_selection, 0, {
+        hl_group = 'incsearch',
+        end_line = row_selection + row_offset
+    })
 
     -- shows window at a beginning of choiceNode.
     local win = vim.api.nvim_open_win(buf, false, {
-        relative = "win", width = w, height = h, bufpos = choiceNode.mark:pos_begin_end(), style = "minimal", border = 'rounded'})
+        relative = "win",
+        width = w,
+        height = h,
+        bufpos = choiceNode.mark:pos_begin_end(),
+        style = "minimal",
+        border = 'rounded'
+    })
 
     -- return with 3 main important so we can use them again
-    return {win_id = win,extmark = extmark,buf = buf}
+    return {win_id = win, extmark = extmark, buf = buf}
 end
 
 function choice_popup(choiceNode)
     -- build stack for nested choiceNodes.
     if current_win then
         vim.api.nvim_win_close(current_win.win_id, true)
-                vim.api.nvim_buf_del_extmark(current_win.buf,current_nsid,current_win.extmark)
+        vim.api.nvim_buf_del_extmark(current_win.buf, current_nsid,
+                                     current_win.extmark)
     end
-        local create_win = window_for_choiceNode(choiceNode)
+    local create_win = window_for_choiceNode(choiceNode)
     current_win = {
         win_id = create_win.win_id,
         prev = current_win,
         node = choiceNode,
-                extmark = create_win.extmark,
-                buf = create_win.buf
+        extmark = create_win.extmark,
+        buf = create_win.buf
     }
 end
 
 function update_choice_popup(choiceNode)
     vim.api.nvim_win_close(current_win.win_id, true)
-    vim.api.nvim_buf_del_extmark(current_win.buf,current_nsid,current_win.extmark)
+    vim.api.nvim_buf_del_extmark(current_win.buf, current_nsid,
+                                 current_win.extmark)
     local create_win = window_for_choiceNode(choiceNode)
     current_win.win_id = create_win.win_id
     current_win.extmark = create_win.extmark
@@ -374,15 +370,16 @@ end
 
 function choice_popup_close()
     vim.api.nvim_win_close(current_win.win_id, true)
-        vim.api.nvim_buf_del_extmark(current_win.buf,current_nsid,current_win.extmark)
-        -- now we are checking if we still have previous choice we were in after exit nested choice
+    vim.api.nvim_buf_del_extmark(current_win.buf, current_nsid,
+                                 current_win.extmark)
+    -- now we are checking if we still have previous choice we were in after exit nested choice
     current_win = current_win.prev
     if current_win then
         -- reopen window further down in the stack.
-                local create_win = window_for_choiceNode(current_win.node)
-                current_win.win_id = create_win.win_id
-                current_win.extmark = create_win.extmark
-                current_win.buf = create_win.buf
+        local create_win = window_for_choiceNode(current_win.node)
+        current_win.win_id = create_win.win_id
+        current_win.extmark = create_win.extmark
+        current_win.buf = create_win.buf
     end
 end
 
@@ -400,45 +397,86 @@ augroup END
 -- Plugin: nvim-dap {{{
 require("reyu/dap")
 require("which-key").register({
-    ["<F2>"] = { function() require("dapui").toggle() end, "Toggle debug UI" },
-    ["<F5>"] = { function() require("dap").continue() end, "Start/Continue debug session" },
-    ["<F10>"] = { function() require("dap").step_over() end, "Run again for one step" },
-    ["<F11>"] = { function() require("dap").step_into() end, "Step into a function or method" },
-    ["<F12>"] = { function() require("dap").step_out() end, "Step out of a function or method" },
+    ["<F2>"] = {function() require("dapui").toggle() end, "Toggle debug UI"},
+    ["<F5>"] = {
+        function() require("dap").continue() end, "Start/Continue debug session"
+    },
+    ["<F10>"] = {
+        function() require("dap").step_over() end, "Run again for one step"
+    },
+    ["<F11>"] = {
+        function() require("dap").step_into() end,
+        "Step into a function or method"
+    },
+    ["<F12>"] = {
+        function() require("dap").step_out() end,
+        "Step out of a function or method"
+    }
 })
 require("which-key").register({
     d = {
-      name = "Debug",
-      b = { function() require("dap").toggle_breakpoint() end, "Creates or removes a breakpoint" },
-      B = { function() require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, "Set breakpoint w/ condition" },
-      e = { function() require("dap").set_exception_breakpoints() end, "Sets breakpoints on exceptions" },
-      l = { function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, "Set LogPoint" },
-      c = { function() require("dap").clear_breakpoints() end, "Clear all breakpoints" },
-      r = { function() require("dap").repl.open() end, "Open a REPL" },
-      R = { function() require("dap").run_last() end, "Re-runs the last debug-adapter/configuration" },
-      s = {
-        name = "Step",
-        n = { function() require("dap").step_over() end, "Run again for one step" },
-        i = { function() require("dap").step_into() end, "Step into a function or method" },
-        o = { function() require("dap").step_out() end, "Step out of a function or method" },
-        b = { function() require("dap").step_back() end, "Step one step back" },
-      },
-    },
-}, { prefix = "<leader>" })
+        name = "Debug",
+        b = {
+            function() require("dap").toggle_breakpoint() end,
+            "Creates or removes a breakpoint"
+        },
+        B = {
+            function()
+                require("dap").set_breakpoint(vim.fn.input(
+                                                  "Breakpoint condition: "))
+            end, "Set breakpoint w/ condition"
+        },
+        e = {
+            function() require("dap").set_exception_breakpoints() end,
+            "Sets breakpoints on exceptions"
+        },
+        l = {
+            function()
+                require("dap").set_breakpoint(nil, nil, vim.fn
+                                                  .input("Log point message: "))
+            end, "Set LogPoint"
+        },
+        c = {
+            function() require("dap").clear_breakpoints() end,
+            "Clear all breakpoints"
+        },
+        r = {function() require("dap").repl.open() end, "Open a REPL"},
+        R = {
+            function() require("dap").run_last() end,
+            "Re-runs the last debug-adapter/configuration"
+        },
+        s = {
+            name = "Step",
+            n = {
+                function() require("dap").step_over() end,
+                "Run again for one step"
+            },
+            i = {
+                function() require("dap").step_into() end,
+                "Step into a function or method"
+            },
+            o = {
+                function() require("dap").step_out() end,
+                "Step out of a function or method"
+            },
+            b = {
+                function() require("dap").step_back() end, "Step one step back"
+            }
+        }
+    }
+}, {prefix = "<leader>"})
 -- }}}
 -- Plugin: nvim-dap-ui {{{
 require("dapui").setup()
-require("which-key").register({ d = { u = { function() require("dapui").toggle() end, "Toggle DAP UI" } } }, { prefix = "<leader>" })
+require("which-key").register({
+    d = {u = {function() require("dapui").toggle() end, "Toggle DAP UI"}}
+}, {prefix = "<leader>"})
 local dap, dapui = require("dap"), require("dapui")
-dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
-end
-dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
-end
+dap.listeners.after.event_initialized["dapui_config"] =
+    function() dapui.open() end
+dap.listeners.before.event_terminated["dapui_config"] =
+    function() dapui.close() end
+dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 -- }}}
 -- Plugin: vim-ultest {{{
 vim.g.ultest_use_pty = 1;
@@ -496,7 +534,7 @@ vim.opt.undofile = true
 vim.opt.directory = vim.fn.stdpath("cache") .. "/nvim/other//,/tmp//"
 vim.opt.backupdir = vim.fn.stdpath("cache") .. "/nvim/backups//,/tmp//"
 vim.opt.undodir = vim.fn.stdpath("cache") .. "/nvim/undo//,/tmp//"
---}}}
+-- }}}
 -- Autocommands {{{
 function init_term()
     vim.cmd("setlocal nonumber norelativenumber")
