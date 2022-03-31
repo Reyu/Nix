@@ -62,9 +62,14 @@ dap.configurations = {
         {
             type = 'haskell',
             request = 'launch',
-            name = 'Debug',
+            name = 'Debug Current File',
             workspace = '${workspaceFolder}',
             startup = "${file}",
+            startupFunc = function()
+                local val = vim.fn.input('Startup Function [main]: ')
+                if val ~= "" then return val end
+                return 'main'
+            end,
             stopOnEntry = true,
             logFile = vim.fn.stdpath('data') .. '/haskell-dap.log',
             logLevel = 'WARN',
