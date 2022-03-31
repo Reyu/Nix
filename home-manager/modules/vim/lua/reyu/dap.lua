@@ -58,6 +58,22 @@ dap.adapters = {
     end
 }
 dap.configurations = {
+    haskell = {
+        {
+            type = 'haskell',
+            request = 'launch',
+            name = 'Debug',
+            workspace = '${workspaceFolder}',
+            startup = "${file}",
+            stopOnEntry = true,
+            logFile = vim.fn.stdpath('data') .. '/haskell-dap.log',
+            logLevel = 'WARN',
+            ghciEnv = vim.empty_dict(),
+            ghciPrompt = "H>>=",
+            ghciInitialPrompt = "λ: ",
+            ghciCmd = "ghci-dap --interactive -i${workspaceFolder}/src"
+        }
+    },
     python = {
         {
             type = 'python',
