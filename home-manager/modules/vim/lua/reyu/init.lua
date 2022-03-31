@@ -84,7 +84,11 @@ require("which-key").register({
         x = {
             function() require("telescope.builtin").git_stash({}) end,
             "Lists stash items in current repository"
-        }
+        },
+        ["<SPACE>"] = {
+            ":Git ",
+            "Run Git command"
+        },
     }
 }, {mode = "n", prefix = "<leader>"})
 -- }}}
