@@ -78,8 +78,8 @@ require("which-key").register({
             "Lists all branches with log preview"
         },
         s = {
-            function() require("telescope.builtin").git_status({}) end,
-            "Lists current changes per file with diff preview"
+            "<CMD>Git<CR>",
+            "Fugitive git status"
         },
         x = {
             function() require("telescope.builtin").git_stash({}) end,
