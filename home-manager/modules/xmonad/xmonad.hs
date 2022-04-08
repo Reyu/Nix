@@ -155,7 +155,7 @@ projects =
             }
   , Project { projectName      = wsNET
             , projectDirectory = "~/Projects/FoxNet"
-            , projectStartHook = Just $ spawnOn wsNET (myTerminal ++ " -c FoxNet -e 'tmux new -A FoxNet'")
+            , projectStartHook = Just $ spawnOn wsNET (myTerminal ++ " -c FoxNet -e 'tmux new -As FoxNet'")
             }
   , Project { projectName      = wsWRK
             , projectDirectory = "~/Projects/Capacity"
@@ -428,7 +428,7 @@ myKeys conf = let
     [ ("M-<Space>"              , addName "Launcher"                        $ spawn myLauncher)
     , ("M-<Return>"             , addName "Terminal"                        $ do
         name <- withWindowSet (pure . W.currentTag)
-        spawn $ myTerminal ++ " -e tmux new -At " ++ name)
+        spawn $ myTerminal ++ " -e tmux new -As " ++ name)
     , ("M-\\"                   , addName "Browser"                         $ bindOn [ (wsWRK, spawn $ myBrowser ++ " -P Work")
                                                                                      , (""   , spawn myBrowser)
                                                                                      ])
