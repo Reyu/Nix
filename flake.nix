@@ -152,7 +152,6 @@
 
       hosts = with self.nixosModules; {
         loki = {
-          channelName = "unstable";
           modules = [
             ./hosts/loki/configuration.nix
             consul
