@@ -25,14 +25,6 @@
     tmux.enable = true;
   };
 
-  # Allow "unfree" licenced packages
-  nixpkgs.config = {
-    # allowUnfree = true;
-    permittedInsecurePackages = [
-      "electron-13.6.9" # TODO: Remove this once Discord updates
-    ];
-  };
-
   # Install these packages for my user
   home.packages = with pkgs; [
     (discord-plugged.override {
@@ -49,9 +41,7 @@
     obsidian
     slack
     syncthing
-    xfce.thunar
     xsel
-    zoom-us
   ];
 
   # Include man-pages
