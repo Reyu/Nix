@@ -27,7 +27,16 @@
 
   # Install these packages for my user
   home.packages = with pkgs; [
-    discord
+    (discord-plugged.override {
+      plugins = [
+        inputs.discord-better-status
+        inputs.discord-read-all
+        inputs.discord-theme-toggler
+        inputs.discord-tweaks
+        inputs.discord-vc-timer
+      ];
+      themes = [ inputs.discord-theme-slate ];
+    })
     keepassxc
     obsidian
     slack
