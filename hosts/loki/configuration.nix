@@ -23,6 +23,11 @@
   boot.tmpOnTmpfs = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
+  nix.settings = {
+    cores = 16;
+    max-jobs= 8;
+  };
+
   console.useXkbConfig = true;
   programs.dconf.enable = true;
 
