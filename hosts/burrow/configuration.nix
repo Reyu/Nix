@@ -182,6 +182,7 @@
 
         # Nomad - Traefik
         80
+        443
         8081
         # Nomad - Media
         32400 # pms
