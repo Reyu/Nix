@@ -1,8 +1,5 @@
 { self, ... }: {
-  imports = [
-    ./hardware-configuration.nix
-    ./MAS.nix
-  ];
+  imports = [ ./hardware-configuration.nix ./MAS.nix ];
   config = {
     boot = {
       supportedFilesystems = [ "zfs" ];
@@ -86,6 +83,14 @@
         client.enabled = true;
         datacenter = "burrow";
         region = "home";
+        plugin = {
+          docker = {
+            config = {
+              allow_privileged = true;
+              volumes = { enabled = true; };
+            };
+          };
+        };
       };
       extraSettingsPaths = [
         "/run/agenix/nomad_encrypt.hcl"
@@ -163,6 +168,11 @@
         guiAddress = "100.82.76.79:8384";
       };
       tailscale.enable = true;
+    };
+    foxnet.secrets.nomad-encrypt = {
+      source = ../../secrets/nomad/encrypt.hcl;
+      dest = "/etc/nomad.d/encrypt.hcl";
+      owner = "root";
     };
 
     networking.firewall = {
