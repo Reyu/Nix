@@ -485,6 +485,47 @@ dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 -- Plugin: vim-ultest {{{
 vim.g.ultest_use_pty = 1;
 -- }}}
+-- Plugin: vim-ledger {{{
+vim.g.ledger_extra_options = '-s';
+vim.g.ledger_maxwidth = 160;
+vim.g.ledger_date_format = '%Y-%m-%d';
+
+function init_ledger()
+    require("which-key").register({
+        t = {
+            name = "Ledger Transaction",
+            r = {
+                function() vim.call("ledger#transaction_state_set", vim.fn.line("."), "*") end,
+                "Reconcile transaction"
+            },
+            t = {
+                function() vim.call("ledger#transaction_state_toggle", vim.fn.line('.'), ' *?!') end,
+                "Toggle transaction state"
+            },
+            d = {
+                name = "Set Transaction Date",
+                p = {
+                    function() vim.call("ledger#transaction_date_set", vim.fn.line('.'), 'primary') end,
+                    "Set today's data as primary tx date"
+                },
+                a = {
+                    function() vim.call("ledger#transaction_date_set", vim.fn.line('.'), 'auxiliary') end,
+                    "Set today's data as auxiliary tx date"
+                },
+                u = {
+                    function() vim.call("ledger#transaction_date_set", vim.fn.line('.'), 'unshift') end,
+                    "Set current date to auxiliary, and set today as primary"
+                },
+            },
+        },
+        ["<Tab>"] = {
+            function() vim.call("ledger#autocomplete_and_align") end,
+            "Autocomplete or align transaction",
+        }
+    }, {buffer = vim.fn.bufnr()})
+end
+vim.cmd("autocmd BufEnter *.ldg lua init_ledger()")
+-- }}}
 
 -- General Options {{{
 vim.opt.termguicolors = true
@@ -535,9 +576,9 @@ match ExtraWhitespace /\s\+$\|\t/
 vim.opt.backup = true
 vim.opt.writebackup = true
 vim.opt.undofile = true
-vim.opt.directory = vim.fn.stdpath("cache") .. "/nvim/other//,/tmp//"
-vim.opt.backupdir = vim.fn.stdpath("cache") .. "/nvim/backups//,/tmp//"
-vim.opt.undodir = vim.fn.stdpath("cache") .. "/nvim/undo//,/tmp//"
+vim.opt.directory = vim.fn.stdpath("cache") .. "/other//,/tmp//"
+vim.opt.backupdir = vim.fn.stdpath("cache") .. "/backups//,/tmp//"
+vim.opt.undodir = vim.fn.stdpath("cache") .. "/undo//,/tmp//"
 -- }}}
 -- Autocommands {{{
 function init_term()

@@ -10,27 +10,27 @@
     extraPython3Packages = ps: with ps; [ rope jedi ];
     plugins = with pkgs.vimPlugins; [
       # General
-      impatient-nvim
-      nvim-solarized-lua
-      tmux-navigator
-      telescope-nvim
-      popup-nvim
-      plenary-nvim
       FixCursorHold-nvim
-      telescope-hoogle
-      lualine-nvim
-      nvim-web-devicons
-      vimwiki
-      mattn-calendar-vim
-      nvim-ts-context-commentstring
       dashboard-nvim
-      neoscroll-nvim
-      vim-bbye
-      nvim-tree-lua
-      which-key-nvim
-      gitsigns-nvim
-      # symbols-outline-nvim
       direnv-vim
+      gitsigns-nvim
+      impatient-nvim
+      lualine-nvim
+      mattn-calendar-vim
+      neoscroll-nvim
+      nvim-solarized-lua
+      nvim-tree-lua
+      nvim-ts-context-commentstring
+      nvim-web-devicons
+      plenary-nvim
+      popup-nvim
+      telescope-hoogle
+      telescope-nvim
+      tmux-navigator
+      vim-bbye
+      vim-ledger
+      vimwiki
+      which-key-nvim
 
       # Must have T.Pope plugins
       vim-capslock
