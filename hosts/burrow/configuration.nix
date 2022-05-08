@@ -168,6 +168,7 @@
         guiAddress = "100.82.76.79:8384";
       };
       tailscale.enable = true;
+      tftpd.enable = true;
     };
     foxnet.secrets.nomad-encrypt = {
       source = ../../secrets/nomad/encrypt.hcl;
