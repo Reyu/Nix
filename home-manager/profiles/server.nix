@@ -3,7 +3,7 @@
 
   reyu.programs = { tmux.enable = true; };
 
-  home.packages = with pkgs; [ htop ];
+  home.packages = with pkgs; [ htop ripgrep ];
 
   manual.manpages.enable = true;
 

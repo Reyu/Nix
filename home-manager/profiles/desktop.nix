@@ -39,6 +39,7 @@
     })
     keepassxc
     obsidian
+    ripgrep
     slack
     syncthing
     xsel
