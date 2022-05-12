@@ -526,6 +526,9 @@ function init_ledger()
 end
 vim.cmd("autocmd BufEnter *.ldg lua init_ledger()")
 -- }}}
+-- Plugin: fidget-nvim {{{
+require("fidget").setup{}
+-- }}}
 
 -- General Options {{{
 vim.opt.termguicolors = true

@@ -13,6 +13,7 @@
       FixCursorHold-nvim
       dashboard-nvim
       direnv-vim
+      fidget-nvim
       gitsigns-nvim
       impatient-nvim
       lualine-nvim
