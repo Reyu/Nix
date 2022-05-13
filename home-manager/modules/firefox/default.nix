@@ -1,8 +1,7 @@
 { config, pkgs, lib, nur, utils, ... }:
 with lib;
 let cfg = config.reyu.programs.firefox;
-in
-{
+in {
   options.reyu.programs.firefox.enable = mkEnableOption "firefox browser";
 
   config = mkIf cfg.enable {
@@ -13,13 +12,14 @@ in
         pkgs.firefox.override { cfg = { enableTridactylNative = true; }; };
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
         betterttv
+        consent-o-matic
         darkreader
-        decentraleyes
-        https-everywhere
+        don-t-fuck-with-paste
         keepass-helper
         keepassxc-browser
-        multi-account-containers
-        temporary-containers
+        reddit-enhancement-suite
+        refined-github
+        sidebery
         terms-of-service-didnt-read
         tridactyl
         ublock-origin
@@ -28,16 +28,12 @@ in
       profiles = {
         personal = {
           id = 0;
-          isDefault = true;
-          settings = {
-            "browser.startup.homepage" = "https://nixos.org";
-            "browser.bookmarks.autoExportHTML" = "true";
-            "devtools.theme" = "dark";
-          };
           extraConfig = readFile ./user.js;
         };
-        video = { id = 1; };
-        work = { id = 2; };
+        video = {
+          id = 1;
+          extraConfig = readFile ./user.js;
+        };
       };
     };
   };
