@@ -25,6 +25,7 @@ import XMonad.Actions.Promote               -- promote window to master
 import XMonad.Actions.PerWorkspaceKeys
 import XMonad.Actions.SinkAll
 import XMonad.Actions.SpawnOn
+import XMonad.Actions.SwapPromote
 import XMonad.Actions.WithAll               -- action all the things
 import XMonad.Actions.WorkspaceNames
 
@@ -97,7 +98,7 @@ myConfig p = def
         , manageHook         = myManageHook
         , handleEventHook    = myHandleEventHook
         , layoutHook         = myLayoutHook
-        , logHook            = dynamicLogWithPP (myLogHook p)
+        , logHook            = dynamicLogWithPP (myLogHook p) >> masterHistoryHook
         , modMask            = myModMask
         , mouseBindings      = myMouseBindings
         , startupHook        = myStartupHook
@@ -449,7 +450,8 @@ myKeys conf = let
     , ("M-p"                    , addName "Hide window to stack"            $ withFocused hideWindow)
     , ("M-S-p"                  , addName "Restore hidden window (FIFO)"      popOldestHiddenWindow)
 
-    , ("M-b"                    , addName "Promote"                           promote)
+    -- , ("M-b"                    , addName "Promote"                           promote)
+    , ("M-b"                    , addName "Promote Window"                  $ swapHybrid' False)
 
     , ("M-g"                    , addName "Un-merge from sublayout"         $ withFocused (sendMessage . UnMerge))
     , ("M-S-g"                  , addName "Merge all into sublayout"        $ withFocused (sendMessage . MergeAll))
