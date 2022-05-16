@@ -61,6 +61,7 @@ import XMonad.Layout.WindowNavigation
 
 import XMonad.Prompt                        -- to get my old key bindings working
 import XMonad.Prompt.ConfirmPrompt          -- don't just hard quit
+import XMonad.Prompt.FuzzyMatch
 
 import XMonad.Util.Cursor
 import XMonad.Util.EZConfig                 -- removeKeys, additionalKeys
@@ -274,6 +275,8 @@ myPromptTheme = def
     , promptBorderWidth     = 0
     , height                = prompt
     , position              = Top
+    , searchPredicate       = fuzzyMatch
+    , sorter                = fuzzySort
     }
 
 warmPromptTheme = myPromptTheme
