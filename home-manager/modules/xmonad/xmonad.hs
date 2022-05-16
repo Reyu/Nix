@@ -17,6 +17,7 @@ import qualified XMonad.Actions.ConstrainedResize as Sqr
 import XMonad.Actions.CopyWindow            -- like cylons, except x windows
 import XMonad.Actions.CycleWS
 import XMonad.Actions.DynamicProjects
+import XMonad.Actions.DynamicWorkspaces     (removeWorkspace)
 import XMonad.Actions.DynamicWorkspaceOrder
 import XMonad.Actions.FloatSnap
 import XMonad.Actions.Navigation2D
@@ -143,23 +144,18 @@ wsVID   = "video"
 wsVIRT  = "virt"
 wsSTL   = "modeling"
 wsNET   = "foxnet"
-wsWRK   = "work"
 wsFLOAT = "float"
 
-myWorkspaces = [wsWEB, wsVID, wsVIRT, wsSTL, wsNET, wsWRK, wsFLOAT]
+myWorkspaces = [wsWEB, wsVID, wsVIRT, wsSTL, wsNET, wsFLOAT]
 
 projects =
   [ Project { projectName      = wsWEB
             , projectDirectory = "~"
-            , projectStartHook = Just $ spawnOn wsWRK "firefox -P personal"
+            , projectStartHook = Just $ spawnOn wsWEB "firefox -P personal"
             }
   , Project { projectName      = wsNET
             , projectDirectory = "~/Projects/FoxNet"
             , projectStartHook = Just $ spawnOn wsNET (myTerminal ++ " -c FoxNet -e 'tmux new -As FoxNet'")
-            }
-  , Project { projectName      = wsWRK
-            , projectDirectory = "~/Projects/Capacity"
-            , projectStartHook = Just $ spawnOn wsWRK "firefox -P work"
             }
   , Project { projectName = wsVID
             , projectDirectory = "~"
@@ -429,9 +425,7 @@ myKeys conf = let
     , ("M-<Return>"             , addName "Terminal"                        $ do
         name <- withWindowSet (pure . W.currentTag)
         spawn $ myTerminal ++ " -e tmux new -As " ++ name)
-    , ("M-\\"                   , addName "Browser"                         $ bindOn [ (wsWRK, spawn $ myBrowser ++ " -P Work")
-                                                                                     , (""   , spawn myBrowser)
-                                                                                     ])
+    , ("M-\\"                   , addName "Browser"                         $ spawn myBrowser)
     , ("M-S-v"                  , addName "NSP Volume Control"              $ namedScratchpadAction scratchpads "volume")
     , ("M-S-n"                  , addName "NSP ncmpcpp"                     $ namedScratchpadAction scratchpads "ncmpcpp")
     , ("M-j"                    , addName "NSP NeoMutt"                     $ namedScratchpadAction scratchpads "mail")
@@ -452,8 +446,6 @@ myKeys conf = let
     (
     [ ("M-<Backspace>"          , addName "Kill"                              kill1)
     , ("M-S-<Backspace>"        , addName "Kill all"                        $ confirmPrompt hotPromptTheme "kill all" killAll)
-    -- , ("M-v"                    , addName "Duplicate w to all ws"             toggleCopyToAll)
-    -- Have I ever actually used this intentionally?
     , ("M-p"                    , addName "Hide window to stack"            $ withFocused hideWindow)
     , ("M-S-p"                  , addName "Restore hidden window (FIFO)"      popOldestHiddenWindow)
 
@@ -485,6 +477,8 @@ myKeys conf = let
     (
     [ ("M-w"                    , addName "Switch to Project"           $ switchProjectPrompt warmPromptTheme)
     , ("M-S-w"                  , addName "Shift to Project"            $ shiftToProjectPrompt warmPromptTheme)
+    , ("M-r"                    , addName "Rename project"              $ renameProjectPrompt warmPromptTheme)
+    , ("M-<Delete>"             , addName "Remove Project"                removeWorkspace)
     , ("M-<Escape>"             , addName "Next non-empty workspace"      nextNonEmptyWS)
     , ("M-S-<Escape>"           , addName "Prev non-empty workspace"      prevNonEmptyWS)
     , ("M-`"                    , addName "Next non-empty workspace"      nextNonEmptyWS)
@@ -520,10 +514,6 @@ myKeys conf = let
     , ("M-f"                    , addName "Fullscreen"                  $ sequence_ [ withFocused $ windows . W.sink
                                                                         , sendMessage $ XMonad.Layout.MultiToggle.Toggle FULL ])
     ]
-    where
-    toggleCopyToAll = wsContainingCopies >>= \case
-                                            [] -> windows copyToAll
-                                            _ -> killAllOtherCopies
 
 -- Mouse bindings: default actions bound to mouse events
 -- Includes window snapping on move/resize using X.A.FloatSnap
