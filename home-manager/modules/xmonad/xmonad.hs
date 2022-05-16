@@ -429,14 +429,14 @@ myKeys conf = let
     , ("M-\\"                   , addName "Browser"                         $ spawn myBrowser)
     , ("M-S-v"                  , addName "NSP Volume Control"              $ namedScratchpadAction scratchpads "volume")
     , ("M-S-n"                  , addName "NSP ncmpcpp"                     $ namedScratchpadAction scratchpads "ncmpcpp")
-    , ("M-j"                    , addName "NSP NeoMutt"                     $ namedScratchpadAction scratchpads "mail")
-    , ("M-t"                    , addName "NSP HTOP"                        $ namedScratchpadAction scratchpads "htop")
-    , ("M-e"                    , addName "NSP Element"                     $ namedScratchpadAction scratchpads "element")
-    , ("M-d"                    , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
-    , ("M-c"                    , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
-    , ("M-s"                    , addName "NSP KeePassXC"                   $ namedScratchpadAction scratchpads "keepassxc")
-    , ("M-o"                    , addName "NSP Obsidian"                    $ namedScratchpadAction scratchpads "obsidian")
-    , ("M-n"                    , addName "NSP NeoVim"                      $ namedScratchpadAction scratchpads "neovim")
+    , ("M-s j"                  , addName "NSP NeoMutt"                     $ namedScratchpadAction scratchpads "mail")
+    , ("M-s t"                  , addName "NSP HTOP"                        $ namedScratchpadAction scratchpads "htop")
+    , ("M-s e"                  , addName "NSP Element"                     $ namedScratchpadAction scratchpads "element")
+    , ("M-s d"                  , addName "NSP Discord"                     $ namedScratchpadAction scratchpads "discord")
+    , ("M-s c"                  , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
+    , ("M-s s"                  , addName "NSP KeePassXC"                   $ namedScratchpadAction scratchpads "keepassxc")
+    , ("M-s o"                  , addName "NSP Obsidian"                    $ namedScratchpadAction scratchpads "obsidian")
+    , ("M-s n"                  , addName "NSP NeoVim"                      $ namedScratchpadAction scratchpads "neovim")
     ] ^++^
 
     -----------------------------------------------------------------------
@@ -450,7 +450,6 @@ myKeys conf = let
     , ("M-p"                    , addName "Hide window to stack"            $ withFocused hideWindow)
     , ("M-S-p"                  , addName "Restore hidden window (FIFO)"      popOldestHiddenWindow)
 
-    -- , ("M-b"                    , addName "Promote"                           promote)
     , ("M-b"                    , addName "Promote Window"                  $ swapHybrid' False)
 
     , ("M-g"                    , addName "Un-merge from sublayout"         $ withFocused (sendMessage . UnMerge))
