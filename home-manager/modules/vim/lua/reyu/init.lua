@@ -529,6 +529,9 @@ vim.cmd("autocmd BufEnter *.ldg lua init_ledger()")
 -- Plugin: fidget-nvim {{{
 require("fidget").setup{}
 -- }}}
+-- Plugin: octo-nvim {{{
+require("octo").setup{}
+-- }}}
 
 -- General Options {{{
 vim.opt.termguicolors = true

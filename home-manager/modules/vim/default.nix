@@ -23,6 +23,7 @@
       nvim-tree-lua
       nvim-ts-context-commentstring
       nvim-web-devicons
+      octo-nvim
       plenary-nvim
       popup-nvim
       telescope-hoogle
