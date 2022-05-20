@@ -143,6 +143,9 @@
         nix-common
         security
         ({ ... }: {
+          # Default stateVersion
+          system.stateVersion = "22.05";
+
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
           nix.registry.nixpkgs.flake = nixpkgs;

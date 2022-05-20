@@ -37,6 +37,7 @@
         eno3.useDHCP = false;
         eno4.useDHCP = false;
       };
+      firewall.checkReversePath = "loose";
     };
 
     foxnet.consul.firewall.open = {

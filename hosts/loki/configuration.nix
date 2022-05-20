@@ -32,6 +32,7 @@
   programs.dconf.enable = true;
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
+  networking.firewall.checkReversePath = "loose";
 
   foxnet.consul.firewall.open = {
     http = true;
