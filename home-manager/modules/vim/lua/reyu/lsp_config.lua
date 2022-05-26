@@ -41,29 +41,34 @@ local on_attach = function(client, bufnr)
             D = {
                 function() vim.lsp.buf.type_definition() end, "Type Definition"
             },
-            r = {n = {function() vim.lsp.buf.rename() end, "Rename"}},
+            r = {function() vim.lsp.buf.rename() end, "Rename"},
             e = {
-                function()
-                    vim.lsp.diagnostic.show_line_diagnostics()
-                end, "Show line diagnostics"
+                function() vim.diagnostic.open_float() end,
+                "Show line diagnostics"
             },
-            q = {function() vim.lsp.diagnostic.set_loclist() end, "Set loclist"}
+            q = {function() vim.diagnostic.setloclist() end, "Set loclist"},
+            a = {function() vim.lsp.buf.code_action() end, "Run Code Action"},
+            s = {function() vim.lsp.buf.signature_help() end, "Signature Help"},
+            f = {
+                function() vim.lsp.buf.format({async = true}) end,
+                "Run formatter"
+            }
         }
     }, {mode = "n", buffer = buffnr})
 
     -- Set some keybinds conditional on server capabilities
-    if client.resolved_capabilities.document_formatting then
-        require("which-key").register({
-            f = {function() vim.lsp.buf.formatting() end, "Formatt Buffer"}
-        }, {prefix = "<space>"})
-    elseif client.resolved_capabilities.document_range_formatting then
-        require("which-key").register({
-            f = {
-                function() vim.lsp.buf.range_formatting() end,
-                "Formatt Selection"
-            }
-        }, {mode = "v"})
-    end
+    -- if client.resolved_capabilities.document_formatting then
+    --     require("which-key").register({
+    --         f = {function() vim.lsp.buf.formatting() end, "Formatt Buffer"}
+    --     }, {prefix = "<space>"})
+    -- elseif client.resolved_capabilities.document_range_formatting then
+    --     require("which-key").register({
+    --         f = {
+    --             function() vim.lsp.buf.range_formatting() end,
+    --             "Formatt Selection"
+    --         }
+    --     }, {mode = "v"})
+    -- end
 
     -- Set autocommands conditional on server_capabilities
     if client.resolved_capabilities.document_highlight then
