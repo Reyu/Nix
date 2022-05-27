@@ -304,7 +304,7 @@ cmp.setup({
                 if cmp.visible() then
                     cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
                 else
-                    vim.api.nvim_feedkeys(t('<Down>'), 'n', true)
+                    vim.api.nvim_feedkeys(t('<Up>'), 'n', true)
                 end
             end,
             i = function(fallback)
@@ -322,23 +322,23 @@ cmp.setup({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close()
         }),
+        ['<Space>'] = cmp.mapping(cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }), {'i', 'c'}),
         ['<CR>'] = cmp.mapping({
-            i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+            i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
             c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-        }),
+        })
     },
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'luasnip' },
-      { name = 'calc' },
-      { name = 'treesitter' },
       { name = 'vim-dadbod-completion' },
     }, {
+      { name = 'calc' },
+      { name = 'luasnip' },
+      { name = 'nvim_lsp' },
+    }, {
+      { name = 'treesitter' },
       { name = 'buffer' },
     }),
-    completion = {completeopt = "menu,menuone,noinsert,noselect"}
 })
--- 47*6+43
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
