@@ -274,14 +274,10 @@ null_ls.setup({
         null_ls.builtins.code_actions.gitrebase,
         null_ls.builtins.code_actions.gitsigns,
         null_ls.builtins.code_actions.proselint,
-        null_ls.builtins.code_actions.statix,
-        null_ls.builtins.completion.luasnip,
         null_ls.builtins.diagnostics.gitlint,
         null_ls.builtins.diagnostics.write_good,
-        null_ls.builtins.formatting.nixfmt,
         null_ls.builtins.formatting.trim_newlines,
         null_ls.builtins.formatting.trim_whitespace,
-        null_ls.builtins.hover.dictionary
     }
 })
 -- }}}

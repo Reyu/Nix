@@ -106,6 +106,8 @@
       nixfmt
       shfmt
       stylua
+      # Utilities
+      gh
     ];
     extraConfig = ''
       lua require('reyu/init')
