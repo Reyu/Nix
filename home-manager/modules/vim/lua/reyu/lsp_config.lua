@@ -56,9 +56,7 @@ local on_attach = function(client, bufnr)
         }
     }, {mode = "n", buffer = buffnr})
 
-    function hasCap(cap)
-        return client.server_capabilities[cap] ~= nil
-    end
+    function hasCap(cap) return client.server_capabilities[cap] ~= nil end
 
     -- Set some keybinds conditional on server capabilities
     if hasCap("document_formatting") then

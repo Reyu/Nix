@@ -77,18 +77,12 @@ require("which-key").register({
             function() require("telescope.builtin").git_branches({}) end,
             "Lists all branches with log preview"
         },
-        s = {
-            "<CMD>Git<CR>",
-            "Fugitive git status"
-        },
+        s = {"<CMD>Git<CR>", "Fugitive git status"},
         x = {
             function() require("telescope.builtin").git_stash({}) end,
             "Lists stash items in current repository"
         },
-        ["<SPACE>"] = {
-            ":Git ",
-            "Run Git command"
-        },
+        ["<SPACE>"] = {":Git ", "Run Git command"}
     }
 }, {mode = "n", prefix = "<leader>"})
 -- }}}
@@ -230,14 +224,14 @@ cmp.setup({
         ["<Tab>"] = cmp.mapping({
             c = function(fallback)
                 if cmp.visible() then
-                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                    cmp.select_next_item({behavior = cmp.SelectBehavior.Insert})
                 else
                     cmp.complete()
                 end
             end,
             i = function(fallback)
                 if cmp.visible() then
-                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                    cmp.select_next_item({behavior = cmp.SelectBehavior.Insert})
                 elseif require("luasnip").expand_or_locally_jumpable() then
                     require("luasnip").expand_or_jump()
                 elseif has_words_before() then
@@ -252,19 +246,19 @@ cmp.setup({
                 else
                     fallback()
                 end
-            end,
+            end
         }),
         ["<S-Tab>"] = cmp.mapping({
             c = function(fallback)
                 if cmp.visible() then
-                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                    cmp.select_prev_item({behavior = cmp.SelectBehavior.Insert})
                 else
                     cmp.complete()
                 end
             end,
             i = function(fallback)
                 if cmp.visible() then
-                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                    cmp.select_prev_item({behavior = cmp.SelectBehavior.Insert})
                 elseif require("luasnip").jumpable(-1) then
                     require("luasnip").jump(-1)
                 elseif has_words_before() then
@@ -279,21 +273,25 @@ cmp.setup({
                 else
                     fallback()
                 end
-            end,
+            end
         }),
-        ['<Down>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), {'i'}),
-        ['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), {'i'}),
+        ['<Down>'] = cmp.mapping(cmp.mapping.select_next_item({
+            behavior = cmp.SelectBehavior.Select
+        }), {'i'}),
+        ['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item({
+            behavior = cmp.SelectBehavior.Select
+        }), {'i'}),
         ["<C-n>"] = cmp.mapping({
             c = function()
                 if cmp.visible() then
-                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                    cmp.select_next_item({behavior = cmp.SelectBehavior.Select})
                 else
                     vim.api.nvim_feedkeys(t('<Down>'), 'n', true)
                 end
             end,
             i = function(fallback)
                 if cmp.visible() then
-                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                    cmp.select_next_item({behavior = cmp.SelectBehavior.Select})
                 else
                     fallback()
                 end
@@ -302,14 +300,14 @@ cmp.setup({
         ["<C-p>"] = cmp.mapping({
             c = function()
                 if cmp.visible() then
-                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+                    cmp.select_prev_item({behavior = cmp.SelectBehavior.Select})
                 else
                     vim.api.nvim_feedkeys(t('<Up>'), 'n', true)
                 end
             end,
             i = function(fallback)
                 if cmp.visible() then
-                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+                    cmp.select_prev_item({behavior = cmp.SelectBehavior.Select})
                 else
                     fallback()
                 end
@@ -322,47 +320,39 @@ cmp.setup({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close()
         }),
-        ['<Space>'] = cmp.mapping(cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }), {'i', 'c'}),
+        ['<Space>'] = cmp.mapping(cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false
+        }), {'i', 'c'}),
         ['<CR>'] = cmp.mapping({
-            i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-            c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+            i = cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true
+            }),
+            c = cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = false
+            })
         })
     },
-    sources = cmp.config.sources({
-      { name = 'vim-dadbod-completion' },
-    }, {
-      { name = 'calc' },
-      { name = 'luasnip' },
-      { name = 'nvim_lsp' },
-    }, {
-      { name = 'treesitter' },
-      { name = 'buffer' },
-    }),
+    sources = cmp.config.sources({{name = 'vim-dadbod-completion'}}, {
+        {name = 'calc'}, {name = 'luasnip'}, {name = 'nvim_lsp'}
+    }, {{name = 'treesitter'}, {name = 'buffer'}})
 })
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
-    sources = cmp.config.sources({
-      { name = 'cmp_git' },
-    }, {
-      { name = 'buffer' },
-    })
+    sources = cmp.config.sources({{name = 'cmp_git'}}, {{name = 'buffer'}})
 })
 -- Use buffer source for `/`
 cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {{name = 'buffer'}}
 })
 
 -- Use cmdline & path source for ':'
 cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  })
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({{name = 'path'}}, {{name = 'cmdline'}})
 })
 
 -- }}}
@@ -376,7 +366,7 @@ null_ls.setup({
         null_ls.builtins.diagnostics.gitlint,
         null_ls.builtins.diagnostics.write_good,
         null_ls.builtins.formatting.trim_newlines,
-        null_ls.builtins.formatting.trim_whitespace,
+        null_ls.builtins.formatting.trim_whitespace
     }
 })
 -- }}}
@@ -590,42 +580,53 @@ function init_ledger()
         t = {
             name = "Ledger Transaction",
             r = {
-                function() vim.call("ledger#transaction_state_set", vim.fn.line("."), "*") end,
-                "Reconcile transaction"
+                function()
+                    vim.call("ledger#transaction_state_set", vim.fn.line("."),
+                             "*")
+                end, "Reconcile transaction"
             },
             t = {
-                function() vim.call("ledger#transaction_state_toggle", vim.fn.line('.'), ' *?!') end,
-                "Toggle transaction state"
+                function()
+                    vim.call("ledger#transaction_state_toggle",
+                             vim.fn.line('.'), ' *?!')
+                end, "Toggle transaction state"
             },
             d = {
                 name = "Set Transaction Date",
                 p = {
-                    function() vim.call("ledger#transaction_date_set", vim.fn.line('.'), 'primary') end,
-                    "Set today's data as primary tx date"
+                    function()
+                        vim.call("ledger#transaction_date_set",
+                                 vim.fn.line('.'), 'primary')
+                    end, "Set today's data as primary tx date"
                 },
                 a = {
-                    function() vim.call("ledger#transaction_date_set", vim.fn.line('.'), 'auxiliary') end,
-                    "Set today's data as auxiliary tx date"
+                    function()
+                        vim.call("ledger#transaction_date_set",
+                                 vim.fn.line('.'), 'auxiliary')
+                    end, "Set today's data as auxiliary tx date"
                 },
                 u = {
-                    function() vim.call("ledger#transaction_date_set", vim.fn.line('.'), 'unshift') end,
+                    function()
+                        vim.call("ledger#transaction_date_set",
+                                 vim.fn.line('.'), 'unshift')
+                    end,
                     "Set current date to auxiliary, and set today as primary"
-                },
-            },
+                }
+            }
         },
         ["<Tab>"] = {
             function() vim.call("ledger#autocomplete_and_align") end,
-            "Autocomplete or align transaction",
+            "Autocomplete or align transaction"
         }
     }, {buffer = vim.fn.bufnr()})
 end
 vim.cmd("autocmd BufEnter *.ldg lua init_ledger()")
 -- }}}
 -- Plugin: fidget-nvim {{{
-require("fidget").setup{}
+require("fidget").setup {}
 -- }}}
 -- Plugin: octo-nvim {{{
-require("octo").setup{}
+require("octo").setup {}
 -- }}}
 
 -- General Options {{{
