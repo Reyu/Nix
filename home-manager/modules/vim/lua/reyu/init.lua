@@ -18,7 +18,7 @@ require("telescope").setup({
 require("which-key").register({
     t = {
         name = "Telescope",
-        t = {"<cmd>Telescope<space>", "Telescope prompt"},
+        t = {"<cmd>Telescope<CR>", "Telescope prompt"},
         c = {
             function() require("telescope.builtin").colorscheme({}) end,
             "Available colorschemes"
