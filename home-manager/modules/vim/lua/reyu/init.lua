@@ -124,7 +124,7 @@ vim.g["dashboard_custom_shortcut"] = {
     find_history = "\\ f h",
     find_word = "\\ f a",
     last_session = "\\ s l",
-    new_file = "     "
+    new_file = "<N/A>"
 }
 -- }}}
 -- Plugin: tmux-navigator {{{
@@ -227,6 +227,94 @@ cmp.setup({
         expand = function(args) require('luasnip').lsp_expand(args.body) end
     },
     mapping = {
+        ["<Tab>"] = cmp.mapping({
+            c = function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                else
+                    cmp.complete()
+                end
+            end,
+            i = function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                elseif require("luasnip").expand_or_locally_jumpable() then
+                    require("luasnip").expand_or_jump()
+                elseif has_words_before() then
+                    cmp.complete()
+                else
+                    fallback()
+                end
+            end,
+            s = function(fallback)
+                if require("luasnip").expand_or_locally_jumpable() then
+                    require("luasnip").expand_or_jump()
+                else
+                    fallback()
+                end
+            end,
+        }),
+        ["<S-Tab>"] = cmp.mapping({
+            c = function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                else
+                    cmp.complete()
+                end
+            end,
+            i = function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                elseif require("luasnip").jumpable(-1) then
+                    require("luasnip").jump(-1)
+                elseif has_words_before() then
+                    cmp.complete()
+                else
+                    fallback()
+                end
+            end,
+            s = function(fallback)
+                if require("luasnip").jumpable(-1) then
+                    require("luasnip").jump(-1)
+                else
+                    fallback()
+                end
+            end,
+        }),
+        ['<Down>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), {'i'}),
+        ['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), {'i'}),
+        ["<C-n>"] = cmp.mapping({
+            c = function()
+                if cmp.visible() then
+                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                else
+                    vim.api.nvim_feedkeys(t('<Down>'), 'n', true)
+                end
+            end,
+            i = function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                else
+                    fallback()
+                end
+            end
+        }),
+        ["<C-p>"] = cmp.mapping({
+            c = function()
+                if cmp.visible() then
+                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+                else
+                    vim.api.nvim_feedkeys(t('<Down>'), 'n', true)
+                end
+            end,
+            i = function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+                else
+                    fallback()
+                end
+            end
+        }),
         ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i', 'c'}),
         ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), {'i', 'c'}),
         ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), {'i', 'c'}),
@@ -234,38 +322,49 @@ cmp.setup({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close()
         }),
-        ['<CR>'] = cmp.mapping.confirm({select = false}),
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif require("luasnip").expand_or_locally_jumpable() then
-                require("luasnip").expand_or_jump()
-            elseif has_words_before() then
-                cmp.complete()
-            else
-                fallback()
-            end
-        end, {"i", "s"}),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif require("luasnip").jumpable(-1) then
-                require("luasnip").jump(-1)
-            else
-                fallback()
-            end
-        end, {"i", "s"})
+        ['<CR>'] = cmp.mapping({
+            i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+            c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+        }),
     },
-    sources = {{name = 'luasnip'}, {name = "nvim_lsp"}, {name = "buffer"}},
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+      { name = 'calc' },
+      { name = 'treesitter' },
+      { name = 'vim-dadbod-completion' },
+    }, {
+      { name = 'buffer' },
+    }),
     completion = {completeopt = "menu,menuone,noinsert,noselect"}
 })
-
+-- 47*6+43
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+      { name = 'cmp_git' },
+    }, {
+      { name = 'buffer' },
+    })
+})
 -- Use buffer source for `/`
-cmp.setup.cmdline('/', {sources = {{name = 'buffer'}}})
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
 -- Use cmdline & path source for ':'
 cmp.setup.cmdline(':', {
-    sources = cmp.config.sources({{name = 'path'}, {name = 'cmdline'}})
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
 })
+
 -- }}}
 -- Plugin: null-ls-nvim {{{
 local null_ls = require("null-ls")

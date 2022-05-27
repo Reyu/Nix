@@ -56,22 +56,27 @@ local on_attach = function(client, bufnr)
         }
     }, {mode = "n", buffer = buffnr})
 
+    function hasCap(cap)
+        return client.server_capabilities[cap] ~= nil
+    end
+
     -- Set some keybinds conditional on server capabilities
-    -- if client.resolved_capabilities.document_formatting then
-    --     require("which-key").register({
-    --         f = {function() vim.lsp.buf.formatting() end, "Formatt Buffer"}
-    --     }, {prefix = "<space>"})
-    -- elseif client.resolved_capabilities.document_range_formatting then
-    --     require("which-key").register({
-    --         f = {
-    --             function() vim.lsp.buf.range_formatting() end,
-    --             "Formatt Selection"
-    --         }
-    --     }, {mode = "v"})
-    -- end
+    if hasCap("document_formatting") then
+        require("which-key").register({
+            f = {function() vim.lsp.buf.formatting() end, "Formatt Buffer"}
+        }, {prefix = "<space>"})
+    end
+    if hasCap("document_range_formatting") then
+        require("which-key").register({
+            f = {
+                function() vim.lsp.buf.range_formatting() end,
+                "Formatt Selection"
+            }
+        }, {mode = "v"})
+    end
 
     -- Set autocommands conditional on server_capabilities
-    if client.resolved_capabilities.document_highlight then
+    if hasCap("document_highlight") then
         vim.api.nvim_exec([[
       hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow

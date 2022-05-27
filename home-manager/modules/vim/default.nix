@@ -54,13 +54,18 @@
       # Completion
       cmp-buffer
       cmp-cmdline
+      cmp-calc
+      # cmp-conventionalcommits
+      # cmp-dap
       cmp-nvim-lsp
       cmp-path
+      cmp-treesitter
       cmp_luasnip
       lspkind-nvim
       null-ls-nvim
       nvim-cmp
       nvim-lspconfig
+      vim-dadbod-completion
 
       # Snippets
       luasnip
