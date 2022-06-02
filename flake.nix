@@ -60,6 +60,18 @@
       url = "github:jbyuki/one-small-step-for-vimkind";
       flake = false;
     };
+    cmp-conventionalcommits = {
+      url = "github:davidsierradz/cmp-conventionalcommits";
+      flake = false;
+    };
+    cmp-dap = {
+      url = "github:rcarriga/cmp-dap";
+      flake = false;
+    };
+    cmp-nvim-lsp-signature-help = {
+      url = "github:hrsh7th/cmp-nvim-lsp-signature-help";
+      flake = false;
+    };
 
     # Discord + Plugins
     powercord = {
@@ -307,6 +319,9 @@
               {
                 package = pkgs.nixpkgs-fmt;
                 category = "formatters";
+              }
+              {
+                package = pkgs.nixos-generators;
               }
             ];
           };

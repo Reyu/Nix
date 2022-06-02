@@ -53,11 +53,14 @@
 
       # Completion
       cmp-buffer
-      cmp-cmdline
       cmp-calc
-      # cmp-conventionalcommits
-      # cmp-dap
+      cmp-cmdline
+      cmp-conventionalcommits
+      cmp-dap
+      cmp-emoji
+      cmp-latex-symbols
       cmp-nvim-lsp
+      cmp-nvim-lsp-signature-help
       cmp-path
       cmp-treesitter
       cmp_luasnip
@@ -113,6 +116,7 @@
       stylua
       # Utilities
       gh
+      gcc
     ];
     extraConfig = ''
       lua require('reyu/init')

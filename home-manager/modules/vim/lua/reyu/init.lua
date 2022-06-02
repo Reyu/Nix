@@ -221,7 +221,7 @@ cmp.setup({
         expand = function(args) require('luasnip').lsp_expand(args.body) end
     },
     mapping = {
-        ["<Tab>"] = cmp.mapping({
+        ["<C-n>"] = cmp.mapping({
             c = function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item({behavior = cmp.SelectBehavior.Insert})
@@ -239,16 +239,9 @@ cmp.setup({
                 else
                     fallback()
                 end
-            end,
-            s = function(fallback)
-                if require("luasnip").expand_or_locally_jumpable() then
-                    require("luasnip").expand_or_jump()
-                else
-                    fallback()
-                end
             end
         }),
-        ["<S-Tab>"] = cmp.mapping({
+        ["<C-p>"] = cmp.mapping({
             c = function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item({behavior = cmp.SelectBehavior.Insert})
@@ -266,13 +259,6 @@ cmp.setup({
                 else
                     fallback()
                 end
-            end,
-            s = function(fallback)
-                if require("luasnip").jumpable(-1) then
-                    require("luasnip").jump(-1)
-                else
-                    fallback()
-                end
             end
         }),
         ['<Down>'] = cmp.mapping(cmp.mapping.select_next_item({
@@ -281,7 +267,7 @@ cmp.setup({
         ['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item({
             behavior = cmp.SelectBehavior.Select
         }), {'i'}),
-        ["<C-n>"] = cmp.mapping({
+        ["<Tab>"] = cmp.mapping({
             c = function()
                 if cmp.visible() then
                     cmp.select_next_item({behavior = cmp.SelectBehavior.Select})
@@ -295,9 +281,16 @@ cmp.setup({
                 else
                     fallback()
                 end
+            end,
+            s = function(fallback)
+                if require("luasnip").expand_or_locally_jumpable() then
+                    require("luasnip").expand_or_jump()
+                else
+                    fallback()
+                end
             end
         }),
-        ["<C-p>"] = cmp.mapping({
+        ["<S-Tab>"] = cmp.mapping({
             c = function()
                 if cmp.visible() then
                     cmp.select_prev_item({behavior = cmp.SelectBehavior.Select})
@@ -308,6 +301,13 @@ cmp.setup({
             i = function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item({behavior = cmp.SelectBehavior.Select})
+                else
+                    fallback()
+                end
+            end,
+            s = function(fallback)
+                if require("luasnip").jumpable(-1) then
+                    require("luasnip").jump(-1)
                 else
                     fallback()
                 end
@@ -335,9 +335,20 @@ cmp.setup({
             })
         })
     },
-    sources = cmp.config.sources({{name = 'vim-dadbod-completion'}}, {
-        {name = 'calc'}, {name = 'luasnip'}, {name = 'nvim_lsp'}
-    }, {{name = 'treesitter'}, {name = 'buffer'}})
+    sources = cmp.config.sources({
+            {name = 'vim-dadbod-completion'},
+            {name = 'nvim_lsp_signature_help'},
+        }, {
+            {name = 'calc'},
+            {name = 'luasnip'},
+            {name = 'nvim_lsp'},
+            {name = 'latex_symbols'},
+            {name = 'emoji'},
+        }, {
+            {name = 'treesitter'},
+            {name = 'buffer'}
+        }
+        )
 })
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
