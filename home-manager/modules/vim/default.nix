@@ -14,6 +14,7 @@
       dashboard-nvim
       direnv-vim
       fidget-nvim
+      firenvim
       gitsigns-nvim
       impatient-nvim
       lualine-nvim

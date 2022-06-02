@@ -72,6 +72,10 @@
       url = "github:hrsh7th/cmp-nvim-lsp-signature-help";
       flake = false;
     };
+    firenvim = {
+      url = "github:glacambre/firenvim";
+      flake = false;
+    };
 
     # Discord + Plugins
     powercord = {
