@@ -178,6 +178,7 @@
             flatpak
             kerberos
             ldap
+            onlykey
             sound
             xserver
           ];
@@ -200,6 +201,7 @@
             (import "${mobile-nixos}/lib/configuration.nix" {
               device = "pine64-pinephone";
             })
+            onlykey
           ];
         };
       };

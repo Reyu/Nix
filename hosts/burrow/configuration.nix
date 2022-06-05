@@ -1,5 +1,5 @@
 { self, ... }: {
-  imports = [ ./hardware-configuration.nix ./MAS.nix ];
+  imports = [ ./hardware-configuration.nix ./MAS.nix ./services.nix ];
   config = {
     boot = {
       supportedFilesystems = [ "zfs" ];
