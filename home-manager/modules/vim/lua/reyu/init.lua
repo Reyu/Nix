@@ -194,8 +194,9 @@ require("nvim-treesitter.configs").setup({
 require("neoscroll").setup({easing_function = 'quadratic'})
 -- }}}
 -- Plugin: nvim-tree-lua {{{
-vim.g['nvim_tree_git_hl'] = 1
-require('nvim-tree').setup {}
+require('nvim-tree').setup({
+    renderer = { highlight_git = true }
+})
 -- }}}
 -- Plugin: gitsigns-nvim {{{
 require('gitsigns').setup()
