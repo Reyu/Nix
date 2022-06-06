@@ -195,9 +195,7 @@ require("nvim-treesitter.configs").setup({
 require("neoscroll").setup({easing_function = 'quadratic'})
 -- }}}
 -- Plugin: nvim-tree-lua {{{
-require('nvim-tree').setup({
-    renderer = { highlight_git = true }
-})
+require('nvim-tree').setup({renderer = {highlight_git = true}})
 -- }}}
 -- Plugin: gitsigns-nvim {{{
 require('gitsigns').setup()
@@ -334,19 +332,11 @@ cmp.setup({
         })
     },
     sources = cmp.config.sources({
-            {name = 'vim-dadbod-completion'},
-            {name = 'nvim_lsp_signature_help'},
-        }, {
-            {name = 'calc'},
-            {name = 'luasnip'},
-            {name = 'nvim_lsp'},
-            {name = 'latex_symbols'},
-            {name = 'emoji'},
-        }, {
-            {name = 'treesitter'},
-            {name = 'buffer'}
-        }
-        )
+        {name = 'vim-dadbod-completion'}, {name = 'nvim_lsp_signature_help'}
+    }, {
+        {name = 'calc'}, {name = 'luasnip'}, {name = 'nvim_lsp'},
+        {name = 'latex_symbols'}, {name = 'emoji'}
+    }, {{name = 'treesitter'}, {name = 'buffer'}})
 })
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
@@ -632,10 +622,10 @@ end
 vim.cmd("autocmd BufEnter *.ldg lua init_ledger()")
 -- }}}
 -- Plugin: fidget-nvim {{{
-require("fidget").setup {}
+require("fidget").setup()
 -- }}}
 -- Plugin: octo-nvim {{{
-require("octo").setup {}
+require("octo").setup()
 -- }}}
 -- Plugin: nvim-autopairs {{{
 require("nvim-autopairs").setup()
