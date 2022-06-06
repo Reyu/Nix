@@ -321,10 +321,6 @@ cmp.setup({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close()
         }),
-        ['<Space>'] = cmp.mapping(cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = false
-        }), {'i', 'c'}),
         ['<CR>'] = cmp.mapping({
             i = cmp.mapping.confirm({
                 behavior = cmp.ConfirmBehavior.Replace,
