@@ -14,6 +14,10 @@ final: prev: rec {
         inputs = inputs;
       };
     firenvim = prev.callPackage ../packages/firenvim.nix { inputs = inputs; };
+    nvim-treesitter-endwise =
+      prev.callPackage ../packages/nvim-treesitter-endwise.nix {
+        inputs = inputs;
+      };
     one-small-step-for-vimkind =
       prev.callPackage ../packages/one-small-step-for-vimkind.nix {
         inputs = inputs;

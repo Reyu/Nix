@@ -187,7 +187,8 @@ vim.g["vimwiki_list"] = {
 -- }}}
 -- Plugin: nvim-ts-context-commentstring {{{
 require("nvim-treesitter.configs").setup({
-    context_commentstring = {enable = true}
+    context_commentstring = {enable = true},
+    endwise = {enable = true}
 })
 -- }}}
 -- Plugin: neoscroll-nvim {{{

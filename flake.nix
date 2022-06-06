@@ -76,6 +76,10 @@
       url = "github:glacambre/firenvim";
       flake = false;
     };
+    nvim-treesitter-endwise = {
+      url = "github:RRethy/nvim-treesitter-endwise";
+      flake = false;
+    };
 
     # Discord + Plugins
     powercord = {

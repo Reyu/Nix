@@ -480,6 +480,22 @@
         "type": "github"
       }
     },
+    "nvim-treesitter-endwise": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1651084870,
+        "narHash": "sha256-X58HEWZRia89qRkq/yBzjam2MghQCtuY/QDMHdPy6cM=",
+        "owner": "RRethy",
+        "repo": "nvim-treesitter-endwise",
+        "rev": "b6ce73e9a1fe88b4548b25afcf46e8f9444fb5b9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RRethy",
+        "repo": "nvim-treesitter-endwise",
+        "type": "github"
+      }
+    },
     "one-small-step-for-vimkind": {
       "flake": false,
       "locked": {
@@ -555,6 +571,7 @@
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",
+        "nvim-treesitter-endwise": "nvim-treesitter-endwise",
         "one-small-step-for-vimkind": "one-small-step-for-vimkind",
         "powercord": "powercord",
         "telescope-hoogle": "telescope-hoogle",

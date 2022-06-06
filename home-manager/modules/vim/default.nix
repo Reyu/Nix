@@ -77,6 +77,7 @@
 
       # Filetypes
       nvim-treesitter
+      nvim-treesitter-endwise
       vim-polyglot
       vim-pandoc
       vim-pandoc-after
