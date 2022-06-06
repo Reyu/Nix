@@ -20,6 +20,7 @@
       lualine-nvim
       mattn-calendar-vim
       neoscroll-nvim
+      nvim-autopairs
       nvim-solarized-lua
       nvim-tree-lua
       nvim-ts-context-commentstring

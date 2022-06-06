@@ -637,6 +637,9 @@ require("fidget").setup {}
 -- Plugin: octo-nvim {{{
 require("octo").setup {}
 -- }}}
+-- Plugin: nvim-autopairs {{{
+require("nvim-autopairs").setup()
+-- }}}
 
 -- General Options {{{
 vim.opt.termguicolors = true
