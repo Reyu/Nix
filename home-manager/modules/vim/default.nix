@@ -85,6 +85,9 @@
       vim-pandoc-syntax
 
       # Testing & Debugging
+      neotest
+      neotest-python
+      neotest-vim-test
       nvim-dap
       nvim-dap-ui
       nvim-dap-virtual-text

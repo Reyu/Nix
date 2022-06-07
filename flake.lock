@@ -352,6 +352,54 @@
         "type": "github"
       }
     },
+    "neotest": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1654589487,
+        "narHash": "sha256-7ON/oRRwwR/IXcJtbW99TPAmUXQJZqY7xWRqHrtDzqw=",
+        "owner": "rcarriga",
+        "repo": "neotest",
+        "rev": "43392b6a374230aed0b46f8de41f3bf4a38955ba",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rcarriga",
+        "repo": "neotest",
+        "type": "github"
+      }
+    },
+    "neotest-python": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1654424647,
+        "narHash": "sha256-ywMoaeJ+nf5eDyLRBgqKyFxI/Qd4VkGKJLu0eJcZbhc=",
+        "owner": "rcarriga",
+        "repo": "neotest-python",
+        "rev": "e040840e6550a55cc32d21cc56f6a8db5041fb94",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rcarriga",
+        "repo": "neotest-python",
+        "type": "github"
+      }
+    },
+    "neotest-vim-test": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1650099582,
+        "narHash": "sha256-7f+aAbcA/EaK4A2kjFkoEQxOwaT/5/49xlLQpMmcRHM=",
+        "owner": "rcarriga",
+        "repo": "neotest-vim-test",
+        "rev": "0b21ad168e6255bbb84b66cd4d97c499d75b0223",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rcarriga",
+        "repo": "neotest-vim-test",
+        "type": "github"
+      }
+    },
     "neovim-flake": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -567,6 +615,9 @@
         "home-manager": "home-manager",
         "mobile-nixos": "mobile-nixos",
         "mutt-trim": "mutt-trim",
+        "neotest": "neotest",
+        "neotest-python": "neotest-python",
+        "neotest-vim-test": "neotest-vim-test",
         "neovim-nightly": "neovim-nightly",
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs_2",

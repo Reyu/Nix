@@ -633,6 +633,18 @@ require("octo").setup()
 -- Plugin: nvim-autopairs {{{
 require("nvim-autopairs").setup()
 -- }}}
+-- Plugin: neotest {{{
+require("neotest").setup({
+    adapters = {
+        require("neotest-python")({
+                dap = { justMyCode = false },
+            }),
+        require("neotest-vim-test")({
+                ignore_file_types = { "python", "vim", "lua" },
+            }),
+    }
+})
+-- }}}
 
 -- General Options {{{
 vim.opt.termguicolors = true

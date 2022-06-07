@@ -80,6 +80,18 @@
       url = "github:RRethy/nvim-treesitter-endwise";
       flake = false;
     };
+    neotest = {
+      url = "github:rcarriga/neotest";
+      flake = false;
+    };
+    neotest-python = {
+      url = "github:rcarriga/neotest-python";
+      flake = false;
+    };
+    neotest-vim-test = {
+      url = "github:rcarriga/neotest-vim-test";
+      flake = false;
+    };
 
     # Discord + Plugins
     powercord = {
