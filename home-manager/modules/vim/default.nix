@@ -77,7 +77,26 @@
       friendly-snippets
 
       # Filetypes
-      nvim-treesitter
+      (nvim-treesitter.withPlugins (
+        plugins: with plugins; [
+          tree-sitter-bash
+          tree-sitter-comment
+          tree-sitter-dockerfile
+          tree-sitter-haskell
+          tree-sitter-hcl
+          tree-sitter-json
+          tree-sitter-latex
+          tree-sitter-ledger
+          tree-sitter-lua
+          tree-sitter-make
+          tree-sitter-markdown
+          tree-sitter-nix
+          tree-sitter-python
+          tree-sitter-rst
+          tree-sitter-toml
+          tree-sitter-vim
+          tree-sitter-yaml
+        ]))
       nvim-treesitter-endwise
       vim-polyglot
       vim-pandoc
@@ -123,7 +142,6 @@
       stylua
       # Utilities
       gh
-      gcc
     ];
     extraConfig = ''
       lua require('reyu/init')

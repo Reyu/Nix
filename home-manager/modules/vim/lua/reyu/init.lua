@@ -188,8 +188,21 @@ vim.g["vimwiki_list"] = {
 -- Plugin: nvim-ts-context-commentstring {{{
 require("nvim-treesitter.configs").setup({
     context_commentstring = {enable = true},
-    endwise = {enable = true}
+    endwise = {enable = true},
+    highlight = {enable = true},
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "gnn",
+            scope_incremental = "grs",
+            node_incremental = "grn",
+            node_decremental = "grm"
+        }
+    },
+    indent = {enable = true}
 })
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 -- }}}
 -- Plugin: neoscroll-nvim {{{
 require("neoscroll").setup({easing_function = 'quadratic'})
@@ -655,6 +668,9 @@ vim.opt.mouse = ""
 -- Turn on mode lines
 vim.opt.modeline = true
 vim.opt.modelines = 3
+
+-- Show the first layer of folds by default
+vim.opt.foldlevelstart = 1
 
 -- Configure line numbers
 vim.opt.number = true
