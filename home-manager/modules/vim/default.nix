@@ -112,6 +112,7 @@
       gitlint
       nix-linter
       nixpkgs-lint
+      proselint
       shellcheck
       sqlint
       yamllint
