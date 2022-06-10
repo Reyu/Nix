@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   programs.neovim = {
     enable = true;
     viAlias = true;
@@ -8,6 +7,7 @@
     withPython3 = true;
     withNodeJs = true;
     extraPython3Packages = ps: with ps; [ rope jedi ];
+    extraConfig = "lua require('reyu/init')";
     plugins = with pkgs.vimPlugins; [
       # General
       FixCursorHold-nvim
@@ -77,8 +77,8 @@
       friendly-snippets
 
       # Filetypes
-      (nvim-treesitter.withPlugins (
-        plugins: with plugins; [
+      (nvim-treesitter.withPlugins (plugins:
+        with plugins; [
           tree-sitter-bash
           tree-sitter-comment
           tree-sitter-dockerfile
@@ -143,24 +143,9 @@
       # Utilities
       gh
     ];
-    extraConfig = ''
-      lua require('reyu/init')
-    '';
   };
   xdg.configFile = { "nvim/lua" = { source = ./lua; }; };
-  home.file = {
-    # We just want the directories, file contents doesn't matter.
-    nvimBackup = {
-      text = "";
-      target = ".cache/nivm/backup/.keep";
-    };
-    nvimUndo = {
-      text = "";
-      target = ".cache/nivm/undo/.keep";
-    };
-    nvimSwap = {
-      text = "";
-      target = ".cache/nivm/swap/.keep";
-    };
-  };
+  home.packages = [
+    (pkgs.neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
+  ];
 }

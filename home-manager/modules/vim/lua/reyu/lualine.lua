@@ -22,7 +22,8 @@ require('lualine').setup {
     sections = {
         lualine_a = {'mode'},
         lualine_b = {
-            {'FugitiveHead', icon = ''}, {'diff', source = diff_source},
+            {'FugitiveHead', icon = ''},
+            {'diff', source = diff_source},
             'diagnostics'
         },
         lualine_c = {'filename'},

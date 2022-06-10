@@ -23,19 +23,19 @@ vim.fn.sign_define('DapBreakpointCondition', {
     numhl = ''
 })
 vim.fn.sign_define('DapBreakpointRejected', {
-    text = '',
+    text = '🚫',
     texthl = 'DiagnosticError',
     linehl = '',
     numhl = ''
 })
 vim.fn.sign_define('DapLogPoint', {
-    text = 'ﱴ',
+    text = '📓',
     texthl = 'DiagnosticInfo',
     linehl = '',
     numhl = ''
 })
 vim.fn.sign_define('DapStopped', {
-    text = '',
+    text = '🛑',
     texthl = 'DiagnosticWarning',
     linehl = 'DiagnosticUnderlineWarning',
     numhl = 'DiagnosticWarning'
