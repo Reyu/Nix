@@ -7,6 +7,9 @@ in
     mkEnableOption "tmux terminal mutliplexer";
 
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      tmux-xpanes
+    ];
     programs.tmux = {
       enable = true;
       prefix = "M-b";
