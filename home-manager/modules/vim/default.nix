@@ -9,6 +9,12 @@
     extraPython3Packages = ps: with ps; [ rope jedi ];
     extraConfig = "lua require('reyu/init')";
     plugins = with pkgs.vimPlugins; [
+      # Themes
+      nvim-solarized-lua
+      gruvbox
+      vim-monokai
+      vim-monokai-pro
+
       # General
       FixCursorHold-nvim
       dashboard-nvim
@@ -21,7 +27,6 @@
       mattn-calendar-vim
       neoscroll-nvim
       nvim-autopairs
-      nvim-solarized-lua
       nvim-tree-lua
       nvim-ts-context-commentstring
       nvim-web-devicons
@@ -35,6 +40,8 @@
       vim-ledger
       vimwiki
       which-key-nvim
+      goyo
+      easy-align
 
       # Must have T.Pope plugins
       vim-capslock

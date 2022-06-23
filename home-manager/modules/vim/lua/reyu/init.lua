@@ -129,23 +129,23 @@ vim.api.nvim_set_var('tmux_navigator_no_mappings', true)
 -- Normal mode
 require('which-key').register({
     ['<A-h>'] = {
-        function() vim.api.nvim_command('TmuxNavigateLeft') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigateLeft'}, {}) end,
         'Navigate left one window (vim) or pane (tmux)'
     },
     ['<A-l>'] = {
-        function() vim.api.nvim_command('TmuxNavigateRight') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigateRight'}, {}) end,
         'Navigate right one window (vim) or pane (tmux)'
     },
     ['<A-j>'] = {
-        function() vim.api.nvim_command('TmuxNavigateDown') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigateDown'}, {}) end,
         'Navigate down one window (vim) or pane (tmux)'
     },
     ['<A-k>'] = {
-        function() vim.api.nvim_command('TmuxNavigateUp') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigateUp'}, {}) end,
         'Navigate up one window (vim) or pane (tmux)'
     },
     ['<A-p>'] = {
-        function() vim.api.nvim_command('TmuxNavigatePrevious') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigatePrevious'}, {}) end,
         'Navigate to previous window (vim) or pane (tmux)'
     }
 }, {mode = 'n'})
@@ -153,19 +153,19 @@ require('which-key').register({
 -- Terminal Mode
 require('which-key').register({
     ['<A-h>'] = {
-        function() vim.api.nvim_command('TmuxNavigateLeft') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigateLeft'}, {}) end,
         'Navigate left one window (vim) or pane (tmux)'
     },
     ['<A-l>'] = {
-        function() vim.api.nvim_command('TmuxNavigateRight') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigateRight'}, {}) end,
         'Navigate right one window (vim) or pane (tmux)'
     },
     ['<A-j>'] = {
-        function() vim.api.nvim_command('TmuxNavigateDown') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigateDown'}, {}) end,
         'Navigate down one window (vim) or pane (tmux)'
     },
     ['<A-k>'] = {
-        function() vim.api.nvim_command('TmuxNavigateUp') end,
+        function() vim.api.nvim_cmd({cmd = 'TmuxNavigateUp'}, {}) end,
         'Navigate up one window (vim) or pane (tmux)'
     }
 }, {mode = 't'})
@@ -188,6 +188,53 @@ require('octo').setup()
 -- Plugin: nvim-autopairs {{{
 require('nvim-autopairs').setup()
 -- }}}
+-- Plugin: Goyo {{{
+vim.api.nvim_set_var('goyo_width', 120)
+require('which-key').register({
+    ['g'] = {
+        function() vim.api.nvim_cmd({cmd = 'Goyo'}, {}) end,
+        'Toggle Goyo for distraction free editing'
+    }
+}, {prefix = '<leader>'})
+vim.api.nvim_create_autocmd('User', {
+    pattern = {'GoyoEnter'},
+    callback = function()
+        if vim.fn.exists('$TMUX') then
+            vim.api.nvim_cmd({
+                cmd = "!",
+                args = {"tmux", "set", "status", "off"},
+                mods = {silent = true}
+            }, {})
+        end
+    end
+})
+vim.api.nvim_create_autocmd('User', {
+    pattern = {'GoyoLeave'},
+    callback = function()
+        if vim.fn.exists('$TMUX') then
+            vim.api.nvim_cmd({
+                cmd = "!",
+                args = {"tmux", "set", "status", "on"},
+                mods = {silent = true}
+            }, {})
+        end
+    end
+})
+-- }}}
+-- Plugin: easy-align {{{
+require('which-key').register({
+    ga = {
+        "<Plug>(EasyAlign)",
+        "Start interactive EasyAlign in visual mode"
+    }
+}, {mode = 'n'})
+require('which-key').register({
+    ga = {
+        "<Plug>(EasyAlign)",
+        "Start interactive EasyAlign for a motion/text object"
+    }
+}, {mode = 'x'})
+-- }}}
 
 -- Completion
 -- Plugin: nvim-lspconfig {{{
@@ -197,9 +244,9 @@ require('reyu/lsp_config')
 local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
     return col ~= 0 and
-        vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col,
-            col)
-        :match('%s') == nil
+               vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col,
+                                                                          col)
+                   :match('%s') == nil
 end
 
 local cmp = require('cmp')
@@ -316,10 +363,11 @@ cmp.setup({
     sources = cmp.config.sources({
         {name = 'vim-dadbod-completion'}, {name = 'nvim_lsp_signature_help'}
     }, {
-            {name = 'calc'}, {name = 'luasnip'}, {name = 'nvim_lsp'},
-            {name = 'latex_symbols'}, {name = 'emoji'}
-        }, {{name = 'treesitter'}, {name = 'buffer'}})
+        {name = 'calc'}, {name = 'luasnip'}, {name = 'nvim_lsp'},
+        {name = 'latex_symbols'}, {name = 'emoji'}
+    }, {{name = 'treesitter'}, {name = 'buffer'}})
 })
+
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({{name = 'cmp_git'}}, {
@@ -365,7 +413,7 @@ require('fidget').setup()
 require('nvim-treesitter.configs').setup({
     context_commentstring = {enable = true},
     endwise = {enable = true},
-    highlight = {enable = true},
+    highlight = {enable = false},
     incremental_selection = {
         enable = true,
         keymaps = {
@@ -396,13 +444,13 @@ vim.api.nvim_create_autocmd('BufEnter', {
                 r = {
                     function()
                         vim.call('ledger#transaction_state_set',
-                            vim.fn.line('.'), '*')
+                                 vim.fn.line('.'), '*')
                     end, 'Reconcile transaction'
                 },
                 t = {
                     function()
                         vim.call('ledger#transaction_state_toggle',
-                            vim.fn.line('.'), ' *?!')
+                                 vim.fn.line('.'), ' *?!')
                     end, 'Toggle transaction state'
                 },
                 d = {
@@ -410,19 +458,19 @@ vim.api.nvim_create_autocmd('BufEnter', {
                     p = {
                         function()
                             vim.call('ledger#transaction_date_set',
-                                vim.fn.line('.'), 'primary')
+                                     vim.fn.line('.'), 'primary')
                         end, 'Set today\'s data as primary tx date'
                     },
                     a = {
                         function()
                             vim.call('ledger#transaction_date_set',
-                                vim.fn.line('.'), 'auxiliary')
+                                     vim.fn.line('.'), 'auxiliary')
                         end, 'Set today\'s data as auxiliary tx date'
                     },
                     u = {
                         function()
                             vim.call('ledger#transaction_date_set',
-                                vim.fn.line('.'), 'unshift')
+                                     vim.fn.line('.'), 'unshift')
                         end,
                         'Set current date to auxiliary, and set today as primary'
                     }
@@ -454,12 +502,9 @@ vim.api.nvim_set_var('vimwiki_list', {
 -- Plugin: neotest {{{
 require('neotest').setup({
     adapters = {
-        require('neotest-python')({
-            dap = { justMyCode = false },
-        }),
-        require('neotest-vim-test')({
-            ignore_file_types = { 'python', 'vim', 'lua' },
-        }),
+        require('neotest-python')({dap = {justMyCode = false}}),
+        require('neotest-vim-test')(
+            {ignore_file_types = {'python', 'vim', 'lua'}})
     }
 })
 -- }}}
@@ -495,7 +540,7 @@ require('which-key').register({
         B = {
             function()
                 require('dap').set_breakpoint(vim.fn.input(
-                    'Breakpoint condition: '))
+                                                  'Breakpoint condition: '))
             end, 'Set breakpoint w/ condition'
         },
         e = {
@@ -505,7 +550,7 @@ require('which-key').register({
         l = {
             function()
                 require('dap').set_breakpoint(nil, nil, vim.fn
-                    .input('Log point message: '))
+                                                  .input('Log point message: '))
             end, 'Set LogPoint'
         },
         c = {
@@ -545,15 +590,15 @@ require('which-key').register({
 }, {prefix = '<leader>'})
 local dap, dapui = require('dap'), require('dapui')
 dap.listeners.after.event_initialized['dapui_config'] =
-function() dapui.open() end
+    function() dapui.open() end
 dap.listeners.before.event_terminated['dapui_config'] =
-function() dapui.close() end
+    function() dapui.close() end
 dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
 -- }}}
 
 -- General Options {{{
 vim.api.nvim_set_option_value('termguicolors', true, {})
-vim.api.nvim_command('colorscheme solarized')
+vim.api.nvim_cmd({cmd = 'colorscheme', args = {'solarized'}}, {})
 
 -- Don't use the mouse. Ever.
 vim.api.nvim_set_option_value('mouse', '', {})
@@ -564,6 +609,9 @@ vim.api.nvim_set_option_value('modelines', 3, {})
 
 -- Show the first layer of folds by default
 vim.api.nvim_set_option_value('foldlevel', 1, {})
+
+-- Show the cursorline, so I don't get lost
+vim.api.nvim_set_option_value('cursorline', true, {})
 
 -- Configure line numbers
 vim.api.nvim_set_option_value('number', true, {})
@@ -588,7 +636,8 @@ vim.api.nvim_set_option_value('sidescrolloff', 5, {})
 
 -- Tell Vim which characters to show for expanded TABs,
 -- trailing whitespace, and end-of-lines.
-vim.api.nvim_set_option_value('listchars', 'tab:> ,trail:-,extends:>,precedes:<,nbsp:+', {})
+vim.api.nvim_set_option_value('listchars',
+                              'tab:> ,trail:-,extends:>,precedes:<,nbsp:+', {})
 vim.api.nvim_set_option_value('list', true, {}) -- Show problematic characters.
 
 -- Some extra highlight commands
@@ -611,15 +660,14 @@ vim.api.nvim_set_option_value('undofile', true, {})
 local savePath = vim.fn.stdpath('state')
 vim.api.nvim_set_option_value('directory', savePath .. '/other//,/tmp//', {})
 vim.api.nvim_set_option_value('backupdir', savePath .. '/backups//,/tmp//', {})
-vim.api.nvim_set_option_value('undodir',   savePath .. '/undo//,/tmp//', {})
+vim.api.nvim_set_option_value('undodir', savePath .. '/undo//,/tmp//', {})
 -- }}}
 -- Autocommands {{{
 vim.api.nvim_create_autocmd('TermOpen', {
     pattern = {'*'},
     callback = function()
         vim.api.nvim_buf_set_option(0, 'number', false)
-        vim.api.nvim_buf_set_option(0, 'number', false)
-        vim.api.nvim_buf_set_option(0, 'number', false)
+        vim.api.nvim_buf_set_option(0, 'relativenumber', false)
     end
 })
 -- }}}
