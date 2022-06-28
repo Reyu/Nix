@@ -224,42 +224,43 @@
 
       homeConfigurations =
         let
-          # Defaults
           inherit extraSpecialArgs;
-          configuration = { };
-          homeDirectory = "/home/${username}";
-          pkgs = self.pkgs.${system}.nixpkgs;
-          system = "x86_64-linux";
-          username = "reyu";
-          # Function alias
           hmConfig = home-manager.lib.homeManagerConfiguration;
         in
         {
           desktop = hmConfig {
-            inherit configuration extraSpecialArgs homeDirectory pkgs system
-              username;
-            extraModules = [ ./home-manager/profiles/desktop.nix ];
+            inherit extraSpecialArgs;
+            pkgs = self.pkgs.x86_64-linux.nixpkgs;
+            modules = [
+              { home = { username = "reyu"; homeDirectory = "/home/reyu"; }; }
+              ./home-manager/profiles/desktop.nix
+            ];
           };
           server = hmConfig {
-            inherit configuration extraSpecialArgs homeDirectory pkgs system
-              username;
-            extraModules = [ ./home-manager/profiles/server.nix ];
+            inherit extraSpecialArgs;
+            pkgs = self.pkgs.x86_64-linux.nixpkgs;
+            modules = [
+              { home = { username = "reyu"; homeDirectory = "/home/reyu"; }; }
+              ./home-manager/profiles/server.nix
+            ];
           };
           minimalRoot = hmConfig {
-            inherit extraSpecialArgs pkgs system;
-            username = "root";
-            homeDirectory = "/root";
-            configuration = {
-              imports = [ ./home-manager/modules/shell ];
-              manual.manpages.enable = true;
-              home.packages = with pkgs; [ htop ];
-              home.sessionVariables = {
-                EDITOR = "nvim";
-                VISUAL = "nvim";
-              };
-              home.stateVersion = "20.09";
-              programs.home-manager.enable = true;
-            };
+            inherit extraSpecialArgs pkgs;
+            modules = [
+              ./home-manager/modules/shell
+              {
+                manual.manpages.enable = true;
+                home = {
+                  username = "root";
+                  homeDirectory = "/root";
+                  packages = [ pkgs.htop ];
+                  sessionVariables = {
+                    EDITOR = "nvim";
+                    VISUAL = "nvim";
+                  };
+                };
+              }
+            ];
           };
         };
 
