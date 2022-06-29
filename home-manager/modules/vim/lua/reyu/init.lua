@@ -508,9 +508,6 @@ require('neotest').setup({
     }
 })
 -- }}}
--- Plugin: vim-ultest {{{
-vim.api.nvim_set_var('ultest_use_pty', true)
--- }}}
 -- Plugin: nvim-dap {{{
 require('reyu/dap')
 require('which-key').register({

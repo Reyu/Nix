@@ -120,7 +120,6 @@
       one-small-step-for-vimkind
       telescope-dap-nvim
       vim-test
-      vim-ultest
     ];
     extraPackages = with pkgs; [
       # Language servers
