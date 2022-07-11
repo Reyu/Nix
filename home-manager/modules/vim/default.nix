@@ -148,6 +148,7 @@
       stylua
       # Utilities
       gh
+      lolcat
     ];
   };
   xdg.configFile = { "nvim/lua" = { source = ./lua; }; };

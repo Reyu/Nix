@@ -2,7 +2,6 @@
 -- NeoVim Config --
 -- ############# --
 require('impatient')
-
 -- Plugins
 -- Plugin: telescope-nvim {{{
 require('telescope').setup({
@@ -95,6 +94,44 @@ require('reyu/lualine')
 
 -- }}}
 -- Plugin: dashboard-nvim {{{
+local db = require('dashboard')
+db.custom_header = {
+        '███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
+        '████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
+        '██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
+        '██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
+        '██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
+        '╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
+    }
+db.custom_center = {
+      {icon = '  ',
+      desc = 'Load lastest session           ',
+      shortcut = '\\ s l',
+      action ='SessionLoad'},
+      {icon = '  ',
+      desc = 'Recently opened files          ',
+      action =  'DashboardFindHistory',
+      shortcut = '\\ f h'},
+      {icon = '  ',
+      desc = 'Find  File                     ',
+      action = 'Telescope find_files find_command=rg,--hidden,--files',
+      shortcut = '\\ f f'},
+      {icon = '  ',
+      desc ='File Browser                    ',
+      action =  'Telescope file_browser',
+      shortcut = '\\ f b'},
+      {icon = '  ',
+      desc = 'Find  word                     ',
+      action = 'Telescope live_grep',
+      shortcut = '\\ f w'},
+    }
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = {'dashboard'},
+    callback = function()
+        vim.api.nvim_buf_set_option(0, 'list', false)
+        vim.cmd([[highlight clear ExtraWhitespace]])
+    end
+})
 require('which-key').register({
     s = {
         name = 'Session',
@@ -102,25 +139,6 @@ require('which-key').register({
         l = {'<cmd>SessionLoad<cr>', 'Load last session'}
     }
 }, {mode = 'n', prefix = '<leader>'})
-
-vim.api.nvim_set_var('dashboard_default_executive', 'telescope')
-vim.api.nvim_set_var('dashboard_custom_header', {
-    ' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
-    ' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
-    ' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
-    ' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
-    ' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
-    ' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝'
-})
-vim.api.nvim_set_var('dashboard_custom_shortcut', {
-    book_marks = '\\ t m',
-    change_colorscheme = '\\ t c',
-    find_file = '\\ f f',
-    find_history = '\\ f h',
-    find_word = '\\ f a',
-    last_session = '\\ s l',
-    new_file = '<N/A>'
-})
 -- }}}
 -- Plugin: tmux-navigator {{{
 vim.api.nvim_set_var('tmux_navigator_disable_when_zoomed', true)
