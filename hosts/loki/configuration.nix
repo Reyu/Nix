@@ -1,4 +1,4 @@
-{
+{ pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -28,6 +28,11 @@
     max-jobs= 8;
   };
 
+  fileSystems."/media/Books" = {
+    device = "burrow.home.reyuzenfold.com:/data/media/books";
+    fsType = "nfs";
+  };
+
   console.useXkbConfig = true;
   programs.dconf.enable = true;
 
@@ -46,6 +51,9 @@
   };
 
   services = {
+    udev.packages = [
+      pkgs.android-udev-rules
+    ];
     tailscale.enable = true;
     sanoid = {
       interval = "*-*-* *:0..59/15 UTC";
@@ -68,6 +76,8 @@
     xserver.wacom.enable = true;
     zfs.autoScrub.enable = true;
   };
+
+  users.users.reyu.extraGroups = ["adbusers"];
 
   networking.hostName = "loki";
   networking.hostId = "d540cb4f";

@@ -1,5 +1,5 @@
 { self, ... }: {
-  imports = [ ./hardware-configuration.nix ./MAS.nix ./services.nix ];
+  imports = [ ./hardware-configuration.nix ./MAS.nix ];
   config = {
     boot = {
       supportedFilesystems = [ "zfs" ];
@@ -150,17 +150,18 @@
 
     services.nfs.server.enable = true;
     services.nfs.server.exports = ''
-      /data/media/ISO               *(rw,all_squash,mp,subtree_check)
-      /data/media/audio/books       *(rw,all_squash,mp,subtree_check)
-      /data/media/audio/music       *(rw,all_squash,mp,subtree_check)
-      /data/media/books             *(rw,all_squash,mp,subtree_check)
-      /data/media/pictures          *(rw,all_squash,mp,subtree_check)
-      /data/media/video/movies      *(rw,all_squash,mp,subtree_check)
-      /data/media/video/television  *(rw,all_squash,mp,subtree_check)
-      /data/media/video/youtube     *(rw,all_squash,mp,subtree_check)
+      /data/media/ISO               *(rw,all_squash,mp,subtree_check,anonuid=996,anongid=994)
+      /data/media/audio/books       *(rw,all_squash,mp,subtree_check,anonuid=996,anongid=994)
+      /data/media/audio/music       *(rw,all_squash,mp,subtree_check,anonuid=996,anongid=994)
+      /data/media/books             *(rw,all_squash,mp,subtree_check,anonuid=996,anongid=994)
+      /data/media/pictures          *(rw,all_squash,mp,subtree_check,anonuid=996,anongid=994)
+      /data/media/video/movies      *(rw,all_squash,mp,subtree_check,anonuid=996,anongid=994)
+      /data/media/video/television  *(rw,all_squash,mp,subtree_check,anonuid=996,anongid=994)
+      /data/media/video/youtube     *(rw,all_squash,mp,subtree_check,anonuid=996,anongid=994)
     '';
 
     services = {
+      influxdb.enable = true;
       syncthing = {
         enable = true;
         user = "syncthing";
