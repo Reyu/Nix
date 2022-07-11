@@ -19,6 +19,8 @@ in
       keyMode = "vi";
       terminal = "screen-256color";
       historyLimit = 20000;
+      sensibleOnTop = false;
+      secureSocket = true;
       extraConfig = ''
         # ==========================
         # ===  General settings  ===
@@ -216,24 +218,24 @@ in
             set -g @batt_color_low_charge "#[fg=$color_level_stress]"
           '';
         }
-        {
-          plugin = tmuxPlugins.sysstat;
-          extraConfig = ''
-            set -g @sysstat_mem_view_tmpl 'MEM:#[fg=#{mem.color}]#{mem.pused}#[default] #{mem.used}'
+        # {
+        #   plugin = tmuxPlugins.sysstat;
+        #   extraConfig = ''
+        #     set -g @sysstat_mem_view_tmpl 'MEM:#[fg=#{mem.color}]#{mem.pused}#[default] #{mem.used}'
 
-            set -g @sysstat_cpu_color_low "$color_level_ok"
-            set -g @sysstat_cpu_color_medium "$color_level_warn"
-            set -g @sysstat_cpu_color_stress "$color_level_stress"
+        #     set -g @sysstat_cpu_color_low "$color_level_ok"
+        #     set -g @sysstat_cpu_color_medium "$color_level_warn"
+        #     set -g @sysstat_cpu_color_stress "$color_level_stress"
 
-            set -g @sysstat_mem_color_low "$color_level_ok"
-            set -g @sysstat_mem_color_medium "$color_level_warn"
-            set -g @sysstat_mem_color_stress "$color_level_stress"
+        #     set -g @sysstat_mem_color_low "$color_level_ok"
+        #     set -g @sysstat_mem_color_medium "$color_level_warn"
+        #     set -g @sysstat_mem_color_stress "$color_level_stress"
 
-            set -g @sysstat_swap_color_low "$color_level_ok"
-            set -g @sysstat_swap_color_medium "$color_level_warn"
-            set -g @sysstat_swap_color_stress "$color_level_stress"
-          '';
-        }
+        #     set -g @sysstat_swap_color_low "$color_level_ok"
+        #     set -g @sysstat_swap_color_medium "$color_level_warn"
+        #     set -g @sysstat_swap_color_stress "$color_level_stress"
+        #   '';
+        # }
         {
           plugin = tmuxPlugins.resurrect;
           extraConfig = ''
