@@ -203,11 +203,12 @@
           modules = [
             ./hosts/burrow/configuration.nix
             consul
-            vault
-            nomad
             docker
             kerberos
             ldap
+            nomad
+            telegraf
+            vault
           ];
         };
         kit = {
