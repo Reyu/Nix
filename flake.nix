@@ -92,6 +92,10 @@
       url = "github:rcarriga/neotest-vim-test";
       flake = false;
     };
+    netman = {
+      url = "github:miversen33/netman.nvim";
+      flake = false;
+    };
 
     # Discord + Plugins
     powercord = {

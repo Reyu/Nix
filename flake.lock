@@ -447,6 +447,22 @@
         "type": "github"
       }
     },
+    "netman": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1658377260,
+        "narHash": "sha256-aktawtDP5pi2x2kqecNHMs/Y217yrQ0f9vkYElrTv/Q=",
+        "owner": "miversen33",
+        "repo": "netman.nvim",
+        "rev": "cb65cd3b6a28267510a557330bb3f56cb6e26e8e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "miversen33",
+        "repo": "netman.nvim",
+        "type": "github"
+      }
+    },
     "nixlib": {
       "locked": {
         "lastModified": 1636849918,
@@ -620,6 +636,7 @@
         "neotest-python": "neotest-python",
         "neotest-vim-test": "neotest-vim-test",
         "neovim-nightly": "neovim-nightly",
+        "netman": "netman",
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",

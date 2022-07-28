@@ -42,6 +42,7 @@
       which-key-nvim
       goyo
       easy-align
+      netman
 
       # Must have T.Pope plugins
       vim-capslock
