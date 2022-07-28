@@ -11,6 +11,11 @@ require('telescope').setup({
                 ['<C-Down>'] = require('telescope.actions').cycle_history_next,
                 ['<C-Up>'] = require('telescope.actions').cycle_history_prev
             }
+        },
+    },
+    extensions = {
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown {}
         }
     }
 })
@@ -252,6 +257,12 @@ require('which-key').register({
         "Start interactive EasyAlign for a motion/text object"
     }
 }, {mode = 'x'})
+-- }}}
+-- Plugin: netman {{{
+require('netman')
+-- }}}
+-- Plugin: telescope-ui-select-nvim {{{
+require("telescope").load_extension("ui-select")
 -- }}}
 
 -- Completion
