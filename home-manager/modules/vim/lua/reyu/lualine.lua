@@ -9,6 +9,17 @@ local function diff_source()
     end
 end
 
+function searchCount()
+    local search = vim.fn.searchcount({maxcount = 0}) -- maxcount = 0 makes the number not be capped at 99
+    local searchCurrent = search.current
+    local searchTotal = search.total
+    if searchCurrent > 0 and vim.v.hlsearch ~= 0 then
+        return "/"..vim.fn.getreg("/").." ["..searchCurrent.."/"..searchTotal.."]"
+    else
+        return ""
+    end
+end
+
 require('lualine').setup {
     options = {
         icons_enabled = true,
@@ -27,7 +38,7 @@ require('lualine').setup {
             'diagnostics'
         },
         lualine_c = {'filename'},
-        lualine_x = {'encoding', 'fileformat', 'filetype'},
+        lualine_x = { { searchCount }, 'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress'},
         lualine_z = {'location'}
     },
