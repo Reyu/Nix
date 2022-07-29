@@ -44,6 +44,7 @@
       easy-align
       netman
       telescope-ui-select-nvim
+      lsp_lines-nvim
 
       # Must have T.Pope plugins
       vim-capslock

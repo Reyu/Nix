@@ -133,7 +133,7 @@ db.custom_center = {
 vim.api.nvim_create_autocmd('FileType', {
     pattern = {'dashboard'},
     callback = function()
-        vim.api.nvim_buf_set_option(0, 'list', false)
+        vim.opt['list'] = false
         vim.cmd([[highlight clear ExtraWhitespace]])
     end
 })
@@ -263,6 +263,16 @@ require('netman')
 -- }}}
 -- Plugin: telescope-ui-select-nvim {{{
 require("telescope").load_extension("ui-select")
+-- }}}
+-- Plugin: lsp_lines {{{
+vim.diagnostic.config({ virtual_text = false })
+require("lsp_lines").setup()
+require("which-key").register({
+    l = {
+        function() require("lsp_lines").toggle() end,
+        "Toggle lsp_lines"
+    }
+}, {prefix = "<space>"})
 -- }}}
 
 -- Completion
