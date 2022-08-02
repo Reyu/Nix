@@ -1,57 +1,47 @@
 { config, pkgs, lib, ... }:
 {
-
   services.dunst = {
     enable = true;
-
     iconTheme = {
       package = pkgs.papirus-icon-theme;
       name = "Papirus";
       size = "22x22";
     };
-
     settings = {
-
       global = {
-        monitor = 0;
+        alignment = "left";
+        always_run_script = "true";
+        browser = config.programs.firefox.package.outPath + "/bin/firefox";
+        class = "Dunst";
+        dmenu = config.programs.rofi.package.outPath + "/bin/rofi -dmenu -p Actions";
+        ellipsize = "middle";
         follow = "mouse";
+        frame_width = 2;
         geometry = "300x5-50+50";
-        indicate_hidden = "yes";
-        shrink = "no";
-        transparency = 0;
-        notification_height = 0;
-        separator_height = 2;
-        padding = 8;
+        hide_duplicate_count = "false";
+        history_length = 20;
         horizontal_padding = 8;
-        frame_width = 0;
-        separator_color = "frame";
-        sort = "yes";
+        icon_position = "right";
+        ignore_newline = "no";
+        indicate_hidden = "yes";
         line_height = 0;
         markup = "full";
-        alignment = "left";
-        show_age_threshold = 60;
-        word_wrap = "yes";
-        ellipsize = "middle";
-        ignore_newline = "no";
-        stack_duplicates = "yes";
-        hide_duplicate_count = "false";
-        show_indicators = "no";
-        icon_position = "left";
         max_icon_size = 32;
+        monitor = 0;
+        notification_height = 0;
+        padding = 8;
+        separator_color = "frame";
+        separator_height = 2;
+        show_age_threshold = 60;
+        show_indicators = "yes";
+        shrink = "no";
+        sort = "yes";
+        stack_duplicates = "yes";
+        startup_notification = "true";
         sticky_history = "yes";
-        history_length = 20;
-        browser = "${pkgs.chromium}/bin/chromium";
-        always_run_script = "true";
         title = "Dunst";
-        class = "Dunst";
-        startup_notification = "false";
-      };
-
-      shortcuts = {
-        close = "ctrl+space";
-        close_all = "ctrl+shift+space";
-        history = "ctrl+grave";
-        context = "ctrl+shift+period";
+        transparency = 0;
+        word_wrap = "yes";
       };
     };
   };
