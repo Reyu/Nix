@@ -11,6 +11,7 @@
     keychain
     libsecret
     perl
+    ntfy-sh
   ];
 
   programs.fzf = {
