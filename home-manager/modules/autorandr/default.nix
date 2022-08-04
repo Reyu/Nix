@@ -74,7 +74,7 @@
         StartLimitBurst = "1";
       };
       Service = {
-        ExecStart = "${pkgs.autorandr} --change --default home";
+        ExecStart = "${pkgs.autorandr}/bin/autorandr --change --default home";
         Type = "oneshot";
         RemainAfterExit = "false";
         KillMode = "process";
