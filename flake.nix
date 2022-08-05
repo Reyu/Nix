@@ -201,8 +201,6 @@
             consul
             docker
             flatpak
-            kerberos
-            ldap
             onlykey
             sound
             xserver
@@ -213,8 +211,6 @@
             ./hosts/burrow/configuration.nix
             consul
             docker
-            kerberos
-            ldap
             nomad
             telegraf
             vault
