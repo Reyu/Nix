@@ -140,11 +140,6 @@
     #   url = "github:kmonad/kmonad?dir=nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
-
-    # Region Deployments
-    # deploy-linode = {
-    #   url = "./regions/linode";
-    # };
   };
   outputs = { self, ... }@inputs:
     with inputs;
