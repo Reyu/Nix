@@ -4,7 +4,7 @@
     nix = {
       # Enable flakes
       package = pkgs.nixFlakes;
-      extraOptions = ''
+      extraOptions = pkgs.lib.mkForce ''
         experimental-features = nix-command flakes
       '';
 

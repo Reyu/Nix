@@ -148,6 +148,8 @@
     utils.lib.mkFlake {
       inherit self inputs;
 
+      supportedSystems = [ "x86_64-linux" "aarch64-linux"];
+
       sharedOverlays = [
         agenix.overlay
         deploy-rs.overlay
@@ -159,7 +161,6 @@
       ];
 
       channelsConfig = {
-        # allowUnfree = true;
         allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
           "steam"
           "steam-original"
@@ -170,6 +171,8 @@
       channels.nixpkgs.overlaysBuilder = channels:
         [ (final: prev: { inherit (channels.unstable) neovim-unwrapped; }) ];
 
+      hostDefaults.system = "x86_64-linux";
+      hostDefaults.channelName = "unstable";
       hostDefaults.modules = with self.nixosModules; [
         ./users/root.nix
         ./users/reyu.nix
@@ -187,7 +190,7 @@
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
           nix.registry.nixpkgs.flake = nixpkgs;
-          nix.registry.pinpox.flake = self;
+          nix.registry.foxnet.flake = self;
         })
       ];
 
