@@ -5,7 +5,7 @@
     # Core
     nixpkgs.url = "github:nixos/nixpkgs";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    utils.url = "github:gytis-ivaskevicius/flake-utils-plus/1.3.0";
     devshell.url = "github:numtide/devshell";
     mobile-nixos = {
       url = github:NixOS/mobile-nixos;
@@ -163,7 +163,14 @@
         self.overlay
       ];
 
-      channelsConfig = { allowUnfree = true; };
+      channelsConfig = {
+        # allowUnfree = true;
+        allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+          "steam"
+          "steam-original"
+          "steam-runtime"
+          ];
+      };
 
       channels.nixpkgs.overlaysBuilder = channels:
         [ (final: prev: { inherit (channels.unstable) neovim-unwrapped; }) ];
