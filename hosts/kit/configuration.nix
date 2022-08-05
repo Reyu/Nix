@@ -40,7 +40,6 @@
     # unpatched gnome-initial-setup is partially broken in small screens
     services.gnome.gnome-initial-setup.enable = false;
 
-    programs.phosh.enable = true;
     environment.gnome.excludePackages = with pkgs.gnome3; [
       gnome-terminal
     ];

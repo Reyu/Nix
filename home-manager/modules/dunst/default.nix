@@ -15,7 +15,7 @@
         class = "Dunst";
         dmenu = config.programs.rofi.finalPackage.outPath + "/bin/rofi -dmenu -p Actions";
         ellipsize = "middle";
-        follow = "mouse";
+        follow = "none";
         frame_width = 2;
         geometry = "300x5-50+50";
         hide_duplicate_count = "false";

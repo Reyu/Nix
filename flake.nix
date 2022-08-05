@@ -8,7 +8,7 @@
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus/1.3.0";
     devshell.url = "github:numtide/devshell";
     mobile-nixos = {
-      url = github:NixOS/mobile-nixos;
+      url = "github:NixOS/mobile-nixos";
       flake = false;
     };
     nixos-generators = {
@@ -143,12 +143,13 @@
   };
   outputs = { self, ... }@inputs:
     with inputs;
-    let extraSpecialArgs = { inherit inputs self; };
-    in
-    utils.lib.mkFlake {
+    let
+      extraSpecialArgs = { inherit inputs self; };
+      pkgs = self.pkgs.x86_64-linux.nixpkgs;
+    in utils.lib.mkFlake {
       inherit self inputs;
 
-      supportedSystems = [ "x86_64-linux" "aarch64-linux"];
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
       sharedOverlays = [
         agenix.overlay
@@ -157,14 +158,21 @@
         neovim-nightly.overlay
         nur.overlay
         powercord.overlay
-        self.overlay
+        (import ./overlays { inherit inputs; })
       ];
 
       channelsConfig = {
-        allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
-          "steam"
-          "steam-original"
-          "steam-runtime"
+        allowUnfreePredicate = pkg:
+          builtins.elem (nixpkgs.lib.getName pkg) [
+            "betterttv"
+            "discord-canary"
+            "obsidian"
+            "plexmediaserver"
+            "slack"
+            "steam"
+            "steam-original"
+            "steam-runtime"
+            "unrar"
           ];
       };
 
@@ -184,13 +192,13 @@
         nix-common
         security
         ({ ... }: {
-          # Default stateVersion
-          system.stateVersion = "22.05";
-
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-          nix.registry.nixpkgs.flake = nixpkgs;
-          nix.registry.foxnet.flake = self;
+          # flake-utils-plus options
+          nix.generateRegistryFromInputs = true;
+          nix.generateNixPathFromInputs = true;
+          # Default stateVersion
+          system.stateVersion = "22.05";
         })
       ];
 
@@ -228,115 +236,118 @@
         };
       };
 
-      homeConfigurations =
-        let
+      homeConfigurations = let
+        inherit extraSpecialArgs;
+        hmConfig = home-manager.lib.homeManagerConfiguration;
+      in {
+        desktop = hmConfig {
           inherit extraSpecialArgs;
-          hmConfig = home-manager.lib.homeManagerConfiguration;
-        in
-        {
-          desktop = hmConfig {
-            inherit extraSpecialArgs;
-            pkgs = self.pkgs.x86_64-linux.nixpkgs;
-            modules = [
-              { home = { username = "reyu"; homeDirectory = "/home/reyu"; }; }
-              ./home-manager/profiles/desktop.nix
-            ];
-          };
-          server = hmConfig {
-            inherit extraSpecialArgs;
-            pkgs = self.pkgs.x86_64-linux.nixpkgs;
-            modules = [
-              { home = { username = "reyu"; homeDirectory = "/home/reyu"; }; }
-              ./home-manager/profiles/server.nix
-            ];
-          };
-          minimalRoot = hmConfig {
-            inherit extraSpecialArgs pkgs;
-            modules = [
-              ./home-manager/modules/shell
-              {
-                manual.manpages.enable = true;
-                home = {
-                  username = "root";
-                  homeDirectory = "/root";
-                  packages = [ pkgs.htop ];
-                  sessionVariables = {
-                    EDITOR = "nvim";
-                    VISUAL = "nvim";
-                  };
-                };
-              }
-            ];
-          };
+          pkgs = self.pkgs.x86_64-linux.nixpkgs;
+          modules = [
+            {
+              home = {
+                username = "reyu";
+                homeDirectory = "/home/reyu";
+              };
+            }
+            ./home-manager/profiles/desktop.nix
+          ];
         };
+        server = hmConfig {
+          inherit extraSpecialArgs;
+          pkgs = self.pkgs.x86_64-linux.nixpkgs;
+          modules = [
+            {
+              home = {
+                username = "reyu";
+                homeDirectory = "/home/reyu";
+              };
+            }
+            ./home-manager/profiles/server.nix
+          ];
+        };
+        minimalRoot = hmConfig {
+          inherit extraSpecialArgs;
+          pkgs = self.pkgs.x86_64-linux.nixpkgs;
+          modules = [
+            ./home-manager/profiles/common.nix
+            {
+              manual.manpages.enable = true;
+              home = {
+                username = "root";
+                homeDirectory = "/root";
+              };
+            }
+          ];
+        };
+      };
 
-      deploy.nodes =
-        let
-          inherit (deploy-rs.lib.x86_64-linux.activate) nixos home-manager custom;
-          host = x: nixos self.nixosConfigurations."${x}";
-          user = x: home-manager self.homeConfigurations."${x}";
-        in
-        {
-          loki = {
-            hostname = "loki.home.reyuzenfold.com";
-            profiles = {
-              system = {
-                sshUser = "root";
-                path = host "loki";
-              };
-              hm-reyu = {
-                user = "reyu";
-                path = user "desktop";
-              };
-              hm-root = {
-                sshUser = "root";
-                path = user "minimalRoot";
-              };
+      deploy.nodes = let
+        inherit (deploy-rs.lib.x86_64-linux.activate) nixos home-manager custom;
+        host = x: nixos self.nixosConfigurations."${x}";
+        user = x: home-manager self.homeConfigurations."${x}";
+      in {
+        loki = {
+          hostname = "loki.home.reyuzenfold.com";
+          profiles = {
+            system = {
+              sshUser = "root";
+              path = host "loki";
             };
-          };
-          burrow = {
-            hostname = "burrow.home.reyuzenfold.com";
-            profiles = {
-              system = {
-                sshUser = "root";
-                path = host "burrow";
-              };
-              hm-reyu = {
-                user = "reyu";
-                path = user "server";
-              };
-              hm-root = {
-                sshUser = "root";
-                path = user "minimalRoot";
-              };
+            hm-reyu = {
+              user = "reyu";
+              path = user "desktop";
             };
-          };
-          kit = {
-            hostname = "172.16.128.9";
-            profiles = {
-              hm-reyu = {
-                user = "reyu";
-                path = user "minimalRoot";
-              };
+            hm-root = {
+              sshUser = "root";
+              path = user "minimalRoot";
             };
           };
         };
+        burrow = {
+          hostname = "burrow.home.reyuzenfold.com";
+          profiles = {
+            system = {
+              sshUser = "root";
+              path = host "burrow";
+            };
+            hm-reyu = {
+              user = "reyu";
+              path = user "server";
+            };
+            hm-root = {
+              sshUser = "root";
+              path = user "minimalRoot";
+            };
+          };
+        };
+        kit = {
+          hostname = "172.16.128.9";
+          profiles = {
+            hm-reyu = {
+              user = "reyu";
+              path = user "minimalRoot";
+            };
+          };
+        };
+      };
 
       outputsBuilder = channels:
         let pkgs = channels.nixpkgs;
-        in
-        {
+        in {
           # construct packagesBuilder to export all packages defined in overlays
-          packages = utils.lib.exportPackages self.overlays channels;
+          packages = (utils.lib.exportPackages self.overlays channels);
 
           # Evaluates to `devShell.<system> = <nixpkgs-channel-reference>.mkShell { name = "devShell"; };`.
           devShell = pkgs.devshell.mkShell {
             name = "FoxNet-Nix-Configs";
-            packages = with pkgs; [
-              cachix
-              rnix-lsp
-            ];
+            packages = with pkgs; [ cachix rnix-lsp ];
             commands = [
+              {
+                name = "repl";
+                package = pkgs.fup-repl;
+                help = "A package that adds a kick-ass repl";
+              }
               {
                 name = "deploy";
                 package = pkgs.deploy-rs.deploy-rs;
@@ -349,57 +360,48 @@
                 package = pkgs.nixpkgs-fmt;
                 category = "formatters";
               }
-              {
-                package = pkgs.nixos-generators;
-              }
+              { package = pkgs.nixos-generators; }
             ];
           };
         };
 
-      # Run deploy-rs as the default app
-      defaultApp = deploy-rs.defaultApp;
+      overlays = utils.lib.exportOverlays { inherit (self) pkgs inputs; } // {
+        default = import ./overlays { inherit inputs; };
+      };
 
-      overlay = import ./overlays { inherit inputs; };
-      overlays = utils.lib.exportOverlays { inherit (self) pkgs inputs; };
-
-      nixosModules = { age = agenix.nixosModules.age; } // builtins.listToAttrs (map
-        (x: {
-          name = x;
-          value = import (./modules + "/${x}");
-        })
-        (builtins.attrNames (builtins.readDir ./modules)));
+      nixosModules = {
+        age = agenix.nixosModules.age;
+      } // builtins.listToAttrs (map (x: {
+        name = x;
+        value = import (./modules + "/${x}");
+      }) (builtins.attrNames (builtins.readDir ./modules)));
 
       homeModules = builtins.listToAttrs (map (x: {
         name = x;
         value = import (./home-manager/modules + "/${x}");
-      })
-      (builtins.attrNames (builtins.readDir ./home-manager/modules)));
+      }) (builtins.attrNames (builtins.readDir ./home-manager/modules)));
 
-      checks =
-        let
-          # Sanity check for deploy-rs systems
-          deploments = builtins.mapAttrs
-            (system: deployLib: deployLib.deployChecks self.deploy)
-            deploy-rs.lib;
+      checks = let
+        # Sanity check for deploy-rs systems
+        deploments = builtins.mapAttrs
+          (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
-          # Checks to run with `nix flake check -L`, will run in a QEMU VM.
-          # Looks for all ./modules/<module name>/test.nix files and adds them to
-          # the flake's checks output. The test.nix file is optional and may be
-          # added to any module.
-          modules = builtins.listToAttrs (map
-            (x: {
-              name = x;
-              value = (import (./modules + "/${x}/test.nix")) {
-                pkgs = nixpkgs;
-                inherit self;
-              };
-            })
-            # Filter list of modules, leaving only modules which contain a
-            # `test.nix` file
-            (builtins.filter
-              (p: builtins.pathExists (./modules + "/${p}/test.nix"))
-              (builtins.attrNames (builtins.readDir ./modules))));
-        in
-        deploments // modules;
+        # Checks to run with `nix flake check -L`, will run in a QEMU VM.
+        # Looks for all ./modules/<module name>/test.nix files and adds them to
+        # the flake's checks output. The test.nix file is optional and may be
+        # added to any module.
+        modules = builtins.listToAttrs (map (x: {
+          name = x;
+          value = (import (./modules + "/${x}/test.nix")) {
+            pkgs = nixpkgs;
+            inherit self;
+          };
+        })
+        # Filter list of modules, leaving only modules which contain a
+        # `test.nix` file
+          (builtins.filter
+            (p: builtins.pathExists (./modules + "/${p}/test.nix"))
+            (builtins.attrNames (builtins.readDir ./modules))));
+      in deploments // modules;
     };
 }

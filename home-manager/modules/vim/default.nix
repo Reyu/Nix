@@ -1,4 +1,11 @@
 { config, pkgs, ... }: {
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
+  home.packages = [
+    (pkgs.neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
+  ];
   programs.neovim = {
     enable = true;
     viAlias = true;
@@ -8,6 +15,7 @@
     withNodeJs = true;
     extraPython3Packages = ps: with ps; [ rope jedi ];
     extraConfig = "lua require('reyu/init')";
+    package = pkgs.neovim-nightly;
     plugins = with pkgs.vimPlugins; [
       # Themes
       nvim-solarized-lua
@@ -155,7 +163,4 @@
     ];
   };
   xdg.configFile = { "nvim/lua" = { source = ./lua; }; };
-  home.packages = [
-    (pkgs.neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
-  ];
 }

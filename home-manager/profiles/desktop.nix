@@ -1,6 +1,7 @@
 { config, pkgs, lib, nur, inputs, ... }: {
   # Imports
   imports = [
+    ./common.nix
     ../modules/alacritty
     ../modules/autorandr
     ../modules/chat
@@ -12,9 +13,6 @@
     ../modules/picom
     ../modules/polybar
     ../modules/rofi
-    ../modules/shell
-    ../modules/tmux
-    ../modules/vim
     ../modules/xdg
     ../modules/xmonad
     ../modules/xscreensaver
@@ -27,56 +25,43 @@
 
   # Install these packages for my user
   home.packages = with pkgs; [
-    (discord-plugged.override {
-      plugins = [
-        inputs.discord-better-status
-        inputs.discord-read-all
-        inputs.discord-theme-toggler
-        inputs.discord-tweaks
-        inputs.discord-vc-timer
-      ];
-      themes = [ inputs.discord-theme-slate ];
-    })
     keepassxc
-    obsidian
     ripgrep
-    slack
-    syncthing
     xsel
   ];
 
-  # Include man-pages
-  manual.manpages.enable = true;
-
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
+  programs.keychain = {
+    agents = [ "ssh" "gpg" ];
+    enable = true;
+    enableXsessionIntegration = true;
+    enableZshIntegration = true;
+    keys = []; # No keys by default
   };
-
-  programs.neovim.package = pkgs.neovim-nightly;
 
   services = {
     udiskie.enable = true;
     unclutter.enable = true;
-    dunst.enable = true;
     flameshot.enable = true;
+    syncthing.enable = true;
+    syncthing.tray = {
+      enable = true;
+      # Adding the wait command here prevents a dialog if
+      # the tray is not loaded yet.
+      command = "syncthingtray --wait";
+    };
   };
 
   systemd.user.services = {
     keepassxc = {
       Unit = { Description = "KeePassXC - Password Manager"; };
       Service = { ExecStart = "${pkgs.keepassxc}/bin/keepassxc"; };
-      Install = { WantedBy = [ "default.target" ]; };
-    };
-    syncthingtray = {
-      Unit = { Description = "SyncThing Tray"; };
-      Service = { ExecStart = "${pkgs.syncthingtray}/bin/syncthingtray"; };
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = { WantedBy = [ "tray.target" ]; };
     };
   };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
-  home.stateVersion = "22.11";
+  xsession.initExtra = ''
+    if [ -f "$HOME/Pictures/.background" ] ; then
+      ${pkgs.feh}/bin/feh --no-fehbg --bg-center "$HOME/Pictures/.background"
+    fi
+    '';
 }

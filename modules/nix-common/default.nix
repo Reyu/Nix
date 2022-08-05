@@ -1,6 +1,5 @@
 { config, pkgs, ... }: {
   config = {
-    # Enable flakes
     nix = {
       # Enable flakes
       package = pkgs.nixFlakes;

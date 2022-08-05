@@ -6,6 +6,8 @@ in
   programs.alacritty = {
     enable = true;
     settings = {
+      bell.duration = 125;
+      bell.animation = "EaseOutExpo";
       window.decorations = "none";
       window.opacity = 0.9;
       scrolling.history = 0;
