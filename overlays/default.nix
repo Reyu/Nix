@@ -1,9 +1,8 @@
 { inputs }:
 # Pass flake inputs to overlay so we can use the sources pinned in flake.lock
 # instead of having to keep hashes in each package for src
-final: prev: {
-  mutt-trim  = prev.callPackage ../packages/mutt-trim.nix { inputs = inputs; };
-  vimPlugins = prev.vimPlugins  // {
+final: prev: let
+  myVimPlugins = {
     cmp-conventionalcommits     = prev.callPackage ../packages/cmp-conventionalcommits.nix     { inputs = inputs; };
     cmp-dap                     = prev.callPackage ../packages/cmp-dap.nix                     { inputs = inputs; };
     cmp-nvim-lsp-signature-help = prev.callPackage ../packages/cmp-nvim-lsp-signature-help.nix { inputs = inputs; };
@@ -17,4 +16,9 @@ final: prev: {
     telescope-hoogle            = prev.callPackage ../packages/telescope-hoogle.nix            { inputs = inputs; };
     vim-solarized8              = prev.callPackage ../packages/vim-solarized8.nix              { inputs = inputs; };
   };
+in {
+  mutt-trim      = prev.callPackage ../packages/mutt-trim.nix      { inputs = inputs; };
+  httpie-desktop = prev.callPackage ../packages/httpie-desktop.nix { inputs = inputs; };
+  vimPlugins     = prev.vimPlugins  // myVimPlugins;
+  myVimPlugins   = myVimPlugins;
 }
