@@ -136,15 +136,15 @@
     };
 
     # TODO: try this
-    # kmonad = {
-    #   url = "github:kmonad/kmonad?dir=nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    kmonad = {
+      url = "github:kmonad/kmonad?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = { self, ... }@inputs:
     with inputs;
     let
-      extraSpecialArgs = { inherit inputs self; };
+      _module.args = { inherit inputs self; };
       pkgs = self.pkgs.x86_64-linux.nixpkgs;
     in utils.lib.mkFlake {
       inherit self inputs;
@@ -158,6 +158,7 @@
         neovim-nightly.overlay
         nur.overlay
         powercord.overlay
+        kmonad.overlays.default
         (import ./overlays { inherit inputs; })
       ];
 
@@ -212,6 +213,7 @@
             onlykey
             sound
             xserver
+            kmonad.nixosModules.default
           ];
         };
         burrow = {
@@ -237,11 +239,10 @@
       };
 
       homeConfigurations = let
-        inherit extraSpecialArgs;
         hmConfig = home-manager.lib.homeManagerConfiguration;
       in {
         desktop = hmConfig {
-          inherit extraSpecialArgs;
+          _module.args = { inherit inputs self; };
           pkgs = self.pkgs.x86_64-linux.nixpkgs;
           modules = [
             {
@@ -254,7 +255,7 @@
           ];
         };
         server = hmConfig {
-          inherit extraSpecialArgs;
+          _module.args = { inherit inputs self; };
           pkgs = self.pkgs.x86_64-linux.nixpkgs;
           modules = [
             {
@@ -267,7 +268,7 @@
           ];
         };
         minimalRoot = hmConfig {
-          inherit extraSpecialArgs;
+          _module.args = { inherit inputs self; };
           pkgs = self.pkgs.x86_64-linux.nixpkgs;
           modules = [
             ./home-manager/profiles/common.nix

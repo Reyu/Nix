@@ -321,6 +321,28 @@
         "type": "github"
       }
     },
+    "kmonad": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "nix",
+        "lastModified": 1657871515,
+        "narHash": "sha256-+mxd8hpxt7aWtJlhHn6HUNj9CWlvRQrHdFvrZMWU+WY=",
+        "owner": "kmonad",
+        "repo": "kmonad",
+        "rev": "95bb58b7347ebacb4654fb21c798e1cd10331b0d",
+        "type": "github"
+      },
+      "original": {
+        "dir": "nix",
+        "owner": "kmonad",
+        "repo": "kmonad",
+        "type": "github"
+      }
+    },
     "mobile-nixos": {
       "flake": false,
       "locked": {
@@ -630,6 +652,7 @@
         "discord-vc-timer": "discord-vc-timer",
         "firenvim": "firenvim",
         "home-manager": "home-manager",
+        "kmonad": "kmonad",
         "mobile-nixos": "mobile-nixos",
         "mutt-trim": "mutt-trim",
         "neotest": "neotest",

@@ -82,6 +82,21 @@
     zfs.autoScrub.enable = true;
   };
 
+  hardware.uinput.enable = true;
+  services.kmonad = {
+    enable = true;
+    keyboards.kinesis = {
+      name = "kinesis";
+      device = "/dev/input/by-id/usb-Kinesis_Advantage2_Keyboard_314159265359-if01-event-kbd";
+      defcfg = {
+        enable = true;
+        compose.key = "lalt";
+        fallthrough = true;
+      };
+      config = builtins.readFile ./kmonad-kinesis.cfg;
+    };
+  };
+
   users.users.reyu.extraGroups = ["adbusers"];
 
   networking.hostName = "loki";
