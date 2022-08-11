@@ -144,7 +144,7 @@
   outputs = { self, ... }@inputs:
     with inputs;
     let
-      _module.args = { inherit inputs self; };
+      extraSpecialArgs = { inherit inputs self; };
       pkgs = self.pkgs.x86_64-linux.nixpkgs;
     in utils.lib.mkFlake {
       inherit self inputs;
@@ -242,7 +242,7 @@
         hmConfig = home-manager.lib.homeManagerConfiguration;
       in {
         desktop = hmConfig {
-          _module.args = { inherit inputs self; };
+          extraSpecialArgs = { inherit inputs self; };
           pkgs = self.pkgs.x86_64-linux.nixpkgs;
           modules = [
             {
@@ -255,7 +255,7 @@
           ];
         };
         server = hmConfig {
-          _module.args = { inherit inputs self; };
+          extraSpecialArgs = { inherit inputs self; };
           pkgs = self.pkgs.x86_64-linux.nixpkgs;
           modules = [
             {
@@ -268,7 +268,7 @@
           ];
         };
         minimalRoot = hmConfig {
-          _module.args = { inherit inputs self; };
+          extraSpecialArgs = { inherit inputs self; };
           pkgs = self.pkgs.x86_64-linux.nixpkgs;
           modules = [
             ./home-manager/profiles/common.nix
