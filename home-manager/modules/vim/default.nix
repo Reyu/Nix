@@ -53,6 +53,7 @@
       netman
       telescope-ui-select-nvim
       lsp_lines-nvim
+      neorg
 
       # Must have T.Pope plugins
       vim-capslock
@@ -109,6 +110,7 @@
           tree-sitter-make
           tree-sitter-markdown
           tree-sitter-nix
+          tree-sitter-norg
           tree-sitter-python
           tree-sitter-rst
           tree-sitter-toml

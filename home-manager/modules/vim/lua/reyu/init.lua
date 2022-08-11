@@ -94,6 +94,25 @@ require('which-key').register({
 -- Plugin: telescope-hoogle {{{
 require('telescope').load_extension('hoogle')
 -- }}}
+-- Plugin: treesitter {{{
+require('nvim-treesitter.configs').setup({
+    context_commentstring = {enable = true},
+    endwise = {enable = true},
+    highlight = {enable = true},
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = 'gnn',
+            scope_incremental = 'grs',
+            node_incremental = 'grn',
+            node_decremental = 'grm'
+        }
+    },
+    indent = {enable = true}
+})
+vim.api.nvim_set_option('foldmethod', 'expr')
+vim.api.nvim_set_option('foldexpr', 'nvim_treesitter#foldexpr()')
+-- }}}
 -- Plugin: lualine-nvim {{{
 require('reyu/lualine')
 
@@ -409,10 +428,10 @@ cmp.setup({
 
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
-    sources = cmp.config.sources({{name = 'cmp_git'}}, {
-        {name = 'latex_symbols'}, {name = 'emoji'}, {name = 'calc'},
-        {name = 'buffer'}
-    })
+    sources = cmp.config.sources(
+        {{name = 'cmp_git'}, {name = 'neorg'}},
+        {{name = 'latex_symbols'}, {name = 'emoji'}, {name = 'calc'}, {name = 'buffer'}}
+    )
 })
 -- Use buffer source for `/`
 cmp.setup.cmdline('/', {
@@ -447,25 +466,6 @@ require('luasnip').config.setup({})
 -- }}}
 -- Plugin: fidget-nvim {{{
 require('fidget').setup()
--- }}}
--- Plugin: nvim-ts-context-commentstring {{{
-require('nvim-treesitter.configs').setup({
-    context_commentstring = {enable = true},
-    endwise = {enable = true},
-    highlight = {enable = false},
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = 'gnn',
-            scope_incremental = 'grs',
-            node_incremental = 'grn',
-            node_decremental = 'grm'
-        }
-    },
-    indent = {enable = true}
-})
-vim.api.nvim_set_option('foldmethod', 'expr')
-vim.api.nvim_set_option('foldexpr', 'nvim_treesitter#foldexpr()')
 -- }}}
 
 -- Filetypes
@@ -536,12 +536,31 @@ vim.api.nvim_set_var('vimwiki_list', {
     }
 })
 -- }}}
+-- Plugin: neorg {{{
+require('neorg').setup {
+    load = {
+        ["core.defaults"] = {},
+        ["core.export"] = {},
+        ["core.export.markdown"] = {},
+        ["core.norg.qol.todo_items"] = {},
+        ["core.norg.concealer"] = {},
+        ["core.norg.dirman"] = {
+            config = {
+                workspaces = {
+                    home = "~/Notes",
+                }
+            }
+        },
+        ["core.integrations.nvim-cmp"] = {},
+    }
+}
+-- }}}
 
 -- Testing
 -- Plugin: neotest {{{
 require('neotest').setup({
     adapters = {
-        require('neotest-python')({dap = {justMyCode = false}}),
+        require('neotest-python')({dap = {justMyCode = true}}),
         require('neotest-vim-test')(
             {ignore_file_types = {'python', 'vim', 'lua'}})
     }

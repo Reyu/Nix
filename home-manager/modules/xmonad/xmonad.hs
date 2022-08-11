@@ -184,16 +184,15 @@ myLauncher          = "rofi -matching fuzzy -modi combi -show combi -combi-modi 
 
 
 scratchpads
-  = [ term "htop"    "htop"                 mySPLargeFloat
-    , term "mail"    "zsh -c neomutt"       mySPLargeFloat
-    , term "ncmpcpp" "ncmpcpp"              mySPLargeFloat
-    , term "neovim"  "nvim -c VimwikiIndex" mySPLargeFloat
+  = [ term "htop"    "htop"              mySPLargeFloat
+    , term "mail"    "zsh -c neomutt"    mySPLargeFloat
+    , term "ncmpcpp" "ncmpcpp"           mySPLargeFloat
+    , term "neorg"   "nvim -c Neorg"     mySPLargeFloat
     , NS "volume"    "pavucontrol"      (className =? "Pavucontrol")     mySPLargeFloat
     , NS "element"   "element-desktop"  (className =? "Element")         mySPLargeFloat
     , NS "discord"   "discordcannary"   (className =? "discord")         mySPLargeFloat
     , NS "telegram"  "telegram-desktop" (className =? "TelegramDesktop") mySPLargeFloat
     , NS "keepassxc" "keepassxc"        (className =? "KeePassXC")       mySPLargeFloat
-    , NS "obsidian"  "obsidian"         (className =? "obsidian")        mySPLargeFloat
     ]
  where
     -- Run in Terminal
@@ -441,8 +440,7 @@ myKeys conf = let
     , ("M-s c"                  , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
     , ("M-c"                    , addName "NSP Telegram"                    $ namedScratchpadAction scratchpads "telegram")
     , ("M-s s"                  , addName "NSP KeePassXC"                   $ namedScratchpadAction scratchpads "keepassxc")
-    , ("M-s o"                  , addName "NSP Obsidian"                    $ namedScratchpadAction scratchpads "obsidian")
-    , ("M-s n"                  , addName "NSP NeoVim"                      $ namedScratchpadAction scratchpads "neovim")
+    , ("M-o"                    , addName "NSP Neorg"                       $ namedScratchpadAction scratchpads "neorg")
     ] ^++^
 
     -----------------------------------------------------------------------
