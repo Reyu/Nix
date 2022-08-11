@@ -3,6 +3,20 @@
 -- ############# --
 require('impatient')
 -- Plugins
+-- Plugin: NeoSolarized {{{
+vim.g.NeoSolarized_italics = 1 -- 0 or 1
+vim.g.NeoSolarized_visibility = 'normal' -- low, normal, high
+vim.g.NeoSolarized_diffmode = 'normal' -- low, normal, high
+vim.g.NeoSolarized_termtrans = 1 -- 0(default) or 1 -> Transparency
+vim.g.NeoSolarized_lineNr = 0 -- 0 or 1 (default) -> To Show backgroung in LineNr
+vim.cmd [[
+    colorscheme NeoSolarized
+    highlight FloatBorder guibg=NONE ctermbg=NONE  " Removes the border of float menu (LSP and Autocompletion uses it)
+    highlight link NormalFloat Normal
+    highlight NormalFloat ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+    highlight Pmenu ctermbg=NONE guibg=NONE
+]]
+-- }}}
 -- Plugin: telescope-nvim {{{
 require('telescope').setup({
     defaults = {
@@ -652,8 +666,6 @@ dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
 -- }}}
 
 -- General Options {{{
-vim.api.nvim_set_option_value('termguicolors', true, {})
-vim.api.nvim_cmd({cmd = 'colorscheme', args = {'solarized'}}, {})
 
 -- Don't use the mouse. Ever.
 vim.api.nvim_set_option_value('mouse', '', {})

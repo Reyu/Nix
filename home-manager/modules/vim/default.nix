@@ -18,10 +18,7 @@
     package = pkgs.neovim-nightly;
     plugins = with pkgs.vimPlugins; [
       # Themes
-      nvim-solarized-lua
-      gruvbox
-      vim-monokai
-      vim-monokai-pro
+      NeoSolarized
 
       # General
       FixCursorHold-nvim
