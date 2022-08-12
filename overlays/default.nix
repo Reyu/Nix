@@ -13,6 +13,7 @@ final: prev: let
     netman                      = prev.callPackage ../packages/netman.nix                      { inputs = inputs; };
     nvim-treesitter-endwise     = prev.callPackage ../packages/nvim-treesitter-endwise.nix     { inputs = inputs; };
     one-small-step-for-vimkind  = prev.callPackage ../packages/one-small-step-for-vimkind.nix  { inputs = inputs; };
+    persistence-nvim            = prev.callPackage ../packages/persistence-nvim.nix            { inputs = inputs; };
     telescope-hoogle            = prev.callPackage ../packages/telescope-hoogle.nix            { inputs = inputs; };
     vim-solarized8              = prev.callPackage ../packages/vim-solarized8.nix              { inputs = inputs; };
   };

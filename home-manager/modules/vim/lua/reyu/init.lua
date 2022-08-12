@@ -307,6 +307,9 @@ require("which-key").register({
     }
 }, {prefix = "<space>"})
 -- }}}
+-- Plugin: prsistence.nvim {{{
+require("persistence").setup()
+-- }}}
 
 -- Completion
 -- Plugin: nvim-lspconfig {{{

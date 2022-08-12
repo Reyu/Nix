@@ -51,6 +51,7 @@
       telescope-ui-select-nvim
       lsp_lines-nvim
       neorg
+      persistence-nvim
 
       # Must have T.Pope plugins
       vim-capslock

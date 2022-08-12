@@ -96,6 +96,10 @@
       url = "github:miversen33/netman.nvim";
       flake = false;
     };
+    persistence-nvim = {
+      url = "github:folke/persistence.nvim";
+      flake = false;
+    };
 
     # Discord + Plugins
     powercord = {
