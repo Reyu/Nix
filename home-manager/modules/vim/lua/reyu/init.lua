@@ -710,17 +710,6 @@ vim.api.nvim_set_option_value('listchars',
                               'tab:> ,trail:-,extends:>,precedes:<,nbsp:+', {})
 vim.api.nvim_set_option_value('list', true, {}) -- Show problematic characters.
 
--- Some extra highlight commands
-vim.cmd([[
-    " Highlight all tabs and trailing whitespace characters.
-    highlight ExtraWhitespace ctermbg=Darkgreen guibg=#004400
-    match ExtraWhitespace /\s\+$\|\t/
-
-    " Allow for transparent background
-    highlight Normal ctermbg=NONE guibg=NONE
-    highlight Terminal ctermbg=NONE guibg=NONE
-]])
-
 -- Files, backups and undo
 -- Keep backups in cache folder, so as not to clutter filesystem.
 vim.api.nvim_set_option_value('backup', true, {})
