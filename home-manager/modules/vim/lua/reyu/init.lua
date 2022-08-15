@@ -736,8 +736,8 @@ vim.api.nvim_set_option_value('undodir', savePath .. '/undo//,/tmp//', {})
 vim.api.nvim_create_autocmd('TermOpen', {
     pattern = {'*'},
     callback = function()
-        vim.api.nvim_buf_set_option(0, 'number', false)
-        vim.api.nvim_buf_set_option(0, 'relativenumber', false)
+        vim.api.nvim_win_set_option(0, 'number', false)
+        vim.api.nvim_win_set_option(0, 'relativenumber', false)
     end
 })
 -- }}}
