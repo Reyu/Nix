@@ -375,6 +375,22 @@
         "type": "github"
       }
     },
+    "neosolarized-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1660399979,
+        "narHash": "sha256-9TB9voNnh32w+t0nTKroML/9zyqygpCdF92qeV980bc=",
+        "owner": "Tsuzat",
+        "repo": "NeoSolarized.nvim",
+        "rev": "3135569b9f6f5eaedfaa79e40e78c5bc73a814ac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Tsuzat",
+        "repo": "NeoSolarized.nvim",
+        "type": "github"
+      }
+    },
     "neotest": {
       "flake": false,
       "locked": {
@@ -583,6 +599,22 @@
         "type": "github"
       }
     },
+    "nvim-ufo": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1660582088,
+        "narHash": "sha256-HxE2Wqbcxv3t8kRybt5H6Ay8KCDIhfmbnU86jhhWarE=",
+        "owner": "kevinhwang91",
+        "repo": "nvim-ufo",
+        "rev": "c02591af554aea2ebbf2cb5b540b83193e5bd851",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kevinhwang91",
+        "repo": "nvim-ufo",
+        "type": "github"
+      }
+    },
     "one-small-step-for-vimkind": {
       "flake": false,
       "locked": {
@@ -652,6 +684,22 @@
         "type": "github"
       }
     },
+    "promise-async": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1658997334,
+        "narHash": "sha256-sYkEYXFabA4jcRJiTYBiU83kO/4ZYyyVjz2Fknx0314=",
+        "owner": "kevinhwang91",
+        "repo": "promise-async",
+        "rev": "005df1ae44ac801047f98052c923b38618b4ebb6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kevinhwang91",
+        "repo": "promise-async",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -671,6 +719,7 @@
         "kmonad": "kmonad",
         "mobile-nixos": "mobile-nixos",
         "mutt-trim": "mutt-trim",
+        "neosolarized-nvim": "neosolarized-nvim",
         "neotest": "neotest",
         "neotest-python": "neotest-python",
         "neotest-vim-test": "neotest-vim-test",
@@ -680,9 +729,11 @@
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",
         "nvim-treesitter-endwise": "nvim-treesitter-endwise",
+        "nvim-ufo": "nvim-ufo",
         "one-small-step-for-vimkind": "one-small-step-for-vimkind",
         "persistence-nvim": "persistence-nvim",
         "powercord": "powercord",
+        "promise-async": "promise-async",
         "telescope-hoogle": "telescope-hoogle",
         "unstable": "unstable",
         "utils": "utils_2",

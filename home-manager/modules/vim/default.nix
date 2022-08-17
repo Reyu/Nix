@@ -14,61 +14,51 @@
     withPython3 = true;
     withNodeJs = true;
     extraPython3Packages = ps: with ps; [ rope jedi ];
-    extraConfig = "lua require('reyu/init')";
-    package = pkgs.neovim-nightly;
+    extraConfig = ''
+      lua require("reyu.init")
+    '';
+    package = (pkgs.neovim-nightly.overrideAttrs (oldAttrs: {
+      patches = oldAttrs.patches ++ [./patches/foldoptions.patch];
+    }));
     plugins = with pkgs.vimPlugins; [
       # Themes
-      NeoSolarized
+      neosolarized-nvim
 
       # General
-      FixCursorHold-nvim
       dashboard-nvim
       direnv-vim
       fidget-nvim
       firenvim
       gitsigns-nvim
-      impatient-nvim
-      lualine-nvim
-      mattn-calendar-vim
       neoscroll-nvim
       nvim-autopairs
       nvim-tree-lua
       nvim-ts-context-commentstring
       nvim-web-devicons
       octo-nvim
-      plenary-nvim
-      popup-nvim
       telescope-hoogle
       telescope-nvim
       tmux-navigator
       vim-bbye
-      vim-ledger
-      vimwiki
       which-key-nvim
-      goyo
       easy-align
       netman
       telescope-ui-select-nvim
       lsp_lines-nvim
-      neorg
       persistence-nvim
+      lualine-nvim
+      surround-nvim
+      zen-mode-nvim
+      twilight-nvim
+      nvim-ts-rainbow
+      nvim-ufo
+      nvim-treesitter-context
 
       # Must have T.Pope plugins
-      vim-capslock
       vim-commentary
-      vim-dispatch
       vim-eunuch
       vim-fugitive
-      vim-obsession
       vim-projectionist
-      vim-repeat
-      vim-rhubarb
-      vim-speeddating
-      vim-surround
-      vim-tbone
-      vim-unimpaired
-      vim-dadbod
-      vim-dadbod-ui
 
       # Completion
       cmp-buffer
@@ -94,6 +84,7 @@
       friendly-snippets
 
       # Filetypes
+      neorg
       (nvim-treesitter.withPlugins (plugins:
         with plugins; [
           tree-sitter-bash
@@ -120,6 +111,12 @@
       vim-pandoc
       vim-pandoc-after
       vim-pandoc-syntax
+      { plugin = vim-ledger;
+        optional = true;
+        config = ''
+          au FileType ledger ++once lua vim.cmd("packadd vim-ledger")
+        '';
+      }
 
       # Testing & Debugging
       neotest
@@ -128,9 +125,15 @@
       nvim-dap
       nvim-dap-ui
       nvim-dap-virtual-text
-      one-small-step-for-vimkind
       telescope-dap-nvim
       vim-test
+      trouble-nvim
+
+      # Dependency/Library packages
+      plenary-nvim
+      popup-nvim
+      FixCursorHold-nvim
+      promise-async
     ];
     extraPackages = with pkgs; [
       # Language servers
@@ -142,7 +145,9 @@
       nodePackages.yaml-language-server
       rnix-lsp
       terraform-ls
+
       # Linters
+      actionlint
       ansible-lint
       editorconfig-checker
       gitlint
@@ -152,11 +157,13 @@
       shellcheck
       sqlint
       yamllint
+
       # Formatters
       luaformatter
       nixfmt
       shfmt
       stylua
+
       # Utilities
       gh
       lolcat

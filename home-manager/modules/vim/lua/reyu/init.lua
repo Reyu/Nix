@@ -1,7 +1,7 @@
 -- ############# --
 -- NeoVim Config --
 -- ############# --
-require('impatient')
+
 -- Plugins
 -- Plugin: NeoSolarized {{{
 vim.g.NeoSolarized_italics = 1 -- 0 or 1
@@ -9,9 +9,10 @@ vim.g.NeoSolarized_visibility = 'normal' -- low, normal, high
 vim.g.NeoSolarized_diffmode = 'normal' -- low, normal, high
 vim.g.NeoSolarized_termtrans = 1 -- 0(default) or 1 -> Transparency
 vim.g.NeoSolarized_lineNr = 0 -- 0 or 1 (default) -> To Show backgroung in LineNr
+vim.api.nvim_set_option_value('termguicolors', true, {})
 vim.cmd [[
     colorscheme NeoSolarized
-    highlight FloatBorder guibg=NONE ctermbg=NONE  " Removes the border of float menu (LSP and Autocompletion uses it)
+    highlight FloatBorder guibg=NONE ctermbg=NONE
     highlight link NormalFloat Normal
     highlight NormalFloat ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
     highlight Pmenu ctermbg=NONE guibg=NONE
@@ -242,40 +243,17 @@ require('gitsigns').setup()
 require('octo').setup()
 -- }}}
 -- Plugin: nvim-autopairs {{{
-require('nvim-autopairs').setup()
--- }}}
--- Plugin: Goyo {{{
-vim.api.nvim_set_var('goyo_width', 120)
-require('which-key').register({
-    ['g'] = {
-        function() vim.api.nvim_cmd({cmd = 'Goyo'}, {}) end,
-        'Toggle Goyo for distraction free editing'
-    }
-}, {prefix = '<leader>'})
-vim.api.nvim_create_autocmd('User', {
-    pattern = {'GoyoEnter'},
-    callback = function()
-        if vim.fn.exists('$TMUX') then
-            vim.api.nvim_cmd({
-                cmd = "!",
-                args = {"tmux", "set", "status", "off"},
-                mods = {silent = true}
-            }, {})
-        end
-    end
+require('nvim-autopairs').setup({
+    check_ts = true,
+    ts_config = {
+        lua = {'string'}, -- it will not add a pair on that treesitter node
+    },
+    fast_wrap = {},
 })
-vim.api.nvim_create_autocmd('User', {
-    pattern = {'GoyoLeave'},
-    callback = function()
-        if vim.fn.exists('$TMUX') then
-            vim.api.nvim_cmd({
-                cmd = "!",
-                args = {"tmux", "set", "status", "on"},
-                mods = {silent = true}
-            }, {})
-        end
-    end
-})
+require('cmp').event:on(
+  'confirm_done',
+  require('nvim-autopairs.completion.cmp').on_confirm_done()
+)
 -- }}}
 -- Plugin: easy-align {{{
 require('which-key').register({
@@ -307,8 +285,90 @@ require("which-key").register({
     }
 }, {prefix = "<space>"})
 -- }}}
--- Plugin: prsistence.nvim {{{
+-- Plugin: persistence.nvim {{{
 require("persistence").setup()
+-- restore the session for the current directory
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>qs",
+    [[<CMD>lua require("persistence").load()<CR>]],
+    { desc = "Restore last session for current directory" }
+)
+
+-- restore the last session
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>ql",
+    [[<CMD>lua require("persistence").load({ last = true })<CR>]],
+    { desc = "Restore Last Session" }
+)
+
+-- stop Persistence => session won't be saved on exit
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>qd",
+    [[<CMD>lua require("persistence").stop()<CR>]],
+    { desc = "Stop Persistence" }
+)
+-- }}}
+-- Plugin: surround-nvim {{{
+require("surround").setup({ mappings_style = "sandwich" })
+-- }}}
+-- Plugin: zen-mode {{{
+require("zen-mode").setup({
+    window = {
+        backdrop = 1,
+        width = 120, -- width of the Zen window
+        height = 1, -- height of the Zen window
+        options = {
+            number = false, -- disable number column
+            relativenumber = true, -- disable relative numbers
+            cursorline = false, -- disable cursorline
+            cursorcolumn = false, -- disable cursor column
+        },
+    },
+})
+vim.api.nvim_set_keymap("n", "<Leader>z", [[<CMD>lua require("zen-mode").toggle()<CR>]], { desc = "Zen Mode" })
+-- }}}
+-- Plugin: twilight-nvim {{{
+require("twilight").setup({
+    dimming = {
+        alpha = 0.25,
+        inactive = true,
+    },
+    context = 6,
+    treesitter = true,
+    expand = {
+        "function",
+        "method",
+        "table",
+        "if_statement",
+    },
+})
+-- }}}
+-- Plugin: trouble-nvim {{{
+require("trouble").setup({
+    auto_open = false,
+    auto_close = true,
+    use_diagnostic_signs = true,
+})
+-- }}}
+-- Plugin: nvim-ufo {{{
+vim.o.foldcolumn = '1'
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+vim.o.foldoptions = 'nodigits'
+vim.o.foldcolumn = '1'
+require('ufo').setup({
+    provider_selector = function(bufnr, filetype, buftype)
+        return {'treesitter', 'indent'}
+    end
+})
+-- }}}
+-- Plugin: treesitter-context {{{
+require("treesitter-context").setup()
 -- }}}
 
 -- Completion
@@ -541,18 +601,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end
 })
 -- }}}
--- Plugin: vimwiki {{{
-vim.api.nvim_set_var('vimwiki_filetypes', {'markdown', 'pandoc'})
-vim.api.nvim_set_var('vimwiki_list', {
-    {
-        path = '~/Notes',
-        ext = '.md',
-        syntax = 'markdown',
-        list_margin = 0,
-        links_space_char = '_'
-    }
-})
--- }}}
 -- Plugin: neorg {{{
 require('neorg').setup {
     load = {
@@ -731,4 +779,4 @@ vim.api.nvim_create_autocmd('TermOpen', {
 })
 -- }}}
 
--- vim: foldmethod=marker
+-- vim: foldmethod=marker foldlevel=0

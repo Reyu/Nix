@@ -100,6 +100,19 @@
       url = "github:folke/persistence.nvim";
       flake = false;
     };
+    neosolarized-nvim = {
+      url = "github:Tsuzat/NeoSolarized.nvim";
+      flake = false;
+    };
+    nvim-ufo = {
+      url = "github:kevinhwang91/nvim-ufo";
+      flake = false;
+    };
+    promise-async = {
+      url = "github:kevinhwang91/promise-async";
+      flake = false;
+    };
+
 
     # Discord + Plugins
     powercord = {
