@@ -630,6 +630,52 @@ require('neotest').setup({
             {ignore_file_types = {'python', 'vim', 'lua'}})
     }
 })
+require("which-key").register({
+    ['a'] = {
+        function() require("neotest").run.run({suite = true}) end,
+        'Run entire test suite'
+    },
+    ['n'] = {
+        function() require("neotest").run.run() end, 'Run the nearest test'
+    },
+    ['f'] = {
+        function() require("neotest").run.run(vim.fn.expand("%")) end,
+        'Run the current file'
+    },
+    ['d'] = {
+        function() require("neotest").run.run({strategy = "dap"}) end,
+        'Debug the nearest test'
+    },
+    ['s'] = {function() require("neotest").run.stop() end, 'Stop nearest test'},
+    ['r'] = {
+        function() require("neotest").run.run_last() end, 'Re-run the last test'
+    },
+    ['o'] = {
+        function() require("neotest").output.open() end, 'Display test output'
+    },
+    ['t'] = {
+        function() require("neotest").summary.toggle() end,
+        'Toggle summary window'
+    },
+    ['m'] = {
+        function() require("neotest").summary.run_marked() end,
+        'Run marked tests in summary window'
+    },
+    ['<S-m>'] = {
+        function() require("neotest").summary.run_marked() end,
+        'Clear marked tests in summary window'
+    }
+}, {prefix = '<SPACE>t'})
+require("which-key").register({
+    [']t'] = {
+        function() require("neotest").jump.next({status = "failed"}) end,
+        'Jump to next failing test'
+    },
+    ['[t'] = {
+        function() require("neotest").jump.prev({status = "failed"}) end,
+        'Jump to prev failing test'
+    }
+})
 -- }}}
 -- Plugin: nvim-dap {{{
 require('reyu/dap')
