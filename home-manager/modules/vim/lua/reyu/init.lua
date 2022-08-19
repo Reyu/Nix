@@ -647,6 +647,7 @@ require('neotest').setup({
     }
 })
 require("which-key").register({
+    name = "Tests",
     ['a'] = {
         function() require("neotest").run.run({suite = true}) end,
         'Run entire test suite'
@@ -776,6 +777,9 @@ dap.listeners.after.event_initialized['dapui_config'] =
 dap.listeners.before.event_terminated['dapui_config'] =
     function() dapui.close() end
 dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
+-- }}}
+-- Plugin: nvim-dap-virtual-text {{{
+require('nvim-dap-virtual-text').setup()
 -- }}}
 
 -- General Options {{{
