@@ -12,10 +12,10 @@ vim.g.NeoSolarized_lineNr = 0 -- 0 or 1 (default) -> To Show backgroung in LineN
 vim.api.nvim_set_option_value('termguicolors', true, {})
 vim.cmd [[
     colorscheme NeoSolarized
-    highlight FloatBorder guibg=NONE ctermbg=NONE
-    highlight link NormalFloat Normal
-    highlight NormalFloat ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-    highlight Pmenu ctermbg=NONE guibg=NONE
+    " highlight FloatBorder guibg=NONE ctermbg=NONE
+    " highlight link NormalFloat Normal
+    " highlight NormalFloat ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+    " highlight Pmenu ctermbg=NONE guibg=NONE
 ]]
 -- }}}
 -- Plugin: telescope-nvim {{{
