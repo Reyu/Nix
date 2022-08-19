@@ -243,31 +243,37 @@ require('gitsigns').setup()
 require('octo').setup()
 -- }}}
 -- Plugin: nvim-autopairs {{{
-require('nvim-autopairs').setup({
-    check_ts = true,
-    ts_config = {
-        lua = {'string'}, -- it will not add a pair on that treesitter node
-    },
-    fast_wrap = {},
-})
-require('cmp').event:on(
-  'confirm_done',
-  require('nvim-autopairs.completion.cmp').on_confirm_done()
-)
+-- require('nvim-autopairs').setup({
+--     check_ts = true,
+--     ts_config = {
+--         lua = {'string'}, -- it will not add a pair on that treesitter node
+--     },
+--     fast_wrap = {},
+-- })
+-- require('cmp').event:on(
+--   'confirm_done',
+--   require('nvim-autopairs.completion.cmp').on_confirm_done()
+-- )
 -- }}}
 -- Plugin: easy-align {{{
 require('which-key').register({
     ga = {
         "<Plug>(EasyAlign)",
-        "Start interactive EasyAlign in visual mode"
+        "Start EasyAlign in visual mode"
     }
 }, {mode = 'n'})
 require('which-key').register({
     ga = {
         "<Plug>(EasyAlign)",
-        "Start interactive EasyAlign for a motion/text object"
+        "Start EasyAlign for a motion/text object"
     }
 }, {mode = 'x'})
+require('which-key').register({
+    ['<CR>'] = {
+        "<Plug>(LiveEasyAlign)",
+        "Start interactive EasyAlign for a motion/text object"
+    }
+}, {mode = 'v'})
 -- }}}
 -- Plugin: netman {{{
 require('netman')
