@@ -286,7 +286,9 @@ vim.diagnostic.config({ virtual_text = false })
 require("lsp_lines").setup()
 require("which-key").register({
     l = {
-        function() require("lsp_lines").toggle() end,
+        function()
+            require("lsp_lines").toggle()
+        end,
         "Toggle lsp_lines"
     }
 }, {prefix = "<space>"})
@@ -452,7 +454,9 @@ cmp.setup({
                 end
             end,
             i = function(fallback)
-                if cmp.visible() then
+                if require('luasnip').expand_or_locally_jumpable() then
+                    require('luasnip').expand_or_jump()
+                elseif cmp.visible() then
                     cmp.select_next_item({behavior = cmp.SelectBehavior.Select})
                 else
                     fallback()
@@ -475,7 +479,9 @@ cmp.setup({
                 end
             end,
             i = function(fallback)
-                if cmp.visible() then
+                if require('luasnip').jumpable(-1) then
+                    require('luasnip').jump(-1)
+                elseif cmp.visible() then
                     cmp.select_prev_item({behavior = cmp.SelectBehavior.Select})
                 else
                     fallback()
@@ -497,6 +503,10 @@ cmp.setup({
             c = cmp.mapping.close()
         }),
         ['<CR>'] = cmp.mapping(cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false
+        }), {'i'}),
+        ['<S-CR>'] = cmp.mapping(cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true
         }), {'i'})
