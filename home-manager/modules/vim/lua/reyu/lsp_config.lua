@@ -98,12 +98,20 @@ local servers = {
     "bashls", "dockerls", "hls", "html", "jsonls", "pyright", "terraformls",
     "vimls", "yamlls"
 }
+
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
         on_attach = on_attach,
         capabilities = capabilities,
         log_level = vim.lsp.protocol.MessageType.Log,
         message_level = vim.lsp.protocol.MessageType.Log,
-        settings = {haskell = {formattingProvider = "stylish-haskell"}}
+        settings = {
+            languages = {
+                haskell = {
+                    formattingProvider = "stylish-haskell",
+                    formatStdin = true
+                }
+            }
+        }
     }
 end
