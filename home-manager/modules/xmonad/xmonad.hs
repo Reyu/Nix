@@ -153,7 +153,7 @@ myWorkspaces = [wsWEB, wsVID, wsVIRT, wsSTL, wsNET, wsFLOAT]
 projects =
   [ Project { projectName      = wsWEB
             , projectDirectory = "~"
-            , projectStartHook = Just $ spawnOn wsWEB "firefox -P personal"
+            , projectStartHook = Just $ spawnOn wsWEB "librewolf"
             }
   , Project { projectName      = wsNET
             , projectDirectory = "~/Projects/FoxNet"
@@ -161,7 +161,7 @@ projects =
             }
   , Project { projectName = wsVID
             , projectDirectory = "~"
-            , projectStartHook = Just $ spawnOn wsVID "firefox -P video https://youtube.com"
+            , projectStartHook = Just $ spawnOn wsVID "librewolf https://youtube.com"
             }
   , Project { projectName = wsVIRT
             , projectDirectory = "~/Projects"
@@ -178,8 +178,8 @@ projects =
 ---------------------------------------------------------------------------
 
 myTerminal          = "alacritty"
-myBrowser           = "firefox"
-myBrowserClass      = "Firefox"
+myBrowser           = "librewolf"
+myBrowserClass      = "librewolf"
 myLauncher          = "rofi -matching fuzzy -modi combi -show combi -combi-modi run,drun"
 
 
