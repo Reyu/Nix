@@ -384,19 +384,13 @@ require("treesitter-context").setup()
 require('reyu/lsp_config')
 -- }}}
 -- Plugin: nvim-cmp {{{
-local has_words_before = function()
-    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0 and
-               vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col,
-                                                                          col)
-                   :match('%s') == nil
-end
-
 local cmp = require('cmp')
+local lsnip = require('luasnip')
 cmp.setup({
     formatting = {format = require('lspkind').cmp_format()},
+    completion = { autocomplete = false },
     snippet = {
-        expand = function(args) require('luasnip').lsp_expand(args.body) end
+        expand = function(args) lsnip.lsp_expand(args.body) end
     },
     mapping = {
         ['<C-n>'] = cmp.mapping({
@@ -408,12 +402,10 @@ cmp.setup({
                 end
             end,
             i = function(fallback)
-                if cmp.visible() then
+                if lsnip.choice_active() then
+                    lsnip.change_choice(1)
+                elseif cmp.visible() then
                     cmp.select_next_item({behavior = cmp.SelectBehavior.Insert})
-                elseif require('luasnip').expand_or_locally_jumpable() then
-                    require('luasnip').expand_or_jump()
-                elseif has_words_before() then
-                    cmp.complete()
                 else
                     fallback()
                 end
@@ -428,29 +420,21 @@ cmp.setup({
                 end
             end,
             i = function(fallback)
-                if cmp.visible() then
+                if lsnip.choice_active() then
+                    lsnip.change_choice(-1)
+                elseif cmp.visible() then
                     cmp.select_prev_item({behavior = cmp.SelectBehavior.Insert})
-                elseif require('luasnip').jumpable(-1) then
-                    require('luasnip').jump(-1)
-                elseif has_words_before() then
-                    cmp.complete()
                 else
                     fallback()
                 end
             end
         }),
-        ['<Down>'] = cmp.mapping(cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Select
-        }), {'i'}),
-        ['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Select
-        }), {'i'}),
         ['<Tab>'] = cmp.mapping({
-            c = function()
+            c = function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item({behavior = cmp.SelectBehavior.Select})
                 else
-                    vim.api.nvim_feedkeys(t('<Down>'), 'n', true)
+                    fallback()
                 end
             end,
             i = function(fallback)
@@ -471,11 +455,11 @@ cmp.setup({
             end
         }),
         ['<S-Tab>'] = cmp.mapping({
-            c = function()
+            c = function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item({behavior = cmp.SelectBehavior.Select})
                 else
-                    vim.api.nvim_feedkeys(t('<Up>'), 'n', true)
+                    fallback()
                 end
             end,
             i = function(fallback)
@@ -506,17 +490,19 @@ cmp.setup({
             behavior = cmp.ConfirmBehavior.Replace,
             select = false
         }), {'i'}),
-        ['<S-CR>'] = cmp.mapping(cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true
-        }), {'i'})
     },
     sources = cmp.config.sources({
-        {name = 'vim-dadbod-completion'}, {name = 'nvim_lsp_signature_help'}
+        {name = 'vim-dadbod-completion'},
+        {name = 'nvim_lsp_signature_help'}
     }, {
-        {name = 'calc'}, {name = 'luasnip'}, {name = 'nvim_lsp'},
-        {name = 'latex_symbols'}, {name = 'emoji'}
-    }, {{name = 'treesitter'}, {name = 'buffer'}})
+        {name = 'calc'},
+        {name = 'luasnip'},
+        {name = 'nvim_lsp'},
+        {name = 'latex_symbols'},
+        {name = 'emoji'}
+    }, {
+        {name = 'treesitter'},
+        {name = 'buffer'}})
 })
 
 -- Set configuration for specific filetype.
