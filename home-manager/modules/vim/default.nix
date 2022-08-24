@@ -170,4 +170,5 @@
     ];
   };
   xdg.configFile = { "nvim/lua" = { source = ./lua; }; };
+  xdg.configFile = { "nvim/luasnippets" = { source = ./luasnippets; }; };
 }

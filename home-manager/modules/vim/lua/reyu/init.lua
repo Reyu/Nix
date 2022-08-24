@@ -254,17 +254,17 @@ require('octo').setup()
 -- }}}
 
 -- Plugin: nvim-autopairs {{{
--- require('nvim-autopairs').setup({
---     check_ts = true,
---     ts_config = {
---         lua = {'string'}, -- it will not add a pair on that treesitter node
---     },
---     fast_wrap = {},
--- })
--- require('cmp').event:on(
---   'confirm_done',
---   require('nvim-autopairs.completion.cmp').on_confirm_done()
--- )
+require('nvim-autopairs').setup({
+    check_ts = true,
+    ts_config = {
+        lua = {'string'}, -- it will not add a pair on that treesitter node
+    },
+    fast_wrap = {},
+})
+require('cmp').event:on(
+  'confirm_done',
+  require('nvim-autopairs.completion.cmp').on_confirm_done()
+)
 -- }}}
 
 -- Plugin: easy-align {{{
@@ -412,7 +412,6 @@ local cmp = require('cmp')
 local lsnip = require('luasnip')
 cmp.setup({
     formatting = {format = require('lspkind').cmp_format()},
-    completion = { autocomplete = true },
     snippet = {
         expand = function(args) lsnip.lsp_expand(args.body) end
     },
@@ -573,9 +572,9 @@ null_ls.setup({
 -- }}}
 
 -- Plugin: luasnip {{{
-require('luasnip.loaders.from_vscode').load()
-require('luasnip.loaders.from_snipmate').load()
 require('luasnip').config.setup({})
+require('luasnip.loaders.from_lua').lazy_load()
+require('luasnip.loaders.from_vscode').lazy_load()
 -- }}}
 
 -- Plugin: fidget-nvim {{{
@@ -857,10 +856,9 @@ vim.api.nvim_set_option_value('backup', true, {})
 vim.api.nvim_set_option_value('writebackup', true, {})
 vim.api.nvim_set_option_value('undofile', true, {})
 
-local savePath = vim.fn.stdpath('state')
-vim.api.nvim_set_option_value('directory', savePath .. '/other//,/tmp//', {})
-vim.api.nvim_set_option_value('backupdir', savePath .. '/backups//,/tmp//', {})
-vim.api.nvim_set_option_value('undodir', savePath .. '/undo//,/tmp//', {})
+vim.api.nvim_set_option_value('directory', vim.fn.stdpath('cache') .. '/swap//' , {})
+vim.api.nvim_set_option_value('backupdir', vim.fn.stdpath('cache') .. '/backups//', {})
+vim.api.nvim_set_option_value('undodir', vim.fn.stdpath('state') .. '/undo//', {})
 -- }}}
 -- Autocommands {{{
 vim.api.nvim_create_autocmd('TermOpen', {
