@@ -2,7 +2,6 @@
 -- NeoVim Config --
 -- ############# --
 
--- Plugins
 -- Plugin: NeoSolarized {{{
 vim.g.NeoSolarized_italics = 1 -- 0 or 1
 vim.g.NeoSolarized_visibility = 'normal' -- low, normal, high
@@ -18,6 +17,7 @@ vim.cmd [[
     " highlight Pmenu ctermbg=NONE guibg=NONE
 ]]
 -- }}}
+
 -- Plugin: telescope-nvim {{{
 require('telescope').setup({
     defaults = {
@@ -106,9 +106,11 @@ require('which-key').register({
     }
 }, {mode = 'n', prefix = '<leader>'})
 -- }}}
+
 -- Plugin: telescope-hoogle {{{
 require('telescope').load_extension('hoogle')
 -- }}}
+
 -- Plugin: treesitter {{{
 require('nvim-treesitter.configs').setup({
     context_commentstring = {enable = true},
@@ -128,10 +130,12 @@ require('nvim-treesitter.configs').setup({
 vim.api.nvim_set_option('foldmethod', 'expr')
 vim.api.nvim_set_option('foldexpr', 'nvim_treesitter#foldexpr()')
 -- }}}
+
 -- Plugin: lualine-nvim {{{
 require('reyu/lualine')
 
 -- }}}
+
 -- Plugin: dashboard-nvim {{{
 local db = require('dashboard')
 db.custom_header = {
@@ -179,6 +183,7 @@ require('which-key').register({
     }
 }, {mode = 'n', prefix = '<leader>'})
 -- }}}
+
 -- Plugin: tmux-navigator {{{
 vim.api.nvim_set_var('tmux_navigator_disable_when_zoomed', true)
 vim.api.nvim_set_var('tmux_navigator_no_mappings', true)
@@ -227,21 +232,27 @@ require('which-key').register({
     }
 }, {mode = 't'})
 -- }}}
+
 -- Plugin: FixCursorHold-nvim {{{
 vim.api.nvim_set_var('cursorhold_updatetime', 100)
 -- }}}
+
 -- Plugin: neoscroll-nvim {{{
 require('neoscroll').setup({easing_function = 'quadratic'})
 -- }}}
+
 -- Plugin: nvim-tree-lua {{{
 require('nvim-tree').setup({renderer = {highlight_git = true}})
 -- }}}
+
 -- Plugin: gitsigns-nvim {{{
 require('gitsigns').setup()
 -- }}}
+
 -- Plugin: octo-nvim {{{
 require('octo').setup()
 -- }}}
+
 -- Plugin: nvim-autopairs {{{
 -- require('nvim-autopairs').setup({
 --     check_ts = true,
@@ -255,6 +266,7 @@ require('octo').setup()
 --   require('nvim-autopairs.completion.cmp').on_confirm_done()
 -- )
 -- }}}
+
 -- Plugin: easy-align {{{
 require('which-key').register({
     ga = {
@@ -275,12 +287,15 @@ require('which-key').register({
     }
 }, {mode = 'v'})
 -- }}}
+
 -- Plugin: netman {{{
 require('netman')
 -- }}}
+
 -- Plugin: telescope-ui-select-nvim {{{
 require("telescope").load_extension("ui-select")
 -- }}}
+
 -- Plugin: lsp_lines {{{
 vim.diagnostic.config({ virtual_text = false })
 require("lsp_lines").setup()
@@ -293,12 +308,13 @@ require("which-key").register({
     }
 }, {prefix = "<space>"})
 -- }}}
+
 -- Plugin: persistence.nvim {{{
 require("persistence").setup()
 -- restore the session for the current directory
 vim.api.nvim_set_keymap(
     "n",
-    "<leader>qs",
+    "<leader>ss",
     [[<CMD>lua require("persistence").load()<CR>]],
     { desc = "Restore last session for current directory" }
 )
@@ -306,7 +322,7 @@ vim.api.nvim_set_keymap(
 -- restore the last session
 vim.api.nvim_set_keymap(
     "n",
-    "<leader>ql",
+    "<leader>sl",
     [[<CMD>lua require("persistence").load({ last = true })<CR>]],
     { desc = "Restore Last Session" }
 )
@@ -314,14 +330,16 @@ vim.api.nvim_set_keymap(
 -- stop Persistence => session won't be saved on exit
 vim.api.nvim_set_keymap(
     "n",
-    "<leader>qd",
+    "<leader>sd",
     [[<CMD>lua require("persistence").stop()<CR>]],
     { desc = "Stop Persistence" }
 )
 -- }}}
+
 -- Plugin: surround-nvim {{{
 require("surround").setup({ mappings_style = "sandwich" })
 -- }}}
+
 -- Plugin: zen-mode {{{
 require("zen-mode").setup({
     window = {
@@ -338,6 +356,7 @@ require("zen-mode").setup({
 })
 vim.api.nvim_set_keymap("n", "<Leader>z", [[<CMD>lua require("zen-mode").toggle()<CR>]], { desc = "Zen Mode" })
 -- }}}
+
 -- Plugin: twilight-nvim {{{
 require("twilight").setup({
     dimming = {
@@ -354,6 +373,7 @@ require("twilight").setup({
     },
 })
 -- }}}
+
 -- Plugin: trouble-nvim {{{
 require("trouble").setup({
     auto_open = false,
@@ -361,9 +381,10 @@ require("trouble").setup({
     use_diagnostic_signs = true,
 })
 -- }}}
+
 -- Plugin: nvim-ufo {{{
 vim.o.foldcolumn = '1'
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
@@ -375,20 +396,23 @@ require('ufo').setup({
     end
 })
 -- }}}
+
 -- Plugin: treesitter-context {{{
 require("treesitter-context").setup()
 -- }}}
 
 -- Completion
+
 -- Plugin: nvim-lspconfig {{{
 require('reyu/lsp_config')
 -- }}}
+
 -- Plugin: nvim-cmp {{{
 local cmp = require('cmp')
 local lsnip = require('luasnip')
 cmp.setup({
     formatting = {format = require('lspkind').cmp_format()},
-    completion = { autocomplete = false },
+    completion = { autocomplete = true },
     snippet = {
         expand = function(args) lsnip.lsp_expand(args.body) end
     },
@@ -429,6 +453,14 @@ cmp.setup({
                 end
             end
         }),
+        ['<C-u>'] = cmp.mapping(
+            function(fallback)
+                if lsnip.choice_active() then
+                    require("luasnip.extras.select_choice")
+                else
+                    fallback()
+                end
+            end, { 'i', 's' }),
         ['<Tab>'] = cmp.mapping({
             c = function(fallback)
                 if cmp.visible() then
@@ -508,7 +540,7 @@ cmp.setup({
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources(
-        {{name = 'cmp_git'}, {name = 'neorg'}},
+        {{name = "conventionalcommits"}, {name = 'cmp_git'}},
         {{name = 'latex_symbols'}, {name = 'emoji'}, {name = 'calc'}, {name = 'buffer'}}
     )
 })
@@ -525,6 +557,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- }}}
+
 -- Plugin: null-ls-nvim {{{
 local null_ls = require('null-ls')
 null_ls.setup({
@@ -538,16 +571,19 @@ null_ls.setup({
     }
 })
 -- }}}
+
 -- Plugin: luasnip {{{
 require('luasnip.loaders.from_vscode').load()
 require('luasnip.loaders.from_snipmate').load()
 require('luasnip').config.setup({})
 -- }}}
+
 -- Plugin: fidget-nvim {{{
 require('fidget').setup()
 -- }}}
 
 -- Filetypes
+
 -- Plugin: vim-ledger {{{
 vim.api.nvim_set_var('ledger_extra_options', '-s')
 vim.api.nvim_set_var('ledger_maxwidth', 160)
@@ -603,6 +639,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end
 })
 -- }}}
+
 -- Plugin: neorg {{{
 require('neorg').setup {
     load = {
@@ -624,6 +661,7 @@ require('neorg').setup {
 -- }}}
 
 -- Testing
+
 -- Plugin: neotest {{{
 require('neotest').setup({
     adapters = {
@@ -680,6 +718,7 @@ require("which-key").register({
     }
 })
 -- }}}
+
 -- Plugin: nvim-dap {{{
 require('reyu/dap')
 require('which-key').register({
@@ -752,6 +791,7 @@ require('which-key').register({
     }
 }, {prefix = '<leader>'})
 -- }}}
+
 -- Plugin: nvim-dap-ui {{{
 require('dapui').setup()
 require('which-key').register({
@@ -764,6 +804,7 @@ dap.listeners.before.event_terminated['dapui_config'] =
     function() dapui.close() end
 dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
 -- }}}
+
 -- Plugin: nvim-dap-virtual-text {{{
 require('nvim-dap-virtual-text').setup()
 -- }}}
@@ -830,5 +871,3 @@ vim.api.nvim_create_autocmd('TermOpen', {
     end
 })
 -- }}}
-
--- vim: foldmethod=marker foldlevel=0
