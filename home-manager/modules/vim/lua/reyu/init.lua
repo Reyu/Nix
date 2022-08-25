@@ -12,9 +12,8 @@ vim.api.nvim_set_option_value('termguicolors', true, {})
 vim.cmd [[
     colorscheme NeoSolarized
     " highlight FloatBorder guibg=NONE ctermbg=NONE
-    " highlight link NormalFloat Normal
     " highlight NormalFloat ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-    " highlight Pmenu ctermbg=NONE guibg=NONE
+    highlight Pmenu ctermbg=NONE guibg=NONE
 ]]
 -- }}}
 
@@ -66,6 +65,10 @@ require('which-key').register({
         j = {
             function() require('telescope.builtin').jumplist({}) end,
             'Jump List entries'
+        },
+        h = {
+            function() require('telescope').extensions.hoogle.hoogle() end,
+            'Live Hoogle Search'
         }
     },
     f = {
@@ -109,6 +112,7 @@ require('which-key').register({
 
 -- Plugin: telescope-hoogle {{{
 require('telescope').load_extension('hoogle')
+
 -- }}}
 
 -- Plugin: treesitter {{{
@@ -524,13 +528,14 @@ cmp.setup({
     },
     sources = cmp.config.sources({
         {name = 'vim-dadbod-completion'},
-        {name = 'nvim_lsp_signature_help'}
+        {name = 'nvim_lsp_signature_help'},
     }, {
         {name = 'calc'},
+        {name = 'emoji'},
+        {name = 'latex_symbols'},
+    }, {
         {name = 'luasnip'},
         {name = 'nvim_lsp'},
-        {name = 'latex_symbols'},
-        {name = 'emoji'}
     }, {
         {name = 'treesitter'},
         {name = 'buffer'}})
@@ -578,7 +583,11 @@ require('luasnip.loaders.from_vscode').lazy_load()
 -- }}}
 
 -- Plugin: fidget-nvim {{{
-require('fidget').setup()
+require('fidget').setup({
+    window = {
+        blend = 0
+    },
+})
 -- }}}
 
 -- Filetypes
