@@ -56,6 +56,7 @@
   };
 
   services = {
+    avahi.enable = true;
     udev.packages = [
       pkgs.android-udev-rules
     ];
