@@ -16,5 +16,6 @@ nix flake lock \
     --update-input persistence-nvim \
     --update-input promise-async \
     --update-input telescope-hoogle \
+    --update-input treesitter-playground \
     --update-input vim-solarized8 \
     "$@"
