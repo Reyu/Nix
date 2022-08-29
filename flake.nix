@@ -112,6 +112,10 @@
       url = "github:kevinhwang91/promise-async";
       flake = false;
     };
+    treesitter-playground = {
+      url = "github:nvim-treesitter/playground";
+      flake = false;
+    };
 
 
     # Discord + Plugins

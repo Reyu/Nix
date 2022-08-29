@@ -18,6 +18,7 @@ final: prev: let
     persistence-nvim            = prev.callPackage ../packages/persistence-nvim.nix            { inputs = inputs; };
     promise-async               = prev.callPackage ../packages/promise-async.nix               { inputs = inputs; };
     telescope-hoogle            = prev.callPackage ../packages/telescope-hoogle.nix            { inputs = inputs; };
+    treesitter-playground       = prev.callPackage ../packages/treesitter-playground.nix       { inputs = inputs; };
     vim-solarized8              = prev.callPackage ../packages/vim-solarized8.nix              { inputs = inputs; };
   };
 in {

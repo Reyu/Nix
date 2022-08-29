@@ -14,7 +14,7 @@
     withPython3 = true;
     withNodeJs = true;
     extraPython3Packages = ps: with ps; [ rope jedi ];
-    extraConfig = ''
+    extraConfig = ''" vim
       lua require("reyu.init")
     '';
     package = (pkgs.neovim-nightly.overrideAttrs (oldAttrs: {
@@ -106,6 +106,7 @@
           tree-sitter-vim
           tree-sitter-yaml
         ]))
+      treesitter-playground
       nvim-treesitter-endwise
       vim-polyglot
       vim-pandoc
@@ -113,7 +114,7 @@
       vim-pandoc-syntax
       { plugin = vim-ledger;
         optional = true;
-        config = ''
+        config = ''" vim
           au FileType ledger ++once lua vim.cmd("packadd vim-ledger")
         '';
       }
