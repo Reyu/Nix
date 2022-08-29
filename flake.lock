@@ -735,6 +735,7 @@
         "powercord": "powercord",
         "promise-async": "promise-async",
         "telescope-hoogle": "telescope-hoogle",
+        "treesitter-playground": "treesitter-playground",
         "unstable": "unstable",
         "utils": "utils_2",
         "vim-solarized8": "vim-solarized8",
@@ -754,6 +755,22 @@
       "original": {
         "owner": "luc-tielen",
         "repo": "telescope_hoogle",
+        "type": "github"
+      }
+    },
+    "treesitter-playground": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1661677553,
+        "narHash": "sha256-LW+iNnT2dV6Lk95xFzMix++E1szbDOSqbArY3wRI8bA=",
+        "owner": "nvim-treesitter",
+        "repo": "playground",
+        "rev": "90d2b3e1729363f96ce2c23f16129534df893bbf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-treesitter",
+        "repo": "playground",
         "type": "github"
       }
     },

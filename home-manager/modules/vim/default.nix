@@ -14,7 +14,8 @@
     withPython3 = true;
     withNodeJs = true;
     extraPython3Packages = ps: with ps; [ rope jedi ];
-    extraConfig = ''" vim
+    extraConfig = ''
+      " vim
       lua require("reyu.init")
     '';
     package = (pkgs.neovim-nightly.overrideAttrs (oldAttrs: {
@@ -114,7 +115,8 @@
       vim-pandoc-syntax
       { plugin = vim-ledger;
         optional = true;
-        config = ''" vim
+        config = ''
+          " vim
           au FileType ledger ++once lua vim.cmd("packadd vim-ledger")
         '';
       }
@@ -170,6 +172,6 @@
       lolcat
     ];
   };
-  xdg.configFile = { "nvim/lua" = { source = ./lua; }; };
-  xdg.configFile = { "nvim/luasnippets" = { source = ./luasnippets; }; };
+  # Vim package to neatly contain customizations.
+  xdg.dataFile = { "nvim/site/pack/reyu" = { source = ./pack; }; };
 }
