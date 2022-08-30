@@ -33,6 +33,8 @@
         # .nfs files are created when an open file is removed but is still being accessed
         ".nfs*"
         ### Vim
+        # Mind map
+        ".mind"
         # Swap
         "[._]*.s[a-v][a-z]"
         "[._]*.sw[a-p]"

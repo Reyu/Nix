@@ -54,6 +54,7 @@
       nvim-ts-rainbow
       nvim-ufo
       nvim-treesitter-context
+      mind-nvim
 
       # Must have T.Pope plugins
       vim-commentary
@@ -85,7 +86,6 @@
       friendly-snippets
 
       # Filetypes
-      neorg
       (nvim-treesitter.withPlugins (plugins:
         with plugins; [
           tree-sitter-bash
