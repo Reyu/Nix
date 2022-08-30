@@ -137,55 +137,38 @@ vim.api.nvim_set_option('foldexpr', 'nvim_treesitter#foldexpr()')
 
 -- Plugin: lualine-nvim {{{
 require('reyu/lualine')
-
 -- }}}
 
--- Plugin: dashboard-nvim {{{
-local db = require('dashboard')
-db.custom_header = {
-        '███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
-        '████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
-        '██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
-        '██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
-        '██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
-        '╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
-    }
-db.custom_center = {
-      {icon = '  ',
-      desc = 'Load lastest session           ',
-      shortcut = '\\ s l',
-      action ='lua require("persistence").load()'},
-      {icon = '  ',
-      desc = 'Recently opened files          ',
-      action =  'DashboardFindHistory',
-      shortcut = '\\ f h'},
-      {icon = '  ',
-      desc = 'Find  File                     ',
-      action = 'Telescope find_files find_command=rg,--hidden,--files',
-      shortcut = '\\ f f'},
-      {icon = '  ',
-      desc ='File Browser                    ',
-      action =  'Telescope file_browser',
-      shortcut = '\\ f b'},
-      {icon = '  ',
-      desc = 'Find  word                     ',
-      action = 'Telescope live_grep',
-      shortcut = '\\ f w'},
-    }
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = {'dashboard'},
-    callback = function()
-        vim.opt['list'] = false
-        vim.cmd([[highlight clear ExtraWhitespace]])
-    end
+-- Plugin: mini.nvim {{{
+require('mini.ai').setup()
+require('mini.bufremove').setup()
+require('mini.comment').setup()
+require('mini.jump').setup()
+require('mini.pairs').setup()
+require('mini.sessions').setup()
+require('mini.surround').setup()
+require('mini.trailspace').setup()
+
+local starter = require('mini.starter')
+starter.setup({
+    header = [[
+        ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗
+        ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║
+        ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║
+        ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║
+        ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║
+        ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝
+    ]],
+    items = {
+        starter.sections.sessions(),
+        starter.sections.builtin_actions(),
+        starter.sections.telescope(),
+    },
+    content_hooks = {
+        starter.gen_hook.adding_bullet(),
+        starter.gen_hook.aligning('center', 'center'),
+    },
 })
-require('which-key').register({
-    s = {
-        name = 'Session',
-        s = {'<cmd>SessionSave<cr>', 'Save current session'},
-        l = {'<cmd>SessionLoad<cr>', 'Load last session'}
-    }
-}, {mode = 'n', prefix = '<leader>'})
 -- }}}
 
 -- Plugin: tmux-navigator {{{
@@ -257,20 +240,6 @@ require('gitsigns').setup()
 require('octo').setup()
 -- }}}
 
--- Plugin: nvim-autopairs {{{
-require('nvim-autopairs').setup({
-    check_ts = true,
-    ts_config = {
-        lua = {'string'}, -- it will not add a pair on that treesitter node
-    },
-    fast_wrap = {},
-})
-require('cmp').event:on(
-  'confirm_done',
-  require('nvim-autopairs.completion.cmp').on_confirm_done()
-)
--- }}}
-
 -- Plugin: easy-align {{{
 require('which-key').register({
     ga = {
@@ -311,37 +280,6 @@ require("which-key").register({
         "Toggle lsp_lines"
     }
 }, {prefix = "<space>"})
--- }}}
-
--- Plugin: persistence.nvim {{{
-require("persistence").setup()
--- restore the session for the current directory
-vim.api.nvim_set_keymap(
-    "n",
-    "<leader>ss",
-    [[<CMD>lua require("persistence").load()<CR>]],
-    { desc = "Restore last session for current directory" }
-)
-
--- restore the last session
-vim.api.nvim_set_keymap(
-    "n",
-    "<leader>sl",
-    [[<CMD>lua require("persistence").load({ last = true })<CR>]],
-    { desc = "Restore Last Session" }
-)
-
--- stop Persistence => session won't be saved on exit
-vim.api.nvim_set_keymap(
-    "n",
-    "<leader>sd",
-    [[<CMD>lua require("persistence").stop()<CR>]],
-    { desc = "Stop Persistence" }
-)
--- }}}
-
--- Plugin: surround-nvim {{{
-require("surround").setup({ mappings_style = "sandwich" })
 -- }}}
 
 -- Plugin: zen-mode {{{

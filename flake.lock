@@ -359,6 +359,22 @@
         "type": "github"
       }
     },
+    "mini-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1661671975,
+        "narHash": "sha256-5GgfFgIj/cg6W5jaO1Dqdoeb6aqzHp5LMWf/fE6w6tw=",
+        "owner": "echasnovski",
+        "repo": "mini.nvim",
+        "rev": "085baefa6aca44526be621b15e7b688f996c2daf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "echasnovski",
+        "repo": "mini.nvim",
+        "type": "github"
+      }
+    },
     "mobile-nixos": {
       "flake": false,
       "locked": {
@@ -734,6 +750,7 @@
         "home-manager": "home-manager",
         "kmonad": "kmonad",
         "mind-nvim": "mind-nvim",
+        "mini-nvim": "mini-nvim",
         "mobile-nixos": "mobile-nixos",
         "mutt-trim": "mutt-trim",
         "neosolarized-nvim": "neosolarized-nvim",

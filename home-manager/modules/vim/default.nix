@@ -26,13 +26,11 @@
       neosolarized-nvim
 
       # General
-      dashboard-nvim
       direnv-vim
       fidget-nvim
       firenvim
       gitsigns-nvim
       neoscroll-nvim
-      nvim-autopairs
       nvim-tree-lua
       nvim-ts-context-commentstring
       nvim-web-devicons
@@ -40,24 +38,21 @@
       telescope-hoogle
       telescope-nvim
       tmux-navigator
-      vim-bbye
       which-key-nvim
       easy-align
       netman
       telescope-ui-select-nvim
       lsp_lines-nvim
-      persistence-nvim
       lualine-nvim
-      surround-nvim
       zen-mode-nvim
       twilight-nvim
       nvim-ts-rainbow
       nvim-ufo
       nvim-treesitter-context
       mind-nvim
+      mini-nvim
 
       # Must have T.Pope plugins
-      vim-commentary
       vim-eunuch
       vim-fugitive
       vim-projectionist

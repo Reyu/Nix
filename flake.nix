@@ -120,6 +120,10 @@
       url = "github:Reyu/mind.nvim";
       flake = false;
     };
+    mini-nvim = {
+      url = "github:echasnovski/mini.nvim";
+      flake = false;
+    };
 
 
     # Discord + Plugins
