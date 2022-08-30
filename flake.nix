@@ -116,6 +116,10 @@
       url = "github:nvim-treesitter/playground";
       flake = false;
     };
+    mind-nvim = {
+      url = "github:Reyu/mind.nvim";
+      flake = false;
+    };
 
 
     # Discord + Plugins

@@ -7,6 +7,7 @@ final: prev: let
     cmp-dap                     = prev.callPackage ../packages/cmp-dap.nix                     { inputs = inputs; };
     cmp-nvim-lsp-signature-help = prev.callPackage ../packages/cmp-nvim-lsp-signature-help.nix { inputs = inputs; };
     firenvim                    = prev.callPackage ../packages/firenvim.nix                    { inputs = inputs; };
+    mind-nvim                   = prev.callPackage ../packages/mind-nvim.nix                   { inputs = inputs; };
     neosolarized-nvim           = prev.callPackage ../packages/NeoSolarized-nvim.nix           { inputs = inputs; };
     neotest                     = prev.callPackage ../packages/neotest.nix                     { inputs = inputs; };
     neotest-python              = prev.callPackage ../packages/neotest-python.nix              { inputs = inputs; };

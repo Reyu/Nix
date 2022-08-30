@@ -648,26 +648,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
 })
 -- }}}
 
--- Plugin: neorg {{{
-require('neorg').setup {
-    load = {
-        ["core.defaults"] = {},
-        ["core.export"] = {},
-        ["core.export.markdown"] = {},
-        ["core.norg.qol.todo_items"] = {},
-        ["core.norg.concealer"] = {},
-        ["core.norg.dirman"] = {
-            config = {
-                workspaces = {
-                    home = "~/Notes",
-                }
-            }
-        },
-        ["core.integrations.nvim-cmp"] = {},
-    }
-}
--- }}}
-
 -- Testing
 
 -- Plugin: neotest {{{
@@ -815,6 +795,11 @@ dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
 
 -- Plugin: nvim-dap-virtual-text {{{
 require('nvim-dap-virtual-text').setup()
+-- }}}
+
+-- Plugin: mind.nvim {{{
+require('mind').setup(
+)
 -- }}}
 
 -- General Options {{{

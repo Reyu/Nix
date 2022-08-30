@@ -343,6 +343,22 @@
         "type": "github"
       }
     },
+    "mind-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1661830904,
+        "narHash": "sha256-pryi0VY5+JoUnpOqgBztNau6+WX5SqUVygsMFZb5KEU=",
+        "owner": "Reyu",
+        "repo": "mind.nvim",
+        "rev": "e4b3af0d72beb74eee16cc4b28279f0157f30fd2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Reyu",
+        "repo": "mind.nvim",
+        "type": "github"
+      }
+    },
     "mobile-nixos": {
       "flake": false,
       "locked": {
@@ -717,6 +733,7 @@
         "firenvim": "firenvim",
         "home-manager": "home-manager",
         "kmonad": "kmonad",
+        "mind-nvim": "mind-nvim",
         "mobile-nixos": "mobile-nixos",
         "mutt-trim": "mutt-trim",
         "neosolarized-nvim": "neosolarized-nvim",
