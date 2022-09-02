@@ -7,33 +7,17 @@
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus/1.3.0";
     devshell.url = "github:numtide/devshell";
+    nixos-generators.url = "github:nix-community/nixos-generators";
+    home-manager.url = "github:nix-community/home-manager";
+    nur.url = "github:nix-community/NUR";
     mobile-nixos = {
       url = "github:NixOS/mobile-nixos";
       flake = false;
     };
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # Automatic deployment
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.utils.follows = "utils";
-    };
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    deploy-rs.url = "github:serokell/deploy-rs";
+    agenix.url = "github:ryantm/agenix";
 
     # ZSH Plugins
     zsh-vimode-visual = {
@@ -42,11 +26,7 @@
     };
 
     # Vim + Plugins
-    neovim-nightly = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "utils";
-    };
+    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
 
     telescope-hoogle = {
       url = "github:luc-tielen/telescope_hoogle";
@@ -117,7 +97,7 @@
       flake = false;
     };
     mind-nvim = {
-      url = "github:Reyu/mind.nvim";
+      url = "github:phaazon/mind.nvim";
       flake = false;
     };
     mini-nvim = {
@@ -127,11 +107,7 @@
 
 
     # Discord + Plugins
-    powercord = {
-      url = "github:LavaDesu/powercord-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.utils.follows = "utils";
-    };
+    powercord.url = "github:LavaDesu/powercord-overlay";
 
     discord-better-status = {
       url = "github:GriefMoDz/better-status-indicators";
@@ -159,15 +135,10 @@
     };
 
     # Other Sources
+    kmonad.url = "github:kmonad/kmonad?dir=nix";
     mutt-trim = {
       url = "github:Konfekt/mutt-trim";
       flake = false;
-    };
-
-    # TODO: try this
-    kmonad = {
-      url = "github:kmonad/kmonad?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs = { self, ... }@inputs:
