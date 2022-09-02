@@ -184,10 +184,10 @@ myLauncher          = "rofi -matching fuzzy -modi combi -show combi -combi-modi 
 
 
 scratchpads
-  = [ term "htop"    "htop"              mySPLargeFloat
-    , term "mail"    "zsh -c neomutt"    mySPLargeFloat
-    , term "ncmpcpp" "ncmpcpp"           mySPLargeFloat
-    , term "neorg"   "nvim -c Neorg"     mySPLargeFloat
+  = [ term "htop"    "htop"                 mySPLargeFloat
+    , term "mail"    "zsh -c neomutt"       mySPLargeFloat
+    , term "ncmpcpp" "ncmpcpp"              mySPLargeFloat
+    , term "neorg"   "nvim -c MindOpenMain" mySPLargeFloat
     , NS "volume"    "pavucontrol"      (className =? "Pavucontrol")     mySPLargeFloat
     , NS "element"   "element-desktop"  (className =? "Element")         mySPLargeFloat
     , NS "discord"   "discordcannary"   (className =? "discord")         mySPLargeFloat
