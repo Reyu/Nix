@@ -31,32 +31,36 @@ require('lualine').setup {
         globalstatus = true
     },
     sections = {
-        lualine_a = {'mode'},
+        lualine_a = { "mode" },
         lualine_b = {
             {'FugitiveHead', icon = ''},
             {'diff', source = diff_source},
             'diagnostics'
         },
-        lualine_c = {'filename'},
+        lualine_c = {
+            {
+                "filename",
+                file_status = function()
+                    -- Don't bother showing file status if we have Git info
+                    if vim.fn["FugitiveGitDir"]() == "" then
+                        return true
+                    else
+                        return false
+                    end
+                end,
+            },
+        },
         lualine_x = { { searchCount }, 'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress'},
         lualine_z = {'location'}
     },
-    inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = {'filename'},
-        lualine_x = {'location'},
-        lualine_y = {},
-        lualine_z = {}
-    },
     tabline = {
-        lualine_a = {'buffers'},
-        lualine_b = {},
+        lualine_a = {'filename'},
+        lualine_b = {'aerial'},
         lualine_c = {},
         lualine_x = {},
-        lualine_y = {},
-        lualine_z = {'tabs'}
+        lualine_y = {'buffers'},
+        lualine_z = {{ 'tabs', { mode = 1 } }}
     },
     extensions = {'nvim-tree'}
 }

@@ -18,9 +18,7 @@
       " vim
       lua require("reyu.init")
     '';
-    package = (pkgs.neovim-nightly.overrideAttrs (oldAttrs: {
-      patches = oldAttrs.patches ++ [./patches/foldoptions.patch];
-    }));
+    package = pkgs.neovim-nightly;
     plugins = with pkgs.vimPlugins; [
       # Themes
       neosolarized-nvim
@@ -32,7 +30,6 @@
       gitsigns-nvim
       neoscroll-nvim
       nvim-tree-lua
-      nvim-ts-context-commentstring
       nvim-web-devicons
       octo-nvim
       telescope-hoogle
@@ -46,11 +43,16 @@
       lualine-nvim
       zen-mode-nvim
       twilight-nvim
-      nvim-ts-rainbow
       nvim-ufo
-      nvim-treesitter-context
       mind-nvim
       mini-nvim
+      aerial-nvim
+      stickybuf-nvim
+      nvim-notify
+      nvim-bqf
+      neogen
+      hydra
+      toggleterm-nvim
 
       # Must have T.Pope plugins
       vim-eunuch
@@ -78,7 +80,7 @@
 
       # Snippets
       luasnip
-      friendly-snippets
+      # friendly-snippets
 
       # Filetypes
       (nvim-treesitter.withPlugins (plugins:
@@ -94,9 +96,10 @@
           tree-sitter-lua
           tree-sitter-make
           tree-sitter-markdown
+          tree-sitter-markdown-inline
           tree-sitter-nix
-          tree-sitter-norg
           tree-sitter-python
+          tree-sitter-sql
           tree-sitter-rst
           tree-sitter-toml
           tree-sitter-vim
@@ -104,7 +107,10 @@
         ]))
       treesitter-playground
       nvim-treesitter-endwise
-      vim-polyglot
+      nvim-ts-rainbow
+      nvim-ts-context-commentstring
+      nvim-treesitter-context
+      # vim-polyglot
       vim-pandoc
       vim-pandoc-after
       vim-pandoc-syntax

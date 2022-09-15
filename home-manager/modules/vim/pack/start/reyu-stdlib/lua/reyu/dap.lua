@@ -10,36 +10,36 @@ local function pythonPath()
     end
 end
 
-vim.fn.sign_define('DapBreakpoint', {
-    text = '',
-    texthl = 'DiagnosticInfo',
-    linehl = '',
-    numhl = ''
-})
-vim.fn.sign_define('DapBreakpointCondition', {
-    text = '',
-    texthl = 'DiagnosticInfo',
-    linehl = '',
-    numhl = ''
-})
-vim.fn.sign_define('DapBreakpointRejected', {
-    text = '🚫',
-    texthl = 'DiagnosticError',
-    linehl = '',
-    numhl = ''
-})
-vim.fn.sign_define('DapLogPoint', {
-    text = '📓',
-    texthl = 'DiagnosticInfo',
-    linehl = '',
-    numhl = ''
-})
-vim.fn.sign_define('DapStopped', {
-    text = '🛑',
-    texthl = 'DiagnosticWarning',
-    linehl = 'DiagnosticUnderlineWarning',
-    numhl = 'DiagnosticWarning'
-})
+-- vim.fn.sign_define('DapBreakpoint', {
+--     text = '',
+--     texthl = 'DiagnosticInfo',
+--     linehl = '',
+--     numhl = ''
+-- })
+-- vim.fn.sign_define('DapBreakpointCondition', {
+--     text = '',
+--     texthl = 'DiagnosticInfo',
+--     linehl = '',
+--     numhl = ''
+-- })
+-- vim.fn.sign_define('DapBreakpointRejected', {
+--     text = '🚫',
+--     texthl = 'DiagnosticError',
+--     linehl = '',
+--     numhl = ''
+-- })
+-- vim.fn.sign_define('DapLogPoint', {
+--     text = '📓',
+--     texthl = 'DiagnosticInfo',
+--     linehl = '',
+--     numhl = ''
+-- })
+-- vim.fn.sign_define('DapStopped', {
+--     text = '🛑',
+--     texthl = 'DiagnosticWarning',
+--     linehl = 'DiagnosticUnderlineWarning',
+--     numhl = 'DiagnosticWarning'
+-- })
 
 dap.defaults.fallback.external_terminal = {command = 'alacritty', args = {'-e'}}
 dap.adapters = {

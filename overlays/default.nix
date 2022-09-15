@@ -7,8 +7,10 @@ final: prev: let
     cmp-dap                     = prev.callPackage ../packages/cmp-dap.nix                     { inputs = inputs; };
     cmp-nvim-lsp-signature-help = prev.callPackage ../packages/cmp-nvim-lsp-signature-help.nix { inputs = inputs; };
     firenvim                    = prev.callPackage ../packages/firenvim.nix                    { inputs = inputs; };
+    hydra                       = prev.callPackage ../packages/hydra.nix                       { inputs = inputs; };
     mind-nvim                   = prev.callPackage ../packages/mind-nvim.nix                   { inputs = inputs; };
     mini-nvim                   = prev.callPackage ../packages/mini-nvim.nix                   { inputs = inputs; };
+    neogen                      = prev.callPackage ../packages/neogen.nix                      { inputs = inputs; };
     neosolarized-nvim           = prev.callPackage ../packages/NeoSolarized-nvim.nix           { inputs = inputs; };
     neotest                     = prev.callPackage ../packages/neotest.nix                     { inputs = inputs; };
     neotest-python              = prev.callPackage ../packages/neotest-python.nix              { inputs = inputs; };
@@ -19,6 +21,7 @@ final: prev: let
     one-small-step-for-vimkind  = prev.callPackage ../packages/one-small-step-for-vimkind.nix  { inputs = inputs; };
     persistence-nvim            = prev.callPackage ../packages/persistence-nvim.nix            { inputs = inputs; };
     promise-async               = prev.callPackage ../packages/promise-async.nix               { inputs = inputs; };
+    stickybuf-nvim              = prev.callPackage ../packages/stickybuf-nvim.nix              { inputs = inputs; };
     telescope-hoogle            = prev.callPackage ../packages/telescope-hoogle.nix            { inputs = inputs; };
     treesitter-playground       = prev.callPackage ../packages/treesitter-playground.nix       { inputs = inputs; };
     vim-solarized8              = prev.callPackage ../packages/vim-solarized8.nix              { inputs = inputs; };

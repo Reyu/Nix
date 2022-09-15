@@ -97,11 +97,23 @@
       flake = false;
     };
     mind-nvim = {
-      url = "github:phaazon/mind.nvim";
+      url = "github:Reyu/mind.nvim";
       flake = false;
     };
     mini-nvim = {
       url = "github:echasnovski/mini.nvim";
+      flake = false;
+    };
+    stickybuf-nvim = {
+      url = "github:stevearc/stickybuf.nvim";
+      flake = false;
+    };
+    neogen = {
+      url = "github:danymat/neogen";
+      flake = false;
+    };
+    hydra = {
+      url = "github:anuvyklack/hydra.nvim";
       flake = false;
     };
 
