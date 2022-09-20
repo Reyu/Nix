@@ -417,7 +417,7 @@ myKeys conf = let
     , ("M-C-q"                  , addName "Rebuild & restart XMonad"          rebuildXmonad)
     , ("M-S-q"                  , addName "Quit XMonad"                       quitXmonad)
     , ("M-x"                    , addName "Lock screen"                     $ spawn "xset s activate")
-    , ("M-S-s"                  , addName "Print Screen"                    $ spawn "flameshot")
+    , ("M-S-s"                  , addName "Print Screen"                    $ spawn "flameshot gui")
     , ("M1-<Space>"             , addName "Notification Action"             $ spawn "dunstctl action")
     ] ^++^
 
