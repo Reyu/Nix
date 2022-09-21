@@ -134,6 +134,7 @@
       trouble-nvim
 
       # Dependency/Library packages
+      SchemaStore-nvim
       plenary-nvim
       popup-nvim
       FixCursorHold-nvim
@@ -144,8 +145,7 @@
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.vim-language-server
-      nodePackages.vscode-html-languageserver-bin
-      nodePackages.vscode-json-languageserver
+      nodePackages.vscode-json-languageserver-bin
       nodePackages.yaml-language-server
       rnix-lsp
       terraform-ls

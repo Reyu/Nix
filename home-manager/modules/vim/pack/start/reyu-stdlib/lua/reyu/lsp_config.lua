@@ -1,6 +1,22 @@
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    vim.diagnostic.config({
+        virtual_text = {source = "always"},
+        float = {source = "always"}
+    })
+
+    local function preview_location_callback(_, result)
+        if result == nil or vim.tbl_isempty(result) then
+            return nil
+        end
+        vim.lsp.util.preview_location(result[1], { border = "rounded" })
+    end
+
+    function PeekDefinition()
+        local params = vim.lsp.util.make_position_params()
+        return vim.lsp.buf_request(bufnr, 'textDocument/definition', params, preview_location_callback)
+    end
 
     -- Mappings.
     require("which-key").register({
@@ -41,6 +57,7 @@ local on_attach = function(client, bufnr)
             D = {
                 function() vim.lsp.buf.type_definition() end, "Type Definition"
             },
+            p = {function() PeekDefinition() end, "Peek Definition"},
             r = {function() vim.lsp.buf.rename() end, "Rename"},
             e = {
                 function() vim.diagnostic.open_float() end,
@@ -88,6 +105,24 @@ local on_attach = function(client, bufnr)
     end
 end
 
+vim.lsp.handlers['window/showMessage'] =
+    function(_, result, ctx)
+        local client = vim.lsp.get_client_by_id(ctx.client_id)
+        local lvl = ({'ERROR', 'WARN', 'INFO', 'DEBUG'})[result.type]
+        notify(result.message, lvl, {
+            title = 'LSP | ' .. client.name,
+            timeout = 10000,
+            keep = function() return lvl == 'ERROR' or lvl == 'WARN' end
+        })
+    end
+
+-- LSP settings (for overriding per client)
+local handlers = {
+    ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
+    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "rounded"}),
+    ["textDocument/definition"] = vim.lsp.with(vim.lsp.handlers["'textDocument/definition'"], {border = "rounded"})
+}
+
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -105,13 +140,19 @@ for _, lsp in ipairs(servers) do
         capabilities = capabilities,
         log_level = vim.lsp.protocol.MessageType.Log,
         message_level = vim.lsp.protocol.MessageType.Log,
+        handlers = handlers,
         settings = {
-            languages = {
-                haskell = {
-                    formattingProvider = "stylish-haskell",
-                    formatStdin = true
-                }
+            haskell = {
+                formattingProvider = 'floskell',
+                plugin = {rename = {globalOn = true}}
+            },
+            json = {
+                schemas = require('schemastore').json.schemas(),
+                validate = {enable = true}
             }
         }
     }
+    if lsp == "jsonls" then
+        nvim_lsp.jsonls.setup({cmd = {"json-languageserver", "--stdio"}})
+    end
 end
