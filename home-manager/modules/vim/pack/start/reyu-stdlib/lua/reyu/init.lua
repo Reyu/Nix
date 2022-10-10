@@ -2,21 +2,6 @@
 -- NeoVim Config --
 -- ############# --
 
--- Plugin: NeoSolarized {{{
-vim.g.NeoSolarized_italics = 1 -- 0 or 1
-vim.g.NeoSolarized_visibility = "normal" -- low, normal, high
-vim.g.NeoSolarized_diffmode = "normal" -- low, normal, high
-vim.g.NeoSolarized_termtrans = 1 -- 0(default) or 1 -> Transparency
-vim.g.NeoSolarized_lineNr = 0 -- 0 or 1 (default) -> To Show backgroung in LineNr
-vim.api.nvim_set_option_value("termguicolors", true, {})
-vim.cmd([[
-    colorscheme NeoSolarized
-    " highlight FloatBorder guibg=NONE ctermbg=NONE
-    " highlight NormalFloat ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-    highlight Pmenu ctermbg=NONE guibg=NONE
-]])
--- }}}
-
 -- Plugin: telescope-nvim {{{
 require("telescope").setup({
     defaults = {
@@ -143,23 +128,30 @@ require("telescope").load_extension("hoogle")
 -- }}}
 
 -- Plugin: treesitter {{{
-require("nvim-treesitter.configs").setup({
-    context_commentstring = { enable = true },
-    endwise = { enable = true },
-    highlight = { enable = true },
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = "gnn",
-            scope_incremental = "grs",
-            node_incremental = "grn",
-            node_decremental = "grm",
+local function initTreeSitter()
+    vim.cmd[[packadd nvim-treesitter]]
+    require("nvim-treesitter.configs").setup({
+        context_commentstring = { enable = true },
+        endwise = { enable = true },
+        highlight = { enable = true },
+        incremental_selection = {
+            enable = true,
+            keymaps = {
+                init_selection = "gnn",
+                scope_incremental = "grs",
+                node_incremental = "grn",
+                node_decremental = "grm",
+            },
         },
-    },
-    indent = { enable = true },
+        indent = { enable = true },
+    })
+    vim.api.nvim_set_option("foldmethod", "expr")
+    vim.api.nvim_set_option("foldexpr", "nvim_treesitter#foldexpr()")
+end
+vim.api.nvim_create_autocmd({"BufEnter"}, {
+    callback = initTreeSitter,
+    once = true,
 })
-vim.api.nvim_set_option("foldmethod", "expr")
-vim.api.nvim_set_option("foldexpr", "nvim_treesitter#foldexpr()")
 -- }}}
 
 -- Plugin: lualine-nvim {{{
@@ -616,10 +608,10 @@ cmp.setup({
                 end
             end,
             i = function(fallback)
-                if lsnip.choice_active() then
-                    lsnip.change_choice(1)
-                elseif cmp.visible() then
+                if cmp.visible() then
                     cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                elseif lsnip.choice_active() then
+                    lsnip.change_choice(-1)
                 else
                     fallback()
                 end
@@ -634,10 +626,10 @@ cmp.setup({
                 end
             end,
             i = function(fallback)
-                if lsnip.choice_active() then
+                if cmp.visible() then
+                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                elseif lsnip.choice_active() then
                     lsnip.change_choice(-1)
-                elseif cmp.visible() then
-                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
                 else
                     fallback()
                 end
@@ -645,7 +637,7 @@ cmp.setup({
         }),
         ["<C-u>"] = cmp.mapping(function(fallback)
             if lsnip.choice_active() then
-                require("luasnip.extras.select_choice")
+                require("luasnip.extras.select_choice")()
             else
                 fallback()
             end
@@ -653,67 +645,51 @@ cmp.setup({
         ["<Tab>"] = cmp.mapping({
             c = function(fallback)
                 if cmp.visible() then
-                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                    cmp.complete_common_string()
                 else
                     fallback()
                 end
             end,
             i = function(fallback)
-                if require("luasnip").expand_or_locally_jumpable() then
-                    require("luasnip").expand_or_jump()
+                if lsnip.jumpable(1) then
+                    lsnip.jump(1)
                 elseif cmp.visible() then
-                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                    cmp.complete_common_string()
                 else
                     fallback()
                 end
             end,
             s = function(fallback)
-                if require("luasnip").expand_or_locally_jumpable() then
-                    require("luasnip").expand_or_jump()
+                if lsnip.jumpable() then
+                    lsnip.jump(1)
                 else
                     fallback()
                 end
             end,
         }),
-        ["<S-Tab>"] = cmp.mapping({
-            c = function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-                else
-                    fallback()
-                end
-            end,
-            i = function(fallback)
-                if require("luasnip").jumpable(-1) then
-                    require("luasnip").jump(-1)
-                elseif cmp.visible() then
-                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-                else
-                    fallback()
-                end
-            end,
-            s = function(fallback)
-                if require("luasnip").jumpable(-1) then
-                    require("luasnip").jump(-1)
-                else
-                    fallback()
-                end
-            end,
-        }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if lsnip.jumpable() then
+                lsnip.jump(-1)
+            else
+                fallback()
+            end
+        end, { "i", "s" }),
         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+        ["<C-e>"] = cmp.mapping(cmp.mapping.abort(), { "i", "c" }),
         ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-        ["<C-e>"] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        }),
-        ["<CR>"] = cmp.mapping(
-            cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
-                select = false,
-            }),
-            { "i" }
-        ),
+        ["<CR>"] = cmp.mapping(function(fallback)
+            if lsnip.expandable() then
+                lsnip.expand()
+            elseif cmp.visible() then
+                cmp.mapping.confirm({
+                    behavior = cmp.ConfirmBehavior.Replace,
+                    select = false,
+                })
+            else
+                fallback()
+            end
+        end, { "i" }),
     },
     sources = cmp.config.sources({
         { name = "vim-dadbod-completion" },
@@ -772,15 +748,7 @@ require("luasnip.loaders.from_lua").lazy_load()
 require("luasnip.loaders.from_vscode").lazy_load()
 -- }}}
 
--- Plugin: fidget-nvim {{{
-require("fidget").setup({
-    window = {
-        blend = 0,
-    },
-})
--- }}}
-
--- Filetypes
+-- -- Filetypes
 
 -- Plugin: vim-ledger {{{
 vim.api.nvim_set_var("ledger_extra_options", "-s")
@@ -788,8 +756,10 @@ vim.api.nvim_set_var("ledger_maxwidth", 160)
 vim.api.nvim_set_var("ledger_date_format", "%Y-%m-%d")
 
 vim.api.nvim_create_autocmd("BufEnter", {
+    once = true,
     pattern = "*.ldg",
     callback = function()
+        vim.cmd[[packadd vim-ledger]]
         require("which-key").register({
             t = {
                 name = "Ledger Transaction",

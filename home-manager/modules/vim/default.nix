@@ -21,7 +21,18 @@
     package = pkgs.neovim-nightly;
     plugins = with pkgs.vimPlugins; [
       # Themes
-      neosolarized-nvim
+      { plugin = neosolarized-nvim;
+        config = ''
+            let g:NeoSolarized_italics = 1
+            let g:NeoSolarized_visibility = "normal"
+            let g:NeoSolarized_diffmode = "normal"
+            let g:NeoSolarized_termtrans = 1
+            let g:NeoSolarized_lineNr = 0
+            set termguicolors
+            colorscheme NeoSolarized
+            highlight Pmenu ctermbg=NONE guibg=NONE
+        '';
+      }
 
       # General
       direnv-vim
@@ -114,13 +125,7 @@
       vim-pandoc
       vim-pandoc-after
       vim-pandoc-syntax
-      { plugin = vim-ledger;
-        optional = true;
-        config = ''
-          " vim
-          au FileType ledger ++once lua vim.cmd("packadd vim-ledger")
-        '';
-      }
+      { plugin = vim-ledger; optional = true; }
 
       # Testing & Debugging
       neotest

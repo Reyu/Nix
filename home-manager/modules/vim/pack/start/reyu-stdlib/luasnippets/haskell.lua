@@ -48,7 +48,7 @@ ls.add_snippets("haskell", {
         fmt(
             [[
             {{- |
-            Module      :  {module}
+            Module      :  {moduleName}
             Description :  {summary}
             Copyright   :  (c) {copyright}
             License     :  {license}
@@ -58,9 +58,14 @@ ls.add_snippets("haskell", {
 
             {description}
             -}}
+            module {module} (
+                ) where
+
+            {done}
             ]],
             {
                 module = i(1, "$Header$"),
+                moduleName = l(l._1, {1}),
                 summary = i(2, "Summary"),
                 copyright = i(3, "20XX Tech Bro Inc."),
                 license = c(4, {
@@ -119,7 +124,8 @@ ls.add_snippets("haskell", {
                     t("non-portable"),
                     i(nil),
                 }),
-                description = i(0),
+                description = i(8),
+                done = i(0),
             }
         )
     ),

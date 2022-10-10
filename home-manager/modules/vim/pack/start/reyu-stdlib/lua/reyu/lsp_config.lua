@@ -1,5 +1,12 @@
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
+    vim.cmd[[packadd fidget-nvim]]
+    require("fidget").setup({
+        window = {
+            blend = 0,
+        },
+    })
+
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     vim.diagnostic.config({
         virtual_text = {source = "always"},
@@ -119,8 +126,7 @@ vim.lsp.handlers['window/showMessage'] =
 -- LSP settings (for overriding per client)
 local handlers = {
     ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
-    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "rounded"}),
-    ["textDocument/definition"] = vim.lsp.with(vim.lsp.handlers["'textDocument/definition'"], {border = "rounded"})
+    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "rounded"})
 }
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
