@@ -2,7 +2,7 @@
   config = {
     nix = {
       # Enable flakes
-      package = pkgs.nixFlakes;
+      package = pkgs.nixVersions.stable;
       extraOptions = pkgs.lib.mkForce ''
         experimental-features = nix-command flakes
       '';
