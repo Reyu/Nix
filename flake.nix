@@ -119,7 +119,7 @@
 
 
     # Discord + Plugins
-    powercord.url = "github:LavaDesu/powercord-overlay";
+    replugged.url = "github:LunNova/replugged-nix-flake";
 
     discord-better-status = {
       url = "github:GriefMoDz/better-status-indicators";
@@ -169,7 +169,6 @@
         devshell.overlay
         neovim-nightly.overlay
         nur.overlay
-        powercord.overlay
         kmonad.overlays.default
         (import ./overlays { inherit inputs; })
       ];
@@ -178,7 +177,7 @@
         allowUnfreePredicate = pkg:
           builtins.elem (nixpkgs.lib.getName pkg) [
             "betterttv"
-            "discord-canary"
+            "discord"
             "obsidian"
             "plexmediaserver"
             "slack"

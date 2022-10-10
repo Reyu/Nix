@@ -716,11 +716,11 @@
     },
     "nixpkgs_9": {
       "locked": {
-        "lastModified": 1658737577,
-        "narHash": "sha256-xosJ5nJT9HX+b6UWsSX6R+ap4AdZOCrl/r+IKFp2ASQ=",
+        "lastModified": 1665259268,
+        "narHash": "sha256-ONFhHBLv5nZKhwV/F2GOH16197PbvpyWhoO0AOyktkU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5a0e0d73b944157328d54c4ded1cf2f0146a86a5",
+        "rev": "c5924154f000e6306030300592f4282949b2db6c",
         "type": "github"
       },
       "original": {
@@ -809,41 +809,6 @@
         "type": "github"
       }
     },
-    "powercord": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_9",
-        "powercord": "powercord_2"
-      },
-      "locked": {
-        "lastModified": 1664525685,
-        "narHash": "sha256-rYI6igVjDxS468623nhav8xwN+TVleSysBNPuF+bloQ=",
-        "owner": "LavaDesu",
-        "repo": "powercord-overlay",
-        "rev": "74a55e214b53d5ac0ad9a28d9bf71a65bd8c9c29",
-        "type": "github"
-      },
-      "original": {
-        "owner": "LavaDesu",
-        "repo": "powercord-overlay",
-        "type": "github"
-      }
-    },
-    "powercord_2": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1658712501,
-        "narHash": "sha256-oApii3bNoJAmCDtELoo98XfDk4qHqjMRQJcIto2qbso=",
-        "owner": "powercord-org",
-        "repo": "powercord",
-        "rev": "bb30f25898f0ad3cae91fb43cc83b12247056e8e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "powercord-org",
-        "repo": "powercord",
-        "type": "github"
-      }
-    },
     "promise-async": {
       "flake": false,
       "locked": {
@@ -857,6 +822,41 @@
       "original": {
         "owner": "kevinhwang91",
         "repo": "promise-async",
+        "type": "github"
+      }
+    },
+    "replugged": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_9",
+        "replugged": "replugged_2"
+      },
+      "locked": {
+        "lastModified": 1665361830,
+        "narHash": "sha256-cJUIMDyRdToUfsMu7cVA6o+afpRxuJ1WR76VBAumex0=",
+        "owner": "LunNova",
+        "repo": "replugged-nix-flake",
+        "rev": "5a5be1bc534b647389ce10e140c9ebc07c350cc0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LunNova",
+        "repo": "replugged-nix-flake",
+        "type": "github"
+      }
+    },
+    "replugged_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1664511204,
+        "narHash": "sha256-wgVInLJd97vsndfSVLRvJzOl4e1yZCXYsFpp0ITZvzQ=",
+        "owner": "replugged-org",
+        "repo": "replugged",
+        "rev": "e984d8fdae3a3585e6ca7dc7fa8aed3725062b31",
+        "type": "github"
+      },
+      "original": {
+        "owner": "replugged-org",
+        "repo": "replugged",
         "type": "github"
       }
     },
@@ -896,8 +896,8 @@
         "nvim-ufo": "nvim-ufo",
         "one-small-step-for-vimkind": "one-small-step-for-vimkind",
         "persistence-nvim": "persistence-nvim",
-        "powercord": "powercord",
         "promise-async": "promise-async",
+        "replugged": "replugged",
         "stickybuf-nvim": "stickybuf-nvim",
         "telescope-hoogle": "telescope-hoogle",
         "treesitter-playground": "treesitter-playground",

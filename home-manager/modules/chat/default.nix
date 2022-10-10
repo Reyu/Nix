@@ -1,15 +1,12 @@
 { config, pkgs, libs, inputs, ... }:
 {
   home.packages = with pkgs; [
-    (discord-plugged.override {
-      plugins = [
-        inputs.discord-better-status
-        inputs.discord-read-all
-        inputs.discord-theme-toggler
-        inputs.discord-tweaks
-        inputs.discord-vc-timer
-      ];
-      themes = [ inputs.discord-theme-slate ];
+    (inputs.replugged.lib.makeDiscordPlugged {
+      inherit pkgs;
+      plugins = {
+        inherit (inputs) discord-better-status discord-read-all discord-theme-toggler discord-tweaks discord-vc-timer;
+      };
+      themes = { inherit (inputs) discord-theme-slate; };
     })
     element-desktop
     slack
