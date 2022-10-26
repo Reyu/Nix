@@ -105,4 +105,6 @@
 
   virtualisation.podman.enable = true;
   virtualisation.docker.storageDriver = "zfs";
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "reyu" ];
 }
