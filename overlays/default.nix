@@ -7,6 +7,7 @@ final: prev: let
     cmp-dap                     = prev.callPackage ../packages/cmp-dap.nix                     { inputs = inputs; };
     cmp-nvim-lsp-signature-help = prev.callPackage ../packages/cmp-nvim-lsp-signature-help.nix { inputs = inputs; };
     firenvim                    = prev.callPackage ../packages/firenvim.nix                    { inputs = inputs; };
+    haskell-tools-nvim          = prev.callPackage ../packages/haskell-tools-nvim.nix          { inputs = inputs; };
     hydra                       = prev.callPackage ../packages/hydra.nix                       { inputs = inputs; };
     mind-nvim                   = prev.callPackage ../packages/mind-nvim.nix                   { inputs = inputs; };
     mini-nvim                   = prev.callPackage ../packages/mini-nvim.nix                   { inputs = inputs; };

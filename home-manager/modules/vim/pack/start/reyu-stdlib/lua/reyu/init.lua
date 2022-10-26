@@ -2,7 +2,6 @@
 -- NeoVim Config --
 -- ############# --
 
-
 vim.api.nvim_set_option_value("termguicolors", true, {})
 require('NeoSolarized').setup {
   style = "dark", -- "dark" or "light"
@@ -484,7 +483,7 @@ vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 -- vim.o.foldoptions = "nodigits"
 vim.o.foldcolumn = "1"
 require("ufo").setup({
-    provider_selector = function(bufnr, filetype, buftype)
+    provider_selector = function(_, _, _)
         return { "treesitter", "indent" }
     end,
 })
@@ -619,7 +618,7 @@ cmp.setup({
     },
     mapping = {
         ["<C-n>"] = cmp.mapping({
-            c = function(fallback)
+            c = function(_)
                 if cmp.visible() then
                     cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
                 else
@@ -637,7 +636,7 @@ cmp.setup({
             end,
         }),
         ["<C-p>"] = cmp.mapping({
-            c = function(fallback)
+            c = function(_)
                 if cmp.visible() then
                     cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
                 else
@@ -767,7 +766,7 @@ require("luasnip.loaders.from_lua").lazy_load()
 require("luasnip.loaders.from_vscode").lazy_load()
 -- }}}
 
--- -- Filetypes
+-- Filetypes
 
 -- Plugin: vim-ledger {{{
 vim.api.nvim_set_var("ledger_extra_options", "-s")
@@ -916,6 +915,7 @@ require("which-key").register({
 -- }}}
 
 -- Plugin: nvim-dap {{{
+local dap = require("dap")
 require("reyu/dap")
 require("which-key").register({
     ["<F2>"] = {
@@ -926,25 +926,25 @@ require("which-key").register({
     },
     ["<F5>"] = {
         function()
-            require("dap").continue()
+            dap.continue()
         end,
         "Start/Continue debug session",
     },
     ["<F10>"] = {
         function()
-            require("dap").step_over()
+            dap.step_over()
         end,
         "Run again for one step",
     },
     ["<F11>"] = {
         function()
-            require("dap").step_into()
+            dap.step_into()
         end,
         "Step into a function or method",
     },
     ["<F12>"] = {
         function()
-            require("dap").step_out()
+            dap.step_out()
         end,
         "Step out of a function or method",
     },
@@ -1035,7 +1035,7 @@ require("which-key").register({
         "Toggle DAP UI",
     } },
 }, { prefix = "<leader>" })
-local dap, dapui = require("dap"), require("dapui")
+local dapui = require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()
     dapui.open()
 end

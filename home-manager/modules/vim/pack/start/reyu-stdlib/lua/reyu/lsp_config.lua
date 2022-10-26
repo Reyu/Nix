@@ -1,11 +1,6 @@
-local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
-    vim.cmd[[packadd fidget-nvim]]
-    require("fidget").setup({
-        window = {
-            blend = 0,
-        },
-    })
+    vim.cmd [[packadd fidget-nvim]]
+    require("fidget").setup({window = {blend = 0}})
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     vim.diagnostic.config({
@@ -14,15 +9,14 @@ local on_attach = function(client, bufnr)
     })
 
     local function preview_location_callback(_, result)
-        if result == nil or vim.tbl_isempty(result) then
-            return nil
-        end
-        vim.lsp.util.preview_location(result[1], { border = "rounded" })
+        if result == nil or vim.tbl_isempty(result) then return nil end
+        vim.lsp.util.preview_location(result[1], {border = "rounded"})
     end
 
     function PeekDefinition()
         local params = vim.lsp.util.make_position_params()
-        return vim.lsp.buf_request(bufnr, 'textDocument/definition', params, preview_location_callback)
+        return vim.lsp.buf_request(bufnr, 'textDocument/definition', params,
+                                   preview_location_callback)
     end
 
     -- Mappings.
@@ -78,9 +72,9 @@ local on_attach = function(client, bufnr)
                 "Run formatter"
             }
         }
-    }, {mode = "n", buffer = buffnr})
+    }, {mode = "n", noremap = true, silent = true, buffer = bufnr})
 
-    function hasCap(cap) return client.server_capabilities[cap] ~= nil end
+    local function hasCap(cap) return client.server_capabilities[cap] ~= nil end
 
     -- Set some keybinds conditional on server capabilities
     if hasCap("document_formatting") then
@@ -112,53 +106,83 @@ local on_attach = function(client, bufnr)
     end
 end
 
-vim.lsp.handlers['window/showMessage'] =
-    function(_, result, ctx)
-        local client = vim.lsp.get_client_by_id(ctx.client_id)
-        local lvl = ({'ERROR', 'WARN', 'INFO', 'DEBUG'})[result.type]
-        notify(result.message, lvl, {
-            title = 'LSP | ' .. client.name,
-            timeout = 10000,
-            keep = function() return lvl == 'ERROR' or lvl == 'WARN' end
-        })
-    end
+-- Set lspconfig defaults
+local nvim_lsp = require('lspconfig')
+nvim_lsp.util.default_config = vim.tbl_extend("force",
+                                              nvim_lsp.util.default_config, {
+    on_attach = on_attach,
+    handlers = {
+        ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover,
+                                              {border = "rounded"}),
+        ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers
+                                                          .signature_help,
+                                                      {border = "rounded"}),
+        ['window/showMessage'] = function(_, result, ctx, _)
+                local client = vim.lsp.get_client_by_id(ctx.client_id)
+                local lvl = ({'ERROR', 'WARN', 'INFO', 'DEBUG'})[result.type]
+                require("notify")(result.message, lvl, {
+                    title = 'LSP | ' .. client.name,
+                    timeout = 10000,
+                    keep = function() return lvl == 'ERROR' or lvl == 'WARN' end
+                })
+        end
 
--- LSP settings (for overriding per client)
-local handlers = {
-    ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
-    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "rounded"})
-}
-
--- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- Use a loop to conveniently both setup defined servers and
--- map buffer local keybindings when the language server attaches
-local servers = {
-    "bashls", "dockerls", "hls", "html", "jsonls", "pyright", "terraformls",
-    "vimls", "yamlls"
-}
-
-for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup {
-        on_attach = on_attach,
-        capabilities = capabilities,
-        log_level = vim.lsp.protocol.MessageType.Log,
-        message_level = vim.lsp.protocol.MessageType.Log,
-        handlers = handlers,
-        settings = {
-            haskell = {
-                formattingProvider = 'floskell',
-                plugin = {rename = {globalOn = true}}
-            },
-            json = {
-                schemas = require('schemastore').json.schemas(),
-                validate = {enable = true}
-            }
+    },
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol
+                                                                    .make_client_capabilities()),
+    log_level = vim.lsp.protocol.MessageType.Log,
+    message_level = vim.lsp.protocol.MessageType.Log,
+    settings = {
+        json = {
+            schemas = require('schemastore').json.schemas(),
+            validate = {enable = true}
+        },
+        Lua = {
+            runtime = {version = 'LuaJIT'},
+            diagnostics = {globals = {'vim'}},
+            workspace = {library = vim.api.nvim_get_runtime_file("", true)},
+            telemetry = {enable = false}
+        },
+        haskell = {
+            formattingProvider = "floskell",
+            plugin = {rename = {globalOn = true}}
         }
     }
-    if lsp == "jsonls" then
-        nvim_lsp.jsonls.setup({cmd = {"json-languageserver", "--stdio"}})
-    end
-end
+})
+
+nvim_lsp.bashls.setup {}
+nvim_lsp.dockerls.setup {}
+nvim_lsp.html.setup {}
+nvim_lsp.jsonls.setup {cmd = {"json-languageserver", "--stdio"}}
+nvim_lsp.ltex.setup {}
+nvim_lsp.nil_ls.setup {}
+nvim_lsp.pyright.setup {}
+nvim_lsp.rnix.setup {}
+nvim_lsp.sumneko_lua.setup {}
+nvim_lsp.terraformls.setup {}
+nvim_lsp.vimls.setup {}
+nvim_lsp.yamlls.setup {}
+
+local ht = require("haskell-tools")
+ht.setup {
+    hls = {
+        on_attach = function(client, bufnr)
+            -- haskell-language-server relies heavily on codeLenses,
+            -- so auto-refresh (see advanced configuration) is enabled by default
+            require("which-key").register({
+                l = {vim.lsp.codelens.run, "Run Code Lens"},
+                h = {
+                    name = "Haskell",
+                    s = {ht.hoogle.hoogle_signature, "Hoogle Signature"}
+                }
+            }, {
+                mode = "n",
+                prefix = "<space>",
+                noremap = true,
+                silent = true,
+                buffer = bufnr
+            })
+            nvim_lsp.util.default_config.on_attach(client, bufnr)
+        end
+    }
+}

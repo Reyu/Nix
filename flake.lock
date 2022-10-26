@@ -294,6 +294,22 @@
         "type": "github"
       }
     },
+    "haskell-tools-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666762660,
+        "narHash": "sha256-AMEiq7/3qnOfJ5EVtycMGBUBPmdAGqb26uZt7wC/jtk=",
+        "owner": "MrcJkb",
+        "repo": "haskell-tools.nvim",
+        "rev": "f7f740901a667322bb0f70a50d405448afdf40c1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MrcJkb",
+        "repo": "haskell-tools.nvim",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": "nixpkgs_4",
@@ -875,6 +891,7 @@
         "discord-tweaks": "discord-tweaks",
         "discord-vc-timer": "discord-vc-timer",
         "firenvim": "firenvim",
+        "haskell-tools-nvim": "haskell-tools-nvim",
         "home-manager": "home-manager",
         "hydra": "hydra",
         "kmonad": "kmonad",

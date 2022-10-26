@@ -4,42 +4,11 @@ local dap = require('dap')
 local function pythonPath()
     local venv = os.getenv("VIRTUAL_ENV")
     if venv ~= nil and vim.fn.executable(venv .. '/bin/python') == 1 then
-        return cwd .. '/bin/python'
+        return venv .. '/bin/python'
     else
         return vim.fn.system('which python')
     end
 end
-
--- vim.fn.sign_define('DapBreakpoint', {
---     text = '',
---     texthl = 'DiagnosticInfo',
---     linehl = '',
---     numhl = ''
--- })
--- vim.fn.sign_define('DapBreakpointCondition', {
---     text = '',
---     texthl = 'DiagnosticInfo',
---     linehl = '',
---     numhl = ''
--- })
--- vim.fn.sign_define('DapBreakpointRejected', {
---     text = '🚫',
---     texthl = 'DiagnosticError',
---     linehl = '',
---     numhl = ''
--- })
--- vim.fn.sign_define('DapLogPoint', {
---     text = '📓',
---     texthl = 'DiagnosticInfo',
---     linehl = '',
---     numhl = ''
--- })
--- vim.fn.sign_define('DapStopped', {
---     text = '🛑',
---     texthl = 'DiagnosticWarning',
---     linehl = 'DiagnosticUnderlineWarning',
---     numhl = 'DiagnosticWarning'
--- })
 
 dap.defaults.fallback.external_terminal = {command = 'alacritty', args = {'-e'}}
 dap.adapters = {

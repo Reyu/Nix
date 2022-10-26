@@ -83,6 +83,7 @@
       # friendly-snippets
 
       # Filetypes
+      haskell-tools-nvim
       (nvim-treesitter.withPlugins (plugins:
         with plugins; [
           tree-sitter-bash
@@ -136,12 +137,14 @@
     ];
     extraPackages = with pkgs; [
       # Language servers
+      nil
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.vim-language-server
       nodePackages.vscode-json-languageserver-bin
       nodePackages.yaml-language-server
       rnix-lsp
+      sumneko-lua-language-server
       terraform-ls
 
       # Linters

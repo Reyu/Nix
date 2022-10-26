@@ -116,6 +116,10 @@
       url = "github:anuvyklack/hydra.nvim";
       flake = false;
     };
+    haskell-tools-nvim = {
+      url = "github:MrcJkb/haskell-tools.nvim";
+      flake = false;
+    };
 
 
     # Discord + Plugins

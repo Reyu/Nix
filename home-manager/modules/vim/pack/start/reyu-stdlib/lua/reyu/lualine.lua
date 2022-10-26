@@ -9,7 +9,7 @@ local function diff_source()
     end
 end
 
-function searchCount()
+local function searchCount()
     local search = vim.fn.searchcount({maxcount = 0}) -- maxcount = 0 makes the number not be capped at 99
     local searchCurrent = search.current
     local searchTotal = search.total
