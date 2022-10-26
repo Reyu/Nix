@@ -21,18 +21,7 @@
     package = pkgs.neovim-nightly;
     plugins = with pkgs.vimPlugins; [
       # Themes
-      { plugin = neosolarized-nvim;
-        config = ''
-            let g:NeoSolarized_italics = 1
-            let g:NeoSolarized_visibility = "normal"
-            let g:NeoSolarized_diffmode = "normal"
-            let g:NeoSolarized_termtrans = 1
-            let g:NeoSolarized_lineNr = 0
-            set termguicolors
-            colorscheme NeoSolarized
-            highlight Pmenu ctermbg=NONE guibg=NONE
-        '';
-      }
+      neosolarized-nvim
 
       # General
       direnv-vim

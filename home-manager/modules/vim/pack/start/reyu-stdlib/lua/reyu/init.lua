@@ -2,6 +2,25 @@
 -- NeoVim Config --
 -- ############# --
 
+
+vim.api.nvim_set_option_value("termguicolors", true, {})
+require('NeoSolarized').setup {
+  style = "dark", -- "dark" or "light"
+  transparent = true, -- true/false
+  terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+  enable_italics = true, -- Italics for different hightlight groups (eg. Statement, Condition, Comment, Include, etc.)
+  styles = {
+    -- Style for different style groups
+    comments = { italic = true },
+    keywords = { italic = true },
+    functions = { bold = true },
+    variables = {},
+    string = { italic = true },
+    underline = true, -- true/false; for global underline
+    undercurl = true, -- true/false; for global undercurl
+  },
+}
+
 -- Plugin: telescope-nvim {{{
 require("telescope").setup({
     defaults = {
@@ -1050,6 +1069,16 @@ require("toggleterm").setup({
 -- }}}
 
 -- General Options {{{
+
+-- Set colorscheme to NeoSolarized
+vim.cmd [[
+   try
+       colorscheme NeoSolarized
+   catch /^Vim\%((\a\+)\)\=:E18o
+       colorscheme default
+       set background=dark
+   endtry
+]]
 
 -- Don't use the mouse. Ever.
 vim.api.nvim_set_option_value("mouse", "", {})
