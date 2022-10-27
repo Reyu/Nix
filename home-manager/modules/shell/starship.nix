@@ -5,6 +5,10 @@
     enableZshIntegration = true;
     settings = {
 
+      username = {
+        show_always = true;
+      };
+
       character = {
         success_symbol = "[𝝺](#c792ea)";
         vicmd_symbol = "[»](bold green)";
@@ -12,6 +16,8 @@
       };
 
       nix_shell = { symbol = "❄  "; };
+
+      gcloud.disabled = true;
 
       git_status = {
         ahead = "↑";
@@ -27,7 +33,7 @@
         fish_style_pwd_dir_length = 2;
 
         substitutions = {
-          "~/Projects/FoxNet/NixOS" = "<reyu/nixos>";
+          "~/Projects/FoxNet/Nix" = "<Reyu/NixOS>";
         };
       };
     };
