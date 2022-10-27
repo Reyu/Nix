@@ -477,6 +477,22 @@
         "type": "github"
       }
     },
+    "neotest-haskell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1665846988,
+        "narHash": "sha256-B5ywVrCV4xaqtsskqrintxtkryqXYO9/RSUy8bnBI8g=",
+        "owner": "MrcJkb",
+        "repo": "neotest-haskell",
+        "rev": "d89b5e3e676923e3a373965fd7b6bcd705e14e74",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MrcJkb",
+        "repo": "neotest-haskell",
+        "type": "github"
+      }
+    },
     "neotest-python": {
       "flake": false,
       "locked": {
@@ -902,6 +918,7 @@
         "neogen": "neogen",
         "neosolarized-nvim": "neosolarized-nvim",
         "neotest": "neotest",
+        "neotest-haskell": "neotest-haskell",
         "neotest-python": "neotest-python",
         "neotest-vim-test": "neotest-vim-test",
         "neovim-nightly": "neovim-nightly",

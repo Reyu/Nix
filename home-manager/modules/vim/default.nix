@@ -119,6 +119,7 @@
 
       # Testing & Debugging
       neotest
+      neotest-haskell
       neotest-python
       neotest-vim-test
       nvim-dap

@@ -14,6 +14,7 @@ final: prev: let
     neogen                      = prev.callPackage ../packages/neogen.nix                      { inputs = inputs; };
     neosolarized-nvim           = prev.callPackage ../packages/NeoSolarized-nvim.nix           { inputs = inputs; };
     neotest                     = prev.callPackage ../packages/neotest.nix                     { inputs = inputs; };
+    neotest-haskell             = prev.callPackage ../packages/neotest-haskell.nix             { inputs = inputs; };
     neotest-python              = prev.callPackage ../packages/neotest-python.nix              { inputs = inputs; };
     neotest-vim-test            = prev.callPackage ../packages/neotest-vim-test.nix            { inputs = inputs; };
     netman                      = prev.callPackage ../packages/netman.nix                      { inputs = inputs; };

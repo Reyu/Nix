@@ -64,6 +64,10 @@
       url = "github:rcarriga/neotest";
       flake = false;
     };
+    neotest-haskell = {
+      url = "github:MrcJkb/neotest-haskell";
+      flake = false;
+    };
     neotest-python = {
       url = "github:rcarriga/neotest-python";
       flake = false;
@@ -187,6 +191,7 @@
             "slack"
             "steam"
             "steam-original"
+            "steam-run"
             "steam-runtime"
             "unrar"
           ];

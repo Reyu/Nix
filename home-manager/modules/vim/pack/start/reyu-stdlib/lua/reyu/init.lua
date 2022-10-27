@@ -831,6 +831,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- Plugin: neotest {{{
 require("neotest").setup({
     adapters = {
+        require("neotest-haskell"),
         require("neotest-python")({ dap = { justMyCode = true } }),
         require("neotest-vim-test")({ ignore_file_types = { "python", "vim", "lua" } }),
     },
