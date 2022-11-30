@@ -64,6 +64,9 @@
         init.defaultBranch = "main";
         pull.rebase = false;
         url."git@github.com:".insteadOf = "github:";
+        safe.directory = [
+            "/etc/nixos"
+        ];
       };
     };
   };

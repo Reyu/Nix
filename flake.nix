@@ -203,6 +203,11 @@
       hostDefaults.system = "x86_64-linux";
       hostDefaults.channelName = "unstable";
       hostDefaults.modules = with self.nixosModules; [
+        "${home-manager}/nixos"
+        {
+            home-manager.extraSpecialArgs = { inherit inputs self; };
+            home-manager.useGlobalPkgs = true;
+        }
         ./users/root.nix
         ./users/reyu.nix
         age
@@ -227,8 +232,6 @@
         loki = {
           modules = [
             ./hosts/loki/configuration.nix
-            consul
-            docker
             flatpak
             onlykey
             sound

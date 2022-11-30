@@ -24,13 +24,8 @@
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   nix.settings = {
-    cores = 16;
-    max-jobs= 8;
-  };
-
-  fileSystems."/media/Books" = {
-    device = "burrow.home.reyuzenfold.com:/data/media/books";
-    fsType = "nfs";
+    cores = 32;
+    max-jobs= 16;
   };
 
   console.useXkbConfig = true;
@@ -44,16 +39,16 @@
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.firewall.checkReversePath = "loose";
 
-  foxnet.consul.firewall.open = {
-    http = true;
-  };
-  services.consul = {
-    interface.bind = "enp73s0";
-    extraConfig = {
-      datacenter = "home";
-      retry_join = ["burrow.home.reyuzenfold.com"];
-    };
-  };
+  # foxnet.consul.firewall.open = {
+  #   http = true;
+  # };
+  # services.consul = {
+  #   interface.bind = "enp73s0";
+  #   extraConfig = {
+  #     datacenter = "home";
+  #     retry_join = ["burrow.home.reyuzenfold.com"];
+  #   };
+  # };
 
   services = {
     avahi.enable = true;
@@ -64,11 +59,7 @@
     sanoid = {
       interval = "*-*-* *:0..59/15 UTC";
       datasets = {
-        "rpool/ROOT" = {
-          recursive = true;
-          yearly = 1;
-        };
-        "rpool/HOME" = {
+        "rpool/home" = {
           processChildrenOnly = true;
           recursive = true;
           yearly = 1;
@@ -98,13 +89,9 @@
     };
   };
 
-  users.users.reyu.extraGroups = ["adbusers"];
-
   networking.hostName = "loki";
   networking.hostId = "d540cb4f";
 
   virtualisation.podman.enable = true;
-  virtualisation.docker.storageDriver = "zfs";
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "reyu" ];
+  #virtualisation.docker.storageDriver = "zfs";
 }

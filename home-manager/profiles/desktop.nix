@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nur, inputs, ... }: {
+{ config, pkgs, inputs, ... }: {
   # Imports
   imports = [
     ./common.nix

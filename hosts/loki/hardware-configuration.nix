@@ -3,73 +3,56 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules =
-    [ "xhci_pci" "nvme" "ahci" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  boot.zfs.extraPools = [ "data" "projects" ];
+  # boot.zfs.extraPools = [ "data" "projects" ];
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-id/nvme-eui.00253854014011fa-part1";
-    fsType = "vfat";
-  };
-  fileSystems."/boot2" = {
-    device = "/dev/disk/by-id/nvme-eui.0025385301401cbf-part1";
-    fsType = "vfat";
-  };
+  fileSystems."/" =
+    { device = "rpool/local/root";
+      fsType = "zfs";
+    };
 
-  fileSystems."/" = {
-    device = "rpool/ROOT/nixos";
-    fsType = "zfs";
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/7715-86BD";
+      fsType = "vfat";
+    };
 
-  fileSystems."/nix" = {
-    device = "rpool/NIX";
-    fsType = "zfs";
-  };
+  fileSystems."/boot2" =
+    { device = "/dev/disk/by-uuid/FA23-833F";
+      fsType = "vfat";
+    };
 
-  fileSystems."/nix/store" = {
-    device = "rpool/NIX/store";
-    fsType = "zfs";
-  };
+  fileSystems."/home" =
+    { device = "rpool/home";
+      fsType = "zfs";
+    };
 
-  fileSystems."/nix/var" = {
-    device = "rpool/NIX/var";
-    fsType = "zfs";
-  };
+  fileSystems."/home/reyu" =
+    { device = "rpool/home/reyu";
+      fsType = "zfs";
+    };
 
-  fileSystems."/usr" = {
-    device = "rpool/ROOT/nixos/USR";
-    fsType = "zfs";
-  };
+  fileSystems."/root" =
+    { device = "rpool/home/root";
+      fsType = "zfs";
+    };
 
-  fileSystems."/var" = {
-    device = "rpool/ROOT/nixos/VAR";
-    fsType = "zfs";
-  };
+  fileSystems."/nix" =
+    { device = "rpool/local/nix";
+      fsType = "zfs";
+    };
 
-  fileSystems."/opt" = {
-    device = "rpool/ROOT/nixos/OPT";
-    fsType = "zfs";
-  };
-
-  fileSystems."/root" = {
-    device = "rpool/HOME/root";
-    fsType = "zfs";
-  };
-
-  fileSystems."/home" = {
-    device = "rpool/HOME";
-    fsType = "zfs";
-  };
-
-  fileSystems."/home/reyu" = {
-    device = "rpool/HOME/reyu";
-    fsType = "zfs";
-  };
+  fileSystems."/persist" =
+    { device = "rpool/persist";
+      fsType = "zfs";
+    };
 
   swapDevices = [ ];
+
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.video.hidpi.enable = lib.mkDefault true;
 
 }
