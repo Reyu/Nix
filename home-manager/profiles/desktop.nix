@@ -25,7 +25,10 @@
 
   # Install these packages for my user
   home.packages = with pkgs; [
+    feh
     keepassxc
+    p7zip
+    parallel
     ripgrep
     xsel
   ];
@@ -35,7 +38,7 @@
     enable = true;
     enableXsessionIntegration = true;
     enableZshIntegration = true;
-    keys = []; # No keys by default
+    keys = [ ]; # No keys by default
   };
 
   services = {
@@ -63,5 +66,5 @@
     if [ -f "$HOME/Pictures/.background" ] ; then
       ${pkgs.feh}/bin/feh --no-fehbg --bg-center "$HOME/Pictures/.background"
     fi
-    '';
+  '';
 }

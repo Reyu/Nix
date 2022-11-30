@@ -50,6 +50,10 @@
   #   };
   # };
 
+  home-manager.users.reyu.home.packages = with pkgs; [
+    deluge
+  ];
+
   services = {
     avahi.enable = true;
     udev.packages = [

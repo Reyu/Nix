@@ -11,5 +11,6 @@
     element-desktop
     slack
     tdesktop
+    toot
   ];
 }
