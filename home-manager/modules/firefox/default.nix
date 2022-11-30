@@ -3,7 +3,6 @@ with lib;
 let cfg = config.reyu.programs.firefox;
 in {
   options.reyu.programs.firefox.enable = mkEnableOption "firefox browser";
-  options.reyu.programs.librewolf.enable = mkEnableOption "librewolf browser";
 
   config = mkIf cfg.enable {
 
@@ -36,11 +35,6 @@ in {
           extraConfig = readFile ./user.js;
         };
       };
-    };
-    programs.librewolf = {
-      enable = true;
-      package =
-        pkgs.librewolf.override { cfg = { enableTridactylNative = true; }; };
     };
   };
 }
