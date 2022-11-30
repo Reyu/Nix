@@ -8,45 +8,51 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  # boot.zfs.extraPools = [ "data" "projects" ];
-
   fileSystems."/" =
-    { device = "rpool/local/root";
+    {
+      device = "rpool/local/root";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/7715-86BD";
+    {
+      device = "/dev/disk/by-uuid/7715-86BD";
       fsType = "vfat";
     };
 
   fileSystems."/boot2" =
-    { device = "/dev/disk/by-uuid/FA23-833F";
+    {
+      device = "/dev/disk/by-uuid/FA23-833F";
       fsType = "vfat";
     };
 
   fileSystems."/home" =
-    { device = "rpool/home";
+    {
+      device = "rpool/home";
       fsType = "zfs";
     };
 
   fileSystems."/home/reyu" =
-    { device = "rpool/home/reyu";
+    {
+      device = "rpool/home/reyu";
       fsType = "zfs";
     };
 
   fileSystems."/root" =
-    { device = "rpool/home/root";
+    {
+      device = "rpool/home/root";
       fsType = "zfs";
     };
 
   fileSystems."/nix" =
-    { device = "rpool/local/nix";
+    {
+      device = "rpool/local/nix";
       fsType = "zfs";
     };
 
   fileSystems."/persist" =
-    { device = "rpool/persist";
+    {
+      device = "rpool/persist";
       fsType = "zfs";
     };
 

@@ -232,6 +232,7 @@
         loki = {
           modules = [
             ./hosts/loki/configuration.nix
+            consul
             flatpak
             onlykey
             sound
