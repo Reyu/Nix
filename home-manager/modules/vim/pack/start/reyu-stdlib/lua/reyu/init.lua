@@ -1075,7 +1075,7 @@ require("toggleterm").setup({
 vim.cmd [[
    try
        colorscheme NeoSolarized
-   catch /^Vim\%((\a\+)\)\=:E18o
+   catch /^Vim\%((\a\+)\)\=:E18o/
        colorscheme default
        set background=dark
    endtry
