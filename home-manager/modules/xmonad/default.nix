@@ -5,6 +5,7 @@
   xsession.scriptPath = ".hm-xsession";
   xsession.numlock.enable = true;
   xsession.initExtra = ''
+    xsetroot -cursor_name left_ptr
     ${pkgs.autorandr} -c
   '';
 
