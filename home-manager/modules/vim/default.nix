@@ -14,76 +14,59 @@
     withPython3 = true;
     withNodeJs = true;
     extraPython3Packages = ps: with ps; [ rope jedi ];
-    extraConfig = ''
-      " vim
-      lua require("reyu.init")
-    '';
     package = pkgs.neovim-nightly;
     plugins = with pkgs.vimPlugins; [
-      # Themes
+      # Theme
       neosolarized-nvim
 
-      # General
-      direnv-vim
-      fidget-nvim
-      firenvim
+      # Interface
       gitsigns-nvim
+      hydra
+      lualine-nvim
+      neo-tree-nvim
       neoscroll-nvim
-      nvim-tree-lua
-      nvim-web-devicons
-      octo-nvim
+      noice-nvim
+      nvim-notify
+      twilight-nvim
+      vim-fugitive
+      vim-tmux-navigator
+      which-key-nvim
+      zen-mode-nvim
+
+      # Fuzzy finder / Picker
+      telescope-dap-nvim
+      telescope-frecency-nvim
       telescope-hoogle
       telescope-nvim
-      tmux-navigator
-      which-key-nvim
-      easy-align
-      netman
       telescope-ui-select-nvim
-      lsp_lines-nvim
-      lualine-nvim
-      zen-mode-nvim
-      twilight-nvim
-      nvim-ufo
-      mind-nvim
-      mini-nvim
-      aerial-nvim
-      stickybuf-nvim
-      nvim-notify
-      nvim-bqf
-      neogen
-      hydra
-      toggleterm-nvim
 
-      # Must have T.Pope plugins
-      vim-eunuch
-      vim-fugitive
-      vim-projectionist
-
-      # Completion
+      # Completion and Snippets
+      nvim-cmp
+      luasnip
       cmp-buffer
       cmp-calc
-      cmp-cmdline
       cmp-conventionalcommits
       cmp-dap
+      cmp-dictionary
+      cmp-digraphs
       cmp-emoji
+      cmp-git
+      cmp-greek
       cmp-latex-symbols
       cmp-nvim-lsp
+      cmp-nvim-lsp-document-symbol
       cmp-nvim-lsp-signature-help
+      cmp-nvim-lua
+      cmp-nvim-tags
+      cmp-pandoc-nvim
       cmp-path
+      cmp-tmux
       cmp-treesitter
+      cmp-under-comparator
       cmp_luasnip
       lspkind-nvim
-      null-ls-nvim
-      nvim-cmp
-      nvim-lspconfig
-      vim-dadbod-completion
-
-      # Snippets
-      luasnip
-      # friendly-snippets
 
       # Filetypes
-      haskell-tools-nvim
       (nvim-treesitter.withPlugins (plugins:
         with plugins; [
           tree-sitter-bash
@@ -92,7 +75,9 @@
           tree-sitter-haskell
           tree-sitter-hcl
           tree-sitter-json
+          tree-sitter-jsonc
           tree-sitter-latex
+          tree-sitter-regex
           tree-sitter-ledger
           tree-sitter-lua
           tree-sitter-make
@@ -106,39 +91,43 @@
           tree-sitter-vim
           tree-sitter-yaml
         ]))
-      treesitter-playground
-      nvim-treesitter-endwise
-      nvim-ts-rainbow
-      nvim-ts-context-commentstring
       nvim-treesitter-context
-      # vim-polyglot
-      vim-pandoc
-      vim-pandoc-after
-      vim-pandoc-syntax
-      { plugin = vim-ledger; optional = true; }
+      nvim-treesitter-endwise
+      nvim-treesitter-textobjects
+      nvim-ts-context-commentstring
+      treesitter-playground
 
-      # Testing & Debugging
+      # Debug & Testing
+      lspkind-nvim
+      neodev-nvim
       neotest
       neotest-haskell
       neotest-python
       neotest-vim-test
+      null-ls-nvim
       nvim-dap
+      nvim-dap-python
       nvim-dap-ui
       nvim-dap-virtual-text
-      telescope-dap-nvim
-      vim-test
+      nvim-lspconfig
       trouble-nvim
 
-      # Dependency/Library packages
+      # Project management
+      neoconf-nvim
+
+      # Dependencies
+      nui-nvim # noice-nvim | neo-tree-nvim
+      nvim-web-devicons # telescope-frecency-nvim(opt) | neo-tree-nvim | trouble-nvim
+      plenary-nvim # telescope-nvim | neo-tree-nvim | neotest
+      sqlite-lua # telescope-frecency-nvim
       SchemaStore-nvim
-      plenary-nvim
-      popup-nvim
-      FixCursorHold-nvim
-      promise-async
+
+      # Other
+      mini-nvim
+      firenvim
     ];
     extraPackages = with pkgs; [
       # Language servers
-      nil
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.vim-language-server
@@ -166,11 +155,13 @@
       shfmt
       stylua
 
-      # Utilities
-      gh
-      lolcat
+      # Extras
+      fd
+      gcc
+      tree-sitter
+      xsel
     ];
   };
   # Vim package to neatly contain customizations.
-  xdg.dataFile = { "nvim/site/pack/reyu" = { source = ./pack; }; };
+  xdg.dataFile = { "nvim/site/pack/home-manager" = { source = ./pack; }; };
 }

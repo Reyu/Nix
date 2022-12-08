@@ -37,7 +37,6 @@ local dap_hydra = Hydra({
         {'<Esc>', nil, {exit = true, nowait = true}}
     }
 })
-
 Hydra.spawn = function(head) if head == 'dap' then dap_hydra:activate() end end
 
 local toggleOpt = function(opt, trueVal, falseVal)

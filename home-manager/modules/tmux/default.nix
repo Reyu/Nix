@@ -29,6 +29,7 @@ in
         set -g display-time 1500
         set -g remain-on-exit off
         set -g repeat-time 300
+        set -g focus-events on
         setw -g allow-rename off
         setw -g automatic-rename off
 
