@@ -879,6 +879,7 @@
         "persistence-nvim": "persistence-nvim",
         "promise-async": "promise-async",
         "replugged": "replugged",
+        "smart-splits": "smart-splits",
         "stickybuf-nvim": "stickybuf-nvim",
         "telescope-hoogle": "telescope-hoogle",
         "treesitter-playground": "treesitter-playground",
@@ -886,6 +887,22 @@
         "utils": "utils_2",
         "vim-solarized8": "vim-solarized8",
         "zsh-vimode-visual": "zsh-vimode-visual"
+      }
+    },
+    "smart-splits": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1669897988,
+        "narHash": "sha256-ZrlQ0FBsNhKYfXLjdQYEZoI2mgVmJ6cg77WBLD2KptM=",
+        "owner": "mrjones2014",
+        "repo": "smart-splits.nvim",
+        "rev": "dd244e8c908a562f708769050708df34b3f8c5fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mrjones2014",
+        "repo": "smart-splits.nvim",
+        "type": "github"
       }
     },
     "stickybuf-nvim": {

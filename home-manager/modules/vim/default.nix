@@ -32,6 +32,7 @@
       vim-tmux-navigator
       which-key-nvim
       zen-mode-nvim
+      nvim-ufo
 
       # Fuzzy finder / Picker
       telescope-dap-nvim
@@ -120,11 +121,13 @@
       nvim-web-devicons # telescope-frecency-nvim(opt) | neo-tree-nvim | trouble-nvim
       plenary-nvim # telescope-nvim | neo-tree-nvim | neotest
       sqlite-lua # telescope-frecency-nvim
-      SchemaStore-nvim
+      smart-splits-nvim # hydra
+      promise-async # nvim-ufo
 
       # Other
       mini-nvim
       firenvim
+      SchemaStore-nvim
     ];
     extraPackages = with pkgs; [
       # Language servers

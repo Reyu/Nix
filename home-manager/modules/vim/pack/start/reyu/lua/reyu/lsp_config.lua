@@ -28,7 +28,12 @@ local on_attach = function(client, bufnr)
         { silent = true, noremap = true, buffer = bufnr, desc = 'Goto Implementation' })
     vim.keymap.set('n', 'gr', vim.lsp.buf.references,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Goto References' })
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover,
+    vim.keymap.set('n', 'K', function()
+        local winid = require('ufo').peekFoldedLinesUnderCursor()
+        if not winid then
+            vim.lsp.buf.hover()
+        end
+    end,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Show hover menu' })
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Show signature help' })
@@ -84,6 +89,13 @@ end
 
 -- Set lspconfig defaults
 local nvim_lsp = require('lspconfig')
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+}
+
 nvim_lsp.util.default_config = vim.tbl_extend("force",
     nvim_lsp.util.default_config, {
     on_attach = on_attach,
@@ -94,9 +106,7 @@ nvim_lsp.util.default_config = vim.tbl_extend("force",
             .signature_help,
             { border = "rounded" }),
     },
-    -- capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol
-    --     .make_client_capabilities()),
-    capabilities = vim.lsp.protocol.make_client_capabilities(),
+    capabilities = capabilities,
     log_level = vim.lsp.protocol.MessageType.Log,
     message_level = vim.lsp.protocol.MessageType.Log,
     settings = {

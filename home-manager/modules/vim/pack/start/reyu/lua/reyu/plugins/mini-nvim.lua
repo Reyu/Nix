@@ -19,6 +19,8 @@ mini_map.setup({
         show_integration_count = false,
     }
 })
+
+require('which-key').register({['<Leader>m']={ name = 'Minimap' }})
 vim.keymap.set('n', '<Leader>mc', MiniMap.close,
     { silent = true, noremap = true, desc = 'Close MiniMap'})
 vim.keymap.set('n', '<Leader>mo', MiniMap.open,
@@ -30,14 +32,30 @@ vim.keymap.set('n', '<Leader>ms', MiniMap.toggle_side,
 vim.keymap.set('n', '<Leader>mm', MiniMap.toggle,
     { silent = true, noremap = true, desc = 'Toggle MiniMap'})
 
+local sessions = require('mini.sessions')
 local session_dir = vim.fn.stdpath("data") .. "/session"
 if vim.fn.isdirectory(session_dir) == 0 then
     vim.pretty_print("Creating session dir!")
     vim.fn.mkdir(session_dir, "p")
 end
-require('mini.sessions').setup({
+sessions.setup({
     directory = session_dir
 })
+
+require('which-key').register({['<Leader>s']={ name = 'Sessions' }})
+vim.keymap.set('n', '<Leader>sw', function()
+    if vim.v.this_session == "" then
+        local name = vim.fn.input({
+            prompt = "Session Name: ",
+        })
+        sessions.write(name)
+    else
+        sessions.write()
+    end
+end, { silent = true, noremap = true, desc = 'Write Session'})
+vim.keymap.set('n', '<Leader>sr', function()
+    sessions.select("read", {})
+end, { silent = true, noremap = true, desc = 'Load Session'})
 
 local starter = require('mini.starter')
 starter.setup({

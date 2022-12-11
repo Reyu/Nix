@@ -64,7 +64,7 @@ dap.adapters = {
         args = {'--hackage-version=0.0.33.0'}
     },
     nlua = function(callback, config)
-        callback({type = 'server', host = config.host, port = config.port})
+        callback({type = 'server', host = config['host'], port = config['port']})
     end
 }
 dap.configurations = {

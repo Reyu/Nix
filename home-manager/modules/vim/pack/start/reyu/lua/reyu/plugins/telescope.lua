@@ -6,6 +6,10 @@ require('telescope').setup({
             i = {
                 ['<C-Down>'] = require('telescope.actions').cycle_history_next,
                 ['<C-Up>'] = require('telescope.actions').cycle_history_prev,
+                ['<C-t>'] = require('trouble.providers.telescope').open_with_trouble,
+            },
+            n = {
+                ['<C-t>'] = require('trouble.providers.telescope').open_with_trouble,
             },
         },
         layout_config = {

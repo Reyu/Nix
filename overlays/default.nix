@@ -23,6 +23,7 @@ final: prev: let
     one-small-step-for-vimkind  = prev.callPackage ../packages/one-small-step-for-vimkind.nix  { inputs = inputs; };
     persistence-nvim            = prev.callPackage ../packages/persistence-nvim.nix            { inputs = inputs; };
     promise-async               = prev.callPackage ../packages/promise-async.nix               { inputs = inputs; };
+    smart-splits-nvim           = prev.callPackage ../packages/smart-splits.nix                { inputs = inputs; };
     stickybuf-nvim              = prev.callPackage ../packages/stickybuf-nvim.nix              { inputs = inputs; };
     telescope-hoogle            = prev.callPackage ../packages/telescope-hoogle.nix            { inputs = inputs; };
     treesitter-playground       = prev.callPackage ../packages/treesitter-playground.nix       { inputs = inputs; };

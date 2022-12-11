@@ -123,6 +123,10 @@
       url = "github:MrcJkb/haskell-tools.nvim";
       flake = false;
     };
+    smart-splits = {
+      url = "github:mrjones2014/smart-splits.nvim";
+      flake = false;
+    };
 
 
     # Discord + Plugins
