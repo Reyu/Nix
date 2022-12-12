@@ -128,6 +128,7 @@
       mini-nvim
       firenvim
       SchemaStore-nvim
+      direnv-vim
     ];
     extraPackages = with pkgs; [
       # Language servers
