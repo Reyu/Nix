@@ -13,29 +13,43 @@ cmp.setup({
         documenation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete({}),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = false }),
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete({}),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = false }),
+        ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            elseif lsnip.expand_or_jumpable() then
+                lsnip.expand_or_jump()
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            elseif lsnip.jumpable(-1) then
+                lsnip.jump(-1)
+            else
+                fallback()
+            end
+        end, { 'i', 's' })
     }),
     sources = cmp.config.sources(
         {
-            { name = 'nvim_lsp_signature_help' },
             { name = 'vim-dadbod-completion' },
             { name = 'luansip' },
             { name = 'calc', },
         }, {
             { name = 'nvim_lsp' },
             { name = 'nvim_lua' },
-            { name = 'tags' },
             { name = 'buffer' },
             { name = 'tmux' },
-            { name = 'cmp_pandoc' },
         }, {
             { name = 'latex_symbols' },
             { name = 'emoji' },
-            { name = 'digraphs' },
         }, {
             { name = 'treesitter' },
             { name = 'dictionary' },
@@ -46,7 +60,7 @@ cmp.setup({
             cmp.config.compare.offset,
             cmp.config.compare.exact,
             cmp.config.compare.score,
-            require "cmp-under-comparator".under,
+            require("cmp-under-comparator").under,
             cmp.config.compare.sort_text,
             cmp.config.compare.kind,
             cmp.config.compare.length,
@@ -54,7 +68,7 @@ cmp.setup({
         },
     },
     view = {
-        entries = {name = 'custom', selection_order = 'near_cursor' },
+        entries = { name = 'custom', selection_order = 'near_cursor' },
     },
     formatting = {
         format = function(entry, vim_item)

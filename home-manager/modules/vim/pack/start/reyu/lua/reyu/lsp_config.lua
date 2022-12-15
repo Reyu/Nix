@@ -37,6 +37,8 @@ local on_attach = function(client, bufnr)
         { silent = true, noremap = true, buffer = bufnr, desc = 'Show hover menu' })
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Show signature help' })
+    require('which-key').register({ ['<LocalLeader>w'] = { name = "Workspace" } },
+        { buffer = bufnr })
     vim.keymap.set('n', '<LocalLeader>wa', vim.lsp.buf.add_workspace_folder,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Add workspace folder' })
     vim.keymap.set('n', '<LocalLeader>wr', vim.lsp.buf.remove_workspace_folder,
@@ -47,7 +49,9 @@ local on_attach = function(client, bufnr)
         { silent = true, noremap = true, buffer = bufnr, desc = 'Type definition' })
     vim.keymap.set('n', '<LocalLeader>p', PeekDefinition,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Peek definition' })
-    vim.keymap.set('n', '<LocalLeader>r', vim.lsp.buf.rename,
+    require('which-key').register({ ['<LocalLeader>r'] = { name = "Refactor" } },
+        { buffer = bufnr })
+    vim.keymap.set('n', '<LocalLeader>rn', vim.lsp.buf.rename,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Rename symbol' })
     vim.keymap.set('n', '<LocalLeader>e', vim.diagnostic.open_float,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Show line diagnostics' })
@@ -118,9 +122,9 @@ nvim_lsp.util.default_config = vim.tbl_extend("force",
             runtime = { version = 'LuaJIT' },
             diagnostics = { globals = { 'vim' } },
             workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
-                    checkThirdParty = false,
-                },
+                library = vim.api.nvim_get_runtime_file("", true),
+                checkThirdParty = false,
+            },
             telemetry = { enable = false }
         }
     }
@@ -141,11 +145,13 @@ nvim_lsp.yamlls.setup {}
 local null_ls = require("null-ls")
 null_ls.setup({
     sources = {
-        null_ls.builtins.code_actions.gitrebase,
         null_ls.builtins.code_actions.gitsigns,
-        null_ls.builtins.code_actions.proselint,
-        null_ls.builtins.diagnostics.gitlint,
-        null_ls.builtins.formatting.trim_newlines,
-        null_ls.builtins.formatting.trim_whitespace,
+        null_ls.builtins.code_actions.refactoring,
+        null_ls.builtins.diagnostics.commitlint,
+        null_ls.builtins.diagnostics.deadnix,
+        null_ls.builtins.diagnostics.dotenv_linter,
+        null_ls.builtins.diagnostics.statix,
+        null_ls.builtins.formatting.nixfmt,
+        null_ls.builtins.hover.dictionary,
     },
 })

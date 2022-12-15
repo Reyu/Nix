@@ -4,7 +4,7 @@
 
 -- Set leader prefixes
 vim.g.mapleader = '\\'
-vim.g.maplocalleader = '<Space>'
+vim.g.maplocalleader = ' '
 
 -- Don't use the mouse. Ever.
 vim.o.mouse = ""

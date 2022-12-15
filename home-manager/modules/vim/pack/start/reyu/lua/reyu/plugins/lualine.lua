@@ -1,16 +1,5 @@
 local noice = require('noice')
 
-local function diff_source()
-    local gitsigns = vim.b.gitsigns_status_dict
-    if gitsigns then
-        return {
-            added = gitsigns.added,
-            modified = gitsigns.changed,
-            removed = gitsigns.removed,
-        }
-    end
-end
-
 require("lualine").setup({
     options = {
         icons_enabled = true,
@@ -61,7 +50,7 @@ require("lualine").setup({
         lualine_b = { 'aerial' },
         lualine_c = {
             { "FugitiveHead", icon = "" },
-            { "diff", source = diff_source },
+            { "diff" },
         },
         lualine_x = {
             'encoding',

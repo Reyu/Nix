@@ -119,10 +119,11 @@
       # Dependencies
       nui-nvim # noice-nvim | neo-tree-nvim
       nvim-web-devicons # telescope-frecency-nvim(opt) | neo-tree-nvim | trouble-nvim
-      plenary-nvim # telescope-nvim | neo-tree-nvim | neotest
-      sqlite-lua # telescope-frecency-nvim
-      smart-splits-nvim # hydra
+      plenary-nvim # telescope-nvim | neo-tree-nvim | neotest | refactoring-nvim
       promise-async # nvim-ufo
+      refactoring-nvim # null-ls
+      smart-splits-nvim # hydra
+      sqlite-lua # telescope-frecency-nvim
 
       # Other
       mini-nvim
@@ -138,6 +139,7 @@
       nodePackages.vscode-json-languageserver-bin
       nodePackages.yaml-language-server
       rnix-lsp
+      statix
       sumneko-lua-language-server
       terraform-ls
 
@@ -154,6 +156,7 @@
       yamllint
 
       # Formatters
+      deadnix
       luaformatter
       nixfmt
       shfmt
