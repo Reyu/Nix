@@ -2,6 +2,9 @@
 -- NeoVim Config --
 -- ############# --
 
+-- Use GUI colors for terminal
+vim.o.termguicolors = true
+
 -- Set leader prefixes
 vim.g.mapleader = '\\'
 vim.g.maplocalleader = ' '

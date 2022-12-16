@@ -1,9 +1,4 @@
-require('telescope').load_extension('dap')
-require('nvim-dap-virtual-text').setup({
-    highlight_new_as_changed = true,
-    all_frames = true,
-})
-
+local dap_virtual_text = require('nvim-dap-virtual-text')
 local dap = require('dap')
 local dapui = require('dapui')
 
@@ -18,6 +13,7 @@ local function pythonPath()
         return vim.fn.system('which python')
     end
 end
+
 require('dap-python').setup(pythonPath())
 
 vim.fn.sign_define('DapBreakpoint', {
@@ -51,20 +47,20 @@ vim.fn.sign_define('DapStopped', {
     numhl = 'DiagnosticError'
 })
 
-dap.defaults.fallback.external_terminal = {command = 'alacritty', args = {'-e'}}
+dap.defaults.fallback.external_terminal = { command = 'alacritty', args = { '-e' } }
 dap.adapters = {
     python = {
         type = 'executable',
         command = 'python',
-        args = {'-m', 'debugpy.adapter'}
+        args = { '-m', 'debugpy.adapter' }
     },
     haskell = {
         type = 'executable',
         command = 'haskell-debug-adapter',
-        args = {'--hackage-version=0.0.33.0'}
+        args = { '--hackage-version=0.0.33.0' }
     },
     nlua = function(callback, config)
-        callback({type = 'server', host = config['host'], port = config['port']})
+        callback({ type = 'server', host = config['host'], port = config['port'] })
     end
 }
 dap.configurations = {
@@ -103,7 +99,7 @@ dap.configurations = {
             name = 'Launch Module',
             module = function()
                 local val = vim.fn.input('Module: ')
-                assert (val, 'Please provide a module name')
+                assert(val, 'Please provide a module name')
                 return val
             end,
             pythonPath = pythonPath,
@@ -166,6 +162,11 @@ dapui.setup({
     }
 })
 
+dap_virtual_text.setup({
+    highlight_new_as_changed = true,
+    all_frames = true,
+})
+
 vim.keymap.set('n', '<F2>', dapui.toggle,
     { silent = true, noremap = true, desc = 'Toggle debug UI' })
 vim.keymap.set('n', '<F5>', dap.continue,
@@ -177,14 +178,13 @@ vim.keymap.set('n', '<F11>', dap.step_into,
 vim.keymap.set('n', '<F12>', dap.step_out,
     { silent = true, noremap = true, desc = 'Step out of a function or method' })
 
-require('which-key').register({ ['<LocalLeader>d'] = { name = 'Debug' } })
 vim.keymap.set('n', '<LocalLeader>db', dap.toggle_breakpoint,
     { silent = true, noremap = true, desc = 'Creates or removes a breakpoint' })
 vim.keymap.set('n', '<LocalLeader>dB', function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
     { silent = true, noremap = true, desc = 'Set breakpoint w/ condition' })
 vim.keymap.set('n', '<LocalLeader>de', dap.set_exception_breakpoints,
     { silent = true, noremap = true, desc = 'Sets breakpoints on exceptions' })
-vim.keymap.set('n', '<LocalLeader>dl',  function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end,
+vim.keymap.set('n', '<LocalLeader>dl', function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end,
     { silent = true, noremap = true, desc = 'Set LogPoint' })
 vim.keymap.set('n', '<LocalLeader>dc', dap.clear_breakpoints,
     { silent = true, noremap = true, desc = 'Clear all breakpoints' })
@@ -194,3 +194,48 @@ vim.keymap.set('n', '<LocalLeader>dR', dap.run_last,
     { silent = true, noremap = true, desc = 'Re-runs the last debug-adapter/configuration' })
 vim.keymap.set('n', '<LocalLeader>du', dapui.toggle,
     { silent = true, noremap = true, desc = 'Toggle debug UI' })
+
+local has_hydra, Hydra = pcall(require, 'hydra')
+if has_hydra then
+    local widgets = require("dap.ui.widgets")
+
+    Hydra({
+        hint = [[
+     _n_: step over   _s_: Continue/Start
+     _i_: step into   _b_: Breakpoint
+     _o_: step out    _K_: Eval
+     _c_: to cursor   _C_: Close UI
+     _p_: pause       ^ ^
+     _<Esc>_: exit    _q_: Quit
+    ]]   ,
+        config = {
+            color = 'pink',
+            invoke_on_body = true,
+            hint = {
+                position = 'bottom',
+                border = 'rounded'
+            },
+        },
+        name = 'dap',
+        mode = { 'n', 'x' },
+        body = '<leader>dh',
+        heads = {
+            { 'n', dap.step_over, { silent = true } },
+            { 'i', dap.step_into, { silent = true } },
+            { 'o', dap.step_out, { silent = true } },
+            { 'c', dap.run_to_cursor, { silent = true } },
+            { 's', dap.continue, { silent = true } },
+            { 'p', dap.pause, { silent = true } },
+            { 'b', dap.toggle_breakpoint, { silent = true } },
+            { 'K', widgets.hover, { silent = true } },
+            { 'q', function()
+                dap.disconnect({ terminateDebuggee = false })
+            end, { exit = true, silent = true } },
+            { 'C', function()
+                dap.close()
+                dap_virtual_text.refresh()
+            end, { silent = true } },
+            { '<Esc>', nil, { exit = true, nowait = true } },
+        }
+    })
+end

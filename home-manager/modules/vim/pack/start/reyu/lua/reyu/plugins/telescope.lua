@@ -1,15 +1,9 @@
-require('which-key').register({ ['<Leader>f'] = { name = 'Find' }})
-
 require('telescope').setup({
     defaults = {
         mappings = {
             i = {
                 ['<C-Down>'] = require('telescope.actions').cycle_history_next,
                 ['<C-Up>'] = require('telescope.actions').cycle_history_prev,
-                ['<C-t>'] = require('trouble.providers.telescope').open_with_trouble,
-            },
-            n = {
-                ['<C-t>'] = require('trouble.providers.telescope').open_with_trouble,
             },
         },
         layout_config = {
@@ -38,6 +32,7 @@ require('telescope').setup({
 
 require('telescope').load_extension('frecency')
 require('telescope').load_extension('ui-select')
+-- require('telescope').load_extension('dap')
 
 local ts_builtin = require('telescope.builtin')
 

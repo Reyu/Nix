@@ -3,8 +3,6 @@ refactoring.setup({})
 
 require('telescope').load_extension('refactoring')
 
-require('which-key').register({ ['<LocalLeader>r'] = { name = 'Refactor' }}, { mode = "n" })
-require('which-key').register({ ['<LocalLeader>r'] = { name = 'Refactor' }}, { mode = "v" })
 vim.keymap.set('v', '<LocalLeader>rr', require('telescope').extensions.refactoring.refactors,
     { noremap = true, silent = true, desc = 'Refactoring Prompt' })
 

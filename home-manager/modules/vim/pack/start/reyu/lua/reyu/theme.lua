@@ -1,3 +1,5 @@
+vim.o.termguicolors = true
+
 require('NeoSolarized').setup {
     style = 'dark',
     transparent = true,
@@ -13,5 +15,5 @@ require('NeoSolarized').setup {
         undercurl = true,
     },
 }
-vim.o.termguicolors = true
+
 vim.cmd('colorscheme NeoSolarized')

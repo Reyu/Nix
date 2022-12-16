@@ -1,5 +1,3 @@
-local noice = require('noice')
-
 require("lualine").setup({
     options = {
         icons_enabled = true,
@@ -14,39 +12,50 @@ require("lualine").setup({
         lualine_a = { 'mode' },
         lualine_b = {},
         lualine_c = {
-            { 'FugitiveHead', icon = "" },
+            -- {
+            --     require('noice').api.status.message.get,
+            --     cond = require('noice').api.status.message.has,
+            --     color = { fg = "#ff9e64" },
+            -- },
         },
 
         lualine_x = {
-            {
-                noice.api.status.command.get,
-                cond = noice.api.status.command.has,
-                color = { fg = "#ff9e64" },
-            },
-            {
-                noice.api.status.mode.get,
-                cond = noice.api.status.mode.has,
-                color = { fg = "#ff9e64" },
-            },
-            {
-                noice.api.status.search.get,
-                cond = noice.api.status.search.has,
-                color = { fg = "#ff9e64" },
-            },
+            -- {
+            --     require('noice').api.status.command.get,
+            --     cond = require('noice').api.status.command.has,
+            --     color = { fg = "#ff9e64" },
+            -- },
+            -- {
+            --     require('noice').api.status.search.get,
+            --     cond = require('noice').api.status.search.has,
+            --     color = { fg = "#ff9e64" },
+            -- },
         },
-        lualine_y = { 'progress', 'filesize' },
-        lualine_z = { 'location' },
+        lualine_y = {
+            -- {
+            --     require('noice').api.status.ruler.get,
+            --     cond = require('noice').api.status.ruler.has,
+            -- },
+            'progress',
+            'filesize'
+        },
+        lualine_z = {
+            'location',
+        },
     },
     tabline = {
-        lualine_a = { 'buffers' },
+        lualine_a = { { 'buffers', mode = 4 } },
         lualine_b = {},
         lualine_c = {},
         lualine_x = {},
         lualine_y = {},
-        lualine_z = { { 'tabs', { mode = 1 } } }
+        lualine_z = { { 'tabs', mode = 2 } }
     },
     winbar = {
-        lualine_a = { 'filename' },
+        lualine_a = {
+            { 'filetype', icon_only = true },
+            { 'filename', path = 1 },
+        },
         lualine_b = { 'aerial' },
         lualine_c = {
             { "FugitiveHead", icon = "" },
@@ -65,7 +74,10 @@ require("lualine").setup({
     inactive_winbar = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = { 'filename' },
+        lualine_c = {
+            { 'filetype', icon_only = true },
+            { 'filename', path = 0 },
+        },
         lualine_x = { "searchcount", 'diagnostics' },
         lualine_y = {},
         lualine_z = {},

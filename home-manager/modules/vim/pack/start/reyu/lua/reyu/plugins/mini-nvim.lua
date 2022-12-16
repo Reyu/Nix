@@ -20,7 +20,6 @@ mini_map.setup({
     }
 })
 
-require('which-key').register({['<Leader>m']={ name = 'Minimap' }})
 vim.keymap.set('n', '<Leader>mc', MiniMap.close,
     { silent = true, noremap = true, desc = 'Close MiniMap'})
 vim.keymap.set('n', '<Leader>mo', MiniMap.open,
@@ -42,7 +41,6 @@ sessions.setup({
     directory = session_dir
 })
 
-require('which-key').register({['<Leader>s']={ name = 'Sessions' }})
 vim.keymap.set('n', '<Leader>sw', function()
     if vim.v.this_session == "" then
         local name = vim.fn.input({

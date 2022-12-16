@@ -1,5 +1,3 @@
-require('which-key').register({ ['<Leader>t'] = { name = 'NeoTree' }})
-
 vim.g.neo_tree_remove_legacy_commands = 1
 
 vim.fn.sign_define('DiagnosticSignError',

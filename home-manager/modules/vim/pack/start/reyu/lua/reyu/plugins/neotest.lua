@@ -22,7 +22,6 @@ neotest.setup({
     },
 })
 
-require('which-key').register({ ['<LocalLeader>t'] = { name = 'Project Tests' }})
 vim.keymap.set('n', '<LocalLeader>tt', function() neotest.run.run({ suite = true }) end,
     { silent = true, noremap = true, desc = 'Run entire test suite' })
 vim.keymap.set('n', '<LocalLeader>tn', neotest.run.run,

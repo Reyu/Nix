@@ -8,8 +8,6 @@ trouble.setup({
     auto_fold = false,
 })
 
-require('which-key').register({ ['<LocalLeader>x'] = { name = 'Trouble ...' } })
-
 vim.keymap.set('n', '<LocalLeader>xw', '<Cmd>Trouble workspace_diagnostics<CR>',
     { silent = true, noremap = true, desc = 'Workspace Diagnostics' })
 
@@ -46,7 +44,6 @@ vim.keymap.set('n', '<LocalLeader>xp', function() trouble.previous({}) end,
 vim.keymap.set('n', '[x', function() trouble.previous({jump = true}) end,
     { silent = true, noremap = true, desc = 'Previous Troubleshooting Item' })
 
-require('which-key').register({ ['<LocalLeader>g'] = { name = 'Goto ...' } })
 vim.keymap.set('n', 'gr', '<Cmd>Trouble lsp_references<CR>',
     { silent = true, noremap = true, desc = 'LSP References' })
 vim.keymap.set('n', 'gd', '<Cmd>Trouble lsp_definitions<CR>',
