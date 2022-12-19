@@ -20,6 +20,7 @@
       neosolarized-nvim
 
       # Interface
+      bufresize-nvim
       gitsigns-nvim
       hydra
       lualine-nvim
@@ -27,11 +28,11 @@
       neoscroll-nvim
       noice-nvim
       nvim-notify
+      nvim-ufo
       twilight-nvim
       vim-fugitive
       which-key-nvim
       zen-mode-nvim
-      nvim-ufo
 
       # Fuzzy finder / Picker
       telescope-dap-nvim

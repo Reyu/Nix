@@ -18,6 +18,22 @@
         "type": "github"
       }
     },
+    "bufresize-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1647824331,
+        "narHash": "sha256-6jqlKe8Ekm+3dvlgFCpJnI0BZzWC3KDYoOb88/itH+g=",
+        "owner": "kwkarlwang",
+        "repo": "bufresize.nvim",
+        "rev": "3b19527ab936d6910484dcc20fb59bdb12322d8b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kwkarlwang",
+        "repo": "bufresize.nvim",
+        "type": "github"
+      }
+    },
     "cmp-conventionalcommits": {
       "flake": false,
       "locked": {
@@ -843,6 +859,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "bufresize-nvim": "bufresize-nvim",
         "cmp-conventionalcommits": "cmp-conventionalcommits",
         "cmp-dap": "cmp-dap",
         "cmp-nvim-lsp-signature-help": "cmp-nvim-lsp-signature-help",

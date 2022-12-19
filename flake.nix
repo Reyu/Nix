@@ -127,6 +127,10 @@
       url = "github:mrjones2014/smart-splits.nvim";
       flake = false;
     };
+    bufresize-nvim = {
+      url = "github:kwkarlwang/bufresize.nvim";
+      flake = false;
+    };
 
 
     # Discord + Plugins

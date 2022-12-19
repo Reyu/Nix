@@ -2,6 +2,7 @@ if vim.fn.exists('g:started_by_firenvim') == 1 then
     require('reyu.plugins.firenvim')
 else
     require('gitsigns').setup()
+    require('bufresize').setup()
     require('reyu.plugins.dap')
     require('reyu.plugins.fugitive')
     require('reyu.plugins.hydra')
