@@ -217,7 +217,7 @@
         locale
         nix-common
         security
-        ({ ... }: {
+        ({ _, ... }: {
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
           # flake-utils-plus options
@@ -314,7 +314,7 @@
         in
         {
           # construct packagesBuilder to export all packages defined in overlays
-          packages = (utils.lib.exportPackages self.overlays channels);
+          packages = utils.lib.exportPackages self.overlays channels;
 
           # Evaluates to `devShell.<system> = <nixpkgs-channel-reference>.mkShell { name = "devShell"; };`.
           devShell = pkgs.devshell.mkShell {
@@ -344,7 +344,7 @@
       };
 
       nixosModules = {
-        age = inputs.agenix.nixosModules.age;
+        inherit (inputs.agenix.nixosModules) age;
         kmonad = inputs.kmonad.nixosModules.default;
       } // builtins.listToAttrs (map
         (x: {
