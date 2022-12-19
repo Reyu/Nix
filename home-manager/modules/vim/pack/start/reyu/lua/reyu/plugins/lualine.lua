@@ -12,30 +12,30 @@ require("lualine").setup({
         lualine_a = { 'mode' },
         lualine_b = {},
         lualine_c = {
-            -- {
-            --     require('noice').api.status.message.get,
-            --     cond = require('noice').api.status.message.has,
-            --     color = { fg = "#ff9e64" },
-            -- },
+            {
+                require('noice').api.status.message.get,
+                cond = require('noice').api.status.message.has,
+                color = { fg = "#ff9e64" },
+            },
         },
 
         lualine_x = {
-            -- {
-            --     require('noice').api.status.command.get,
-            --     cond = require('noice').api.status.command.has,
-            --     color = { fg = "#ff9e64" },
-            -- },
-            -- {
-            --     require('noice').api.status.search.get,
-            --     cond = require('noice').api.status.search.has,
-            --     color = { fg = "#ff9e64" },
-            -- },
+            {
+                require('noice').api.status.command.get,
+                cond = require('noice').api.status.command.has,
+                color = { fg = "#ff9e64" },
+            },
+            {
+                require('noice').api.status.search.get,
+                cond = require('noice').api.status.search.has,
+                color = { fg = "#ff9e64" },
+            },
         },
         lualine_y = {
-            -- {
-            --     require('noice').api.status.ruler.get,
-            --     cond = require('noice').api.status.ruler.has,
-            -- },
+            {
+                require('noice').api.status.ruler.get,
+                cond = require('noice').api.status.ruler.has,
+            },
             'progress',
             'filesize'
         },
@@ -44,12 +44,12 @@ require("lualine").setup({
         },
     },
     tabline = {
-        lualine_a = { { 'buffers', mode = 4 } },
+        lualine_a = { { 'tabs', mode = 2 } },
         lualine_b = {},
         lualine_c = {},
         lualine_x = {},
         lualine_y = {},
-        lualine_z = { { 'tabs', mode = 2 } }
+        lualine_z = { { 'buffers', mode = 4 } }
     },
     winbar = {
         lualine_a = {

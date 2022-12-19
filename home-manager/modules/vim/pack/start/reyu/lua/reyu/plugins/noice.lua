@@ -1,4 +1,5 @@
-require('noice').setup({
+local noice = require('noice')
+noice.setup({
     lsp = {
         override = {
             ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -23,3 +24,8 @@ require('noice').setup({
         },
     },
 })
+
+vim.keymap.set('n', '<Leader>nl', function() noice.cmd('last') end,
+    { silent = true, desc = 'Last Notification' })
+vim.keymap.set('n', '<Leader>nh', function() noice.cmd('history') end,
+    { silent = true, desc = 'Notification History' })

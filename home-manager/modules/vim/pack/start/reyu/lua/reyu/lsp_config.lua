@@ -22,11 +22,11 @@ local on_attach = function(client, bufnr)
     -- Mappings.
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Goto Declaration' })
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition,
+    vim.keymap.set('n', 'gd', '<Cmd>Trouble lsp_type_definitions<CR>',
         { silent = true, noremap = true, buffer = bufnr, desc = 'Goto Definition' })
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation,
+    vim.keymap.set('n', 'gi', '<Cmd>Trouble lsp_implementations<CR>',
         { silent = true, noremap = true, buffer = bufnr, desc = 'Goto Implementation' })
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references,
+    vim.keymap.set('n', 'gr', '<Cmd>Trouble lsp_references<CR>',
         { silent = true, noremap = true, buffer = bufnr, desc = 'Goto References' })
     vim.keymap.set('n', 'K', function()
         local winid = require('ufo').peekFoldedLinesUnderCursor()
@@ -37,6 +37,7 @@ local on_attach = function(client, bufnr)
         { silent = true, noremap = true, buffer = bufnr, desc = 'Show hover menu' })
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Show signature help' })
+
     require('which-key').register({ ['<LocalLeader>w'] = { name = "Workspace" } },
         { buffer = bufnr })
     vim.keymap.set('n', '<LocalLeader>wa', vim.lsp.buf.add_workspace_folder,
@@ -49,6 +50,7 @@ local on_attach = function(client, bufnr)
         { silent = true, noremap = true, buffer = bufnr, desc = 'Type definition' })
     vim.keymap.set('n', '<LocalLeader>p', PeekDefinition,
         { silent = true, noremap = true, buffer = bufnr, desc = 'Peek definition' })
+
     require('which-key').register({ ['<LocalLeader>r'] = { name = "Refactor" } },
         { buffer = bufnr })
     vim.keymap.set('n', '<LocalLeader>rn', vim.lsp.buf.rename,

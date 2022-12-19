@@ -29,7 +29,6 @@
       nvim-notify
       twilight-nvim
       vim-fugitive
-      vim-tmux-navigator
       which-key-nvim
       zen-mode-nvim
       nvim-ufo
