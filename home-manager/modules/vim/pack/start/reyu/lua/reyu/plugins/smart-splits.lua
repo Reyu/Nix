@@ -29,6 +29,7 @@ vim.keymap.set({ 'n', 'i', 't' }, '<M-j>', function() returnToNormal() smart_spl
 vim.keymap.set({ 'n', 'i', 't' }, '<M-k>', function() returnToNormal() smart_splits.move_cursor_up() end)
 vim.keymap.set({ 'n', 'i', 't' }, '<M-l>', function() returnToNormal() smart_splits.move_cursor_right() end)
 
+vim.cmd('packadd hydra')
 local Hydra = require('hydra')
 local cmd = require('hydra.keymap-util').cmd
 local pcmd = require('hydra.keymap-util').pcmd

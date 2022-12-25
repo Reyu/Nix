@@ -1,3 +1,4 @@
+vim.cmd('packadd noice.nvim')
 require("lualine").setup({
     options = {
         icons_enabled = true,
