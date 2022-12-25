@@ -115,6 +115,7 @@
 
       # Project management
       neoconf-nvim
+      octo-nvim
 
       # Dependencies
       nui-nvim # noice-nvim | neo-tree-nvim

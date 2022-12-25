@@ -145,6 +145,14 @@ return require('packer').startup({ function(use)
         end,
     })
 
+    use({
+        "kwkarlwang/bufresize.nvim",
+        cond = { "vim.fn.exists('g:started_by_firenvim') == 0" },
+        config = function()
+            require('bufresize').setup()
+        end
+    })
+
     -- Fuzzy Finder / Picker
     use({
         "nvim-telescope/telescope.nvim",
@@ -265,8 +273,20 @@ return require('packer').startup({ function(use)
         end,
     })
 
-
     -- EXTRA
+    use({
+        "pwntester/octo.nvim",
+        cond = { "vim.fn.exists('g:started_by_firenvim') == 0" },
+        requires = {
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim',
+            'kyazdani42/nvim-web-devicons',
+        },
+        config = function()
+            require('reyu.plugins.octo')
+        end,
+    })
+
     use({
         "glacambre/firenvim",
         cond = { "vim.fn.exists('g:started_by_firenvim') == 1" },
