@@ -1,24 +1,12 @@
 -- See `:help mini.*` for details on each
 require('mini.ai').setup({})
+require('mini.align').setup({})
 require('mini.bufremove').setup({})
 require('mini.comment').setup({})
 require('mini.indentscope').setup({})
 require('mini.pairs').setup({})
 require('mini.surround').setup({})
 require('mini.trailspace').setup({})
-
-local mini_map = require('mini.map')
-mini_map.setup({
-    integrations = {
-      mini_map.gen_integration.builtin_search(),
-      mini_map.gen_integration.gitsigns(),
-      mini_map.gen_integration.diagnostic(),
-    },
-    window = {
-        winblend = 0,
-        show_integration_count = false,
-    }
-})
 
 vim.keymap.set('n', '<Leader>mc', MiniMap.close,
     { silent = true, noremap = true, desc = 'Close MiniMap'})
