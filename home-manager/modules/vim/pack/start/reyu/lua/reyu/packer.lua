@@ -288,6 +288,15 @@ return require('packer').startup({ function(use)
     })
 
     use({
+        "phaazon/mind.nvim",
+        branch = 'v2.2',
+        requires = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require('reyu.plugins.mind')
+        end
+    })
+
+    use({
         "glacambre/firenvim",
         cond = { "vim.fn.exists('g:started_by_firenvim') == 1" },
         run = function() vim.fn['firenvim#install'](0) end,

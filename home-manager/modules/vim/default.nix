@@ -131,6 +131,7 @@
       firenvim
       SchemaStore-nvim
       direnv-vim
+      mind-nvim
     ];
     extraPackages = with pkgs; [
       # Language servers
