@@ -2,6 +2,11 @@ require('nvim-treesitter.configs').setup({
     context_commentstring = {enable = true},
     endwise = {enable = true},
     highlight = {enable = true},
+    query_linter = {
+        enable = true,
+        use_virtual_text = true,
+        lint_events = {"BufWrite", "CursorHold"},
+    },
     incremental_selection = {
         enable = true,
         keymaps = {
