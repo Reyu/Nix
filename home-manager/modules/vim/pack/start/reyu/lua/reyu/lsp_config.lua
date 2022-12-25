@@ -133,14 +133,9 @@ nvim_lsp.util.default_config = vim.tbl_extend("force",
 })
 
 nvim_lsp.bashls.setup {}
-nvim_lsp.dockerls.setup {}
-nvim_lsp.hls.setup {}
 nvim_lsp.html.setup {}
 nvim_lsp.jsonls.setup { cmd = { "json-languageserver", "--stdio" } }
-nvim_lsp.ltex.setup {}
-nvim_lsp.pyright.setup {}
 nvim_lsp.sumneko_lua.setup {}
-nvim_lsp.terraformls.setup {}
 nvim_lsp.vimls.setup {}
 nvim_lsp.yamlls.setup {}
 
@@ -150,10 +145,7 @@ null_ls.setup({
         null_ls.builtins.code_actions.gitsigns,
         null_ls.builtins.code_actions.refactoring,
         null_ls.builtins.diagnostics.commitlint,
-        null_ls.builtins.diagnostics.deadnix,
         null_ls.builtins.diagnostics.dotenv_linter,
-        null_ls.builtins.diagnostics.statix,
-        null_ls.builtins.formatting.nixfmt,
         null_ls.builtins.hover.dictionary,
     },
 })
