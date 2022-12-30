@@ -169,7 +169,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, utils, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, utils, ... }@inputs:
     utils.lib.mkFlake {
       # Required inputs of `mkFlake`
       inherit inputs self;
@@ -205,7 +205,7 @@
       hostDefaults.system = "x86_64-linux";
       hostDefaults.channelName = "unstable";
       hostDefaults.modules = with self.nixosModules; [
-        "${home-manager}/nixos"
+        "${inputs.home-manager}/nixos"
         {
           home-manager.extraSpecialArgs = { inherit inputs self; };
           home-manager.useGlobalPkgs = true;
@@ -232,52 +232,7 @@
 
       hosts = import ./hosts {inherit self inputs; };
 
-      homeConfigurations =
-        let
-          hmConfig = home-manager.lib.homeManagerConfiguration;
-        in
-        {
-          desktop = hmConfig {
-            extraSpecialArgs = { inherit inputs self; };
-            pkgs = self.pkgs.x86_64-linux.nixpkgs;
-            modules = [
-              {
-                home = {
-                  username = "reyu";
-                  homeDirectory = "/home/reyu";
-                };
-              }
-              ./home-manager/profiles/desktop.nix
-            ];
-          };
-          server = hmConfig {
-            extraSpecialArgs = { inherit inputs self; };
-            pkgs = self.pkgs.x86_64-linux.nixpkgs;
-            modules = [
-              {
-                home = {
-                  username = "reyu";
-                  homeDirectory = "/home/reyu";
-                };
-              }
-              ./home-manager/profiles/server.nix
-            ];
-          };
-          minimalRoot = hmConfig {
-            extraSpecialArgs = { inherit inputs self; };
-            pkgs = self.pkgs.x86_64-linux.nixpkgs;
-            modules = [
-              ./home-manager/profiles/common.nix
-              {
-                manual.manpages.enable = true;
-                home = {
-                  username = "root";
-                  homeDirectory = "/root";
-                };
-              }
-            ];
-          };
-        };
+      homeConfigurations = import ./home-manager {inherit self inputs; };
 
       outputsBuilder = channels:
         let pkgs = channels.nixpkgs;
