@@ -197,7 +197,6 @@
             "steam-original"
             "steam-run"
             "steam-runtime"
-            "unrar"
           ];
       };
 
