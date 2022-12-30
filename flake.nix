@@ -230,39 +230,7 @@
         })
       ];
 
-      hosts = with self.nixosModules; {
-        loki = {
-          modules = [
-            ./hosts/loki/configuration.nix
-            consul
-            flatpak
-            onlykey
-            sound
-            xserver
-            kmonad
-          ];
-        };
-        burrow = {
-          modules = [
-            ./hosts/burrow/configuration.nix
-            consul
-            docker
-            nomad
-            telegraf
-            vault
-          ];
-        };
-        kit = {
-          system = "aarch64-linux";
-          modules = [
-            ./hosts/kit/configuration.nix
-            (import "${mobile-nixos}/lib/configuration.nix" {
-              device = "pine64-pinephone";
-            })
-            onlykey
-          ];
-        };
-      };
+      hosts = import ./hosts {inherit self inputs; };
 
       homeConfigurations =
         let
