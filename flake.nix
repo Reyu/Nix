@@ -190,7 +190,6 @@
           builtins.elem (nixpkgs.lib.getName pkg) [
             "betterttv"
             "discord"
-            "obsidian"
             "plexmediaserver"
             "slack"
             "steam"
