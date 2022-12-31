@@ -5,5 +5,5 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPxK6wj41rJ00x3SSA8qw/c7WjmUW4Z1xshAQxAciS8 reyu@kp"
     ];
   };
-  home-manager.users.root = import ../home-manager/profiles/common.nix;
+  home-manager.users.root = import ../../home-manager/profiles/common.nix;
 }

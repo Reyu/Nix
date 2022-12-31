@@ -132,7 +132,6 @@
       flake = false;
     };
 
-
     # Discord + Plugins
     replugged.url = "github:LunNova/replugged-nix-flake";
 
@@ -210,8 +209,8 @@
           home-manager.extraSpecialArgs = { inherit inputs self; };
           home-manager.useGlobalPkgs = true;
         }
-        ./users/root.nix
-        ./users/reyu.nix
+        ./users/reyu
+        ./users/root
         age
         cachix
         crypto
@@ -220,6 +219,8 @@
         nix-common
         security
         ({ _, ... }: {
+          _module.args = { inherit self; };
+
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
           # flake-utils-plus options
@@ -230,14 +231,13 @@
         })
       ];
 
-      hosts = import ./hosts {inherit self inputs; };
+      hosts = import ./hosts { inherit self inputs; };
 
-      homeConfigurations = import ./home-manager {inherit self inputs; };
+      homeConfigurations = import ./home-manager { inherit self inputs; };
 
       outputsBuilder = channels:
         let pkgs = channels.nixpkgs;
-        in
-        {
+        in {
           # construct packagesBuilder to export all packages defined in overlays
           packages = utils.lib.exportPackages self.overlays channels;
 
@@ -271,37 +271,32 @@
       nixosModules = {
         inherit (inputs.agenix.nixosModules) age;
         kmonad = inputs.kmonad.nixosModules.default;
-      } // builtins.listToAttrs (map
-        (x: {
-          name = x;
-          value = import (./modules + "/${x}");
-        })
-        (builtins.attrNames (builtins.readDir ./modules)));
+      } // builtins.listToAttrs (map (x: {
+        name = x;
+        value = import (./modules + "/${x}");
+      }) (builtins.attrNames (builtins.readDir ./modules)));
 
-      homeModules = builtins.listToAttrs (map
-        (x: {
-          name = x;
-          value = import (./home-manager/modules + "/${x}");
-        })
-        (builtins.attrNames (builtins.readDir ./home-manager/modules)));
+      homeModules = builtins.listToAttrs (map (x: {
+        name = x;
+        value = import ./home-manager/modules/${x};
+      }) (builtins.attrNames (builtins.readDir ./home-manager/modules)));
 
       checks =
         # Checks to run with `nix flake check -L`, will run in a QEMU VM.
         # Looks for all ./modules/<module name>/test.nix files and adds them to
         # the flake's checks output. The test.nix file is optional and may be
         # added to any module.
-        builtins.listToAttrs (map
-          (x: {
-            name = x;
-            value = (import (./modules + "/${x}/test.nix")) {
-              pkgs = nixpkgs;
-              inherit self;
-            };
-          })
-          # Filter list of modules, leaving only modules which contain a
-          # `test.nix` file
+        builtins.listToAttrs (map (x: {
+          name = x;
+          value = (import ./modules/${x}/test.nix) {
+            pkgs = nixpkgs;
+            inherit self;
+          };
+        })
+        # Filter list of modules, leaving only modules which contain a
+        # `test.nix` file
           (builtins.filter
-            (p: builtins.pathExists (./modules + "/${p}/test.nix"))
+            (p: builtins.pathExists (./modules/${p}/test.nix))
             (builtins.attrNames (builtins.readDir ./modules))));
     };
 }
