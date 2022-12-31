@@ -150,7 +150,6 @@
       ansible-lint
       editorconfig-checker
       gitlint
-      nix-linter
       nixpkgs-lint
       proselint
       shellcheck
