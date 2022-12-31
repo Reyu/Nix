@@ -5,7 +5,7 @@
     # Core
     nixpkgs.url = "github:nixos/nixpkgs";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    utils.url = "github:gytis-ivaskevicius/flake-utils-plus/1.3.0";
+    utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
     devshell.url = "github:numtide/devshell";
     nixos-generators.url = "github:nix-community/nixos-generators";
     home-manager.url = "github:nix-community/home-manager";
@@ -224,6 +224,7 @@
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
           # flake-utils-plus options
+          nix.linkInputs = true;
           nix.generateRegistryFromInputs = true;
           nix.generateNixPathFromInputs = true;
           # Default stateVersion
