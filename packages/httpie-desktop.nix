@@ -13,7 +13,8 @@ let
   appimageContents = appimageTools.extractType2 {
     inherit name src;
   };
-in appimageTools.wrapType2 {
+in
+appimageTools.wrapType2 {
   inherit name src;
 
   extraInstallCommands = ''
@@ -26,7 +27,7 @@ in appimageTools.wrapType2 {
   meta = with stdenv.lib; {
     description = "HTTPie.io appImage";
     longDescription = ''
-       The latest build of https://httpie.io, in appImage form, suitably nixed
+      The latest build of https://httpie.io, in appImage form, suitably nixed
     '';
     homepage = https://httpie.io;
     platforms = [ "x86_64-linux" ];

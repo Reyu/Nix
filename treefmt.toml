@@ -1,0 +1,16 @@
+[formatter.nix]
+command = "nixpkgs-fmt"
+includes = [ "*.nix" ]
+
+[formatter.lua]
+command = "lua-format"
+includes = [ "*.lua" ]
+
+[formatter.hcl]
+command = "hclfmt"
+includes = [ "*.hcl" ]
+
+[formatter.sh]
+command = "shfmt"
+arguments = [ "-w" ]
+includes = [ "*.sh", "*.bash", "*.zsh" ]

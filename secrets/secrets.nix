@@ -6,7 +6,8 @@ let
   home = [ loki burrow ];
   loki = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5RyYh6rTQJrsriGzONG4Dt0cb3Y3047KSFlylzm2zZ";
   burrow = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTxnWiWCer2tijhkTDA9RfxELHy0/HxY7zA8VgbnnFl";
-in {
+in
+{
   "consul/encrypt.hcl".publicKeys = [ reyu ] ++ home;
   "consul/burrow.hcl".publicKeys = [ reyu burrow ];
   "nomad/burrow-consul.hcl".publicKeys = [ reyu burrow ];

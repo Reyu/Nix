@@ -25,7 +25,7 @@
 
   nix.settings = {
     cores = 32;
-    max-jobs= 16;
+    max-jobs = 16;
   };
 
   console.useXkbConfig = true;
@@ -46,7 +46,7 @@
     interface.bind = "enp73s0";
     extraConfig = {
       datacenter = "home";
-      retry_join = ["burrow.home.reyuzenfold.com"];
+      retry_join = [ "burrow.home.reyuzenfold.com" ];
     };
   };
 

@@ -2,18 +2,20 @@
 with lib;
 let cfg = config.foxnet.nomad;
 in {
-  options.foxnet.nomad = let
-    mkBool = default: description:
-      mkOption {
-        inherit default description;
-        type = types.bool;
+  options.foxnet.nomad =
+    let
+      mkBool = default: description:
+        mkOption {
+          inherit default description;
+          type = types.bool;
+        };
+    in
+    {
+      firewall.open = {
+        http = mkBool false "";
+        server = mkBool false "";
       };
-  in {
-    firewall.open = {
-      http = mkBool false "";
-      server = mkBool false "";
     };
-  };
   config = {
     services.nomad = {
       enable = true;
@@ -25,17 +27,19 @@ in {
       };
     };
 
-    networking.firewall = let
-      defaultPorts = rec {
-        http = 4646;
+    networking.firewall =
+      let
+        defaultPorts = rec {
+          http = 4646;
+        };
+        ports = defaultPorts // (config.servers.nomad.extraConfig.ports or { });
+        checkPort = name:
+          if (cfg.firewall.open.${name} or false) then [ ports.${name} ] else [ ];
+      in
+      {
+        allowedTCPPorts = concatLists [
+          (checkPort "http")
+        ];
       };
-      ports = defaultPorts // (config.servers.nomad.extraConfig.ports or { });
-      checkPort = name:
-        if (cfg.firewall.open.${name} or false) then [ ports.${name} ] else [ ];
-    in {
-      allowedTCPPorts = concatLists [
-        (checkPort "http")
-      ];
-    };
   };
 }

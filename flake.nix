@@ -246,22 +246,22 @@
           devShell = pkgs.devshell.mkShell {
             name = "FoxNet-Nix-Configs";
             packages = with pkgs; [ cachix rnix-lsp ];
-            commands = [
-              {
-                name = "repl";
-                package = pkgs.fup-repl;
-                help = "A package that adds a kick-ass repl";
-              }
-              {
-                name = "agenix";
-                package = pkgs.agenix;
-              }
-              {
-                package = pkgs.nixpkgs-fmt;
-                category = "formatters";
-              }
-              { package = pkgs.nixos-generators; }
-            ];
+            commands =
+              let formatter = pkg: { package = pkg; category = "formatters"; };
+              in with pkgs; [
+                {
+                  name = "repl";
+                  package = fup-repl;
+                  help = "A package that adds a kick-ass repl";
+                }
+                { package = agenix; }
+                { package = nixos-generators; }
+                (formatter treefmt)
+                (formatter nixpkgs-fmt)
+                (formatter luaformatter)
+                (formatter hclfmt)
+                (formatter shfmt)
+              ];
           };
         };
 
@@ -272,30 +272,35 @@
       nixosModules = {
         inherit (inputs.agenix.nixosModules) age;
         kmonad = inputs.kmonad.nixosModules.default;
-      } // builtins.listToAttrs (map (x: {
-        name = x;
-        value = import (./modules + "/${x}");
-      }) (builtins.attrNames (builtins.readDir ./modules)));
+      } // builtins.listToAttrs (map
+        (x: {
+          name = x;
+          value = import (./modules + "/${x}");
+        })
+        (builtins.attrNames (builtins.readDir ./modules)));
 
-      homeModules = builtins.listToAttrs (map (x: {
-        name = x;
-        value = import ./home-manager/modules/${x};
-      }) (builtins.attrNames (builtins.readDir ./home-manager/modules)));
+      homeModules = builtins.listToAttrs (map
+        (x: {
+          name = x;
+          value = import ./home-manager/modules/${x};
+        })
+        (builtins.attrNames (builtins.readDir ./home-manager/modules)));
 
       checks =
         # Checks to run with `nix flake check -L`, will run in a QEMU VM.
         # Looks for all ./modules/<module name>/test.nix files and adds them to
         # the flake's checks output. The test.nix file is optional and may be
         # added to any module.
-        builtins.listToAttrs (map (x: {
-          name = x;
-          value = (import ./modules/${x}/test.nix) {
-            pkgs = nixpkgs;
-            inherit self;
-          };
-        })
-        # Filter list of modules, leaving only modules which contain a
-        # `test.nix` file
+        builtins.listToAttrs (map
+          (x: {
+            name = x;
+            value = (import ./modules/${x}/test.nix) {
+              pkgs = nixpkgs;
+              inherit self;
+            };
+          })
+          # Filter list of modules, leaving only modules which contain a
+          # `test.nix` file
           (builtins.filter
             (p: builtins.pathExists (./modules/${p}/test.nix))
             (builtins.attrNames (builtins.readDir ./modules))));
