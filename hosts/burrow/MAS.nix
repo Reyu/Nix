@@ -17,8 +17,5 @@
     lidarr.enable = true;
     lidarr.openFirewall = true;
     lidarr.group = "media";
-    readarr.enable = true;
-    readarr.openFirewall = true;
-    readarr.group = "media";
   };
 }
