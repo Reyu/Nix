@@ -56,6 +56,12 @@
       fsType = "zfs";
     };
 
+  fileSystems."/var/lib/containers/storage" =
+    {
+      device = "rpool/local/podman";
+      fsType = "zfs";
+    };
+
   swapDevices = [ ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
