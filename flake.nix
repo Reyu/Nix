@@ -250,7 +250,6 @@
               let formatter = pkg: { package = pkg; category = "formatters"; };
               in with pkgs; [
                 {
-                  name = "repl";
                   package = fup-repl;
                   help = "A package that adds a kick-ass repl";
                 }
