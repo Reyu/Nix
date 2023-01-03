@@ -239,6 +239,9 @@
       outputsBuilder = channels:
         let pkgs = channels.nixpkgs;
         in {
+          # Default Nix Formatter
+          formatter = pkgs.nixpkgs-fmt;
+
           # construct packagesBuilder to export all packages defined in overlays
           packages = utils.lib.exportPackages self.overlays channels;
 
