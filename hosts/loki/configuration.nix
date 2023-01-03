@@ -97,9 +97,5 @@
   networking.hostId = "d540cb4f";
 
   virtualisation.podman.enable = true;
-  virtualisation.containers.storage.settings.storage = {
-    driver = "zfs";
-    graphroot = "/var/lib/containers/storage";
-    runroot = "/run/containers/storage";
-  };
+  virtualisation.containers.storage.settings.storage.driver = "zfs";
 }
