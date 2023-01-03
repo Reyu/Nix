@@ -1,6 +1,3 @@
-require('neoconf').setup()
-require('neodev').setup({ library = { plugins = { 'neotest' }, types = true } })
-
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     vim.diagnostic.config({
@@ -93,14 +90,15 @@ local on_attach = function(client, bufnr)
     end
 end
 
--- Set lspconfig defaults
-local nvim_lsp = require('lspconfig')
-
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true
 }
+
+require('neoconf').setup()
+require('neodev').setup({ library = { plugins = { 'neotest' }, types = true } })
+local nvim_lsp = require('lspconfig')
 
 nvim_lsp.util.default_config = vim.tbl_extend("force",
     nvim_lsp.util.default_config, {
@@ -115,6 +113,8 @@ nvim_lsp.util.default_config = vim.tbl_extend("force",
     capabilities = capabilities,
     log_level = vim.lsp.protocol.MessageType.Log,
     message_level = vim.lsp.protocol.MessageType.Log,
+
+    ---@type lspconfig.options
     settings = {
         json = {
             schemas = require('schemastore').json.schemas(),
@@ -134,6 +134,7 @@ nvim_lsp.util.default_config = vim.tbl_extend("force",
 
 nvim_lsp.bashls.setup {}
 nvim_lsp.html.setup {}
+nvim_lsp.hls.setup {}
 nvim_lsp.jsonls.setup { cmd = { "json-languageserver", "--stdio" } }
 nvim_lsp.sumneko_lua.setup {}
 nvim_lsp.vimls.setup {}
