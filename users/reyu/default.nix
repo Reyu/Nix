@@ -11,7 +11,7 @@
     ];
     initialHashedPassword = "$6$BgizkUy7nfY0Cz/n$oMnCCYyr2jATMmzkGWrxUd8R4.9DNTHEB5T3MWTZzuzPMrQ9WrzMSrM2u6j3EJ0ddE7PSo6t8F1n8TYdj/tCe1";
   };
-  home-manager.users.reyu = import ../../home-manager/profiles/desktop.nix;
+  home-manager.users.reyu = import ../../home-manager/profiles/common.nix;
 
   # Allow to run nix
   nix.settings.allowed-users = [ "reyu" ];

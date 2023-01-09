@@ -348,15 +348,15 @@
     "mind-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1663201387,
-        "narHash": "sha256-eYf3/LSD3WqA0AaGo/n4zNzmRQou2uPNsCdIo3FPIvk=",
-        "owner": "Reyu",
+        "lastModified": 1671753501,
+        "narHash": "sha256-ULAJIIJvU1X8k8dVKQsss/Zqje5pTqKf/YAlJSVW07Q=",
+        "owner": "phaazon",
         "repo": "mind.nvim",
-        "rev": "91d9a4529396abd54d5ca31bccb5dfeea0cc3fff",
+        "rev": "5aa39d57d1091999ca5bdcdd056a27a032156c2d",
         "type": "github"
       },
       "original": {
-        "owner": "Reyu",
+        "owner": "phaazon",
         "repo": "mind.nvim",
         "type": "github"
       }

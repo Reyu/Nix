@@ -100,7 +100,7 @@
       flake = false;
     };
     mind-nvim = {
-      url = "github:Reyu/mind.nvim";
+      url = "github:phaazon/mind.nvim";
       flake = false;
     };
     mini-nvim = {
@@ -189,6 +189,7 @@
           builtins.elem (nixpkgs.lib.getName pkg) [
             "betterttv"
             "discord"
+            "pine64-pinephone-firmware"
             "plexmediaserver"
             "slack"
             "steam"
@@ -213,7 +214,6 @@
         ./users/root
         age
         cachix
-        crypto
         environment
         locale
         nix-common
