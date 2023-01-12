@@ -22,6 +22,7 @@
   boot.kernelParams = [ "elevator=noop" ];
   boot.tmpOnTmpfs = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
 
   nix.settings = {
     cores = 32;
@@ -52,6 +53,8 @@
 
   home-manager.users.reyu.home.packages = with pkgs; [
     deluge
+    blender
+    freecad
   ];
 
   services = {
@@ -75,10 +78,15 @@
       };
     };
     xserver.wacom.enable = true;
+    xserver.videoDrivers = [ "amdgpu" ];
     zfs.autoScrub.enable = true;
   };
 
   hardware.uinput.enable = true;
+  hardware.opengl.extraPackages = with pkgs; [
+    rocm-opencl-icd
+    rocm-opencl-runtime
+  ];
   services.kmonad = {
     enable = true;
     keyboards.kinesis = {
@@ -98,4 +106,8 @@
 
   virtualisation.podman.enable = true;
   virtualisation.containers.storage.settings.storage.driver = "zfs";
+
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}"
+  ];
 }
