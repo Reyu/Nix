@@ -33,7 +33,6 @@ let
   };
 in
 {
-  inherit myVimPlugins;
   mutt-trim = prev.callPackage ../packages/mutt-trim.nix { inherit inputs; };
   httpie-desktop = prev.callPackage ../packages/httpie-desktop.nix { inherit inputs; };
   vimPlugins = prev.vimPlugins // myVimPlugins;

@@ -6,9 +6,20 @@
     nixpkgs.url = "github:nixos/nixpkgs";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
-    devshell.url = "github:numtide/devshell";
-    nixos-generators.url = "github:nix-community/nixos-generators";
-    home-manager.url = "github:nix-community/home-manager";
+    devshell = {
+      url = "github:numtide/devshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "utils";
+    };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.utils.follows = "utils";
+    };
     nur.url = "github:nix-community/NUR";
     mobile-nixos = {
       url = "github:NixOS/mobile-nixos";
@@ -16,7 +27,10 @@
     };
 
     # Automatic deployment
-    agenix.url = "github:ryantm/agenix";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # ZSH Plugins
     zsh-vimode-visual = {
@@ -25,7 +39,10 @@
     };
 
     # Vim + Plugins
-    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     telescope-hoogle = {
       url = "github:luc-tielen/telescope_hoogle";
@@ -133,7 +150,10 @@
     };
 
     # Discord + Plugins
-    replugged.url = "github:LunNova/replugged-nix-flake";
+    replugged = {
+      url = "github:LunNova/replugged-nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     discord-better-status = {
       url = "github:GriefMoDz/better-status-indicators";
@@ -161,7 +181,10 @@
     };
 
     # Other Sources
-    kmonad.url = "github:kmonad/kmonad?dir=nix";
+    kmonad = {
+      url = "github:kmonad/kmonad?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mutt-trim = {
       url = "github:Konfekt/mutt-trim";
       flake = false;
@@ -199,11 +222,8 @@
           ];
       };
 
-      channels.nixpkgs.overlaysBuilder = channels:
-        [ (final: prev: { inherit (channels.unstable) neovim-unwrapped; }) ];
-
       hostDefaults.system = "x86_64-linux";
-      hostDefaults.channelName = "unstable";
+      hostDefaults.channelName = "nixpkgs";
       hostDefaults.modules = with self.nixosModules; [
         "${inputs.home-manager}/nixos"
         {
