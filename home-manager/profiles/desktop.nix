@@ -13,8 +13,9 @@
     ../modules/picom
     ../modules/polybar
     ../modules/rofi
+    ../modules/sway
+    ../modules/waybar
     ../modules/xdg
-    ../modules/xmonad
     ../modules/xscreensaver
   ];
 
@@ -61,10 +62,4 @@
       Install = { WantedBy = [ "tray.target" ]; };
     };
   };
-
-  xsession.initExtra = ''
-    if [ -f "$HOME/Pictures/.background" ] ; then
-      ${pkgs.feh}/bin/feh --no-fehbg --bg-center "$HOME/Pictures/.background"
-    fi
-  '';
 }

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ self, pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -56,6 +56,20 @@
     blender
     freecad
   ];
+  home-manager.users.reyu.wayland.windowManager.sway.config.output = {
+    DP-1 = {
+      background = "~/Pictures/Backgrounds/The\ Downbelow.jpg fill";
+      position = "2560 0 res 3440x1440";
+    };
+    DP-2 = {
+      background = "~/Pictures/Backgrounds/Locker.png fill";
+      position = "0 0 res 2560x1440";
+    };
+    DP-3 = {
+      background = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
+      position = "6000 0 res 2560x1440";
+    };
+  };
 
   services = {
     avahi.enable = true;
@@ -87,6 +101,7 @@
     rocm-opencl-icd
     rocm-opencl-runtime
   ];
+
   services.kmonad = {
     enable = true;
     keyboards.kinesis = {

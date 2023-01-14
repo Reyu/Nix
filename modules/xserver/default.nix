@@ -2,6 +2,16 @@
 with lib; {
   config = {
     services.physlock = { enable = true; };
+    services.greetd = {
+      enable = true;
+      settings = rec {
+        initial_session = {
+          command = "${pkgs.sway}/bin/sway";
+          user = "reyu";
+        };
+        default_session = initial_session;
+      };
+    };
     services.xserver = {
       enable = true;
       autorun = true;
