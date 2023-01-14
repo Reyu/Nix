@@ -13,7 +13,6 @@
         always_run_script = "true";
         browser = config.programs.firefox.package.outPath + "/bin/firefox";
         class = "Dunst";
-        dmenu = config.programs.rofi.finalPackage.outPath + "/bin/rofi -dmenu -p Actions";
         ellipsize = "middle";
         follow = "none";
         frame_width = 2;

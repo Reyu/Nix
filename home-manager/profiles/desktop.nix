@@ -3,20 +3,15 @@
   imports = [
     ./common.nix
     ../modules/alacritty
-    ../modules/autorandr
     ../modules/chat
     ../modules/dunst
     ../modules/firefox
     ../modules/fonts
     ../modules/git
     ../modules/gpg
-    ../modules/picom
-    ../modules/polybar
-    ../modules/rofi
     ../modules/sway
     ../modules/waybar
     ../modules/xdg
-    ../modules/xscreensaver
   ];
 
   reyu.programs = {

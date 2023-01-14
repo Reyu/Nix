@@ -1,86 +1,69 @@
 { config, pkgs, lib, ... }: {
+  imports = [ ./swayr.nix ];
+  home.packages = with pkgs; [
+    swayr
+  ];
   wayland.windowManager.sway =
     let
-      modifier = "Mod4";
-      wofi = "${pkgs.wofi}/bin/wofi";
+      prompt = "${pkgs.fuzzel}/bin/fuzzel";
+      curWSName = "$(swaymsg -t get_workspaces | jq -r '.[]|select(.focused == true)|.name')";
+      workspaceList = "swaymsg -t get_workspaces | jq -r '.[]|.name'";
     in
     {
       enable = true;
-      config = {
+      config = rec {
         bars = [ ];
-        modifier = modifier;
+        modifier = "Mod4";
         terminal = "alacritty";
+        focus.followMouse = false;
+        focus.newWindow = "urgent";
+        gaps = {
+         outer = 5;
+         inner = 15;
+         smartBorders = "on";
+        };
         startup = [
           { command = "systemctl --user restart waybar.service"; always = true; }
+          { command = "systemctl --user restart swayr.service"; always = true; }
+          { command = "systemctl --user start keepassxc.service"; }
           { command = "firefox"; }
+          { command = "firefox -P video"; }
+          { command = "telegram-desktop"; }
+          { command = "discord"; }
         ];
-        keybindings = let cfg = config.wayland.windowManager.sway.config; in {
-          "${modifier}+Return" = "exec ${cfg.terminal}";
-          "${modifier}+Shift+q" = "kill";
-          "${modifier}+d" = "exec ${wofi} --show drun";
+        keybindings = {
+          "${modifier}+Return" = "exec alacritty -e tmux new -As ${curWSName}";
+          "${modifier}+z" = "exec firefox";
+          "${modifier}+Backspace" = "kill";
+          "${modifier}+d" = "exec ${prompt}";
 
-          "${modifier}+${cfg.left}" = "focus left";
-          "${modifier}+${cfg.down}" = "focus down";
-          "${modifier}+${cfg.up}" = "focus up";
-          "${modifier}+${cfg.right}" = "focus right";
+          "${modifier}+h" = "focus left";
+          "${modifier}+j" = "focus down";
+          "${modifier}+k" = "focus up";
+          "${modifier}+l" = "focus right";
 
-          "${modifier}+Left" = "focus left";
-          "${modifier}+Down" = "focus down";
-          "${modifier}+Up" = "focus up";
-          "${modifier}+Right" = "focus right";
-
-          "${modifier}+Shift+${cfg.left}" = "move left";
-          "${modifier}+Shift+${cfg.down}" = "move down";
-          "${modifier}+Shift+${cfg.up}" = "move up";
-          "${modifier}+Shift+${cfg.right}" = "move right";
-
-          "${modifier}+Shift+Left" = "move left";
-          "${modifier}+Shift+Down" = "move down";
-          "${modifier}+Shift+Up" = "move up";
-          "${modifier}+Shift+Right" = "move right";
+          "${modifier}+Shift+h" = "move left";
+          "${modifier}+Shift+j" = "move down";
+          "${modifier}+Shift+k" = "move up";
+          "${modifier}+Shift+l" = "move right";
 
           "${modifier}+b" = "splith";
           "${modifier}+v" = "splitv";
           "${modifier}+f" = "fullscreen toggle";
-          "${modifier}+a" = "focus parent";
+          "${modifier}+a" = "exec swayr switch-to-urgent-or-lru-window";
 
           "${modifier}+s" = "layout stacking";
-          "${modifier}+w" = "layout tabbed";
           "${modifier}+e" = "layout toggle split";
 
           "${modifier}+Shift+space" = "floating toggle";
           "${modifier}+space" = "focus mode_toggle";
 
-          "${modifier}+1" = "workspace number 1";
-          "${modifier}+2" = "workspace number 2";
-          "${modifier}+3" = "workspace number 3";
-          "${modifier}+4" = "workspace number 4";
-          "${modifier}+5" = "workspace number 5";
-          "${modifier}+6" = "workspace number 6";
-          "${modifier}+7" = "workspace number 7";
-          "${modifier}+8" = "workspace number 8";
-          "${modifier}+9" = "workspace number 9";
+          "${modifier}+w" = "exec swayr switch-workspace-or-window";
+          "${modifier}+Shift+w" = "exec swayr move-focused-to";
+          "${modifier}+n" = "exec swaymsg workspace $(${prompt} -d -l0 -p 'New Workspace: ')";
+          "${modifier}+Shift+r" = "exec swaymsg rename workspace to $(${prompt} -d -l0 -p 'Rename Workspace: ')";
 
-          "${modifier}+Shift+1" =
-            "move container to workspace number 1";
-          "${modifier}+Shift+2" =
-            "move container to workspace number 2";
-          "${modifier}+Shift+3" =
-            "move container to workspace number 3";
-          "${modifier}+Shift+4" =
-            "move container to workspace number 4";
-          "${modifier}+Shift+5" =
-            "move container to workspace number 5";
-          "${modifier}+Shift+6" =
-            "move container to workspace number 6";
-          "${modifier}+Shift+7" =
-            "move container to workspace number 7";
-          "${modifier}+Shift+8" =
-            "move container to workspace number 8";
-          "${modifier}+Shift+9" =
-            "move container to workspace number 9";
-
-          "${modifier}+Shift+minus" = "move scratchpad";
+          "${modifier}+Shift+minus" = "move to scratchpad";
           "${modifier}+minus" = "scratchpad show";
 
           "${modifier}+Shift+c" = "reload";
@@ -89,9 +72,12 @@
 
           "${modifier}+r" = "mode resize";
         };
-      };
-      wrapperFeatures = {
-        gtk = true;
+        floating = {
+          criteria = [
+            { class = "Pavucontrol"; }
+            { app_id = "org.keepassxc.KeePassXC"; }
+          ];
+        };
       };
     };
 }
