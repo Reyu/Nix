@@ -50,11 +50,18 @@
     };
   };
 
-  systemd.user.services = {
-    keepassxc = {
-      Unit = { Description = "KeePassXC - Password Manager"; };
-      Service = { ExecStart = "${pkgs.keepassxc}/bin/keepassxc"; };
-      Install = { WantedBy = [ "tray.target" ]; };
+  systemd.user = {
+    services = {
+      keepassxc = {
+        Unit = { Description = "KeePassXC - Password Manager"; };
+        Service = { ExecStart = "${pkgs.keepassxc}/bin/keepassxc"; };
+        Install = { WantedBy = [ "tray.target" ]; };
+      };
     };
+    tmpfiles.rules = [
+      "d ${config.home.homeDirectory}/Downloads - - - 7d -"
+      "x ${config.home.homeDirectory}/Downloads/Torrents/Watch - - - 7d -"
+      "X ${config.home.homeDirectory}/Downloads/Torrents/Completed - - - 7d -"
+    ];
   };
 }

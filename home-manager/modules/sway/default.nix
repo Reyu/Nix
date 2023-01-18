@@ -18,9 +18,9 @@
         focus.followMouse = false;
         focus.newWindow = "urgent";
         gaps = {
-         outer = 5;
-         inner = 15;
-         smartBorders = "on";
+          outer = 5;
+          inner = 15;
+          smartBorders = "on";
         };
         startup = [
           { command = "systemctl --user restart waybar.service"; always = true; }
