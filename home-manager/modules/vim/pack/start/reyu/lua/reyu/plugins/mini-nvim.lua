@@ -8,17 +8,6 @@ require('mini.pairs').setup({})
 require('mini.surround').setup({})
 require('mini.trailspace').setup({})
 
-vim.keymap.set('n', '<Leader>mc', MiniMap.close,
-    { silent = true, noremap = true, desc = 'Close MiniMap'})
-vim.keymap.set('n', '<Leader>mo', MiniMap.open,
-    { silent = true, noremap = true, desc = 'Open Minimap'})
-vim.keymap.set('n', '<Leader>mr', MiniMap.refresh,
-    { silent = true, noremap = true, desc = 'Refresh Minimap'})
-vim.keymap.set('n', '<Leader>ms', MiniMap.toggle_side,
-    { silent = true, noremap = true, desc = 'Toggle MiniMap side'})
-vim.keymap.set('n', '<Leader>mm', MiniMap.toggle,
-    { silent = true, noremap = true, desc = 'Toggle MiniMap'})
-
 local sessions = require('mini.sessions')
 local session_dir = vim.fn.stdpath("data") .. "/session"
 if vim.fn.isdirectory(session_dir) == 0 then
