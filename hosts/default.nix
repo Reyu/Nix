@@ -1,5 +1,6 @@
 { self, inputs, ... }: {
   loki = {
+    channelName = "unstable";
     modules = with self.nixosModules; [
       ./loki/configuration.nix
       { home-manager.users.reyu = import ../home-manager/profiles/desktop.nix; }
