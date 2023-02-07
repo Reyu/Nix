@@ -55,6 +55,7 @@
     deluge
     blender
     freecad
+    nomachine-client
   ];
   home-manager.users.reyu.wayland.windowManager.sway.config.output = {
     DP-1 = {

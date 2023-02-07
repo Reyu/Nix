@@ -212,6 +212,7 @@
           builtins.elem (nixpkgs.lib.getName pkg) [
             "betterttv"
             "discord"
+            "nomachine-client"
             "pine64-pinephone-firmware"
             "plexmediaserver"
             "slack"
