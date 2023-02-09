@@ -33,4 +33,12 @@
       })
     ];
   };
+  traveler = {
+    modules = with self.nixosModules; [
+      "${inputs.impermanence}/nixos.nix"
+      ./traveler/configuration.nix
+      { home-manager.users.reyu = import ../home-manager/profiles/desktop.nix; }
+      onlykey
+    ];
+  };
 }
