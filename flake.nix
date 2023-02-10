@@ -25,6 +25,7 @@
       url = "github:NixOS/mobile-nixos";
       flake = false;
     };
+    impermanence.url = "github:nix-community/impermanence";
 
     # Automatic deployment
     agenix = {
