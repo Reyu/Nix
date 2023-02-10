@@ -70,15 +70,13 @@ addEntry() {
     nixosLabel="$(cat "$path/nixos-version")"
     extraParams="$(cat "$path/kernel-params")"
 
-    echo -n "NixOS - Configuration $tag ($timestamp - $nixosLabel)"
+    echo -n "NixOS-Configuration_${tag}-${timestamp}-${nixosLabel}"
     echo -n "|elf|kernel /nixos/$(basename "$kernel")"
     echo -n "|initrd /nixos/$(basename "$initrd")"
     echo "|append init=$path/init $extraParams"
 }
 
 tmpFile="$target/kexec_menu.txt.tmp.$$"
-
-echo "# Generated file, all changes will be lost on nixos-rebuild!" > "$tmpFile"
 
 addEntry "$default default" >> "$tmpFile"
 
