@@ -4,10 +4,8 @@
       ./hardware-configuration.nix
     ];
 
-  boot.loader.generationsDir.copyKernels = true;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.copyKernels = true;
-  boot.loader.grub.devices = [ "nodev" ];
+  boot.loader.grub.enable = false;
+  boot.loader.heads.enable = true;
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r rpool/local/root@blank
   '';
