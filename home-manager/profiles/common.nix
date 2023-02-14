@@ -7,6 +7,11 @@
   ];
   reyu.programs = { tmux.enable = true; };
 
+  programs.git = {
+    enable = true;
+    extraConfig.init.defaultBranch = "main";
+  };
+
   # Include man-pages
   manual.manpages.enable = true;
 
