@@ -8,7 +8,8 @@ let
 
   # The builder used to write during system activation
   builder = import ./heads-menu-builder.nix { inherit pkgs; };
-in {
+in
+{
   options = {
     boot.loader.heads = {
       enable = mkOption {
@@ -35,9 +36,10 @@ in {
     };
   };
 
-  config = let
-    builderArgs = "-g ${toString cfg.configurationLimit}";
-  in
+  config =
+    let
+      builderArgs = "-g ${toString cfg.configurationLimit}";
+    in
     mkIf cfg.enable {
       system.build.installBootLoader = "${builder} ${builderArgs} -c";
       system.boot.loader.id = "heads";
