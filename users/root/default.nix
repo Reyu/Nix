@@ -2,7 +2,7 @@
   users.users.root = {
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPxK6wj41rJ00x3SSA8qw/c7WjmUW4Z1xshAQxAciS8 reyu@kp"
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAzblSY1FnK7aeaVK8z+cyEfDI9sIER8s4PIQhLI5QRHAAAABHNzaDo= ok-greater"
     ];
   };
   home-manager.users.root = import ../../home-manager/profiles/common.nix;
