@@ -1,5 +1,5 @@
 { config, ... }: {
-  home.persistence."/persistent/home/${config.home.username}" = {
+  home.persistence."/persist/home/${config.home.username}" = {
     allowOther = true;
     directories = [
       ".cache/nvim"
