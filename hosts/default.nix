@@ -19,7 +19,6 @@
       consul
       docker
       nomad
-      telegraf
       vault
     ];
   };
