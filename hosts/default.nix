@@ -35,9 +35,18 @@
   };
   traveler = {
     modules = with self.nixosModules; [
-      "${inputs.impermanence}/nixos.nix"
+      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x230
+      inputs.impermanence.nixosModules.impermanence
       ./traveler/configuration.nix
-      { home-manager.users.reyu = import ../home-manager/profiles/desktop.nix; }
+      {
+        home-manager.users.reyu = {
+          imports = [
+            inputs.impermanence.nixosModules.home-manager.impermanence
+            ../home-manager/profiles/desktop.nix
+            ../home-manager/modules/impermanence
+          ];
+        };
+      }
       heads
       onlykey
     ];

@@ -26,6 +26,7 @@
       flake = false;
     };
     impermanence.url = "github:nix-community/impermanence";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     # Automatic deployment
     agenix = {
