@@ -1,12 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{ self, config, pkgs, lib, ... }: {
   imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+    [ ./hardware-configuration.nix ];
 
-  boot.loader.grub.enable = false;
-  boot.loader.heads.enable = true;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.devices = [ "nodev" ];
+  boot.loader.heads.enable = false;
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r rpool/local/root@blank
   '';
@@ -27,6 +25,30 @@
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     keyMap = "dvorak";
+  };
+
+  services.kmonad = {
+    enable = true;
+    keyboards.kinesis = {
+      name = "kinesis";
+      device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
+      defcfg = {
+        enable = true;
+        compose.key = "lalt";
+        fallthrough = true;
+      };
+      config = builtins.readFile ./kmonad-builtin.cfg;
+    };
+  };
+
+  virtualisation.podman.enable = true;
+  virtualisation.containers.storage.settings.storage.driver = "zfs";
+
+  specialisation.graphical.configuration = {
+    system.nixos.tags = [ "graphical" ];
+    home-manager.users.reyu = {
+      imports = [ ../home-manager/profiles/desktop.nix ];
+    };
   };
 
   environment.persistence = {

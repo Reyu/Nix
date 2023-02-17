@@ -41,13 +41,14 @@
         home-manager.users.reyu = {
           imports = [
             inputs.impermanence.nixosModules.home-manager.impermanence
-            ../home-manager/profiles/desktop.nix
+            ../home-manager/profiles/server.nix
             ../home-manager/modules/impermanence
           ];
         };
       }
       heads
       onlykey
+      kmonad
     ];
   };
 }

@@ -232,6 +232,7 @@
         {
           home-manager.extraSpecialArgs = { inherit inputs self; };
           home-manager.useGlobalPkgs = true;
+          home-manager.backupFileExtension = "bck";
         }
         ./users/reyu
         ./users/root
