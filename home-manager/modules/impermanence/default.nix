@@ -11,6 +11,7 @@
       "Downloads"
       "Music"
       "Pictures"
+      "Projects"
       "Videos"
     ];
     files = [
