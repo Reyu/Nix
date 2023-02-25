@@ -262,7 +262,31 @@
       homeConfigurations = import ./home-manager { inherit self inputs; };
 
       outputsBuilder = channels:
-        let pkgs = channels.nixpkgs;
+        let
+          pkgs = channels.nixpkgs;
+          formatter = pkg: { package = pkg; category = "formatters"; };
+          buildTool = pkg: { package = pkg; category = "build tools"; };
+          defaultShell = with pkgs; {
+            name = "FoxNet-Nix";
+            packages = [ cachix rnix-lsp ];
+            commands = [
+                {
+                  package = fup-repl;
+                  help = "A package that adds a kick-ass repl";
+                }
+                {
+                  package = agenix;
+                  category = "secrets management";
+                }
+                (buildTool nixos-generators)
+                (formatter treefmt)
+                (formatter nixpkgs-fmt)
+                (formatter luaformatter)
+                (formatter hclfmt)
+                (formatter shfmt)
+              ];
+          };
+          mkShell = extra: pkgs.devshell.mkShell ( defaultShell // extra);
         in {
           # Default Nix Formatter
           formatter = pkgs.nixpkgs-fmt;
@@ -270,25 +294,12 @@
           # construct packagesBuilder to export all packages defined in overlays
           packages = utils.lib.exportPackages self.overlays channels;
 
-          # Evaluates to `devShell.<system> = <nixpkgs-channel-reference>.mkShell { name = "devShell"; };`.
-          devShell = pkgs.devshell.mkShell {
-            name = "FoxNet-Nix-Configs";
-            packages = with pkgs; [ cachix rnix-lsp ];
-            commands =
-              let formatter = pkg: { package = pkg; category = "formatters"; };
-              in with pkgs; [
-                {
-                  package = fup-repl;
-                  help = "A package that adds a kick-ass repl";
-                }
-                { package = agenix; }
-                { package = nixos-generators; }
-                (formatter treefmt)
-                (formatter nixpkgs-fmt)
-                (formatter luaformatter)
-                (formatter hclfmt)
-                (formatter shfmt)
-              ];
+          devShells.default = mkShell {};
+          devShells.terranix = mkShell {
+            name = "FoxNet-Terranix";
+            commands = defaultShell.commands ++ [
+              { package = pkgs.linode-cli; }
+            ];
           };
         };
 

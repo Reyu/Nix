@@ -1,0 +1,7 @@
+{
+  consul = {
+    modules = [
+      ./consul
+    ];
+  };
+}

@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ self, inputs, ... }@args: {
   loki = {
     channelName = "unstable";
     modules = with self.nixosModules; [
@@ -51,4 +51,10 @@
       kmonad
     ];
   };
-}
+} // (let
+  prefixNames = prefix: attrs: builtins.listToAttrs (map (x: { name = "${prefix}/${x}"; value = attrs.${x}; }) (builtins.attrNames attrs));
+  addProvider = name: module: prefixNames name (import module args);
+  providers = builtins.mapAttrs (name: value: { name = "A/${name}"; value = value; });
+in providers {
+  /* "linode" = ./linode; */
+})
