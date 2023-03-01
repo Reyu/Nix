@@ -17,9 +17,9 @@ with lib; {
   # Configure OpenSSH to be a bit more secure
   services.openssh = {
     enable = mkDefault true;
-    passwordAuthentication = false;
     allowSFTP = mkDefault false;
-    kbdInteractiveAuthentication = false;
+    settings.kbdInteractiveAuthentication = false;
+    settings.passwordAuthentication = false;
     extraConfig = ''
       AllowTcpForwarding yes
       X11Forwarding no

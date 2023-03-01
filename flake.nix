@@ -201,8 +201,8 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
       sharedOverlays = with inputs; [
-        agenix.overlay
-        devshell.overlay
+        agenix.overlays.default
+        devshell.overlays.default
         neovim-nightly.overlay
         nur.overlay
         kmonad.overlays.default
