@@ -28,37 +28,6 @@
       fsType = "vfat";
     };
 
-  fileSystems."/root" =
-    { device = "rpool/HOME/root";
-      fsType = "zfs";
-    };
-
-  fileSystems."/OPT" =
-    { device = "rpool/ROOT/nixos/OPT";
-      fsType = "zfs";
-    };
-
-  fileSystems."/VAR" =
-    { device = "rpool/ROOT/nixos/VAR";
-      fsType = "zfs";
-    };
-
-  fileSystems."/USR" =
-    { device = "rpool/ROOT/nixos/USR";
-      fsType = "zfs";
-    };
-
-  fileSystems."/home" =
-    { device = "rpool/HOME";
-      fsType = "zfs";
-    };
-
-
-  fileSystems."/home/reyu" =
-    { device = "rpool/HOME/reyu";
-      fsType = "zfs";
-    };
-
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
