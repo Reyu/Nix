@@ -42,7 +42,6 @@ in {
   config = {
     age.secrets."consul_encrypt_key.hcl" = {
       file = ../../secrets/consul/encrypt.hcl;
-      path = "/etc/consul.d/encrypt.hcl";
       owner = "consul";
     };
 
@@ -57,8 +56,10 @@ in {
         ports.grpc = 8502;
         connect.enabled = true;
         addresses.http = mkDefault "127.0.0.1";
-        telemetry."disable_compat_1.9" = true;
       };
+      extraConfigFiles = [
+        config.age.secrets."consul_encrypt_key.hcl".path
+      ];
     };
 
     networking.firewall =
