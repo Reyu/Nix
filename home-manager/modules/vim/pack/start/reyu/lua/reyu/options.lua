@@ -1,7 +1,6 @@
 -- ############# --
 -- NeoVim Config --
 -- ############# --
-
 -- Use GUI colors for terminal
 vim.o.termguicolors = true
 
@@ -61,9 +60,9 @@ vim.o.undodir = vim.fn.stdpath("state") .. "/undo//"
 
 -- Autocommands
 vim.api.nvim_create_autocmd("TermOpen", {
-    pattern = { "*" },
+    pattern = {"*"},
     callback = function()
         vim.wo.number = false
         vim.wo.relativenumber = false
-    end,
+    end
 })

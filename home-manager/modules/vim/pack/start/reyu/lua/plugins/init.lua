@@ -28,8 +28,8 @@ return {
         priority = 1000,
         lazy = false,
         init = function()
-          vim.o.termguicolors = true
-          vim.cmd([[colorscheme NeoSolarized]])
+            vim.o.termguicolors = true
+            vim.cmd([[colorscheme NeoSolarized]])
         end,
         opts = {
             style = 'dark',
@@ -37,31 +37,21 @@ return {
             terminal_colors = true,
             enable_italics = true,
             styles = {
-                comments = { italic = true },
-                keywords = { italic = true },
-                functions = { bold = true },
+                comments = {italic = true},
+                keywords = {italic = true},
+                functions = {bold = true},
                 variables = {},
-                string = { italic = true },
+                string = {italic = true},
                 underline = true,
-                undercurl = true,
-            },
-        },
-    },
-    {
+                undercurl = true
+            }
+        }
+    }, {
         "folke/twilight.nvim",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
-        cmd = {
-            "Twilight",
-            "TwilightEnable",
-        },
-        opts = {
-            dimming = {
-                inactive = true,
-            },
-            context = 6,
-        },
-    },
-    {
+        cmd = {"Twilight", "TwilightEnable"},
+        opts = {dimming = {inactive = true}, context = 6}
+    }, {
         "folke/zen-mode.nvim",
         lazy = true,
         opts = {
@@ -73,33 +63,25 @@ return {
                     number = false,
                     relativenumber = true,
                     cursorline = false,
-                    cursorcolumn = false,
-                },
-            },
-        },
-    },
-    {
+                    cursorcolumn = false
+                }
+            }
+        }
+    }, {
         "folke/which-key.nvim",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         opts = {
-            plugins = {
-                spelling = {
-                    enabled = true,
-                },
-            },
+            plugins = {spelling = {enabled = true}},
             window = {
                 border = 'single',
-                margin = { 5, 10, 5, 10 },
-                padding = { 1, 2, 1, 2 },
-            },
-        },
-    },
-    {
+                margin = {5, 10, 5, 10},
+                padding = {1, 2, 1, 2}
+            }
+        }
+    }, {
         "anuvyklack/hydra.nvim",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
-        keys = {
-          { "<Leader>o", mode = {"n", "x"}, desc = "Options Hydra" },
-        },
+        keys = {{"<Leader>o", mode = {"n", "x"}, desc = "Options Hydra"}},
         config = function()
             local Hydra = require("hydra")
 
@@ -140,31 +122,29 @@ _t_ %{t} diagnostic virtual text
                                     return "[ ]"
                                 end
                             end
-                        },
-                    },
+                        }
+                    }
                 },
-                mode = { "n", "x" },
+                mode = {"n", "x"},
                 body = "<Leader>o",
                 heads = {
-                    { 'c', toggleOpt('cursorline') },
-                    { 'i', toggleOpt('list') },
-                    { 'n', toggleOpt('number') },
-                    { 'r', toggleOpt('relativenumber') },
-                    { 's', toggleOpt('spell') },
-                    { 'v', toggleOpt('virtualedit', "all", "") },
-                    { 'w', toggleOpt('wrap') },
-                    { 't', function()
-                        if vim.diagnostic.config().virtual_text then
-                            vim.diagnostic.config({ virtual_text = false })
-                        else
-                            vim.diagnostic.config({ virtual_text = true })
+                    {'c', toggleOpt('cursorline')}, {'i', toggleOpt('list')},
+                    {'n', toggleOpt('number')},
+                    {'r', toggleOpt('relativenumber')},
+                    {'s', toggleOpt('spell')},
+                    {'v', toggleOpt('virtualedit', "all", "")},
+                    {'w', toggleOpt('wrap')}, {
+                        't', function()
+                            if vim.diagnostic.config().virtual_text then
+                                vim.diagnostic.config({virtual_text = false})
+                            else
+                                vim.diagnostic.config({virtual_text = true})
+                            end
                         end
-                    end},
-                    { 'q', nil, { exit = true } },
-                    { '<Esc>', nil, { exit = true } },
-                },
+                    }, {'q', nil, {exit = true}}, {'<Esc>', nil, {exit = true}}
+                }
             })
-        end,
+        end
     }
 }
 

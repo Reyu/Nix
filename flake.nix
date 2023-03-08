@@ -270,31 +270,32 @@
             name = "FoxNet-Nix";
             packages = [ cachix rnix-lsp ];
             commands = [
-                {
-                  package = fup-repl;
-                  help = "A package that adds a kick-ass repl";
-                }
-                {
-                  package = agenix;
-                  category = "secrets management";
-                }
-                (buildTool nixos-generators)
-                (formatter treefmt)
-                (formatter nixpkgs-fmt)
-                (formatter luaformatter)
-                (formatter hclfmt)
-                (formatter shfmt)
-              ];
+              {
+                package = fup-repl;
+                help = "A package that adds a kick-ass repl";
+              }
+              {
+                package = agenix;
+                category = "secrets management";
+              }
+              (buildTool nixos-generators)
+              (formatter treefmt)
+              (formatter nixpkgs-fmt)
+              (formatter luaformatter)
+              (formatter hclfmt)
+              (formatter shfmt)
+            ];
           };
-          mkShell = extra: pkgs.devshell.mkShell ( defaultShell // extra);
-        in {
+          mkShell = extra: pkgs.devshell.mkShell (defaultShell // extra);
+        in
+        {
           # Default Nix Formatter
           formatter = pkgs.nixpkgs-fmt;
 
           # construct packagesBuilder to export all packages defined in overlays
           packages = utils.lib.exportPackages self.overlays channels;
 
-          devShells.default = mkShell {};
+          devShells.default = mkShell { };
           devShells.terranix = mkShell {
             name = "FoxNet-Terranix";
             commands = defaultShell.commands ++ [
