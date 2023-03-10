@@ -23,9 +23,6 @@
   time.timeZone = "America/New_York";
 
   i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    keyMap = "dvorak";
-  };
 
   services.kmonad = {
     enable = true;
@@ -44,13 +41,6 @@
   virtualisation.podman.enable = true;
   virtualisation.containers.storage.settings.storage.driver = "zfs";
 
-  specialisation.graphical.configuration = {
-    system.nixos.tags = [ "graphical" ];
-    home-manager.users.reyu = {
-      imports = [ ../home-manager/profiles/desktop.nix ];
-    };
-  };
-
   environment.persistence = {
     "/persist/system" = {
       directories = [
@@ -65,5 +55,24 @@
         "/etc/ssh/ssh_host_rsa_key.pub"
       ];
     };
+  };
+
+  specialisation.graphical.configuration = {
+      imports = [ xserver ];
+      system.nixos.tags = [ "graphical" ];
+      home-manager.users.reyu = {
+          imports = [ ../home-manager/profiles/desktop.nix ];
+      };
+      virtualisation.libvirtd = {
+          enable = true;
+          onShutdown = "suspend";
+          onBoot = "ignore";
+
+          qemu = {
+              ovmf.enable = true;
+              swtpm.enable = true;
+              runAsRoot = false;
+          };
+      };
   };
 }
