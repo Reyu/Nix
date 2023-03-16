@@ -47,6 +47,9 @@ return {
         opts = function()
             local cmp = require("cmp")
             return {
+                completion = {
+                    completeopt = "menu,menuone,noinsert",
+                },
                 snippet = {
                     expand = function(args)
                         require("luansip").lsp_expand(args.body)
@@ -235,5 +238,9 @@ return {
             end
             require("which-key").register({mode = {"o", "x"}, i = i, a = a})
         end
-    }
+    },
+    {
+        "tpope/vim-projectionist",
+        lazy = false,
+    },
 }
