@@ -58,21 +58,21 @@
   };
 
   specialisation.graphical.configuration = {
-      imports = [ xserver ];
-      system.nixos.tags = [ "graphical" ];
-      home-manager.users.reyu = {
-          imports = [ ../home-manager/profiles/desktop.nix ];
-      };
-      virtualisation.libvirtd = {
-          enable = true;
-          onShutdown = "suspend";
-          onBoot = "ignore";
+    imports = [ xserver ];
+    system.nixos.tags = [ "graphical" ];
+    home-manager.users.reyu = {
+      imports = [ ../home-manager/profiles/desktop.nix ];
+    };
+    virtualisation.libvirtd = {
+      enable = true;
+      onShutdown = "suspend";
+      onBoot = "ignore";
 
-          qemu = {
-              ovmf.enable = true;
-              swtpm.enable = true;
-              runAsRoot = false;
-          };
+      qemu = {
+        ovmf.enable = true;
+        swtpm.enable = true;
+        runAsRoot = false;
       };
+    };
   };
 }
