@@ -58,10 +58,10 @@
   };
 
   specialisation.graphical.configuration = {
-    imports = [ xserver ];
+    imports = with self.nixosModules; [ xserver ];
     system.nixos.tags = [ "graphical" ];
     home-manager.users.reyu = {
-      imports = [ ../home-manager/profiles/desktop.nix ];
+      imports = [ ../../home-manager/profiles/desktop.nix ];
     };
     virtualisation.libvirtd = {
       enable = true;
