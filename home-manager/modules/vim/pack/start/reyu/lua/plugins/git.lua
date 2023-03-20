@@ -1,8 +1,37 @@
 return {
+    {"lewis6991/gitsigns.nvim", config = true, event = "VeryLazy"},
     {
         "tpope/vim-fugitive",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
-        cmd = {"Git"},
+        cmd = {
+            "G",
+            "Git",
+            "Ggrep",
+            "Glgrep",
+            "Gclog",
+            "Gllog",
+            "Gcd",
+            "Glcd",
+            "Gedit",
+            "Gsplit",
+            "Gvsplit",
+            "Gtabedit",
+            "Gpedit",
+            "Gdrop",
+            "Gread",
+            "Gwrite",
+            "Gw",
+            "Gwq",
+            "Gdiffsplit",
+            "Gvdiffsplit",
+            "Ghdiffsplit",
+            "GMove",
+            "GRename",
+            "GDelete",
+            "GRemote",
+            "GUnlink",
+            "GBrowse",
+        },
         keys = {
             {
                 '<Leader>gs',
@@ -41,6 +70,7 @@ return {
                 s = {name = "Suggestion"},
                 v = {name = "Reviewer"}
             }, {prefix = "<LocalLeader>"})
-        end
+        end,
+        config = true,
     }
 }

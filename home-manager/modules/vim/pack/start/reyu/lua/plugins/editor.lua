@@ -2,7 +2,7 @@ return {
     {
         "nvim-neo-tree/neo-tree.nvim",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
-        requires = {
+        dependencies = {
             {"nvim-lua/plenary.nvim"}, {"MunifTanjim/nui.nvim"},
             {"s1n7ax/nvim-window-picker"}, {'nvim-tree/nvim-web-devicons'}
         },
@@ -73,12 +73,12 @@ return {
             {'zm', function() require('ufo').closeFoldsWith() end}
         },
         opts = function(_, opts)
-            opts.provider_selector = function(bufnr, filetype, buftype)
+            opts.provider_selector = function(_, _, _)
                 return {'treesitter', 'indent'}
             end
 
             opts.fold_virt_text_handler =
-                function(virtText, lnum, endLnum, width, truncate, fold)
+                function(virtText, lnum, endLnum, width, truncate, _)
                     local newVirtText = {}
                     local suffix = ('  %d '):format(endLnum - lnum)
                     local sufWidth = vim.fn.strdisplaywidth(suffix)
@@ -151,6 +151,7 @@ return {
                 }
             }
         end,
+        cmd = "Telescope",
         keys = {
             {"<leader>ff", desc = "File Picker"}, {
                 '<Leader>fb',
@@ -192,7 +193,6 @@ return {
         },
         config = function(_, opts)
             require('telescope').setup(opts)
-            -- require('telescope').load_extension('ui-select')
 
             local function filesOrGit()
                 local is_worktree = vim.api.nvim_cmd({
@@ -205,6 +205,7 @@ return {
                     return require("telescope.builtin").find_files()
                 end
             end
+
             vim.keymap.set('n', '<Leader>ff', filesOrGit, {
                 silent = true,
                 noremap = true,

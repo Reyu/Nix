@@ -22,7 +22,7 @@ return {
         "Tsuzat/NeoSolarized.nvim",
         priority = 1000,
         lazy = false,
-        init = function() vim.cmd([[colorscheme NeoSolarized]]) end,
+        config = function() vim.cmd([[colorscheme NeoSolarized]]) end,
         opts = {
             style = 'dark',
             transparent = true,
@@ -41,10 +41,16 @@ return {
     }, {
         "folke/twilight.nvim",
         cmd = {"Twilight", "TwilightEnable"},
+        keys = {
+            {"<Leader>zt", function() require("twilight").toggle() end, "Toggle Twilight"},
+        },
         opts = {dimming = {inactive = true}, context = 6}
     }, {
         "folke/zen-mode.nvim",
-        lazy = true,
+        cmd = "ZenMode",
+        keys = {
+            {"<Leader>zz", function() require("zen-mode").toggle() end, "Toggle Twilight"},
+        },
         opts = {
             window = {
                 backdrop = 1,
@@ -58,19 +64,6 @@ return {
                 }
             }
         }
-    }, {
-        "stevearc/dressing.nvim",
-        lazy = true,
-        init = function()
-            vim.ui.select = function(...)
-                require("lazy").load({plugins = {"dressing.nvim"}})
-                return vim.ui.select(...)
-            end
-            vim.ui.input = function(...)
-                require("lazy").load({plugins = {"dressing.nvim"}})
-                return vim.ui.input(...)
-            end
-        end
     }, {
         "rcarriga/nvim-notify",
         keys = {
@@ -266,7 +259,8 @@ return {
                 config = {
                     on_key = function()
                         vim.wait(200, function()
-                            vim.cmd 'redraw'
+                            vim.cmd.redraw()
+                            return true
                         end, 30, false)
                     end
                 },

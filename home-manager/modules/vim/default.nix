@@ -29,30 +29,6 @@
           })
         '';
       }
-      (nvim-treesitter.withPlugins (plugins:
-        with plugins; [
-          tree-sitter-bash
-          tree-sitter-comment
-          tree-sitter-dockerfile
-          tree-sitter-haskell
-          tree-sitter-hcl
-          tree-sitter-json
-          tree-sitter-jsonc
-          tree-sitter-latex
-          tree-sitter-regex
-          tree-sitter-ledger
-          tree-sitter-lua
-          tree-sitter-make
-          tree-sitter-markdown
-          tree-sitter-markdown-inline
-          tree-sitter-nix
-          tree-sitter-python
-          tree-sitter-sql
-          tree-sitter-rst
-          tree-sitter-toml
-          tree-sitter-vim
-          tree-sitter-yaml
-        ]))
     ];
     extraPackages = with pkgs; [
       # Language servers
@@ -89,6 +65,7 @@
       gcc
       tree-sitter
       xsel
+      unzip
     ];
   };
   # Vim package to neatly contain customizations.

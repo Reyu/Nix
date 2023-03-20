@@ -1,4 +1,5 @@
 return {
+    { "tpope/vim-projectionist", event = "VeryLazy" },
     {
         "L3MON4D3/LuaSnip",
         dependencies = {
@@ -28,13 +29,14 @@ return {
         version = false,
         event = "InsertEnter",
         dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "saadparwaiz1/cmp_luasnip",
-            "onsails/lspkind.nvim",
             "hrsh7th/cmp-calc",
             "hrsh7th/cmp-emoji",
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-path",
+            "lukas-reineke/cmp-under-comparator",
+            "onsails/lspkind.nvim",
+            "saadparwaiz1/cmp_luasnip",
         },
         opts = function()
             local cmp = require("cmp")
@@ -95,18 +97,18 @@ return {
                             entry, vim_item)
                     end
                 },
-                -- sorting = {
-                --     comparators = {
-                --         cmp.config.compare.offset,
-                --         cmp.config.compare.exact,
-                --         cmp.config.compare.score,
-                --         require("cmp-under-comparator").under,
-                --         cmp.config.compare.sort_text,
-                --         cmp.config.compare.kind,
-                --         cmp.config.compare.length,
-                --         cmp.config.compare.order,
-                --     }
-                -- },
+                sorting = {
+                    comparators = {
+                        cmp.config.compare.offset,
+                        cmp.config.compare.exact,
+                        cmp.config.compare.score,
+                        require("cmp-under-comparator").under,
+                        cmp.config.compare.sort_text,
+                        cmp.config.compare.kind,
+                        cmp.config.compare.length,
+                        cmp.config.compare.order,
+                    },
+                },
                 view = {
                     entries = {name = 'custom', selection_order = 'near_cursor'}
                 },
@@ -119,7 +121,7 @@ return {
         end,
     }, {
         "echasnovski/mini.pairs",
-        event = "VeryLazy",
+        event = {"BufReadPost", "BufNewFile"},
         config = function(_, opts) require("mini.pairs").setup(opts) end
     }, {
         "echasnovski/mini.surround",
@@ -160,19 +162,18 @@ return {
         config = function(_, opts) require("mini.surround").setup(opts) end
     }, {
         "echasnovski/mini.comment",
-        event = "VeryLazy",
+        event = {"BufReadPost", "BufNewFile"},
         opts = {
             hooks = {
                 pre = function()
-                    require("ts_context_commentstring.internal").update_commentstring(
-                        {})
+                    require("ts_context_commentstring.internal").update_commentstring({})
                 end
             }
         },
         config = function(_, opts) require("mini.comment").setup(opts) end
     }, {
         "echasnovski/mini.ai",
-        event = "VeryLazy",
+        event = {"BufReadPost", "BufNewFile"},
         dependencies = {"nvim-treesitter-textobjects"},
         opts = function()
             local ai = require("mini.ai")
@@ -229,19 +230,30 @@ return {
 
             local ic = vim.deepcopy(i)
             local ac = vim.deepcopy(a)
+            local _i = {}
+            local _a = {}
             for key, name in pairs({n = "Next", l = "Last"}) do
-                i[key] = vim.tbl_extend("force", {
+                _i[key] = vim.tbl_extend("force", {
                     name = "Inside " .. name .. " textobject"
                 }, ic)
-                a[key] = vim.tbl_extend("force", {
+                _a[key] = vim.tbl_extend("force", {
                     name = "Around " .. name .. " textobject"
                 }, ac)
             end
-            require("which-key").register({mode = {"o", "x"}, i = i, a = a})
+            require("which-key").register({mode = {"o", "x"}, i = _i, a = _a})
         end
     },
     {
-        "tpope/vim-projectionist",
-        lazy = false,
-    },
+        "danymat/neogen",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        opts = { snippet_engine = "luasnip" },
+        init = function ()
+            require("which-key").register({["<LocalLeader>n"] = { name = "NeoGen" }})
+        end,
+        keys = {
+            {"<LocalLeader>nn", function () require("neogen").generate() end, silent = true, desc = "Generate Annotation"},
+            {"<LocalLeader>nc", function () require("neogen").generate({type = "class"}) end, silent = true, desc = "Generate Class Annotation"},
+            {"<LocalLeader>nf", function () require("neogen").generate({type = "func"}) end, silent = true, desc = "Generate Function Annotation"},
+        }
+    }
 }

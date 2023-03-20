@@ -7,14 +7,7 @@ return {
             {"folke/neodev.nvim", opts = {experimental = {pathStrict = true}}},
             {"mason.nvim"},
             {"williamboman/mason-lspconfig.nvim"},
-            {
-                "jayp0521/mason-null-ls.nvim",
-                dependencies = {"jose-elias-alvarez/null-ls.nvim"}
-            },
-            {
-                "jayp0521/mason-nvim-dap.nvim",
-                dependencies = {"mfussenegger/nvim-dap"}
-            }, "hrsh7th/cmp-nvim-lsp", "b0o/SchemaStore.nvim"
+            "b0o/SchemaStore.nvim"
         },
         opts = {
             diagnostics = {
@@ -49,6 +42,15 @@ return {
                         }
                     }
                 },
+                hls = {
+                    mason = false,
+                    settings = {
+                        haskell = {
+                            filetypes = { 'haskell', 'lhaskell', 'cabal' },
+                            cmd = "haskell-language-server",
+                        },
+                    },
+                },
                 bashls = {},
                 dockerls = {},
                 html = {},
@@ -58,7 +60,6 @@ return {
             },
             setup = {}
         },
-        ---@param opts PluginLspOpts
         config = function(_, opts)
             vim.diagnostic.config(opts.diagnostics)
 
@@ -128,10 +129,19 @@ return {
         end
     }, {
         "williamboman/mason.nvim",
+        dependencies = {
+            {
+                "jayp0521/mason-null-ls.nvim",
+                dependencies = {"jose-elias-alvarez/null-ls.nvim"}
+            },
+            {
+                "jayp0521/mason-nvim-dap.nvim",
+                dependencies = {"mfussenegger/nvim-dap"}
+            },
+        },
         cmd = "Mason",
         keys = {{"<leader>cm", "<cmd>Mason<cr>", desc = "Mason"}},
-        opts = {ensure_installed = {"stylua", "shfmt", "flake8"}},
-        ---@param opts MasonSettings | {ensure_installed: string[]}
+        opts = {ensure_installed = {"shfmt"}},
         config = function(_, opts)
             require("mason").setup(opts)
             local mr = require("mason-registry")
@@ -143,11 +153,7 @@ return {
     }, {
         "lkhphuc/jupyter-kernel.nvim",
         opts = {
-            inspect = {
-                -- opts for vim.lsp.util.open_floating_preview
-                window = {max_width = 84}
-            },
-            -- time to wait for kernel's response in seconds
+            inspect = { window = {max_width = 84} },
             timeout = 0.5
         },
         cmd = "JupyterAttach",

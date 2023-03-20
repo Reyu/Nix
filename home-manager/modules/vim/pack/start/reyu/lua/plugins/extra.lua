@@ -1,8 +1,7 @@
 return {
     {
         "phaazon/mind.nvim",
-        event = "VeryLazy",
-        requires = {"nvim-lua/plenary.nvim"},
+        dependencies = {"nvim-lua/plenary.nvim"},
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         cmd = { "MindOpenMain", "MindOpenProject", "MindOpenSmartProject" },
         opts = {
@@ -41,7 +40,6 @@ return {
         }
     }, {
         "nvim-neorg/neorg",
-        event = "VeryLazy",
         build = ":Neorg sync-parsers",
         cmd = { "Neorg" },
         ft = "norg",

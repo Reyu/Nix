@@ -1,5 +1,16 @@
 local M = {}
 
+local function preview_location_callback(_, result)
+    if result == nil or vim.tbl_isempty(result) then return nil end
+    vim.lsp.util.preview_location(result[1], {border = "rounded"})
+end
+
+local function peekDefinition(bufnr)
+    local params = vim.lsp.util.make_position_params(0, 'utf-16')
+    return vim.lsp.buf_request(bufnr, 'textDocument/definition', params,
+                               preview_location_callback)
+end
+
 M.keys = {
     {'gD', vim.lsp.buf.declaration, desc = 'Goto Declaration'},
     {'gd', '<Cmd>Trouble lsp_type_definitions<CR>', desc = 'Goto Definition'},
@@ -25,7 +36,7 @@ M.keys = {
         desc = 'List workspace folders'
     },
     {'<LocalLeader>D', vim.lsp.buf.type_definition, desc = 'Type definition'},
-    {'<LocalLeader>p', PeekDefinition, desc = 'Peek definition'},
+    {'<LocalLeader>p', peekDefinition, desc = 'Peek definition'},
 
     {'<LocalLeader>rn', vim.lsp.buf.rename, desc = 'Rename symbol'},
     {
@@ -71,21 +82,10 @@ function M.on_attach(client, bufnr)
             local opts = Keys.opts(keys)
             opts.has = nil
             opts.silent = true
-            opts.buffer = buffer
+            opts.buffer = bufnr
             vim.keymap.set(keys.mode or "n", keys[1], keys[2], opts)
         end
     end
-end
-
-local function preview_location_callback(_, result)
-    if result == nil or vim.tbl_isempty(result) then return nil end
-    vim.lsp.util.preview_location(result[1], {border = "rounded"})
-end
-
-local function PeekDefinition(bufnr)
-    local params = vim.lsp.util.make_position_params(0, 'utf-16')
-    return vim.lsp.buf_request(bufnr, 'textDocument/definition', params,
-                               preview_location_callback)
 end
 
 return M
