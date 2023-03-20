@@ -5,7 +5,9 @@ return {
         dependencies = {
             {"folke/neoconf.nvim", cmd = "Neoconf", config = true},
             {"folke/neodev.nvim", opts = {experimental = {pathStrict = true}}},
-            "mason.nvim", "williamboman/mason-lspconfig.nvim", {
+            {"mason.nvim"},
+            {"williamboman/mason-lspconfig.nvim"},
+            {
                 "jayp0521/mason-null-ls.nvim",
                 dependencies = {"jose-elias-alvarez/null-ls.nvim"}
             },

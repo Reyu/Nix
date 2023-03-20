@@ -6,10 +6,6 @@ return {
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         cmd = { "MindOpenMain", "MindOpenProject", "MindOpenSmartProject" },
         opts = {
-            persistence = {
-                data_dir = "~/Notes",
-                state_path = "~/Notes/.state",
-            },
             edit = {
                 data_header = '@document.meta\ntitle: %s\n@end',
                 data_extension = '.norg',

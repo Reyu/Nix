@@ -1,16 +1,10 @@
 return {
-    {"lewis6991/gitsigns.nvim", config = true, event = "VeryLazy"}, {
+    {"lewis6991/gitsigns.nvim", config = true, event = "VeryLazy"},
+    {
         "mfussenegger/nvim-dap",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         dependencies = {
             {
-                "hrsh7th/nvim-cmp",
-                opts = function(_, opts)
-                    require("cmp").setup.filetype({
-                        'dap-repl', 'dapui_watches', 'dapui_hover'
-                    }, {sources = {{name = 'dap'}}})
-                end
-            }, {
                 "mfussenegger/nvim-dap-python",
                 config = function()
                     local function pythonPath()
@@ -163,10 +157,6 @@ return {
                 linehl = 'DiagnosticUnderlineError',
                 numhl = 'DiagnosticError'
             })
-
-            require("cmp").setup.filetype({
-                'dap-repl', 'dapui_watches', 'dapui_hover'
-            }, {sources = {{name = 'dap'}}})
 
             local Hydra = require("hydra")
             Hydra({
@@ -334,6 +324,14 @@ return {
                     }
                 }
             }
+        end
+    },
+    {
+        "hrsh7th/nvim-cmp",
+        opts = function(_, opts)
+            require("cmp").setup.filetype({
+                'dap-repl', 'dapui_watches', 'dapui_hover'
+            }, {sources = {{name = 'dap'}}})
         end
     }
 }

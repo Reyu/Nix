@@ -2,47 +2,39 @@ return {
     {
         "L3MON4D3/LuaSnip",
         dependencies = {
-            {
-                "rafamadriz/friendly-snippets",
-                config = function()
-                    require("luasnip.loaders.from_vscode").lazy_load()
-                end
-            }
+            "rafamadriz/friendly-snippets",
+            config = function()
+                require("luasnip.loaders.from_vscode").lazy_load()
+            end,
         },
-        opts = {history = true, delete_check_events = "TextChanged"},
+        opts = {
+            history = true,
+            delete_check_events = "TextChanged",
+        },
         keys = {
             {
                 "<tab>",
                 function()
-                    return require("luasnip").jumpable(1) and
-                               "<Plug>luasnip-jump-next" or "<tab>"
+                    return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
                 end,
-                expr = true,
-                silent = true,
-                mode = "i"
-            }, {"<tab>", function() require("luasnip").jump(1) end, mode = "s"},
-            {
-                "<s-tab>",
-                function() require("luasnip").jump(-1) end,
-                mode = {"i", "s"}
-            }
-        }
-    }, {
+                expr = true, silent = true, mode = "i",
+            },
+            { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+            { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+        },
+    },
+    {
         "hrsh7th/nvim-cmp",
-        event = "InsertEnter",
         version = false,
+        event = "InsertEnter",
         dependencies = {
-            {"L3MON4D3/LuaSnip"}, {"andersevenrud/cmp-tmux"}, {
-                "aspeddro/cmp-pandoc.nvim",
-                dependencies = {"nvim-lua/plenary.nvim"},
-                config = true
-            }, {"davidsierradz/cmp-conventionalcommits"},
-            {"hrsh7th/cmp-buffer"}, {"hrsh7th/cmp-calc"}, {"hrsh7th/cmp-emoji"},
-            {"hrsh7th/cmp-latex-symbols"}, {"hrsh7th/cmp-nvim-lsp"},
-            {"hrsh7th/cmp-nvim-lsp-document-symbol"}, {"hrsh7th/cmp-nvim-lua"},
-            {"lukas-reineke/cmp-under-comparator"}, {"max397574/cmp-greek"},
-            {"onsails/lspkind.nvim"}, {"petertriho/cmp-git"},
-            {"ray-x/cmp-treesitter"}, {"uga-rosa/cmp-dictionary"}
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "saadparwaiz1/cmp_luasnip",
+            "onsails/lspkind.nvim",
+            "hrsh7th/cmp-calc",
+            "hrsh7th/cmp-emoji",
         },
         opts = function()
             local cmp = require("cmp")
@@ -52,8 +44,8 @@ return {
                 },
                 snippet = {
                     expand = function(args)
-                        require("luansip").lsp_expand(args.body)
-                    end
+                        require("luasnip").lsp_expand(args.body)
+                    end,
                 },
                 window = {
                     completion = cmp.config.window.bordered(),
@@ -77,31 +69,21 @@ return {
                     })
                 }),
                 sources = cmp.config.sources({
-                    {name = 'vim-dadbod-completion'}, {name = 'calc'}
-                }, {
-                    {name = 'neorg'}, {name = 'nvim_lsp'}, {name = 'luansip'},
-                    {name = 'nvim_lua'}, {name = 'buffer'}, {name = 'tmux'},
-                }, {{name = 'latex_symbols'}, {name = 'emoji'}}, {
-                    {name = 'treesitter'}, {name = 'dictionary'},
+                    { name = "nvim_lsp" },
+                    { name = "luasnip" },
+                    { name = "buffer" },
+                    { name = "path" },
+                },{
+                     {name = 'neorg'},
+                     {name = 'calc'},
+                     {name = 'emoji'},
                 }),
-                sorting = {
-                    comparators = {
-                        cmp.config.compare.offset, cmp.config.compare.exact,
-                        cmp.config.compare.score,
-                        require("cmp-under-comparator").under,
-                        cmp.config.compare.sort_text, cmp.config.compare.kind,
-                        cmp.config.compare.length, cmp.config.compare.order
-                    }
-                },
-                view = {
-                    entries = {name = 'custom', selection_order = 'near_cursor'}
-                },
                 formatting = {
                     format = function(entry, vim_item)
                         if vim.tbl_contains({'path'}, entry.source.name) then
                             local icon, hl_group =
-                                require('nvim-web-devicons').get_icon(
-                                    entry:get_completion_item().label)
+                            require('nvim-web-devicons').get_icon(
+                                entry:get_completion_item().label)
                             if icon then
                                 vim_item.kind = icon
                                 vim_item.kind_hl_group = hl_group
@@ -109,13 +91,32 @@ return {
                             end
                         end
                         return
-                            require('lspkind').cmp_format({with_text = true})(
-                                entry, vim_item)
+                        require('lspkind').cmp_format({with_text = true})(
+                            entry, vim_item)
                     end
                 },
-                experimental = {ghost_text = {hl_group = "LspCodeLens"}}
+                -- sorting = {
+                --     comparators = {
+                --         cmp.config.compare.offset,
+                --         cmp.config.compare.exact,
+                --         cmp.config.compare.score,
+                --         require("cmp-under-comparator").under,
+                --         cmp.config.compare.sort_text,
+                --         cmp.config.compare.kind,
+                --         cmp.config.compare.length,
+                --         cmp.config.compare.order,
+                --     }
+                -- },
+                view = {
+                    entries = {name = 'custom', selection_order = 'near_cursor'}
+                },
+                experimental = {
+                    ghost_text = {
+                        hl_group = "LspCodeLens",
+                    },
+                },
             }
-        end
+        end,
     }, {
         "echasnovski/mini.pairs",
         event = "VeryLazy",
@@ -125,9 +126,9 @@ return {
         keys = function(_, keys)
             -- Populate the keys based on options
             local plugin =
-                require("lazy.core.config").spec.plugins["mini.surround"]
+            require("lazy.core.config").spec.plugins["mini.surround"]
             local opts = require("lazy.core.plugin").values(plugin, "opts",
-                                                            false)
+                false)
             local mappings = {
                 {opts.mappings.add, desc = "Add surrounding", mode = {"n", "v"}},
                 {opts.mappings.delete, desc = "Delete surrounding"},
