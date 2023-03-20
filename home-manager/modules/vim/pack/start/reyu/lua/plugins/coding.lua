@@ -79,10 +79,10 @@ return {
                 sources = cmp.config.sources({
                     {name = 'vim-dadbod-completion'}, {name = 'calc'}
                 }, {
-                    {name = 'nvim_lsp'}, {name = 'luansip'},
-                    {name = 'nvim_lua'}, {name = 'buffer'}, {name = 'tmux'}
+                    {name = 'neorg'}, {name = 'nvim_lsp'}, {name = 'luansip'},
+                    {name = 'nvim_lua'}, {name = 'buffer'}, {name = 'tmux'},
                 }, {{name = 'latex_symbols'}, {name = 'emoji'}}, {
-                    {name = 'treesitter'}, {name = 'dictionary'}
+                    {name = 'treesitter'}, {name = 'dictionary'},
                 }),
                 sorting = {
                     comparators = {

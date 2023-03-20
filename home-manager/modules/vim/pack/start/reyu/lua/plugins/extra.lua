@@ -1,9 +1,21 @@
 return {
     {
         "phaazon/mind.nvim",
+        event = "VeryLazy",
         requires = {"nvim-lua/plenary.nvim"},
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
-        opts = {edit = {data_extension = '.rst', copy_link_format = '`<%s>`_'}},
+        cmd = { "MindOpenMain", "MindOpenProject", "MindOpenSmartProject" },
+        opts = {
+            persistence = {
+                data_dir = "~/Notes",
+                state_path = "~/Notes/.state",
+            },
+            edit = {
+                data_header = '@document.meta\ntitle: %s\n@end',
+                data_extension = '.norg',
+                copy_link_format = '{:%s:}'
+            },
+        },
         keys = {
             {
                 '<Leader>mo',
@@ -31,6 +43,29 @@ return {
                 desc = "Open Mind"
             }
         }
+    }, {
+        "nvim-neorg/neorg",
+        event = "VeryLazy",
+        build = ":Neorg sync-parsers",
+        cmd = { "Neorg" },
+        ft = "norg",
+        opts = {
+            load = {
+                ["core.defaults"] = {},
+                ["core.promo"] = {},
+                ["core.norg.dirman"] = {
+                    config = {
+                        workspaces = {
+                            home = "~/Notes",
+                        },
+                    },
+                    index = "main.norg",
+                },
+                ["core.norg.concealer"] = {},
+                ["core.norg.qol.todo_items"] = {},
+                ["core.integrations.zen_mode"] = {},
+            },
+        },
     }, {
         "glacambre/firenvim",
         build = function() vim.fn['firenvim#install'](0) end,
