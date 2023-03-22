@@ -52,12 +52,24 @@
     ];
   };
 } // (
+  /* Cloud Providers
+   *
+   * Import a submodule containing various profiles distinct to a cloud
+   * provider so that the resulting name is "$PROVIDER/$PROFILE"
+   * (e.g. "linode/consul" for a consul server running on Linode)
+   */
   let
-    prefixNames = prefix: attrs: builtins.listToAttrs (map (x: { name = "${prefix}/${x}"; value = attrs.${x}; }) (builtins.attrNames attrs));
-    addProvider = name: module: prefixNames name (import module args);
-    providers = builtins.mapAttrs (name: value: { name = "A/${name}"; value = value; });
+    prefixNames = prefix: attrs: map
+      (x: {
+        name = "${prefix}/${x}";
+        value = attrs.${x};
+      })
+      (builtins.attrNames attrs);
+    providers = x: builtins.listToAttrs (builtins.concatMap
+      (n: prefixNames n (import x.${n}))
+      (builtins.attrNames x));
   in
   providers {
-    /* "linode" = ./linode; */
+    linode = ./linode;
   }
 )
