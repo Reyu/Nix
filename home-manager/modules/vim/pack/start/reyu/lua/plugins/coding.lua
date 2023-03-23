@@ -1,5 +1,6 @@
 return {
     { "tpope/vim-projectionist", event = "VeryLazy" },
+    { "rust-lang/rust.vim", ft = "rust" },
     {
         "L3MON4D3/LuaSnip",
         dependencies = {
