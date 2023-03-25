@@ -6,10 +6,11 @@
       { home-manager.users.reyu = import ../home-manager/profiles/desktop.nix; }
       consul
       flatpak
+      kmonad
       onlykey
+      qflipper
       sound
       xserver
-      kmonad
     ];
   };
   burrow = {
@@ -48,6 +49,7 @@
       }
       heads
       onlykey
+      qflipper
       kmonad
     ];
   };
