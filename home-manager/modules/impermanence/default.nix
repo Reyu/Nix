@@ -4,8 +4,7 @@
     directories = [
       ".cache/nvim"
       ".gnupg"
-      ".local/share/direnv"
-      ".local/share/keyrings"
+      ".local/share"
       ".ssh"
       "Documents"
       "Downloads"

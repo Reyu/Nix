@@ -56,20 +56,29 @@
     blender
     freecad
   ];
-  home-manager.users.reyu.wayland.windowManager.sway.config.output = {
-    DP-1 = {
-      background = "~/Pictures/Backgrounds/The\ Downbelow.jpg fill";
-      position = "3840 720 res 3440x1440";
-    };
-    DP-2 = {
-      background = "~/Pictures/Backgrounds/Locker.png fill";
-      position = "0 0 res 3840x2160";
-    };
-    DP-3 = {
-      background = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
-      position = "7280 720 res 2560x1440";
+  home-manager.users.reyu.wayland.windowManager.sway.config = {
+    startup = [
+      { command = "firefox"; }
+      { command = "firefox -P video"; }
+      { command = "telegram-desktop"; }
+      { command = "discord"; }
+    ];
+    output = {
+      DP-1 = {
+        background = "~/Pictures/Backgrounds/The\ Downbelow.jpg fill";
+        position = "3840 720 res 3440x1440";
+      };
+      DP-2 = {
+        background = "~/Pictures/Backgrounds/Locker.png fill";
+        position = "0 0 res 3840x2160";
+      };
+      DP-3 = {
+        background = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
+        position = "7280 720 res 2560x1440";
+      };
     };
   };
+
 
   services = {
     avahi.enable = true;
