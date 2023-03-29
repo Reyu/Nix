@@ -5,6 +5,6 @@
     ];
   };
   vault = {
-    modules = [];
+    modules = [ ];
   };
 }

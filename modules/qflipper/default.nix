@@ -1,4 +1,3 @@
-
 { config, pkgs, ... }: {
   config.services.udev.extraRules = ''
     #Flipper Zero serial port
