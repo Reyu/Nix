@@ -24,6 +24,8 @@
     userControlled.enable = true;
   };
 
+  security.polkit.enable = true;
+
   services = {
     tailscale.enable = true;
     zfs.autoScrub.enable = true;
