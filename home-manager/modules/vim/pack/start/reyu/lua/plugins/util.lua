@@ -12,6 +12,9 @@ return {
                 "buffers", "curdir", "tabpages", "winsize", "help", "globals"
             }
         },
+        init = function()
+            require("which-key").register({["<Leader>q"] = { name = "Sessions" }})
+        end,
         keys = {
             {
                 "<leader>qs",

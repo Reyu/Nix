@@ -39,15 +39,11 @@ return {
             }
         }
     }, {
-        "folke/twilight.nvim",
-        cmd = {"Twilight", "TwilightEnable"},
-        keys = {
-            {"<Leader>zt", function() require("twilight").toggle() end, "Toggle Twilight"},
-        },
-        opts = {dimming = {inactive = true}, context = 6}
-    }, {
         "folke/zen-mode.nvim",
         cmd = "ZenMode",
+        init = function()
+            require("which-key").register({["<Leader>z"] = { name = "ZenMode" }})
+        end,
         keys = {
             {"<Leader>zz", function() require("zen-mode").toggle() end, "Toggle Twilight"},
         },
@@ -64,6 +60,13 @@ return {
                 }
             }
         }
+    }, {
+        "folke/twilight.nvim",
+        cmd = {"Twilight", "TwilightEnable"},
+        keys = {
+            {"<Leader>zt", function() require("twilight").toggle() end, "Toggle Twilight"},
+        },
+        opts = {dimming = {inactive = true}, context = 6}
     }, {
         "rcarriga/nvim-notify",
         keys = {
@@ -89,6 +92,9 @@ return {
         "folke/noice.nvim",
         event = "VeryLazy",
         dependencies = {{"MunifTanjim/nui.nvim"}},
+        init = function()
+            require("which-key").register({["<Leader>n"] = { name = "Noice" }})
+        end,
         keys = {
             {
                 '<Leader>nl',
@@ -193,7 +199,12 @@ return {
             {
                 'romgrk/barbar.nvim',
                 dependencies = {'nvim-tree/nvim-web-devicons'}
-            }, {'jlanzarotta/bufexplorer'},
+            }, {
+                'jlanzarotta/bufexplorer',
+                init = function()
+                    require("which-key").register({["<Leader>b"] = { name = "BufExplorer" }})
+                end,
+            },
             {'sindrets/winshift.nvim', config = true}
         },
         opts = {

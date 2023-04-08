@@ -50,8 +50,8 @@ return {
                     enable = true,
                     border = 'none',
                     peek_definition_code = {
-                        ['<leader>df'] = '@function.outer',
-                        ['<leader>dF'] = '@class.outer'
+                        ['<localleader>df'] = '@function.outer',
+                        ['<localleader>dF'] = '@class.outer'
                     }
                 },
                 select = {

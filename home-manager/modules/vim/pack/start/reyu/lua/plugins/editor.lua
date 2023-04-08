@@ -16,6 +16,7 @@ return {
                                {text = ' ', texthl = 'DiagnosticSignInfo'})
             vim.fn.sign_define('DiagnosticSignHint',
                                {text = '', texthl = 'DiagnosticSignHint'})
+            require("which-key").register({["<Leader>t"] = { name = "NeoTree" }})
         end,
         opts = {
             close_if_last_window = false,
@@ -152,6 +153,9 @@ return {
             }
         end,
         cmd = "Telescope",
+        init = function()
+            require("which-key").register({["<Leader>f"] = { name = "Find" }})
+        end,
         keys = {
             {"<leader>ff", desc = "File Picker"}, {
                 '<Leader>fb',
@@ -217,6 +221,9 @@ return {
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         cmd = {"TroubleToggle", "Trouble"},
         opts = {use_diagnostic_signs = true},
+        init = function()
+            require("which-key").register({["<Leader>x"] = { name = "Trouble" }})
+        end,
         keys = {
             {
                 "<leader>xx",
@@ -281,7 +288,7 @@ return {
                 "<leader>xT",
                 "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",
                 desc = "Todo/Fix/Fixme (Trouble)"
-            }, {"<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo"}
+            }, {"<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Todo"}
         }
     }
 }

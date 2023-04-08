@@ -11,6 +11,9 @@ return {
                 copy_link_format = '{:%s:}'
             },
         },
+        init = function()
+            require("which-key").register({["<Leader>m"] = { name = "Mind" }})
+        end,
         keys = {
             {
                 '<Leader>mo',
@@ -31,7 +34,7 @@ return {
                 noremap = true,
                 desc = "Reload Mind State"
             }, {
-                '<LocalLeader>mo',
+                '<LocalLeader>m',
                 function() require('mind').open_smart_project() end,
                 silent = true,
                 noremap = true,

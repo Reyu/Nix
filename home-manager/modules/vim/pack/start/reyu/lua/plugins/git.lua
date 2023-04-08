@@ -32,6 +32,9 @@ return {
             "GUnlink",
             "GBrowse",
         },
+        init = function()
+            require("which-key").register({["<Leader>g"] = { name = "Git" }})
+        end,
         keys = {
             {
                 '<Leader>gs',
@@ -57,7 +60,9 @@ return {
         cmd = "Octo",
         init = function()
             vim.api.nvim_set_hl(0, 'OctoEditable', {bg = "#073642"})
-
+        end,
+        config = function(_, opts)
+            require('octo').setup()
             local which_key = require('which-key')
             which_key.register({
                 i = {name = "Issue"},
@@ -70,7 +75,6 @@ return {
                 s = {name = "Suggestion"},
                 v = {name = "Reviewer"}
             }, {prefix = "<LocalLeader>"})
-        end,
-        config = true,
+        end
     }
 }

@@ -140,7 +140,6 @@ return {
             },
         },
         cmd = "Mason",
-        keys = {{"<leader>cm", "<cmd>Mason<cr>", desc = "Mason"}},
         opts = {ensure_installed = {"shfmt"}},
         config = function(_, opts)
             require("mason").setup(opts)

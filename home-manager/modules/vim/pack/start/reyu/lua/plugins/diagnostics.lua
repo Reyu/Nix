@@ -1,6 +1,7 @@
 return {
     {
         "nvim-neotest/neotest",
+        cond = vim.fn.exists('g:started_by_firenvim') == 0,
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
@@ -14,6 +15,9 @@ return {
                     python = require("reyu.util").pythonPath
                 })
             }
+        end,
+        init = function()
+            require("which-key").register({["<LocalLeader>t"] = { name = "Tests" }})
         end,
         keys = {
             {"<LocalLeader>ts", function() require('neotest').summary.toggle() end, "NeoTest Summary"},
@@ -194,7 +198,7 @@ return {
                 },
                 name = 'dap',
                 mode = {'n', 'x'},
-                body = '<leader>dh',
+                body = '<localleader>dh',
                 heads = {
                     {
                         'n', function()
