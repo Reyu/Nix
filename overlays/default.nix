@@ -20,7 +20,6 @@ let
     neotest-python = prev.callPackage ../packages/neotest-python.nix { inherit inputs; };
     neotest-vim-test = prev.callPackage ../packages/neotest-vim-test.nix { inherit inputs; };
     netman = prev.callPackage ../packages/netman.nix { inherit inputs; };
-    nvim-treesitter-endwise = prev.callPackage ../packages/nvim-treesitter-endwise.nix { inherit inputs; };
     nvim-ufo = prev.callPackage ../packages/nvim-ufo.nix { inherit inputs; };
     one-small-step-for-vimkind = prev.callPackage ../packages/one-small-step-for-vimkind.nix { inherit inputs; };
     persistence-nvim = prev.callPackage ../packages/persistence-nvim.nix { inherit inputs; };

@@ -6,4 +6,5 @@
     ];
   };
   home-manager.users.root = import ../../home-manager/profiles/common.nix;
+  programs.zsh.enable = true;
 }
