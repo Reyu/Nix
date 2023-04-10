@@ -2,6 +2,8 @@
   imports = [ ./swayr.nix ];
   home.packages = with pkgs; [
     swayr
+    wlr-randr
+    wl-clipboard
   ];
   wayland.windowManager.sway =
     let
@@ -19,7 +21,7 @@
         focus.newWindow = "urgent";
         gaps = {
           outer = 5;
-          inner = 15;
+          inner = 10;
           smartBorders = "on";
         };
         startup = [

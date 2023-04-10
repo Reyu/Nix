@@ -70,15 +70,14 @@
       };
       DP-2 = {
         background = "~/Pictures/Backgrounds/Locker.png fill";
-        position = "0 0 res 3840x2160";
+        position = "7280 720 res 2560x1440";
       };
       DP-3 = {
         background = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
-        position = "7280 720 res 2560x1440";
+        position = "0 0 res 3840x2160";
       };
     };
   };
-
 
   services = {
     avahi.enable = true;
