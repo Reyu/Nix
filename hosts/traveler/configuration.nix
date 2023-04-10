@@ -16,9 +16,20 @@
     };
   };
 
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.hostName = "traveler";
   networking.hostId = "2b52ad83";
-  networking.wireless.enable = true;
+  networking.wireless = {
+    enable = true;
+    userControlled.enable = true;
+  };
+
+  security.polkit.enable = true;
+
+  services = {
+    tailscale.enable = true;
+    zfs.autoScrub.enable = true;
+  };
 
   time.timeZone = "America/New_York";
 

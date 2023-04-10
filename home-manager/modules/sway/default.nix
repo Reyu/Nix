@@ -26,10 +26,6 @@
           { command = "systemctl --user restart waybar.service"; always = true; }
           { command = "systemctl --user restart swayr.service"; always = true; }
           { command = "systemctl --user start keepassxc.service"; }
-          { command = "firefox"; }
-          { command = "firefox -P video"; }
-          { command = "telegram-desktop"; }
-          { command = "discord"; }
         ];
         keybindings = {
           "${modifier}+Return" = "exec alacritty -e tmux new -As ${curWSName}";
