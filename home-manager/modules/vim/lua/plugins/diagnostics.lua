@@ -3,27 +3,72 @@ return {
         "nvim-neotest/neotest",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter",
-            "antoinemadec/FixCursorHold.nvim",
-            "nvim-neotest/neotest-python",
-            {"folke/neodev.nvim", opts = {library = { plugins = { "neotest" }, types = true }}},
+            "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter",
+            "antoinemadec/FixCursorHold.nvim", "nvim-neotest/neotest-python"
         },
         opts = function(opts)
-            opts["adapters"] = {
+            opts.adapters = {
                 require("neotest-python")({
-                    python = require("reyu.util").pythonPath
+                    python = require("reyu.util").pythonPath()
                 })
             }
+            return opts
         end,
         init = function()
-            require("which-key").register({["<LocalLeader>t"] = { name = "Tests" }})
+            require("which-key").register({
+                ["<LocalLeader>t"] = {name = "Tests"}
+            })
         end,
         keys = {
-            {"<LocalLeader>ts", function() require('neotest').summary.toggle() end, "NeoTest Summary"},
-        },
-    },
-    {
+            {
+                "[n",
+                function()
+                    require("neotest").jump.prev({status = "failed"})
+                end,
+                desc = "Previous failed test"
+            }, {
+                "]n",
+                function()
+                    require("neotest").jump.next({status = "failed"})
+                end,
+                desc = "Next failed test"
+            }, {
+                "<LocalLeader>ts",
+                function() require('neotest').summary.toggle() end,
+                desc = "NeoTest Summary"
+            }, {
+                "<LocalLeader>tf",
+                function()
+                    require('neotest').run.run(vim.fn.expand("%"))
+                end,
+                desc = "Run tests in current file"
+            }, {
+                "<LocalLeader>tn",
+                function() require('neotest').run.run() end,
+                desc = "Run nearest test"
+            }, {
+                "<LocalLeader>tt",
+                function() require('neotest').run.run_last() end,
+                desc = "Rerun the last test"
+            }, {
+                "<LocalLeader>td",
+                function()
+                    require('neotest').run.run_last({strategy = "dap"})
+                end,
+                desc = "Rerun the last test in debugger"
+            }, {
+                "<LocalLeader>to",
+                function()
+                    require('neotest').output_panel.toggle()
+                end,
+                desc = "Toggle output pannel"
+            }, {
+                "<LocalLeader>tk",
+                function() require('neotest').run.stop() end,
+                desc = "Stop running tests"
+            }
+        }
+    }, {
         "mfussenegger/nvim-dap",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         dependencies = {
@@ -63,7 +108,8 @@ return {
             }, {
                 '<LocalLeader>dB',
                 function()
-                    require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))
+                    require('dap').set_breakpoint(vim.fn.input(
+                                                      'Breakpoint condition: '))
                 end,
                 desc = 'Set breakpoint w/ condition'
             }, {
@@ -75,8 +121,9 @@ return {
             }, {
                 '<LocalLeader>dl',
                 function()
-                    require('dap').set_breakpoint(nil, nil,
-                        vim.fn.input('Log point message: '))
+                    require('dap').set_breakpoint(nil, nil, vim.fn
+                                                      .input(
+                                                      'Log point message: '))
                 end,
                 desc = 'Set LogPoint'
             }, {
@@ -132,10 +179,7 @@ return {
         opts = {
             defaults = {
                 fallback = {
-                    external_terminal = {
-                        command = 'alacritty',
-                        args = {'-e'}
-                    }
+                    external_terminal = {command = 'alacritty', args = {'-e'}}
                 }
             },
             adapters = {
@@ -255,7 +299,7 @@ return {
         end
     }, {
         "mfussenegger/nvim-dap-python",
-        dependencies = { "mfussenegger/nvim-dap" },
+        dependencies = {"mfussenegger/nvim-dap"},
         ft = "python",
         config = function()
             local util = require('reyu.util')
@@ -263,9 +307,7 @@ return {
         end
     }, {
         "rcarriga/nvim-dap-ui",
-        dependencies = {
-            "mfussenegger/nvim-dap",
-        },
+        dependencies = {"mfussenegger/nvim-dap"},
         opts = {
             layouts = {
                 {

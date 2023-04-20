@@ -1,4 +1,4 @@
-; extend
+; extends
 (
  (string_fragment) @lua
  (#match? @lua "-- lua")

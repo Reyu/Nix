@@ -20,14 +20,27 @@
         plugin = lazy-nvim;
         type = "lua";
         config = ''
-          require('reyu.options')
-          require("lazy").setup({
-              defaults = {
-                  lazy = true,
-              },
-              import = "plugins"
+          require("reyu.options")
+          require("lazy").setup({import = "plugins"}, {
+              defaults = {lazy = true},
+              install = {missing = true, colorscheme = {"NeoSolarized"}},
+              checker = {enabled = true}
           })
         '';
+        runtime = {
+          "lua/plugins/coding.lua".source = ./lua/plugins/coding.lua;
+          "lua/plugins/diagnostics.lua".source = ./lua/plugins/diagnostics.lua;
+          "lua/plugins/editor.lua".source = ./lua/plugins/editor.lua;
+          "lua/plugins/extra.lua".source = ./lua/plugins/extra.lua;
+          "lua/plugins/git.lua".source = ./lua/plugins/git.lua;
+          "lua/plugins/init.lua".source = ./lua/plugins/init.lua;
+          "lua/plugins/lsp/init.lua".source = ./lua/plugins/lsp/init.lua;
+          "lua/plugins/lsp/keymaps.lua".source = ./lua/plugins/lsp/keymaps.lua;
+          "lua/plugins/lsp/util.lua".source = ./lua/plugins/lsp/util.lua;
+          "lua/plugins/treesitter.lua".source = ./lua/plugins/treesitter.lua;
+          "lua/plugins/ui.lua".source = ./lua/plugins/ui.lua;
+          "lua/plugins/util.lua".source = ./lua/plugins/util.lua;
+        };
       }
     ];
     extraPackages = with pkgs; [
@@ -68,6 +81,12 @@
       unzip
     ];
   };
-  # Vim package to neatly contain customizations.
-  xdg.dataFile = { "nvim/site/pack/home-manager" = { source = ./pack; }; };
+  xdg.configFile = {
+    "nvim/after/queries/nix/injections.scm".source = ./after/queries/nix/injections.scm;
+    "nvim/lua/reyu.lua".source = ./lua/reyu.lua;
+    "nvim/lua/reyu/options.lua".source = ./lua/reyu/options.lua;
+    "nvim/lua/reyu/util.lua".source = ./lua/reyu/util.lua;
+    "nvim/luasnippets/haskell.lua".source = ./luasnippets/haskell.lua;
+    "nvim/luasnippets/nvim-lua.lua".source = ./luasnippets/nvim-lua.lua;
+  };
 }
