@@ -20,7 +20,7 @@
   };
   boot.supportedFilesystems = [ "zfs" ];
   boot.kernelParams = [ "elevator=noop" ];
-  boot.tmpOnTmpfs = true;
+  boot.tmp.useTmpfs = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
 

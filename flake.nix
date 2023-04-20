@@ -18,7 +18,6 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.utils.follows = "utils";
     };
     nur.url = "github:nix-community/NUR";
     mobile-nixos = {
