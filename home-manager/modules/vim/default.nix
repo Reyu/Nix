@@ -42,6 +42,7 @@
           "lua/plugins/util.lua".source = ./lua/plugins/util.lua;
         };
       }
+      nvim-treesitter.withAllGrammars
     ];
     extraPackages = with pkgs; [
       # Language servers

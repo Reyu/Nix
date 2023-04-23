@@ -2,6 +2,69 @@ return {
     { "tpope/vim-projectionist", event = "VeryLazy" },
     { "rust-lang/rust.vim", ft = "rust" },
     {
+        "mrcjkb/haskell-tools.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+        ft = "haskell",
+        config = function(plug, opts)
+            local ht = require("haskell-tools")
+            local def_opts = { noremap = true, silent = true, }
+            ht.start_or_attach {
+                hls = {
+                    on_attach = function(client, bufnr)
+                        local opts = vim.tbl_extend('keep', def_opts, { buffer = bufnr, })
+                        opts.desc = "Run Codelens"
+                        vim.keymap.set('n', '<LocalLeader>ca', vim.lsp.codelens.run, opts)
+                        opts.desc = "Hoogle Signature"
+                        vim.keymap.set('n', '<LocalLeader>hs', ht.hoogle.hoogle_signature, opts)
+                        opts.desc = "Eval All"
+                        vim.keymap.set('n', '<LocalLeader>ea', ht.lsp.buf_eval_all, opts)
+                    end
+                }
+            }
+            vim.api.nvim_create_autocmd({'BufEnter', 'BufRead'}, {
+                pattern = {"*.hs", "*.hls"},
+                desc = "Haskell-Tools keymaps",
+                callback = function(ev)
+                    local opts = vim.tbl_extend('keep', def_opts, { buffer = ev.buf, })
+                        opts.desc = "Toggle Repl (for package)"
+                        vim.keymap.set('n', '<LocalLeader>rr', ht.repl.toggle, opts)
+                        opts.desc = "Toggle Repl (for file)"
+                        vim.keymap.set('n', '<LocalLeader>rf', function()
+                            ht.repl.toggle(vim.api.nvim_buf_get_name(0))
+                        end, opts)
+                        opts.desc = "Quit Repl"
+                        vim.keymap.set('n', '<LocalLeader>rq', ht.repl.quit, opts)
+                        ht.dap.discover_configurations(ev.buf)
+                end
+            })
+        end,
+    },
+    {
+        "luc-tielen/telescope_hoogle",
+        dependencies = {
+            {
+                "nvim-telescope/telescope.nvim",
+                opts = function(opts)
+                    require('telescope').load_extension('hoogle')
+                end,
+            },
+        },
+    },
+    {
+        "MrcJkb/telescope-manix",
+        dependencies = {
+            {
+                "nvim-telescope/telescope.nvim",
+                opts = function(opts)
+                    require('telescope').load_extension('manix')
+                end,
+            },
+        },
+    },
+    {
         "L3MON4D3/LuaSnip",
         dependencies = {
             "rafamadriz/friendly-snippets",

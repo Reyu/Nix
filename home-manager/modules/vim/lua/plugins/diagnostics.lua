@@ -3,15 +3,29 @@ return {
         "nvim-neotest/neotest",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         dependencies = {
-            "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter",
-            "antoinemadec/FixCursorHold.nvim", "nvim-neotest/neotest-python"
+            "nvim-lua/plenary.nvim",
+            {
+                "nvim-treesitter/nvim-treesitter",
+                opts = function(opts)
+                    local ei = opts.ensure_installed or {}
+                    vim.list_extend(ei, {'haskell', 'python'})
+                    opts.ensure_installed = ei
+                    return opts
+                end
+            },
+            "antoinemadec/FixCursorHold.nvim",
+            "nvim-neotest/neotest-python",
+            "mrcjkb/neotest-haskell"
         },
         opts = function(opts)
-            opts.adapters = {
+            local adapters = opts.adapters or {}
+                vim.list_extend(adapters, {
                 require("neotest-python")({
                     python = require("reyu.util").pythonPath()
-                })
-            }
+                }),
+                require("neotest-haskell"),
+            })
+            opts.adapters = adapters
             return opts
         end,
         init = function()
@@ -348,3 +362,4 @@ return {
         }
     }
 }
+

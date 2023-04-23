@@ -43,6 +43,17 @@ return {
         }
     }, {
         "nvim-neorg/neorg",
+        dependencies = {
+            {
+                "nvim-treesitter/nvim-treesitter",
+                opts = function(opts)
+                    local ei = opts.ensure_installed or {}
+                    vim.list_extend(ei, {'norg'})
+                    opts.ensure_installed = ei
+                    return opts
+                end
+            },
+        },
         build = ":Neorg sync-parsers",
         cmd = { "Neorg" },
         ft = "norg",
@@ -50,7 +61,7 @@ return {
             load = {
                 ["core.defaults"] = {},
                 ["core.promo"] = {},
-                ["core.norg.dirman"] = {
+                ["core.dirman"] = {
                     config = {
                         workspaces = {
                             home = "~/Notes",
@@ -58,8 +69,8 @@ return {
                     },
                     index = "main.norg",
                 },
-                ["core.norg.concealer"] = {},
-                ["core.norg.qol.todo_items"] = {},
+                ["core.concealer"] = {},
+                ["core.qol.todo_items"] = {},
                 ["core.integrations.zen_mode"] = {},
             },
         },
