@@ -211,8 +211,8 @@ return {
             ignored_filetypes = {'nofile', 'quickfix', 'prompt'},
             ignored_buftypes = {},
             default_amount = 3,
-            wrap_at_edge = false,
-            tmux_integration = true
+            at_edge = 'wrap',
+            multiplexer_integration = 'tmux'
         },
         keys = {
             {'<C-w>', desc = "Manage Windows"}, {'gb', desc = "Choose Buffer"},
