@@ -63,7 +63,7 @@
   let
     prefixNames = prefix: attrs: map
       (x: {
-        name = "${prefix}/${x}";
+        name = "${prefix}-${x}";
         value = attrs.${x};
       })
       (builtins.attrNames attrs);

@@ -15,9 +15,9 @@ jobs:
         with:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
           name: foxnet
-      - name: Build Loki
-        run: nix build .#nixosConfigurations.loki.config.system.build.toplevel
-      - name: Build Burrow
-        run: nix build .#nixosConfigurations.burrow.config.system.build.toplevel
-      - name: Build Traveler
-        run: nix build .#nixosConfigurations.traveler.config.system.build.toplevel
+      - name: Flake checks
+        run: nix flake check
+      - name: Build server home-manager profile
+        run: nix build .#homeConfigurations.server.activationPackage
+      - name: Build desktop home-manager profile
+        run: nix build .#homeConfigurations.desktop.activationPackage

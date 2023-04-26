@@ -24,7 +24,5 @@
   networking.useDHCP = false;
   networking.usePredictableInterfaceNames = false;
   networking.interfaces.eth0.useDHCP = true;
-
-  system.stateVersion = "21.05";
 }
 

@@ -4,7 +4,4 @@
       ./consul
     ];
   };
-  vault = {
-    modules = [ ];
-  };
 }
