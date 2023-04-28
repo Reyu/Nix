@@ -51,6 +51,12 @@ return {
                 function() require('neotest').summary.toggle() end,
                 desc = "NeoTest Summary"
             }, {
+                "<LocalLeader>ta",
+                function()
+                    require('neotest').run.run({suite = true })
+                end,
+                desc = "Run full test suite"
+            }, {
                 "<LocalLeader>tf",
                 function()
                     require('neotest').run.run(vim.fn.expand("%"))
@@ -70,6 +76,12 @@ return {
                     require('neotest').run.run_last({strategy = "dap"})
                 end,
                 desc = "Rerun the last test in debugger"
+            }, {
+                "<LocalLeader>to",
+                function()
+                    require('neotest').output.open()
+                end,
+                desc = "View output"
             }, {
                 "<LocalLeader>to",
                 function()
@@ -238,6 +250,11 @@ return {
             for index, value in ipairs(opts.configurations) do
                 vim.list_extend(dap.configurations[index], value)
             end
+
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = {"dap-repl"},
+                callback = require('dap.ext.autocompl').attach
+                })
 
             local Hydra = require("hydra")
             Hydra({

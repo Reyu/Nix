@@ -1,6 +1,4 @@
 return {
-    { "tpope/vim-projectionist", event = "VeryLazy" },
-    { "rust-lang/rust.vim", ft = "rust" },
     {
         "mrcjkb/haskell-tools.nvim",
         dependencies = {

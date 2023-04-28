@@ -54,9 +54,11 @@ return {
         }
     }, {
         "karb94/neoscroll.nvim",
+        event = "VeryLazy",
         opts = {easing_function = 'quadratic', respect_scrolloff = true}
     }, {
         "kevinhwang91/nvim-ufo",
+        event = "VeryLazy",
         dependencies = {{"kevinhwang91/promise-async"}},
         init = function()
             vim.o.foldcolumn = "1"

@@ -31,7 +31,7 @@ M.keys = {
         vim.lsp.buf.remove_workspace_folder,
         desc = 'Remove workspace folder'
     }, {
-        '<LocalLeader>wr',
+        '<LocalLeader>wl',
         vim.lsp.buf.list_workspace_folders,
         desc = 'List workspace folders'
     },

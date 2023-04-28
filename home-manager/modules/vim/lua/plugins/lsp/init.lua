@@ -17,6 +17,9 @@ return {
                 severity_sort = true
             },
             autoformat = true,
+            defaults = {
+                on_attach = require('plugins.lsp.keymaps').on_attach
+            },
             servers = {
                 jsonls = {
                     -- lazy-load schemastore when needed
@@ -110,7 +113,7 @@ return {
                 ensure_installed = ensure_installed
             })
             require("mason-lspconfig").setup_handlers({setup})
-        end
+        end,
     }, {
         "jose-elias-alvarez/null-ls.nvim",
         event = {"BufReadPre", "BufNewFile"},
@@ -149,20 +152,5 @@ return {
                 if not p:is_installed() then p:install() end
             end
         end
-    }, {
-        "lkhphuc/jupyter-kernel.nvim",
-        opts = {
-            inspect = { window = {max_width = 84} },
-            timeout = 0.5
-        },
-        cmd = "JupyterAttach",
-        build = ":UpdateRemotePlugins",
-        keys = {
-            {
-                "<leader>k",
-                "<Cmd>JupyterInspect<CR>",
-                desc = "Inspect object in kernel"
-            }
-        }
     }
 }
