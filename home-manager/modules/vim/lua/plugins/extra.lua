@@ -1,5 +1,9 @@
 return {
     {
+        "direnv/direnv.vim",
+        lazy = false,
+    },
+    {
         "phaazon/mind.nvim",
         dependencies = {"nvim-lua/plenary.nvim"},
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
