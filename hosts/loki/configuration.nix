@@ -109,6 +109,12 @@
     rocm-opencl-icd
     rocm-opencl-runtime
   ];
+  hardware.openrazer = {
+    enable = true;
+    users = [ "reyu" ];
+  };
+
+  services.openssh.allowSFTP = true;
 
   services.kmonad = {
     enable = true;
