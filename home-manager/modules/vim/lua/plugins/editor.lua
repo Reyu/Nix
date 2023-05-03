@@ -24,13 +24,17 @@ return {
             enable_git_status = true,
             enable_diagnostics = true,
             sort_case_insensitive = true,
-            hide_by_name = {
-                "__init__.py",
-            },
-            never_show = {
-                ".devenv",
-                ".direnv",
-                "__pycache__",
+            filesystem = {
+                filtered_items = {
+                    hide_by_name = {
+                        "__init__.py",
+                    },
+                    never_show = {
+                        ".devenv",
+                        ".direnv",
+                        "__pycache__",
+                    },
+                },
             },
         },
         keys = {
