@@ -5,6 +5,7 @@ return {
     },
     {
         "phaazon/mind.nvim",
+        enabled = false,
         dependencies = {"nvim-lua/plenary.nvim"},
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         cmd = { "MindOpenMain", "MindOpenProject", "MindOpenSmartProject" },
@@ -47,15 +48,11 @@ return {
         }
     }, {
         "nvim-neorg/neorg",
+        enabled = false,
         dependencies = {
             {
                 "nvim-treesitter/nvim-treesitter",
-                opts = function(opts)
-                    local ei = opts.ensure_installed or {}
-                    vim.list_extend(ei, {'norg'})
-                    opts.ensure_installed = ei
-                    return opts
-                end
+                opts = { ensure_installed = { 'norg' }, },
             },
         },
         build = ":Neorg sync-parsers",
@@ -80,6 +77,7 @@ return {
         },
     }, {
         "glacambre/firenvim",
+        enabled = false,
         build = function() vim.fn['firenvim#install'](0) end,
         keys = {{"<Esc><Esc>", vim.fn['firenvim#focus_page']}},
         init = function()

@@ -4,9 +4,10 @@
     enableBashIntegration = true;
     enableZshIntegration = true;
     settings = {
-
       username = {
         show_always = true;
+        style_user = "bold green";
+        style_root = "bold red";
       };
 
       character = {
@@ -16,8 +17,6 @@
       };
 
       nix_shell = { symbol = "❄  "; };
-
-      gcloud.disabled = true;
 
       git_status = {
         ahead = "↑";
@@ -29,13 +28,27 @@
       };
 
       directory = {
-        truncate_to_repo = false;
+        truncation_length = 4;
+        truncation_symbol = ".../";
+        truncate_to_repo = true;
+        repo_root_style = "yellow";
         fish_style_pwd_dir_length = 2;
 
         substitutions = {
           "~/Projects/FoxNet/Nix" = "<Reyu/NixOS>";
+          "Documents" = " ";
+          "Downloads" = " ";
+          "Music" = " ";
+          "Pictures" = " ";
         };
       };
+
+      cmd_duration = {
+        show_notifications = true;
+      };
+
+      sudo.disabled = false;
+      status.disabled = false;
     };
   };
 }

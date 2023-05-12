@@ -39,7 +39,6 @@
           "lua/plugins/lsp/util.lua".source = ./lua/plugins/lsp/util.lua;
           "lua/plugins/treesitter.lua".source = ./lua/plugins/treesitter.lua;
           "lua/plugins/ui.lua".source = ./lua/plugins/ui.lua;
-          "lua/plugins/util.lua".source = ./lua/plugins/util.lua;
         };
       }
       nvim-treesitter.withAllGrammars
@@ -87,6 +86,7 @@
     "nvim/lua/reyu.lua".source = ./lua/reyu.lua;
     "nvim/lua/reyu/options.lua".source = ./lua/reyu/options.lua;
     "nvim/lua/reyu/util.lua".source = ./lua/reyu/util.lua;
+    "nvim/lua/reyu/lsp/init.lua".source = ./lua/reyu/lsp/init.lua;
     "nvim/luasnippets/haskell.lua".source = ./luasnippets/haskell.lua;
     "nvim/luasnippets/nvim-lua.lua".source = ./luasnippets/nvim-lua.lua;
   };

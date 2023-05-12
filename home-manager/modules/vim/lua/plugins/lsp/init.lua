@@ -1,12 +1,56 @@
 return {
     {
+        "mrcjkb/haskell-tools.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim"
+        },
+        ft = "haskell",
+        opts = {
+            tools = {
+                hover = {stylize_markdown = true},
+                definition = {hoogle_signature_fallback = true}
+            },
+            hls = {
+                on_attach = require('plugins.lsp.keymaps').on_attach,
+                filetypes = {"haskell"}
+            }
+        },
+        config = function(plug, opts)
+            local ht = require("haskell-tools")
+            ht.setup(opts)
+            local def_opts = {noremap = true, silent = true}
+            vim.api.nvim_create_autocmd({'BufEnter', 'BufRead'}, {
+                pattern = {"*.hs", "*.hls"},
+                desc = "Haskell-Tools keymaps",
+                callback = function(ev)
+                    local opts = vim.tbl_extend('keep', def_opts,
+                                                {buffer = ev.buf})
+                    require('which-key').register({
+                        ["<LocalLeader>r"] = {name = "Repl"}
+                    })
+                    opts.desc = "Toggle Repl (for package)"
+                    vim.keymap.set('n', '<LocalLeader>rr', ht.repl.toggle, opts)
+                    opts.desc = "Toggle Repl (for file)"
+                    vim.keymap.set('n', '<LocalLeader>rf', function()
+                        ht.repl.toggle(vim.api.nvim_buf_get_name(0))
+                    end, opts)
+                    opts.desc = "Quit Repl"
+                    vim.keymap.set('n', '<LocalLeader>rq', ht.repl.quit, opts)
+                    ht.dap.discover_configurations(ev.buf)
+                end
+            })
+        end
+    }, {
         "neovim/nvim-lspconfig",
         event = {"BufReadPre", "BufNewFile"},
         dependencies = {
-            {"folke/neoconf.nvim", cmd = "Neoconf", config = true},
+            {
+                "folke/neoconf.nvim",
+                cmd = "Neoconf",
+                opts = {plugins = {jsonls = {configured_servers_only = false}}}
+            },
             {"folke/neodev.nvim", opts = {experimental = {pathStrict = true}}},
-            {"mason.nvim"},
-            {"williamboman/mason-lspconfig.nvim"},
+            {"mason.nvim"}, {"williamboman/mason-lspconfig.nvim"},
             "b0o/SchemaStore.nvim"
         },
         opts = {
@@ -17,9 +61,7 @@ return {
                 severity_sort = true
             },
             autoformat = true,
-            defaults = {
-                on_attach = require('plugins.lsp.keymaps').on_attach
-            },
+            defaults = {on_attach = require('plugins.lsp.keymaps').on_attach},
             servers = {
                 jsonls = {
                     -- lazy-load schemastore when needed
@@ -45,21 +87,12 @@ return {
                         }
                     }
                 },
-                hls = {
-                    mason = false,
-                    settings = {
-                        haskell = {
-                            filetypes = { 'haskell', 'lhaskell', 'cabal' },
-                            cmd = "haskell-language-server",
-                        },
-                    },
-                },
                 bashls = {},
                 dockerls = {},
                 html = {},
                 pyright = {},
                 vimls = {},
-                yamlls = {}
+                yamlls = {settings = {yaml = {keyOrdering = false}}}
             },
             setup = {}
         },
@@ -113,7 +146,7 @@ return {
                 ensure_installed = ensure_installed
             })
             require("mason-lspconfig").setup_handlers({setup})
-        end,
+        end
     }, {
         "jose-elias-alvarez/null-ls.nvim",
         event = {"BufReadPre", "BufNewFile"},
@@ -140,7 +173,7 @@ return {
             {
                 "jayp0521/mason-nvim-dap.nvim",
                 dependencies = {"mfussenegger/nvim-dap"}
-            },
+            }
         },
         cmd = "Mason",
         opts = {ensure_installed = {"shfmt"}},

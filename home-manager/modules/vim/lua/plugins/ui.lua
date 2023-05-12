@@ -4,9 +4,8 @@ local window_hint = [[
 ^ ^ _k_ ^ ^  ^ ^ _K_ ^ ^   ^   _<C-k>_   ^   _s_: horizontally
 _h_ ^ ^ _l_  _H_ ^ ^ _L_   _<C-h>_ _<C-l>_   _v_: vertically
 ^ ^ _j_ ^ ^  ^ ^ _J_ ^ ^   ^   _<C-j>_   ^   _q_, _c_: close
-focus^^^^^^  window^^^^^^  ^_=_: equalize^   _z_: maximize
-^ ^ ^ ^ ^ ^  ^ ^ ^ ^ ^ ^   ^^ ^          ^   _o_: remain only
-_b_: choose buffer
+focus^^^^^^  window^^^^^^  ^_=_: equalize^   _o_: remain only
+     ^^^^^^        ^^^^^^  ^             ^   _z_: zoom
 ]]
 
 -- moving between splits
@@ -22,7 +21,7 @@ return {
         "Tsuzat/NeoSolarized.nvim",
         priority = 1000,
         lazy = false,
-        config = function() vim.cmd([[colorscheme NeoSolarized]]) end,
+        config = function() vim.cmd('colorscheme NeoSolarized') end,
         opts = {
             style = 'dark',
             transparent = true,
@@ -40,12 +39,13 @@ return {
         }
     }, {
         "folke/zen-mode.nvim",
+        enabled = false,
         cmd = "ZenMode",
         init = function()
             require("which-key").register({["<Leader>z"] = { name = "ZenMode" }})
         end,
         keys = {
-            {"<Leader>zz", function() require("zen-mode").toggle() end, "Toggle Twilight"},
+            {"<Leader>zz", function() require("zen-mode").toggle() end, desc = "Toggle ZenMode"},
         },
         opts = {
             window = {
@@ -62,9 +62,10 @@ return {
         }
     }, {
         "folke/twilight.nvim",
+        enabled = false,
         cmd = {"Twilight", "TwilightEnable"},
         keys = {
-            {"<Leader>zt", function() require("twilight").toggle() end, "Toggle Twilight"},
+            {"<Leader>zt", function() require("twilight").toggle() end, desc = "Toggle Twilight"},
         },
         opts = {dimming = {inactive = true}, context = 6}
     }, {
@@ -197,9 +198,6 @@ return {
         "mrjones2014/smart-splits.nvim",
         dependencies = {
             {
-                'romgrk/barbar.nvim',
-                dependencies = {'nvim-tree/nvim-web-devicons'}
-            }, {
                 'jlanzarotta/bufexplorer',
                 init = function()
                     require("which-key").register({["<Leader>b"] = { name = "BufExplorer" }})
@@ -265,65 +263,6 @@ return {
             local cmd = require('hydra.keymap-util').cmd
             local pcmd = require('hydra.keymap-util').pcmd
 
-            local buffer_hydra = Hydra({
-                name = 'Barbar',
-                config = {
-                    on_key = function()
-                        vim.wait(200, function()
-                            vim.cmd.redraw()
-                            return true
-                        end, 30, false)
-                    end
-                },
-                heads = {
-                    {
-                        'h', function()
-                            vim.cmd('BufferPrevious')
-                        end, {on_key = false}
-                    },
-                    {
-                        'l', function()
-                            vim.cmd('BufferNext')
-                        end, {desc = 'choose', on_key = false}
-                    }, {'H', function()
-                        vim.cmd('BufferMovePrevious')
-                    end},
-                    {
-                        'L', function()
-                            vim.cmd('BufferMoveNext')
-                        end, {desc = 'move'}
-                    },
-
-                    {'p', function() vim.cmd('BufferPin') end, {desc = 'pin'}},
-
-                    {
-                        'd', function()
-                            vim.cmd('BufferClose')
-                        end, {desc = 'close'}
-                    },
-                    {'c', function() vim.cmd('BufferClose') end, {desc = false}},
-                    {'q', function() vim.cmd('BufferClose') end, {desc = false}},
-
-                    {
-                        'od', function()
-                            vim.cmd('BufferOrderByDirectory')
-                        end, {desc = 'by directory'}
-                    },
-                    {
-                        'ol', function()
-                            vim.cmd('BufferOrderByLanguage')
-                        end, {desc = 'by language'}
-                    }, {'<Esc>', nil, {exit = true}}
-                }
-            })
-
-            local function choose_buffer()
-                if #vim.fn.getbufinfo({buflisted = true}) > 1 then
-                    buffer_hydra:activate()
-                end
-            end
-            vim.keymap.set('n', 'gb', choose_buffer)
-
             Hydra({
                 name = 'Windows',
                 hint = window_hint,
@@ -361,15 +300,9 @@ return {
 
                     {
                         'z', cmd 'WindowsMaximaze',
-                        {exit = true, desc = 'maximize'}
-                    },
-                    {
-                        '<C-z>', cmd 'WindowsMaximaze',
                         {exit = true, desc = false}
                     }, {'o', '<C-w>o', {exit = true, desc = 'remain only'}},
                     {'<C-o>', '<C-w>o', {exit = true, desc = false}},
-
-                    {'b', choose_buffer, {exit = true, desc = 'choose buffer'}},
 
                     {'c', pcmd('close', 'E444')},
                     {'q', pcmd('close', 'E444'), {desc = 'close window'}},
@@ -448,6 +381,7 @@ return {
         end
     }, {
         "lukas-reineke/indent-blankline.nvim",
+        enabled = false,
         event = {"BufReadPost", "BufNewFile"},
         opts = {
             char = "│",
@@ -459,9 +393,11 @@ return {
         }
     }, {
         "echasnovski/mini.indentscope",
+        enabled = false,
         version = false,
         event = {"BufReadPre", "BufNewFile"},
-        opts = {symbol = "│", options = {try_as_border = true}},
+        opts = {symbol = "│", options = {try_as_border = false}},
+        main = "mini.indentscope",
         init = function()
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = {
@@ -473,9 +409,6 @@ return {
                 end
             })
         end,
-        config = function(_, opts)
-            require("mini.indentscope").setup(opts)
-        end
     }, {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
@@ -556,5 +489,6 @@ return {
                 extensions = {"man", "quickfix"}
             }
         end
-    }, {"nvim-tree/nvim-web-devicons", lazy = true}
+    },
+    {"nvim-tree/nvim-web-devicons", lazy = true}
 }

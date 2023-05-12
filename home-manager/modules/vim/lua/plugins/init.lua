@@ -1,73 +1,9 @@
--- Helper functions for Hydra
-local toggleOpt = function(opt, trueVal, falseVal)
-    local _trueVal = trueVal or true
-    local _falseVal = falseVal or false
-    return function()
-        if vim.o[opt] == _trueVal then
-            vim.o[opt] = _falseVal
-        else
-            vim.o[opt] = _trueVal
-        end
-    end
-end
-
-local displayOpt = function(opt, trueVal)
-    local _trueVal = trueVal or true
-    return function()
-        if vim.o[opt] == _trueVal then
-            return "[x]"
-        else
-            return "[ ]"
-        end
-    end
-end
+local util = require('reyu.util')
+local toggleOpt = util.toggleOpt
+local displayOpt = util.displayOpt
 
 return {
     {
-        "Tsuzat/NeoSolarized.nvim",
-        priority = 1000,
-        lazy = false,
-        init = function()
-            vim.o.termguicolors = true
-            vim.cmd([[colorscheme NeoSolarized]])
-        end,
-        opts = {
-            style = 'dark',
-            transparent = true,
-            terminal_colors = true,
-            enable_italics = true,
-            styles = {
-                comments = {italic = true},
-                keywords = {italic = true},
-                functions = {bold = true},
-                variables = {},
-                string = {italic = true},
-                underline = true,
-                undercurl = true
-            }
-        }
-    }, {
-        "folke/twilight.nvim",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
-        cmd = {"Twilight", "TwilightEnable"},
-        opts = {dimming = {inactive = true}, context = 6}
-    }, {
-        "folke/zen-mode.nvim",
-        lazy = true,
-        opts = {
-            window = {
-                backdrop = 1,
-                width = 120,
-                height = 1,
-                options = {
-                    number = false,
-                    relativenumber = true,
-                    cursorline = false,
-                    cursorcolumn = false
-                }
-            }
-        }
-    }, {
         "folke/which-key.nvim",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         opts = {
@@ -90,14 +26,14 @@ return {
                 hint = [[
 ^ ^      Options
 ^
-_c_ %{c} cursor line
-_i_ %{i} invisible characters
-_n_ %{n} number
-_r_ %{r} relative number
-_s_ %{s} spell
-_v_ %{v} virtual edit
-_w_ %{w} wrap
-_t_ %{t} diagnostic virtual text
+%{c} _c_ursor line
+%{i} _i_nvisible characters
+%{n} _n_umber
+%{r} _r_elative number
+%{s} _s_pell
+%{v} _v_irtual edit
+%{w} _w_rap
+%{t} diagnostic virtual _t_ext
 ^
 ^ ^ _<Esc>_ or _q_ to quit
 ]],
@@ -117,9 +53,9 @@ _t_ %{t} diagnostic virtual text
                             w = displayOpt('wrap'),
                             t = function()
                                 if vim.diagnostic.config().virtual_text then
-                                    return "[x]"
+                                    return "🟢"
                                 else
-                                    return "[ ]"
+                                    return "🔴"
                                 end
                             end
                         }
@@ -145,18 +81,54 @@ _t_ %{t} diagnostic virtual text
                 }
             })
         end
-    }
+    },
+    {
+        "dstein64/vim-startuptime",
+        cmd = "StartupTime",
+        config = function() vim.g.startuptime_tries = 10 end
+    },
+    {
+        "folke/persistence.nvim",
+        event = "BufReadPre",
+        opts = {
+            options = {
+                "buffers", "curdir", "tabpages", "winsize", "help", "globals"
+            }
+        },
+        init = function()
+            require("which-key").register({["<Leader>q"] = { name = "Sessions" }})
+        end,
+        keys = {
+            {
+                "<leader>qs",
+                function() require("persistence").load() end,
+                desc = "Restore Session"
+            }, {
+                "<leader>ql",
+                function()
+                    require("persistence").load({last = true})
+                end,
+                desc = "Restore Last Session"
+            }, {
+                "<leader>qd",
+                function() require("persistence").stop() end,
+                desc = "Don't Save Current Session"
+            }
+        }
+    },
+    {"tpope/vim-repeat", event = "VeryLazy"},
+    {"norcalli/nvim-terminal.lua", config = true},
+    {
+        "andymass/vim-matchup",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            opts = function (opts)
+                opts["matchup"] = {enable = true}
+            end
+        },
+        event = "BufReadPost",
+        config = function()
+            vim.g.matchup_matchparen_offscreen = { method = "status_manual" }
+        end,
+    },
 }
-
--- which_key.register({ ['<Leader>n'] = { name = 'Notifications' } })
--- which_key.register({ ['<Leader>m'] = { name = 'Minimap' } })
--- which_key.register({ ['<Leader>s'] = { name = 'Sessions' } })
--- which_key.register({ ['<Leader>t'] = { name = 'NeoTree' } })
--- which_key.register({ ['<Leader>f'] = { name = 'Find' } })
-
--- which_key.register({ ['<LocalLeader>t'] = { name = 'Project Tests' } })
--- which_key.register({ ['<LocalLeader>x'] = { name = 'Trouble' } })
--- which_key.register({ ['<LocalLeader>g'] = { name = 'Goto' } })
--- which_key.register({ ['<LocalLeader>r'] = { name = 'Refactor' } }, { mode = "n" })
--- which_key.register({ ['<LocalLeader>r'] = { name = 'Refactor' } }, { mode = "v" })
-

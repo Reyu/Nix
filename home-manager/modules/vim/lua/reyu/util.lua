@@ -12,4 +12,27 @@ function M.pythonPath()
     end
 end
 
+-- Helper functions for Hydra
+function M.toggleOpt(opt, trueVal, falseVal)
+    local _trueVal = trueVal or true
+    local _falseVal = falseVal or false
+    return function()
+        if vim.o[opt] == _trueVal then
+            vim.o[opt] = _falseVal
+        else
+            vim.o[opt] = _trueVal
+        end
+    end
+end
+function M.displayOpt(opt, trueVal)
+    local _trueVal = trueVal or true
+    return function()
+        if vim.o[opt] == _trueVal then
+            return "🟢" -- Enabled
+        else
+            return "🔴" -- Disabled
+        end
+    end
+end
+
 return M

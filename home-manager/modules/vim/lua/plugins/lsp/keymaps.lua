@@ -13,7 +13,7 @@ end
 
 M.keys = {
     {'gD', vim.lsp.buf.declaration, desc = 'Goto Declaration'},
-    {'gd', '<Cmd>Trouble lsp_type_definitions<CR>', desc = 'Goto Definition'},
+{'gd', '<Cmd>Trouble lsp_type_definitions<CR>', desc = 'Goto Definition'},
     {'gi', '<Cmd>Trouble lsp_implementations<CR>', desc = 'Goto Implementation'},
     {'gr', '<Cmd>Trouble lsp_references<CR>', desc = 'Goto References'}, {
         'K',
@@ -37,33 +37,38 @@ M.keys = {
     },
     {'<LocalLeader>D', vim.lsp.buf.type_definition, desc = 'Type definition'},
     {'<LocalLeader>p', peekDefinition, desc = 'Peek definition'},
-
-    {'<LocalLeader>rn', vim.lsp.buf.rename, desc = 'Rename symbol'},
+    {'<LocalLeader>z', vim.lsp.buf.rename, desc = 'Rename symbol'},
     {
         '<LocalLeader>e',
         vim.diagnostic.open_float,
         desc = 'Show line diagnostics'
     },
     {'<LocalLeader>q', vim.diagnostic.setloclist, desc = 'Set location list'},
-    {'<LocalLeader>a', vim.lsp.buf.code_action, desc = 'Run code actions'},
+    {'<LocalLeader>ca', vim.lsp.buf.code_action, desc = 'Run code actions'},
+    {'<LocalLeader>cl', vim.lsp.codelens.run, desc = 'Run Codelens'},
     {'<LocalLeader>s', vim.lsp.buf.signature_help, desc = 'Signature help'}, {
         '<LocalLeader>f',
         vim.lsp.buf.format,
         desc = 'Run formatter',
-        has = "document_formatting"
     }, {
         '<LocalLeader>f',
         vim.lsp.buf.range_format,
         desc = 'Run formatter',
-        has = "document_range_formatting"
+    }, {
+        '<LocalLeader>h',
+        function()
+            require('haskell-tools').hoogle.hoogle_signature()
+        end,
+        desc = 'Hoogle Signature'
     }
 }
 
 function M.on_attach(client, bufnr)
+    vim.print('LSP ATTACH')
+    require('which-key').register({['<LocalLeader>c'] = {name = "+code"}},
+        {buffer = bufnr})
     require('which-key').register({['<LocalLeader>w'] = {name = "+workspace"}},
-                                  {buffer = bufnr})
-    require('which-key').register({['<LocalLeader>r'] = {name = "+refactor"}},
-                                  {buffer = bufnr})
+        {buffer = bufnr})
 
     local Keys = require("lazy.core.handler.keys")
     local keymaps = {}

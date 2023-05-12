@@ -1,6 +1,7 @@
 -- ############# --
 -- NeoVim Config --
 -- ############# --
+
 -- Use GUI colors for terminal
 vim.o.termguicolors = true
 
@@ -14,12 +15,6 @@ vim.o.mouse = ""
 -- Turn on mode lines
 vim.o.modeline = true
 vim.o.modelines = 3
-
--- Show the first layer of folds by default
-vim.o.foldlevel = 1
-
--- Show the cursorline, so I don't get lost
-vim.o.cursorline = true
 
 -- Configure line numbers
 vim.o.number = true
@@ -45,8 +40,8 @@ vim.o.sidescrolloff = 5
 
 -- Tell Vim which characters to show for expanded TABs,
 -- trailing whitespace, and end-of-lines.
-vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:+"
 vim.o.list = true
+vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:+"
 
 -- Files, backups and undo
 -- Keep backups in cache folder, so as not to clutter filesystem.
@@ -55,7 +50,7 @@ vim.o.writebackup = true
 vim.o.undofile = true
 
 vim.o.directory = vim.fn.stdpath("cache") .. "/swap//"
-vim.o.backupdir = vim.fn.stdpath("cache") .. "/backups//"
+vim.o.backupdir = vim.fn.stdpath("state") .. "/backups//"
 vim.o.undodir = vim.fn.stdpath("state") .. "/undo//"
 
 -- Autocommands

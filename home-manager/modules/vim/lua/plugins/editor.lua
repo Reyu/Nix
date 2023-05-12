@@ -9,11 +9,11 @@ return {
         init = function()
             vim.g.neo_tree_remove_legacy_commands = 1
             vim.fn.sign_define('DiagnosticSignError',
-                               {text = ' ', texthl = 'DiagnosticSignError'})
+                               {text = '', texthl = 'DiagnosticSignError'})
             vim.fn.sign_define('DiagnosticSignWarn',
-                               {text = ' ', texthl = 'DiagnosticSignWarn'})
+                               {text = '', texthl = 'DiagnosticSignWarn'})
             vim.fn.sign_define('DiagnosticSignInfo',
-                               {text = ' ', texthl = 'DiagnosticSignInfo'})
+                               {text = '', texthl = 'DiagnosticSignInfo'})
             vim.fn.sign_define('DiagnosticSignHint',
                                {text = '', texthl = 'DiagnosticSignHint'})
             require("which-key").register({["<Leader>t"] = { name = "NeoTree" }})
@@ -236,23 +236,23 @@ return {
         cmd = {"TroubleToggle", "Trouble"},
         opts = {use_diagnostic_signs = true},
         init = function()
-            require("which-key").register({["<Leader>x"] = { name = "Trouble" }})
+            require("which-key").register({["<LocalLeader>x"] = { name = "Trouble" }})
         end,
         keys = {
             {
-                "<leader>xx",
+                "<LocalLeader>xx",
                 "<cmd>TroubleToggle document_diagnostics<cr>",
                 desc = "Document Diagnostics (Trouble)"
             }, {
-                "<leader>xX",
+                "<LocalLeader>xX",
                 "<cmd>TroubleToggle workspace_diagnostics<cr>",
                 desc = "Workspace Diagnostics (Trouble)"
             }, {
-                "<leader>xL",
+                "<LocalLeader>xL",
                 "<cmd>TroubleToggle loclist<cr>",
                 desc = "Location List (Trouble)"
             }, {
-                "<leader>xQ",
+                "<LocalLeader>xQ",
                 "<cmd>TroubleToggle quickfix<cr>",
                 desc = "Quickfix List (Trouble)"
             }, {
@@ -297,12 +297,12 @@ return {
                 "[t",
                 function() require("todo-comments").jump_prev() end,
                 desc = "Previous todo comment"
-            }, {"<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)"},
+            }, {"<LocalLeader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)"},
             {
-                "<leader>xT",
+                "<LocalLeader>xT",
                 "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",
                 desc = "Todo/Fix/Fixme (Trouble)"
-            }, {"<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Todo"}
+            }, {"<Leader>ft", "<cmd>TodoTelescope<cr>", desc = "Todo"}
         }
     }
 }

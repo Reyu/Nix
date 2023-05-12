@@ -1,17 +1,13 @@
 return {
     {
         "nvim-neotest/neotest",
+        enabled = false,
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         dependencies = {
             "nvim-lua/plenary.nvim",
             {
                 "nvim-treesitter/nvim-treesitter",
-                opts = function(opts)
-                    local ei = opts.ensure_installed or {}
-                    vim.list_extend(ei, {'haskell', 'python'})
-                    opts.ensure_installed = ei
-                    return opts
-                end
+                opts = { ensure_installed = { 'haskell', 'python' }, },
             },
             "antoinemadec/FixCursorHold.nvim",
             "nvim-neotest/neotest-python",
@@ -108,7 +104,14 @@ return {
                         'dap-repl', 'dapui_watches', 'dapui_hover'
                     }, {sources = {{name = 'dap'}}})
                 end
-            }
+            }, {
+                "nvim-treesitter/nvim-treesitter",
+                opts = { ensure_installed = { 'dap_repl' }, },
+                dependencies = {
+                    "LiadOz/nvim-dap-repl-highlights",
+                    config = true,
+                },
+            },
         },
         keys = {
             {
@@ -178,7 +181,7 @@ return {
                 numhl = ''
             })
             vim.fn.sign_define('DapBreakpointCondition', {
-                text = '⭕',
+                text = '🚦',
                 texthl = 'DiagnosticInfo',
                 linehl = '',
                 numhl = ''
