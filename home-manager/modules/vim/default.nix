@@ -23,7 +23,7 @@
           require("reyu.options")
           require("lazy").setup({import = "plugins"}, {
               defaults = {lazy = true},
-              install = {missing = true, colorscheme = {"NeoSolarized"}},
+              install = {missing = true, colorscheme = {"github_dark"}},
               checker = {enabled = true}
           })
         '';

@@ -38,6 +38,16 @@ return {
             }
         }
     }, {
+        "projekt0n/github-nvim-theme",
+        lazy = false,
+        main = "github-theme",
+        priority = 1000,
+        opts = {
+            options = {
+                transparent = true,
+            },
+        },
+    }, {
         "folke/zen-mode.nvim",
         enabled = false,
         cmd = "ZenMode",
