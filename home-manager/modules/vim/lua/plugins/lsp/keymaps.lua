@@ -13,7 +13,7 @@ end
 
 M.keys = {
     {'gD', vim.lsp.buf.declaration, desc = 'Goto Declaration'},
-{'gd', '<Cmd>Trouble lsp_type_definitions<CR>', desc = 'Goto Definition'},
+    {'gd', '<Cmd>Trouble lsp_type_definitions<CR>', desc = 'Goto Definition'},
     {'gi', '<Cmd>Trouble lsp_implementations<CR>', desc = 'Goto Implementation'},
     {'gr', '<Cmd>Trouble lsp_references<CR>', desc = 'Goto References'}, {
         'K',
@@ -32,7 +32,9 @@ M.keys = {
         desc = 'Remove workspace folder'
     }, {
         '<LocalLeader>wl',
-        vim.lsp.buf.list_workspace_folders,
+        function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+        end,
         desc = 'List workspace folders'
     },
     {'<LocalLeader>D', vim.lsp.buf.type_definition, desc = 'Type definition'},
@@ -64,7 +66,6 @@ M.keys = {
 }
 
 function M.on_attach(client, bufnr)
-    vim.print('LSP ATTACH')
     require('which-key').register({['<LocalLeader>c'] = {name = "+code"}},
         {buffer = bufnr})
     require('which-key').register({['<LocalLeader>w'] = {name = "+workspace"}},

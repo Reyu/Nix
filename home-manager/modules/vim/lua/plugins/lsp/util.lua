@@ -19,3 +19,4 @@ function M.on_attach(client, bufnr)
     require("plugins.lsp.keymaps").on_attach(client, bufnr)
 end
 
+return M

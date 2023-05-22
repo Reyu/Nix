@@ -61,7 +61,7 @@ return {
                 severity_sort = true
             },
             autoformat = true,
-            defaults = {on_attach = require('plugins.lsp.keymaps').on_attach},
+            defaults = {on_attach = require('plugins.lsp.util').on_attach},
             servers = {
                 jsonls = {
                     -- lazy-load schemastore when needed
