@@ -1,6 +1,13 @@
 return {
     {"direnv/direnv.vim", lazy = false},
     {
+        "nullchilly/fsread.nvim",
+        cmds = {
+            "FSRead",
+            "FSClear",
+            "FSToggle"
+        }
+    }, {
         "phaazon/mind.nvim",
         enabled = false,
         dependencies = {"nvim-lua/plenary.nvim"},
