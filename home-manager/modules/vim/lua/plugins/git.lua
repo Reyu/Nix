@@ -56,6 +56,24 @@ return {
             }
         }
     }, {
+        "TimUntersberger/neogit",
+        dependencies = {'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim'},
+        event = "VeryLazy",
+        opts = {
+            disable_commit_confirmation = true,
+            integrations = {diffview = true}
+        },
+        cmd = {"Neogit"},
+        keys = {
+            {
+                "<LocalLeader>gn",
+                function() require('neogit').open() end,
+                desc = "Open Neogit",
+                silent = true,
+                noremap = true
+            }
+        }
+    }, {
         "pwntester/octo.nvim",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         dependencies = {
