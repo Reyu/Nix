@@ -320,12 +320,12 @@
         })
         (builtins.attrNames (builtins.readDir ./home-manager/modules)));
 
-      checks =
+      checks = with builtins;
         # Checks to run with `nix flake check -L`, will run in a QEMU VM.
         # Looks for all ./modules/<module name>/test.nix files and adds them to
         # the flake's checks output. The test.nix file is optional and may be
         # added to any module.
-        builtins.listToAttrs (map
+        listToAttrs (map
           (x: {
             name = x;
             value = (import ./modules/${x}/test.nix) {
@@ -335,8 +335,8 @@
           })
           # Filter list of modules, leaving only modules which contain a
           # `test.nix` file
-          (builtins.filter
-            (p: builtins.pathExists (./modules/${p}/test.nix))
-            (builtins.attrNames (builtins.readDir ./modules))));
+          (filter
+            (p: pathExists (./modules/${p}/test.nix))
+            (attrNames (readDir ./modules))));
     };
 }
