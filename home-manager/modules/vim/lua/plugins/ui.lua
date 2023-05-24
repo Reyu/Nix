@@ -19,9 +19,6 @@ end
 return {
     {
         "Tsuzat/NeoSolarized.nvim",
-        priority = 1000,
-        lazy = false,
-        config = function() vim.cmd('colorscheme NeoSolarized') end,
         opts = {
             style = 'dark',
             transparent = true,
@@ -40,13 +37,16 @@ return {
     }, {
         "projekt0n/github-nvim-theme",
         lazy = false,
-        main = "github-theme",
         priority = 1000,
         opts = {
             options = {
                 transparent = true,
             },
         },
+        config = function(plugin, opts)
+            require('github-theme').setup(opts)
+            vim.cmd([[ colorscheme github_dark ]])
+        end,
     }, {
         "folke/zen-mode.nvim",
         enabled = false,
@@ -426,7 +426,6 @@ return {
             return {
                 options = {
                     icons_enabled = true,
-                    theme = "NeoSolarized",
                     component_separators = {left = "", right = ""},
                     section_separators = {left = "", right = ""},
                     disabled_filetypes = {"dashboard", "lazy"},

@@ -82,7 +82,8 @@
     ];
   };
   xdg.configFile = {
-    "nvim/after/queries/nix/injections.scm".source = ./after/queries/nix/injections.scm;
+    "nvim/after/queries/nix/injections.scm".source =
+      ./after/queries/nix/injections.scm;
     "nvim/lua/reyu.lua".source = ./lua/reyu.lua;
     "nvim/lua/reyu/options.lua".source = ./lua/reyu/options.lua;
     "nvim/lua/reyu/util.lua".source = ./lua/reyu/util.lua;

@@ -52,29 +52,25 @@ return {
         dependencies = {
             {
                 "nvim-treesitter/nvim-treesitter",
-                opts = { ensure_installed = { 'norg' }, },
-            },
+                opts = {ensure_installed = {'norg'}}
+            }
         },
         build = ":Neorg sync-parsers",
-        cmd = { "Neorg" },
+        cmd = {"Neorg"},
         ft = "norg",
         opts = {
             load = {
                 ["core.defaults"] = {},
                 ["core.promo"] = {},
                 ["core.dirman"] = {
-                    config = {
-                        workspaces = {
-                            home = "~/Notes",
-                        },
-                    },
-                    index = "main.norg",
+                    config = {workspaces = {home = "~/Notes"}},
+                    index = "main.norg"
                 },
                 ["core.concealer"] = {},
                 ["core.qol.todo_items"] = {},
-                ["core.integrations.zen_mode"] = {},
-            },
-        },
+                ["core.integrations.zen_mode"] = {}
+            }
+        }
     }, {
         "glacambre/firenvim",
         enabled = false,
