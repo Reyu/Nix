@@ -113,5 +113,69 @@ return {
                 })
             end
         end
+    }, {
+        "kndndrj/nvim-dbee",
+        dependencies = {"MunifTanjim/nui.nvim"},
+        main = "dbee",
+        build = function() require("dbee").install() end,
+        init = function()
+            require('which-key').register({['<Leader>d'] = "+DBee"}, {})
+        end,
+        config = true;
+        keys = {
+            {
+                "<Leader>do",
+                function() require('dbee').open() end,
+                desc = 'Open',
+                silent = true,
+                noremap = true
+            }, {
+                "<Leader>dc",
+                function() require('dbee').close() end,
+                desc = 'Close',
+                silent = true,
+                noremap = true
+            }, {
+                "<Leader>dn",
+                function() require('dbee').next() end,
+                desc = 'Next Page',
+                silent = true,
+                noremap = true
+            }, {
+                "<Leader>dp",
+                function() require('dbee').prev() end,
+                desc = 'Prev Page',
+                silent = true,
+                noremap = true
+            }, {
+                "<Leader>dq",
+                function() require('dbee').execute(vim.input()) end,
+                desc = 'Query',
+                silent = true,
+                noremap = true
+            }
+        }
+    }, {
+        "kndndrj/nvim-projector",
+        dependencies = {
+            'mfussenegger/nvim-dap', 'rcarriga/nvim-dap-ui',
+            'nvim-tree/nvim-web-devicons', 'kndndrj/projector-loader-vscode'
+        },
+        opts = {
+            outputs = {
+                task = {module = "builtin", options = nil},
+                debug = {module = "dap", options = nil},
+                database = {module = "dbee", options = nil}
+            }
+        },
+        keys = {
+            {
+                "<Leader>s",
+                function() require('projector').continue() end,
+                desc = 'Continue',
+                noremap = true,
+                silent = true
+            }
+        }
     }
 }
