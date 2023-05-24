@@ -1,23 +1,20 @@
 return {
-    {
-        "direnv/direnv.vim",
-        lazy = false,
-    },
+    {"direnv/direnv.vim", lazy = false},
     {
         "phaazon/mind.nvim",
         enabled = false,
         dependencies = {"nvim-lua/plenary.nvim"},
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
-        cmd = { "MindOpenMain", "MindOpenProject", "MindOpenSmartProject" },
+        cmd = {"MindOpenMain", "MindOpenProject", "MindOpenSmartProject"},
         opts = {
             edit = {
                 data_header = '@document.meta\ntitle: %s\n@end',
                 data_extension = '.norg',
                 copy_link_format = '{:%s:}'
-            },
+            }
         },
         init = function()
-            require("which-key").register({["<Leader>m"] = { name = "Mind" }})
+            require("which-key").register({["<Leader>m"] = {name = "Mind"}})
         end,
         keys = {
             {

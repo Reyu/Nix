@@ -69,36 +69,14 @@ return {
         "tpope/vim-fugitive",
         cond = vim.fn.exists('g:started_by_firenvim') == 0,
         cmd = {
-            "G",
-            "Git",
-            "Ggrep",
-            "Glgrep",
-            "Gclog",
-            "Gllog",
-            "Gcd",
-            "Glcd",
-            "Gedit",
-            "Gsplit",
-            "Gvsplit",
-            "Gtabedit",
-            "Gpedit",
-            "Gdrop",
-            "Gread",
-            "Gwrite",
-            "Gw",
-            "Gwq",
-            "Gdiffsplit",
-            "Gvdiffsplit",
-            "Ghdiffsplit",
-            "GMove",
-            "GRename",
-            "GDelete",
-            "GRemote",
-            "GUnlink",
-            "GBrowse",
+            "G", "Git", "Ggrep", "Glgrep", "Gclog", "Gllog", "Gcd", "Glcd",
+            "Gedit", "Gsplit", "Gvsplit", "Gtabedit", "Gpedit", "Gdrop",
+            "Gread", "Gwrite", "Gw", "Gwq", "Gdiffsplit", "Gvdiffsplit",
+            "Ghdiffsplit", "GMove", "GRename", "GDelete", "GRemote", "GUnlink",
+            "GBrowse"
         },
         init = function()
-            require("which-key").register({["<Leader>g"] = { name = "Git" }})
+            require("which-key").register({["<Leader>g"] = {name = "Git"}})
         end,
         keys = {
             {
