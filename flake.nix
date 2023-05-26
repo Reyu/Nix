@@ -9,7 +9,6 @@
     devshell = {
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "utils";
     };
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
@@ -29,7 +28,7 @@
 
     # Automatic deployment
     agenix = {
-      url = "github:ryantm/agenix";
+      url = "github:ryantm/agenix/19bf5a20d835145e5f3fc8d61672eefee4c33450";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
