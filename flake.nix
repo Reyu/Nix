@@ -44,107 +44,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    telescope-hoogle = {
-      url = "github:luc-tielen/telescope_hoogle";
-      flake = false;
-    };
-    vim-solarized8 = {
-      url = "github:lifepillar/vim-solarized8";
-      flake = false;
-    };
-    one-small-step-for-vimkind = {
-      url = "github:jbyuki/one-small-step-for-vimkind";
-      flake = false;
-    };
-    cmp-conventionalcommits = {
-      url = "github:davidsierradz/cmp-conventionalcommits";
-      flake = false;
-    };
-    cmp-dap = {
-      url = "github:rcarriga/cmp-dap";
-      flake = false;
-    };
-    cmp-nvim-lsp-signature-help = {
-      url = "github:hrsh7th/cmp-nvim-lsp-signature-help";
-      flake = false;
-    };
-    firenvim = {
-      url = "github:glacambre/firenvim";
-      flake = false;
-    };
-    neotest = {
-      url = "github:rcarriga/neotest";
-      flake = false;
-    };
-    neotest-haskell = {
-      url = "github:MrcJkb/neotest-haskell";
-      flake = false;
-    };
-    neotest-python = {
-      url = "github:rcarriga/neotest-python";
-      flake = false;
-    };
-    neotest-vim-test = {
-      url = "github:rcarriga/neotest-vim-test";
-      flake = false;
-    };
-    netman = {
-      url = "github:miversen33/netman.nvim";
-      flake = false;
-    };
-    persistence-nvim = {
-      url = "github:folke/persistence.nvim";
-      flake = false;
-    };
-    neosolarized-nvim = {
-      url = "github:Tsuzat/NeoSolarized.nvim";
-      flake = false;
-    };
-    nvim-ufo = {
-      url = "github:kevinhwang91/nvim-ufo";
-      flake = false;
-    };
-    promise-async = {
-      url = "github:kevinhwang91/promise-async";
-      flake = false;
-    };
-    treesitter-playground = {
-      url = "github:nvim-treesitter/playground";
-      flake = false;
-    };
-    mind-nvim = {
-      url = "github:phaazon/mind.nvim";
-      flake = false;
-    };
-    mini-nvim = {
-      url = "github:echasnovski/mini.nvim";
-      flake = false;
-    };
-    stickybuf-nvim = {
-      url = "github:stevearc/stickybuf.nvim";
-      flake = false;
-    };
-    neogen = {
-      url = "github:danymat/neogen";
-      flake = false;
-    };
-    hydra = {
-      url = "github:anuvyklack/hydra.nvim";
-      flake = false;
-    };
-    haskell-tools-nvim = {
-      url = "github:MrcJkb/haskell-tools.nvim";
-      flake = false;
-    };
-    smart-splits = {
-      url = "github:mrjones2014/smart-splits.nvim";
-      flake = false;
-    };
-    bufresize-nvim = {
-      url = "github:kwkarlwang/bufresize.nvim";
-      flake = false;
-    };
-
     # Discord + Plugins
     replugged = {
       url = "github:LunNova/replugged-nix-flake";
@@ -180,10 +79,6 @@
     kmonad = {
       url = "github:kmonad/kmonad?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    mutt-trim = {
-      url = "github:Konfekt/mutt-trim";
-      flake = false;
     };
   };
 
