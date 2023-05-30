@@ -1,90 +1,107 @@
+local has_words_before = function()
+    local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and
+               vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col,
+                                                                          col)
+                   :match("%s") == nil
+end
+
 return {
     {
         "L3MON4D3/LuaSnip",
         dependencies = {
             "rafamadriz/friendly-snippets",
             config = function()
+                require("luasnip.loaders.from_lua").lazy_load()
                 require("luasnip.loaders.from_vscode").lazy_load()
-            end,
+            end
         },
-        opts = {
-            history = true,
-            delete_check_events = "TextChanged",
-        },
-        keys = {
-            {
-                "<tab>",
-                function()
-                    return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-                end,
-                expr = true, silent = true, mode = "i",
-            },
-            { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-        },
-    },
-    {
+        opts = {history = true, delete_check_events = "TextChanged"}
+    }, {
         "hrsh7th/nvim-cmp",
         version = false,
         event = "InsertEnter",
         dependencies = {
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-calc",
-            "hrsh7th/cmp-emoji",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-omni",
-            "lukas-reineke/cmp-under-comparator",
-            "onsails/lspkind.nvim",
-            "saadparwaiz1/cmp_luasnip",
+            "hrsh7th/cmp-buffer", "hrsh7th/cmp-calc", "hrsh7th/cmp-emoji",
+            "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-path",
+            "lukas-reineke/cmp-under-comparator", "onsails/lspkind.nvim",
+            "saadparwaiz1/cmp_luasnip"
         },
         opts = function()
             local cmp = require("cmp")
+            local luasnip = require("luasnip")
             return {
-                completion = {
-                    completeopt = "menu,menuone,noinsert",
-                },
                 snippet = {
                     expand = function(args)
-                        require("luasnip").lsp_expand(args.body)
-                    end,
+                        luasnip.lsp_expand(args.body)
+                    end
                 },
                 window = {
                     completion = cmp.config.window.bordered(),
                     documenation = cmp.config.window.bordered()
                 },
+                preselect = cmp.PreselectMode.None,
                 mapping = cmp.mapping.preset.insert({
-                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<Tab>'] = cmp.mapping(function(fallback)
+                        if luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
+                        else
+                            fallback()
+                        end
+                    end, {'i', 's'}),
+                    ['<S-Tab>'] = cmp.mapping(function(fallback)
+                        if luasnip.locally_jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, {'i', 's'}),
+                    ['<C-b>'] = cmp.mapping(function(fallback)
+                        if luasnip.choice_active() then
+                            luasnip.change_choice(-1)
+                        elseif cmp.visible() then
+                            cmp.mapping.scroll_docs(-4)
+                        else
+                            fallback()
+                        end
+                    end, {'i', 's'}),
+                    ['<C-f>'] = cmp.mapping(function(fallback)
+                        if luasnip.choice_active() then
+                            luasnip.change_choice(1)
+                        elseif cmp.visible() then
+                            cmp.mapping.scroll_docs(4)
+                        else
+                            fallback()
+                        end
+                    end, {'i', 's'}),
                     ['<C-Space>'] = cmp.mapping.complete({}),
                     ['<C-e>'] = cmp.mapping.abort(),
                     ["<C-n>"] = cmp.mapping.select_next_item({
                         behavior = cmp.SelectBehavior.Insert
                     }),
-                    ["<C-p>"] = cmp.mapping.select_prev_item({
+                    ['<C-p>'] = cmp.mapping.select_prev_item({
                         behavior = cmp.SelectBehavior.Insert
                     }),
-                    ['<CR>'] = cmp.mapping.confirm({select = false}),
-                    ["<S-CR>"] = cmp.mapping.confirm({
-                        behavior = cmp.ConfirmBehavior.Replace,
-                        select = true
-                    })
+                    ['<CR>'] = cmp.mapping.confirm({select = false})
                 }),
                 sources = cmp.config.sources({
-                    {name = 'luasnip'},
-                    {name = 'nvim_lsp'},
-                    {name = 'buffer'},
-                    {name = 'path'},
-                },{
-                    {name = 'neorg'},
-                    {name = 'calc'},
-                    {name = 'emoji'},
+                    {name = 'luasnip'}, {
+                        name = 'nvim_lsp',
+                        entry_filter = function(entry)
+                            return
+                                require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~=
+                                    'Text'
+                        end
+                    }
+                }, {{name = 'buffer'}, {name = 'path'}}, {
+                    {name = 'neorg'}, {name = 'calc'}, {name = 'emoji'}
                 }),
                 formatting = {
                     format = function(entry, vim_item)
                         if vim.tbl_contains({'path'}, entry.source.name) then
                             local icon, hl_group =
-                            require('nvim-web-devicons').get_icon(
-                                entry:get_completion_item().label)
+                                require('nvim-web-devicons').get_icon(
+                                    entry:get_completion_item().label)
                             if icon then
                                 vim_item.kind = icon
                                 vim_item.kind_hl_group = hl_group
@@ -92,40 +109,47 @@ return {
                             end
                         end
                         return
-                        require('lspkind').cmp_format({with_text = true})(
-                            entry, vim_item)
+                            require('lspkind').cmp_format({with_text = true})(
+                                entry, vim_item)
                     end
                 },
                 sorting = {
                     comparators = {
-                        cmp.config.compare.offset,
-                        cmp.config.compare.exact,
+                        cmp.config.compare.offset, cmp.config.compare.exact,
                         cmp.config.compare.score,
                         require("cmp-under-comparator").under,
-                        cmp.config.compare.sort_text,
-                        cmp.config.compare.kind,
-                        cmp.config.compare.length,
-                        cmp.config.compare.order,
-                    },
+                        cmp.config.compare.sort_text, cmp.config.compare.kind,
+                        cmp.config.compare.length, cmp.config.compare.order
+                    }
                 },
                 view = {
                     entries = {name = 'custom', selection_order = 'near_cursor'}
                 },
-                experimental = {
-                    ghost_text = {
-                        hl_group = "LspCodeLens",
-                    },
-                },
+                experimental = {ghost_text = {hl_group = "LspCodeLens"}}
             }
         end,
+        config = function(_, opts)
+            local cmp = require('cmp')
+            cmp.setup(opts)
+            cmp.setup.filetype('gitcommit', {
+                sources = cmp.config.sources({
+                    {name = 'cmp_git'}, {name = 'cmp_luasnip'}
+                }, {{name = 'cmp_path'}, {name = 'buffer'}})
+            })
+        end
     }, {
         "echasnovski/mini.pairs",
         enabled = false,
         event = {"BufReadPost", "BufNewFile"},
         opts = {
             mappings = {
-                ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\"].', register = { cr = false } },
-            },
+                ['"'] = {
+                    action = 'closeopen',
+                    pair = '""',
+                    neigh_pattern = '[^\\"].',
+                    register = {cr = false}
+                }
+            }
         },
         config = function(_, opts) require("mini.pairs").setup(opts) end
     }, {
@@ -133,9 +157,9 @@ return {
         keys = function(_, keys)
             -- Populate the keys based on options
             local plugin =
-            require("lazy.core.config").spec.plugins["mini.surround"]
+                require("lazy.core.config").spec.plugins["mini.surround"]
             local opts = require("lazy.core.plugin").values(plugin, "opts",
-                false)
+                                                            false)
             local mappings = {
                 {opts.mappings.add, desc = "Add surrounding", mode = {"n", "v"}},
                 {opts.mappings.delete, desc = "Delete surrounding"},
@@ -171,7 +195,8 @@ return {
         opts = {
             hooks = {
                 pre = function()
-                    require("ts_context_commentstring.internal").update_commentstring({})
+                    require("ts_context_commentstring.internal").update_commentstring(
+                        {})
                 end
             }
         },
@@ -248,26 +273,44 @@ return {
             end
             require("which-key").register({mode = {"o", "x"}, i = _i, a = _a})
         end
-    },
-    {
+    }, {
         "danymat/neogen",
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
-                opts = function(opts)
-                    local ei = opts.ensure_installed or {}
-                    vim.list_extend(ei, {'neogen'})
-                    opts.ensure_installed = ei
-                    return opts
-                end
+            opts = function(opts)
+                local ei = opts.ensure_installed or {}
+                vim.list_extend(ei, {'neogen'})
+                opts.ensure_installed = ei
+                return opts
+            end
         },
-        opts = { snippet_engine = "luasnip" },
-        init = function ()
-            require("which-key").register({["<LocalLeader>n"] = { name = "NeoGen" }})
+        opts = {snippet_engine = "luasnip"},
+        init = function()
+            require("which-key").register({
+                ["<LocalLeader>n"] = {name = "NeoGen"}
+            })
         end,
         keys = {
-            {"<LocalLeader>nn", function () require("neogen").generate() end, silent = true, desc = "Generate Annotation"},
-            {"<LocalLeader>nc", function () require("neogen").generate({type = "class"}) end, silent = true, desc = "Generate Class Annotation"},
-            {"<LocalLeader>nf", function () require("neogen").generate({type = "func"}) end, silent = true, desc = "Generate Function Annotation"},
+            {
+                "<LocalLeader>nn",
+                function() require("neogen").generate() end,
+                silent = true,
+                desc = "Generate Annotation"
+            }, {
+                "<LocalLeader>nc",
+                function()
+                    require("neogen").generate({type = "class"})
+                end,
+                silent = true,
+                desc = "Generate Class Annotation"
+            }, {
+                "<LocalLeader>nf",
+                function()
+                    require("neogen").generate({type = "func"})
+                end,
+                silent = true,
+                desc = "Generate Function Annotation"
+            }
         }
     }
 }

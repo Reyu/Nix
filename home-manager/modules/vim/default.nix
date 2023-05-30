@@ -34,9 +34,7 @@
           "lua/plugins/extra.lua".source = ./lua/plugins/extra.lua;
           "lua/plugins/git.lua".source = ./lua/plugins/git.lua;
           "lua/plugins/init.lua".source = ./lua/plugins/init.lua;
-          "lua/plugins/lsp/init.lua".source = ./lua/plugins/lsp/init.lua;
-          "lua/plugins/lsp/keymaps.lua".source = ./lua/plugins/lsp/keymaps.lua;
-          "lua/plugins/lsp/util.lua".source = ./lua/plugins/lsp/util.lua;
+          "lua/plugins/lsp.lua".source = ./lua/plugins/lsp.lua;
           "lua/plugins/treesitter.lua".source = ./lua/plugins/treesitter.lua;
           "lua/plugins/ui.lua".source = ./lua/plugins/ui.lua;
         };
