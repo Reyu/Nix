@@ -49,7 +49,7 @@ return {
         end,
     }, {
         "folke/zen-mode.nvim",
-        enabled = false,
+        cond = not vim.g.started_by_firenvim,
         cmd = "ZenMode",
         init = function()
             require("which-key").register({["<Leader>z"] = { name = "ZenMode" }})
@@ -72,7 +72,7 @@ return {
         }
     }, {
         "folke/twilight.nvim",
-        enabled = false,
+        cond = not vim.g.started_by_firenvim,
         cmd = {"Twilight", "TwilightEnable"},
         keys = {
             {"<Leader>zt", function() require("twilight").toggle() end, desc = "Toggle Twilight"},
@@ -80,6 +80,7 @@ return {
         opts = {dimming = {inactive = true}, context = 6}
     }, {
         "rcarriga/nvim-notify",
+        cond = not vim.g.started_by_firenvim,
         keys = {
             {
                 "<leader>nd",
@@ -101,6 +102,7 @@ return {
         }
     }, {
         "folke/noice.nvim",
+        cond = not vim.g.started_by_firenvim,
         event = "VeryLazy",
         dependencies = {{"MunifTanjim/nui.nvim"}},
         init = function()
@@ -186,6 +188,7 @@ return {
         }
     }, {
         "anuvyklack/windows.nvim",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {"anuvyklack/middleclass", "anuvyklack/animation.nvim"},
         keys = {
             {'<C-w>z', '<cmd>WindowsMaximize<cr>', desc = "Maximize window"}, {
@@ -212,6 +215,7 @@ return {
         config = true
     }, {
         "mrjones2014/smart-splits.nvim",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             {
                 'jlanzarotta/bufexplorer',
@@ -331,6 +335,7 @@ return {
         end
     }, {
         "goolord/alpha-nvim",
+        cond = not vim.g.started_by_firenvim,
         event = "VimEnter",
         opts = function()
             local dashboard = require("alpha.themes.dashboard")
@@ -397,7 +402,6 @@ return {
         end
     }, {
         "lukas-reineke/indent-blankline.nvim",
-        enabled = false,
         event = {"BufReadPost", "BufNewFile"},
         opts = {
             char = "│",
@@ -409,7 +413,6 @@ return {
         }
     }, {
         "echasnovski/mini.indentscope",
-        enabled = false,
         version = false,
         event = {"BufReadPre", "BufNewFile"},
         opts = {symbol = "│", options = {try_as_border = false}},
@@ -427,6 +430,7 @@ return {
         end,
     }, {
         "nvim-lualine/lualine.nvim",
+        cond = not vim.g.started_by_firenvim,
         event = "VeryLazy",
         opts = function()
             return {

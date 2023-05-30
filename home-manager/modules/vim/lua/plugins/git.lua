@@ -1,6 +1,7 @@
 return {
     {
         "lewis6991/gitsigns.nvim",
+        cond = not vim.g.started_by_firenvim,
         event = "VeryLazy",
         opts = {
             current_line_blame = true,
@@ -67,7 +68,7 @@ return {
         }
     }, {
         "tpope/vim-fugitive",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
+        cond = not vim.g.started_by_firenvim,
         cmd = {
             "G", "Git", "Ggrep", "Glgrep", "Gclog", "Gllog", "Gcd", "Glcd",
             "Gedit", "Gsplit", "Gvsplit", "Gtabedit", "Gpedit", "Gdrop",
@@ -95,6 +96,7 @@ return {
         }
     }, {
         "TimUntersberger/neogit",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim'},
         event = "VeryLazy",
         opts = {
@@ -113,7 +115,7 @@ return {
         }
     }, {
         "pwntester/octo.nvim",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim',
             'nvim-tree/nvim-web-devicons'

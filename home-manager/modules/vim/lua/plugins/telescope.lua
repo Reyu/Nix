@@ -1,7 +1,7 @@
 return {
     {
         "luc-tielen/telescope_hoogle",
-        enabled = false,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             {
                 "nvim-telescope/telescope.nvim",
@@ -13,7 +13,7 @@ return {
     },
     {
         "MrcJkb/telescope-manix",
-        enabled = false,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             {
                 "nvim-telescope/telescope.nvim",

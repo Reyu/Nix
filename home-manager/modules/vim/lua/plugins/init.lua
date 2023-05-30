@@ -5,7 +5,6 @@ local displayOpt = util.displayOpt
 return {
     {
         "folke/which-key.nvim",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
         opts = {
             plugins = {spelling = {enabled = true}},
             window = {
@@ -16,7 +15,7 @@ return {
         }
     }, {
         "anuvyklack/hydra.nvim",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
+        cond = not vim.g.started_by_firenvim,
         keys = {{"<Leader>o", mode = {"n", "x"}, desc = "Options Hydra"}},
         config = function()
             local Hydra = require("hydra")
@@ -89,6 +88,7 @@ return {
     },
     {
         "folke/persistence.nvim",
+        cond = not vim.g.started_by_firenvim,
         event = "BufReadPre",
         opts = {
             options = {
@@ -117,8 +117,11 @@ return {
         }
     },
     {"tpope/vim-repeat", event = "VeryLazy"},
-    {"norcalli/nvim-terminal.lua", config = true},
     {
+        "norcalli/nvim-terminal.lua",
+        cond = not vim.g.started_by_firenvim,
+        config = true
+    }, {
         "andymass/vim-matchup",
         dependencies = {
             "nvim-treesitter/nvim-treesitter",

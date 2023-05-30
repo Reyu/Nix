@@ -139,7 +139,7 @@ return {
         end
     }, {
         "echasnovski/mini.pairs",
-        enabled = false,
+        cond = not vim.g.started_by_firenvim,
         event = {"BufReadPost", "BufNewFile"},
         opts = {
             mappings = {
@@ -154,6 +154,7 @@ return {
         config = function(_, opts) require("mini.pairs").setup(opts) end
     }, {
         "echasnovski/mini.surround",
+        cond = not vim.g.started_by_firenvim,
         keys = function(_, keys)
             -- Populate the keys based on options
             local plugin =
@@ -191,6 +192,7 @@ return {
         config = function(_, opts) require("mini.surround").setup(opts) end
     }, {
         "echasnovski/mini.comment",
+        cond = not vim.g.started_by_firenvim,
         event = {"BufReadPost", "BufNewFile"},
         opts = {
             hooks = {
@@ -203,7 +205,7 @@ return {
         config = function(_, opts) require("mini.comment").setup(opts) end
     }, {
         "echasnovski/mini.ai",
-        enabled = false,
+        cond = not vim.g.started_by_firenvim,
         event = {"BufReadPost", "BufNewFile"},
         dependencies = {"nvim-treesitter-textobjects"},
         opts = function()
@@ -275,6 +277,7 @@ return {
         end
     }, {
         "danymat/neogen",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
             opts = function(opts)

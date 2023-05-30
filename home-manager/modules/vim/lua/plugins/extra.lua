@@ -1,7 +1,7 @@
 return {
-    {"direnv/direnv.vim", lazy = false},
-    {
+    {"direnv/direnv.vim", lazy = false}, {
         'hkupty/iron.nvim',
+        cond = not vim.g.started_by_firenvim,
         event = {"BufReadPre", "BufNewFile"},
         main = 'iron.core',
         opts = function()
@@ -10,17 +10,17 @@ return {
                 config = {
                     scratch_repl = true,
                     repl_definition = {
-                        sh = {
-                            command = {"zsh"}
-                        },
+                        sh = {command = {"zsh"}},
                         haskell = {
                             command = function(meta)
-                                local file = vim.api.nvim_buf_get_name(meta.current_bufnr)
-                                return require('haskell-tools').repl.mk_repl_cmd(file)
+                                local file =
+                                    vim.api.nvim_buf_get_name(meta.current_bufnr)
+                                return require('haskell-tools').repl
+                                           .mk_repl_cmd(file)
                             end
-                        },
+                        }
                     },
-                    repl_open_cmd = view.center("40%"),
+                    repl_open_cmd = view.center("40%")
                 },
                 keymaps = {
                     send_motion = "<space>sc",
@@ -34,19 +34,16 @@ return {
                     cr = "<space>s<cr>",
                     interrupt = "<space>s<space>",
                     exit = "<space>sq",
-                    clear = "<space>cl",
+                    clear = "<space>cl"
                 },
-                highlight = {
-                    italic = true
-                },
-                ignore_blank_lines = true,
+                highlight = {italic = true},
+                ignore_blank_lines = true
             }
         end
     }, {
         "phaazon/mind.nvim",
-        enabled = false,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {"nvim-lua/plenary.nvim"},
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
         cmd = {"MindOpenMain", "MindOpenProject", "MindOpenSmartProject"},
         opts = {
             edit = {
@@ -87,7 +84,7 @@ return {
         }
     }, {
         "nvim-neorg/neorg",
-        enabled = false,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             {
                 "nvim-treesitter/nvim-treesitter",
@@ -112,15 +109,18 @@ return {
         }
     }, {
         "glacambre/firenvim",
-        enabled = false,
-        build = function() vim.fn['firenvim#install'](0) end,
-        keys = {{"<Esc><Esc>", vim.fn['firenvim#focus_page']}},
-        init = function()
+        cond = vim.g.started_by_firenvim,
+        build = function()
+            require("lazy").load({plugins = "firenvim", wait = true})
+            vim.fn["firenvim#install"](0)
+        end,
+        lazy = false,
+        config = function()
             vim.g.firenvim_config = {
                 globalSettings = {alt = 'all'},
                 localSettings = {
                     ['.*'] = {
-                        cmdline = 'neovim',
+                        cmdline = 'firenvim',
                         content = 'text',
                         priority = 0,
                         selector = 'textarea:not([readonly]), div[role="textbox"]',
@@ -128,35 +128,43 @@ return {
                     }
                 }
             }
-
-            if vim.fn.exists('g:started_by_firenvim') == 1 then
-                vim.g.firenvim_timer_started = false
-                vim.api.nvim_create_autocmd({"TextChanged"}, {
-                    pattern = {"*"},
-                    nested = true,
-                    callback = function()
-                        if vim.g.firenvim_timer_started then
-                            return
-                        else
-                            vim.g.firenvim_timer_started = true
-                            vim.fn.timer_start(1000, function()
-                                vim.g.firenvim_timer_started = false
-                                vim.cmd('write')
-                            end)
-                        end
+            vim.api.nvim_create_autocmd({'UIEnter'}, {
+                callback = function(event)
+                    local client = vim.api.nvim_get_chan_info(vim.v.event.chan)
+                                       .client
+                    if client ~= nil and client.name == "Firenvim" then
+                        vim.keymap.set('n', '<Esc><Esc>',
+                                       vim.fn['firenvim#focus_page'])
+                        vim.g.firenvim_timer_started = false
+                        vim.api.nvim_create_autocmd({"TextChanged"}, {
+                            pattern = {"*"},
+                            nested = true,
+                            callback = function()
+                                if vim.g.firenvim_timer_started then
+                                    return
+                                else
+                                    vim.g.firenvim_timer_started = true
+                                    vim.fn.timer_start(1000, function()
+                                        vim.g.firenvim_timer_started = false
+                                        vim.cmd('write')
+                                    end)
+                                end
+                            end
+                        })
                     end
-                })
-            end
+                end
+            })
         end
     }, {
         "kndndrj/nvim-dbee",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {"MunifTanjim/nui.nvim"},
         main = "dbee",
         build = function() require("dbee").install() end,
         init = function()
             require('which-key').register({['<Leader>d'] = "+DBee"}, {})
         end,
-        config = true;
+        config = true,
         keys = {
             {
                 "<Leader>do",
@@ -192,6 +200,7 @@ return {
         }
     }, {
         "kndndrj/nvim-projector",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             'mfussenegger/nvim-dap', 'rcarriga/nvim-dap-ui',
             'nvim-tree/nvim-web-devicons', 'kndndrj/projector-loader-vscode'

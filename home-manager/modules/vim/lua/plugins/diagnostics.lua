@@ -1,8 +1,7 @@
 return {
     {
         "nvim-neotest/neotest",
-        enabled = false,
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             "nvim-lua/plenary.nvim",
             {
@@ -92,7 +91,7 @@ return {
         }
     }, {
         "mfussenegger/nvim-dap",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             {
                 "theHamsta/nvim-dap-virtual-text",
@@ -333,6 +332,7 @@ return {
         end
     }, {
         "mfussenegger/nvim-dap-python",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {"mfussenegger/nvim-dap"},
         ft = "python",
         config = function()
@@ -341,6 +341,7 @@ return {
         end
     }, {
         "rcarriga/nvim-dap-ui",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {"mfussenegger/nvim-dap"},
         opts = {
             layouts = {

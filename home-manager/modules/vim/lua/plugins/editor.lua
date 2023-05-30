@@ -1,7 +1,7 @@
 return {
     {
         "nvim-neo-tree/neo-tree.nvim",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             {"nvim-lua/plenary.nvim"}, {"MunifTanjim/nui.nvim"},
             {"s1n7ax/nvim-window-picker"}, {'nvim-tree/nvim-web-devicons'}
@@ -66,6 +66,7 @@ return {
         }
     }, {
         "karb94/neoscroll.nvim",
+        cond = not vim.g.started_by_firenvim,
         event = "VeryLazy",
         opts = {easing_function = 'quadratic', respect_scrolloff = true}
     }, {
@@ -126,7 +127,7 @@ return {
         end
     }, {
         "nvim-telescope/telescope.nvim",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
+        cond = not vim.g.started_by_firenvim,
         dependencies = {
             {"nvim-lua/plenary.nvim"},
             {
@@ -232,7 +233,7 @@ return {
         end
     }, {
         "folke/trouble.nvim",
-        cond = vim.fn.exists('g:started_by_firenvim') == 0,
+        cond = not vim.g.started_by_firenvim,
         cmd = {"TroubleToggle", "Trouble"},
         opts = {use_diagnostic_signs = true},
         init = function()
@@ -285,6 +286,7 @@ return {
         }
     }, {
         "folke/todo-comments.nvim",
+        cond = not vim.g.started_by_firenvim,
         cmd = {"TodoTrouble", "TodoTelescope"},
         event = {"BufReadPost", "BufNewFile"},
         config = true,
