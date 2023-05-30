@@ -21,6 +21,7 @@
       docker
       nomad
       vault
+      u2f
     ];
   };
   kit = {
