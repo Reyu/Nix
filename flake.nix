@@ -44,6 +44,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    bufresize-nvim = {
+      url = "github:kwkarlwang/bufresize.nvim";
+      flake = false;
+    };
+    github-nvim-theme = {
+      url = "github:projekt0n/github-nvim-theme";
+      flake = false;
+    };
+
     # Discord + Plugins
     replugged = {
       url = "github:LunNova/replugged-nix-flake";

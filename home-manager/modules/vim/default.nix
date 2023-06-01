@@ -15,32 +15,12 @@
     withNodeJs = true;
     extraPython3Packages = ps: with ps; [ rope jedi ];
     package = pkgs.neovim-nightly;
-    plugins = with pkgs.vimPlugins; [
-      {
-        plugin = lazy-nvim;
-        type = "lua";
-        config = ''
-          require("reyu.options")
-          require("lazy").setup({import = "plugins"}, {
-              defaults = {lazy = true},
-              install = {missing = true, colorscheme = {"github_dark"}},
-              checker = {enabled = true}
-          })
-        '';
-        runtime = {
-          "lua/plugins/coding.lua".source = ./lua/plugins/coding.lua;
-          "lua/plugins/diagnostics.lua".source = ./lua/plugins/diagnostics.lua;
-          "lua/plugins/editor.lua".source = ./lua/plugins/editor.lua;
-          "lua/plugins/extra.lua".source = ./lua/plugins/extra.lua;
-          "lua/plugins/git.lua".source = ./lua/plugins/git.lua;
-          "lua/plugins/init.lua".source = ./lua/plugins/init.lua;
-          "lua/plugins/lsp.lua".source = ./lua/plugins/lsp.lua;
-          "lua/plugins/treesitter.lua".source = ./lua/plugins/treesitter.lua;
-          "lua/plugins/ui.lua".source = ./lua/plugins/ui.lua;
-        };
-      }
-      nvim-treesitter.withAllGrammars
-    ];
+    extraLuaConfig = ''
+      vim.loader.enable()
+      require('reyu.options')
+      vim.api.nvim_create_augroup('plugins', {clear = true})
+    '';
+    plugins = import ./plugins { inherit pkgs; };
     extraPackages = with pkgs; [
       # Language servers
       nodePackages.bash-language-server
@@ -74,19 +54,37 @@
       # Extras
       fd
       gcc
+      gh
       tree-sitter
-      xsel
       unzip
+      xsel
     ];
   };
   xdg.configFile = {
-    "nvim/after/queries/nix/injections.scm".source =
-      ./after/queries/nix/injections.scm;
     "nvim/lua/reyu.lua".source = ./lua/reyu.lua;
     "nvim/lua/reyu/options.lua".source = ./lua/reyu/options.lua;
     "nvim/lua/reyu/util.lua".source = ./lua/reyu/util.lua;
-    "nvim/lua/reyu/lsp/init.lua".source = ./lua/reyu/lsp/init.lua;
-    "nvim/luasnippets/haskell.lua".source = ./luasnippets/haskell.lua;
-    "nvim/luasnippets/nvim-lua.lua".source = ./luasnippets/nvim-lua.lua;
-  };
+  } // (with builtins;
+    let
+      # Includes all files in the given directory
+      dirContets = (dir:
+        let
+          files = attrNames (readDir ./${dir});
+          mapped_files = map (file: {
+            name = "nvim/${dir}/${file}";
+            value = { source = ./${dir}/${file}; };
+          }) files;
+        in listToAttrs mapped_files);
+
+      # Needs to find `after/queries/{type}/{file}`
+      query_files = concatMap
+        (x: map (y: "${x}/${y}") (attrNames (readDir ./after/queries/${x})))
+        (attrNames (readDir ./after/queries));
+      query_map = map (x: {
+        name = "nvim/after/queries/${x}";
+        value = { source = ./after/queries/${x}; };
+      }) query_files;
+      queries = listToAttrs query_map;
+
+    in queries // dirContets "luasnippets" // dirContets "syntax");
 }

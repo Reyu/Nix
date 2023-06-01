@@ -23,6 +23,22 @@
         "type": "github"
       }
     },
+    "bufresize-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1647824331,
+        "narHash": "sha256-6jqlKe8Ekm+3dvlgFCpJnI0BZzWC3KDYoOb88/itH+g=",
+        "owner": "kwkarlwang",
+        "repo": "bufresize.nvim",
+        "rev": "3b19527ab936d6910484dcc20fb59bdb12322d8b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kwkarlwang",
+        "repo": "bufresize.nvim",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -297,6 +313,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "github-nvim-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1685446306,
+        "narHash": "sha256-kH4m004svKP7tBWXptM+4Ralw4kDNPOgYfCidY7zaso=",
+        "owner": "projekt0n",
+        "repo": "github-nvim-theme",
+        "rev": "3c6ed264e09f493c3bba0044bf1e6eda8c863e23",
+        "type": "github"
+      },
+      "original": {
+        "owner": "projekt0n",
+        "repo": "github-nvim-theme",
         "type": "github"
       }
     },
@@ -747,6 +779,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "bufresize-nvim": "bufresize-nvim",
         "devshell": "devshell",
         "discord-better-status": "discord-better-status",
         "discord-read-all": "discord-read-all",
@@ -754,6 +787,7 @@
         "discord-theme-toggler": "discord-theme-toggler",
         "discord-tweaks": "discord-tweaks",
         "discord-vc-timer": "discord-vc-timer",
+        "github-nvim-theme": "github-nvim-theme",
         "home-manager": "home-manager_2",
         "impermanence": "impermanence",
         "kmonad": "kmonad",

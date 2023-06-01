@@ -1,32 +1,32 @@
-return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        version = false, -- last release is way too old and doesn't work on Windows
-        build = ":TSUpdate",
-        event = {"BufReadPost", "BufNewFile"},
-        dependencies = {
-            {"nvim-treesitter/nvim-treesitter-textobjects"},
-            {"RRethy/nvim-treesitter-endwise"}, {
-                "nvim-treesitter/nvim-treesitter-context",
-                opts = {
-                    enable = true,
-                    max_lines = 0,
-                    trim_scope = 'outer',
-                    patterns = {
-                        default = {
-                            'class', 'function', 'method', 'for', 'while', 'if',
-                            'switch', 'case'
-                        }
-                    }
-                }
-            }, {"JoosepAlviste/nvim-ts-context-commentstring"},
-            {"nvim-treesitter/playground"}
-        },
-        keys = {
-            {"<c-space>", desc = "Increment selection"},
-            {"<bs>", desc = "Decrement selection", mode = "x"}
-        },
-        opts = {
+{ pkgs, ... }: with pkgs.vimPlugins; [
+  {
+    plugin = github-nvim-theme;
+    type = "lua";
+    config = ''
+      local transparent = not vim.g.started_by_firenvim
+      require('github-theme').setup({options = {transparent = transparent}})
+      vim.cmd([[ colorscheme github_dark ]])
+    '';
+  }
+  {
+    plugin = which-key-nvim;
+    type = "lua";
+    config = ''
+      require('which-key').setup({
+          plugins = {spelling = {enabled = true}},
+          window = {
+              border = 'single',
+              margin = {5, 10, 5, 10},
+              padding = {1, 2, 1, 2}
+          }
+      })
+    '';
+  }
+  {
+    plugin = nvim-treesitter.withAllGrammars;
+    type = "lua";
+    config = ''
+      require('nvim-treesitter.configs').setup({
             highlight = {enable = true},
             indent = {enable = true, disable = {"python"}},
             context_commentstring = {enable = true, enable_autocmd = false},
@@ -83,9 +83,40 @@ return {
                     show_help = "?",
                 },
             },
-        },
-        config = function(_, opts)
-            require("nvim-treesitter.configs").setup(opts)
-        end
-    }
-}
+        })
+    '';
+  }
+  {
+    plugin = nvim-treesitter-context;
+    type = "lua";
+    config = ''
+      require('treesitter-context').setup({
+          enable = true,
+          max_lines = 0,
+          trim_scope = 'outer',
+          patterns = {
+              default = {
+                  'class', 'function', 'method', 'for', 'while', 'if', 'switch',
+                  'case'
+              }
+          }
+      })
+    '';
+  }
+  { plugin = nvim-treesitter-textobjects; }
+  { plugin = nvim-treesitter-endwise; }
+  { plugin = playground; }
+  { plugin = vim-repeat; }
+  { plugin = nvim-web-devicons; }
+  { plugin = plenary-nvim; }
+  { plugin = nui-nvim; }
+  { plugin = promise-async; }
+] ++ import ./telescope.nix { inherit pkgs; }
+  ++ import ./ui.nix { inherit pkgs; }
+  ++ import ./terminal.nix { inherit pkgs; }
+  ++ import ./editor.nix { inherit pkgs; }
+  ++ import ./coding.nix { inherit pkgs; }
+  ++ import ./diagnostics.nix { inherit pkgs; }
+  ++ import ./extra.nix { inherit pkgs; }
+  ++ import ./git.nix { inherit pkgs; }
+  ++ import ./lsp.nix { inherit pkgs; }
