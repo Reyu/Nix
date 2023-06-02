@@ -18,8 +18,8 @@ with lib; {
   services.openssh = {
     enable = mkDefault true;
     allowSFTP = mkDefault false;
-    settings.kbdInteractiveAuthentication = false;
-    settings.passwordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+    settings.PasswordAuthentication = false;
     extraConfig = ''
       AllowTcpForwarding yes
       X11Forwarding no
