@@ -1,38 +1,38 @@
 { pkgs, ... }: with pkgs.vimPlugins; [
   {
-   plugin = zen-mode-nvim;
-   type = "lua";
-   optional = true;
-   config = ''
-   if not vim.g.started_by_firenvim then
-      vim.api.nvim_command('packadd zen-mode.nvim')
-      require('zen-mode').setup({
-              window = {
-                  backdrop = 1,
-                  width = 120,
-                  height = 1,
-                  options = {
-                      number = false,
-                      relativenumber = true,
-                      cursorline = false,
-                      cursorcolumn = false
-                  }
-              }
-          })
-        vim.keymap.set('n', '<LocalLeader>zz', require('zen-mode').toggle, { desc = 'Toggle ZenMode'})
-    end
-   '';
+    plugin = zen-mode-nvim;
+    type = "lua";
+    optional = true;
+    config = ''
+      if not vim.g.started_by_firenvim then
+         vim.api.nvim_command('packadd zen-mode.nvim')
+         require('zen-mode').setup({
+                 window = {
+                     backdrop = 1,
+                     width = 120,
+                     height = 1,
+                     options = {
+                         number = false,
+                         relativenumber = true,
+                         cursorline = false,
+                         cursorcolumn = false
+                     }
+                 }
+             })
+           vim.keymap.set('n', '<LocalLeader>zz', require('zen-mode').toggle, { desc = 'Toggle ZenMode'})
+       end
+    '';
   }
   {
     plugin = twilight-nvim;
     type = "lua";
     optional = true;
     config = ''
-     if not vim.g.started_by_firenvim then
-       vim.api.nvim_command('packadd twilight.nvim')
-       require('twilight').setup({dimming = {inactive = true}, context = 6})
-       vim.keymap.set('n', '<Leader>zt', require('twilight').toggle, { desc = 'Toggle Twilight'})
-     end
+      if not vim.g.started_by_firenvim then
+        vim.api.nvim_command('packadd twilight.nvim')
+        require('twilight').setup({dimming = {inactive = true}, context = 6})
+        vim.keymap.set('n', '<Leader>zt', require('twilight').toggle, { desc = 'Toggle Twilight'})
+      end
     '';
   }
   {

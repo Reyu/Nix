@@ -70,21 +70,27 @@
       dirContets = (dir:
         let
           files = attrNames (readDir ./${dir});
-          mapped_files = map (file: {
-            name = "nvim/${dir}/${file}";
-            value = { source = ./${dir}/${file}; };
-          }) files;
-        in listToAttrs mapped_files);
+          mapped_files = map
+            (file: {
+              name = "nvim/${dir}/${file}";
+              value = { source = ./${dir}/${file}; };
+            })
+            files;
+        in
+        listToAttrs mapped_files);
 
       # Needs to find `after/queries/{type}/{file}`
       query_files = concatMap
         (x: map (y: "${x}/${y}") (attrNames (readDir ./after/queries/${x})))
         (attrNames (readDir ./after/queries));
-      query_map = map (x: {
-        name = "nvim/after/queries/${x}";
-        value = { source = ./after/queries/${x}; };
-      }) query_files;
+      query_map = map
+        (x: {
+          name = "nvim/after/queries/${x}";
+          value = { source = ./after/queries/${x}; };
+        })
+        query_files;
       queries = listToAttrs query_map;
 
-    in queries // dirContets "luasnippets" // dirContets "syntax");
+    in
+    queries // dirContets "luasnippets" // dirContets "syntax");
 }

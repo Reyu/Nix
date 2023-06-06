@@ -10,7 +10,16 @@
     '';
   }
 
-  cmp-buffer cmp-calc cmp-dap cmp-emoji cmp-git cmp-nvim-lsp cmp-path cmp-tmux cmp_luasnip cmp-under-comparator
+  cmp-buffer
+  cmp-calc
+  cmp-dap
+  cmp-emoji
+  cmp-git
+  cmp-nvim-lsp
+  cmp-path
+  cmp-tmux
+  cmp_luasnip
+  cmp-under-comparator
   lspkind-nvim
   {
     plugin = nvim-cmp;

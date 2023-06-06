@@ -1,5 +1,6 @@
 { pkgs, ... }: with pkgs.vimPlugins; [
-  neotest-python neotest-haskell
+  neotest-python
+  neotest-haskell
   {
     plugin = neotest;
     optional = true;

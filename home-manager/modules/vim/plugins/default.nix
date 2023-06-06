@@ -112,11 +112,11 @@
   { plugin = nui-nvim; }
   { plugin = promise-async; }
 ] ++ import ./telescope.nix { inherit pkgs; }
-  ++ import ./ui.nix { inherit pkgs; }
-  ++ import ./terminal.nix { inherit pkgs; }
-  ++ import ./editor.nix { inherit pkgs; }
-  ++ import ./coding.nix { inherit pkgs; }
-  ++ import ./diagnostics.nix { inherit pkgs; }
-  ++ import ./extra.nix { inherit pkgs; }
-  ++ import ./git.nix { inherit pkgs; }
-  ++ import ./lsp.nix { inherit pkgs; }
+++ import ./ui.nix { inherit pkgs; }
+++ import ./terminal.nix { inherit pkgs; }
+++ import ./editor.nix { inherit pkgs; }
+++ import ./coding.nix { inherit pkgs; }
+++ import ./diagnostics.nix { inherit pkgs; }
+++ import ./extra.nix { inherit pkgs; }
+++ import ./git.nix { inherit pkgs; }
+++ import ./lsp.nix { inherit pkgs; }
