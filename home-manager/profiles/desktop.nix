@@ -11,7 +11,6 @@
     ../modules/gpg
     ../modules/sway
     ../modules/waybar
-    ../modules/xdg
   ];
 
   reyu.programs = {

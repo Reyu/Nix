@@ -81,6 +81,5 @@
     };
     style = lib.fileContents ./style.css;
     systemd.enable = true;
-    systemd.target = "sway-session.target";
   };
 }

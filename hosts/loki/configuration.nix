@@ -115,6 +115,7 @@
     users = [ "reyu" ];
   };
 
+  services.flatpak.enable = true;
   services.openssh.allowSFTP = true;
 
   services.kmonad = {
@@ -133,6 +134,10 @@
 
   networking.hostName = "loki";
   networking.hostId = "d540cb4f";
+
+  xdg.portal.enable = true;
+  xdg.portal.wlr.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
   virtualisation.podman.enable = true;
   virtualisation.containers.storage.settings.storage.driver = "zfs";

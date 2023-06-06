@@ -1,10 +1,20 @@
 { config, pkgs, lib, ... }: {
   imports = [ ./swayr.nix ];
   home.packages = with pkgs; [
+    grim
+    slurp
+    swayidle
     swayr
-    wlr-randr
     wl-clipboard
+    wlr-randr
+    xdg-utils
   ];
+  programs = {
+    swaylock.enable = true;
+  };
+  services = {
+    swayidle.enable = true;
+  };
   wayland.windowManager.sway =
     let
       prompt = "${pkgs.fuzzel}/bin/fuzzel";
@@ -77,5 +87,6 @@
           ];
         };
       };
+      wrapperFeatures.gtk = true;
     };
 }

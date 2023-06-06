@@ -1,5 +1,12 @@
 { config, pkgs, lib, ... }: {
   programs = {
+    gh = {
+      enable = true;
+      extensions = [
+        pkgs.gh-eco
+        pkgs.gh-dash
+      ];
+    };
     git = {
       enable = true;
 

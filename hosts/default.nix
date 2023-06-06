@@ -5,7 +5,6 @@
       ./loki/configuration.nix
       { home-manager.users.reyu = import ../home-manager/profiles/desktop.nix; }
       consul
-      flatpak
       kmonad
       onlykey
       qflipper
