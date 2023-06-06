@@ -10,6 +10,7 @@
       onlykey
       qflipper
       sound
+      u2f
       xserver
     ];
   };
@@ -21,7 +22,6 @@
       docker
       nomad
       vault
-      u2f
     ];
   };
   kit = {

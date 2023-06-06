@@ -23,6 +23,7 @@
   boot.tmp.useTmpfs = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.zfs.extraPools = [ "projects" ];
 
   nix.settings = {
     cores = 32;
@@ -33,8 +34,8 @@
   programs.dconf.enable = true;
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
   };
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
