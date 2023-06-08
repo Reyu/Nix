@@ -1,5 +1,11 @@
 { pkgs, ... }: with pkgs.vimPlugins; [
   { plugin = direnv-vim; }
+  { plugin = vimtex;
+    type = "vim";
+    config = ''
+      let g:vimtex_view_method = 'zathura'
+    '';
+  }
   {
     plugin = firenvim;
     optional = true;

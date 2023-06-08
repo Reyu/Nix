@@ -55,6 +55,7 @@
       fd
       gcc
       gh
+      texlive.combined.scheme-medium
       tree-sitter
       unzip
       xsel

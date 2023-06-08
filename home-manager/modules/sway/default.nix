@@ -11,6 +11,7 @@
   ];
   programs = {
     swaylock.enable = true;
+    zathura.enable = true;
   };
   services = {
     swayidle.enable = true;
