@@ -48,6 +48,10 @@
       url = "github:kwkarlwang/bufresize.nvim";
       flake = false;
     };
+    edgy-nvim = {
+      url = "github:folke/edgy.nvim";
+      flake = false;
+    };
     github-nvim-theme = {
       url = "github:projekt0n/github-nvim-theme";
       flake = false;

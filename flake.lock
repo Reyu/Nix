@@ -178,6 +178,22 @@
         "type": "github"
       }
     },
+    "edgy-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1686140569,
+        "narHash": "sha256-nwXinNTIEl6d/cnTOhGoxpo6Lx8WmbaqQ52IWiuRwyw=",
+        "owner": "folke",
+        "repo": "edgy.nvim",
+        "rev": "9989773162d29044d8d53151a59c0d0e61a92e5b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "folke",
+        "repo": "edgy.nvim",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -787,6 +803,7 @@
         "discord-theme-toggler": "discord-theme-toggler",
         "discord-tweaks": "discord-tweaks",
         "discord-vc-timer": "discord-vc-timer",
+        "edgy-nvim": "edgy-nvim",
         "github-nvim-theme": "github-nvim-theme",
         "home-manager": "home-manager_2",
         "impermanence": "impermanence",

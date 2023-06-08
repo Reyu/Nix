@@ -5,6 +5,7 @@ final: prev:
 let
   vimPlugins = {
     bufresize-nvim = prev.callPackage ../packages/bufresize-nvim.nix { inherit inputs; };
+    edgy-nvim = prev.callPackage ../packages/edgy-nvim.nix { inherit inputs; };
     github-nvim-theme = prev.callPackage ../packages/github-nvim-theme.nix { inherit inputs; };
   };
 in

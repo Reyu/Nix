@@ -267,4 +267,60 @@
       })
     '';
   }
+  {
+    plugin = edgy-nvim;
+    type = "lua";
+    config = ''
+      -- Default splitting will cause your main splits to jump when opening an edgebar.
+      -- To prevent this, set `splitkeep` to either `screen` or `topline`.
+      vim.opt.splitkeep = "screen"
+      require('edgy').setup({
+          bottom = {
+              "Trouble", {
+                  ft = "help",
+                  size = {height = 20},
+                  -- only show help buffers
+                  filter = function(buf)
+                      return vim.bo[buf].buftype == "help"
+                  end,
+              },
+              {title = "[dap-repl]", ft = "dap-repl"},
+              {title = "DAP Console", ft = "dapui_console"}
+          },
+          left = {
+              {
+                title = "Neo-Tree",
+                ft = "neo-tree",
+                filter = function(buf)
+                  return vim.b[buf].neo_tree_source == "filesystem"
+                end,
+                size = { height = 0.5 },
+              },
+              {
+                title = "Neo-Tree Git",
+                ft = "neo-tree",
+                filter = function(buf)
+                  return vim.b[buf].neo_tree_source == "git_status"
+                end,
+                pinned = true,
+                open = "Neotree position=right git_status",
+              },
+              {
+                title = "Neo-Tree Buffers",
+                ft = "neo-tree",
+                filter = function(buf)
+                  return vim.b[buf].neo_tree_source == "buffers"
+                end,
+                pinned = true,
+                open = "Neotree position=top buffers",
+              },
+              "neo-tree",
+              {title = "DAP Scopes", ft = "dapui_scopes"},
+              {title = "DAP Breakpoints", ft = "dapui_breakpoints"},
+              {title = "DAP Stacks", ft = "dapui_stacks"},
+              {title = "DAP Watches", ft = "dapui_watches"}
+          }
+      })
+    '';
+  }
 ]

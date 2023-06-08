@@ -11,42 +11,44 @@
           vim.g.neo_tree_remove_legacy_commands = 1
           neo_tree.setup({
               close_if_last_window = false,
+              open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "edgy" },
               popup_border_style = 'rounded',
               enable_git_status = true,
               enable_diagnostics = true,
               sort_case_insensitive = true,
               filesystem = {
-          	filtered_items = {
-          	    hide_by_name = {"__init__.py"},
-          	    never_show = {".devenv", ".direnv", "__pycache__"}
-          	}
+                  filtered_items = {
+                      hide_by_name = {"__init__.py"},
+                      never_show = {".devenv", ".direnv", "__pycache__"}
+                  }
               },
               source_selector = {winbar = true},
               default_component_configs = {
-          	diagnostics = {
-          	    symbols = {hint = '', info = '', warn = '', error = ''},
-          	    highlights = {
-          		hint = 'DiagnosticSignHint',
-          		info = 'DiagnosticSignInfo',
-          		warn = 'DiagnosticSignWarn',
-          		error = 'DiagnosticSignError'
-          	    }
-          	}
+                  diagnostics = {
+                      symbols = {
+                          hint = '',
+                          info = '',
+                          warn = '',
+                          error = ''
+                      },
+                      highlights = {
+                          hint = 'DiagnosticSignHint',
+                          info = 'DiagnosticSignInfo',
+                          warn = 'DiagnosticSignWarn',
+                          error = 'DiagnosticSignError'
+                      }
+                  }
               }
           })
 
-        vim.keymap.set('n', '<C-\\>',
-                       '<CMD>NeoTreeFloatToggle<CR>',
-                       {silent = true, desc = 'Focus NeoTree'})
-        vim.keymap.set('n', '<Leader>tt',
-                       '<CMD>NeoTreeFocusToggle<CR>',
-                       {silent = true, desc = 'Toggle NeoTree'})
-        vim.keymap.set('n', '<Leader>tb',
-                       '<Cmd>Neotree action=show source=buffers toggle=true position=right<CR>',
-                       {silent = true, desc = 'Toggle buffer list'})
-        vim.keymap.set('n', '<Leader>ts',
-                       '<Cmd>Neotree action=focus source=git_status position=float<CR>',
-                       {silent = true, desc = 'Show Git Status'})
+          vim.keymap.set('n', '<Leader>tt', '<CMD>NeoTreeFocusToggle<CR>',
+                         {silent = true, desc = 'Toggle NeoTree'})
+          vim.keymap.set('n', '<Leader>tb',
+                         '<Cmd>Neotree position=top buffers<CR>',
+                         {silent = true, desc = 'Toggle buffer list'})
+          vim.keymap.set('n', '<Leader>ts',
+                         '<Cmd>Neotree position=right git_status<CR>',
+                         {silent = true, desc = 'Show Git Status'})
       end
     '';
   }
