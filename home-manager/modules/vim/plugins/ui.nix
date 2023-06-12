@@ -200,86 +200,90 @@
     plugin = lualine-nvim;
     type = "lua";
     config = ''
-      require('lualine').setup({
-          options = {
-              icons_enabled = true,
-              component_separators = {left = "", right = ""},
-              section_separators = {left = "", right = ""},
-              disabled_filetypes = {"dashboard", "lazy"},
-              always_divide_middle = true,
-              globalstatus = true
-          },
-          sections = {
-              lualine_a = {'mode'},
-              lualine_b = {},
-              lualine_c = {
-                  {
-                      require('noice').api.status.message.get,
-                      cond = require('noice').api.status.message.has,
-                      color = {fg = "#ff9e64"}
-                  }
-              },
-
-              lualine_x = {
-                  {
-                      require('noice').api.status.command.get,
-                      cond = require('noice').api.status.command.has,
-                      color = {fg = "#ff9e64"}
-                  }, {
-                      require('noice').api.status.search.get,
-                      cond = require('noice').api.status.search.has,
-                      color = {fg = "#ff9e64"}
-                  }
-              },
-              lualine_y = {
-                  {
-                      require('noice').api.status.ruler.get,
-                      cond = require('noice').api.status.ruler.has
-                  }, 'progress', 'filesize'
-              },
-              lualine_z = {'location'}
-          },
-          tabline = {
-              lualine_a = {{'tabs', mode = 2}},
-              lualine_b = {},
-              lualine_c = {},
-              lualine_x = {},
-              lualine_y = {},
-              lualine_z = {{'buffers', mode = 4}}
-          },
-          winbar = {
-              lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
-              lualine_b = {'aerial'},
-              lualine_c = {{"FugitiveHead", icon = ""}, {"diff"}},
-              lualine_x = {'encoding', 'fileformat', 'filetype'},
-              lualine_y = {"searchcount"},
-              lualine_z = {"diagnostics"}
-          },
-          inactive_winbar = {
-              lualine_a = {},
-              lualine_b = {},
-              lualine_c = {{'filetype', icon_only = true}, {'filename', path = 0}},
-              lualine_x = {"searchcount", 'diagnostics'},
-              lualine_y = {},
-              lualine_z = {}
-          },
-          extensions = {"man", "quickfix"}
-      })
+        require('lualine').setup({
+            options = {
+                icons_enabled = true,
+                component_separators = {left = "", right = ""},
+                section_separators = {left = "", right = ""},
+                disabled_filetypes = {"dashboard", "lazy"},
+                always_divide_middle = true,
+                globalstatus = true
+            },
+            sections = {
+                lualine_a = {'mode'},
+                lualine_b = {{'FugitiveHead', icon = ''}, 'diff', 'diagnostics'},
+                lualine_c = {'%S'},
+                lualine_x = {
+                    {
+                        require("noice").api.status.message.get_hl,
+                        cond = require("noice").api.status.message.has
+                    }, {
+                        require('noice').api.status.command.get,
+                        cond = require('noice').api.status.command.has,
+                        color = {fg = "#ff9e64"}
+                    }, {
+                        require('noice').api.status.search.get,
+                        cond = require('noice').api.status.search.has,
+                        color = {fg = "#ff9e64"}
+                    }
+                },
+                lualine_y = {
+                    {
+                        require('noice').api.status.ruler.get,
+                        cond = require('noice').api.status.ruler.has
+                    }, '%a'
+                },
+                lualine_z = {'hostname'}
+            },
+            tabline = {
+                lualine_a = {},
+                lualine_b = {{'tabs', mode = 2}},
+                lualine_c = {},
+                lualine_x = {},
+                lualine_y = {},
+                lualine_z = {{'buffers', mode = 4}}
+            },
+            winbar = {
+                lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
+                lualine_b = {'filesize', '%r'},
+                lualine_c = {'%w', 'searchcount'},
+                lualine_x = {'diagnostics'},
+                lualine_y = {'encoding', 'fileformat', {'filetype', icon = ""}},
+                lualine_z = {'%P', 'location'},
+            },
+            inactive_winbar = {
+                lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
+                lualine_b = {'filesize', '%r'},
+                lualine_c = {'%w', 'searchcount'},
+                lualine_x = {'diagnostics'},
+                lualine_y = {'encoding', 'fileformat', 'filetype'},
+                lualine_z = {'%P', 'location'},
+            },
+            extensions = {
+                "man", "quickfix", "trouble", "toggleterm", "fugitive", "neo-tree",
+                "nvim-dap-ui"
+            }
+        })
     '';
   }
   {
     plugin = edgy-nvim;
     type = "lua";
     config = ''
-      -- Default splitting will cause your main splits to jump when opening an edgebar.
-      -- To prevent this, set `splitkeep` to either `screen` or `topline`.
       vim.opt.splitkeep = "screen"
       require('edgy').setup({
           bottom = {
-              "Trouble", {
+              {
+                ft = "toggleterm",
+                size = { height = 0.3 },
+                filter = function(buf, win)
+                  return vim.api.nvim_win_get_config(win).relative == ""
+                end,
+              },
+              "Trouble",
+              {
                   ft = "help",
                   size = {height = 20},
-                  -- only show help buffers
                   filter = function(buf)
                       return vim.bo[buf].buftype == "help"
                   end,

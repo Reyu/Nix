@@ -41,14 +41,21 @@
               }
           })
 
-          vim.keymap.set('n', '<Leader>tt', '<CMD>NeoTreeFocusToggle<CR>',
-                         {silent = true, desc = 'Toggle NeoTree'})
-          vim.keymap.set('n', '<Leader>tb',
-                         '<Cmd>Neotree position=top buffers<CR>',
-                         {silent = true, desc = 'Toggle buffer list'})
-          vim.keymap.set('n', '<Leader>ts',
-                         '<Cmd>Neotree position=right git_status<CR>',
-                         {silent = true, desc = 'Show Git Status'})
+        vim.keymap.set('n', '<Leader>tt', '<CMD>Neotree<CR>',
+                       {silent = true, desc = 'Toggle NeoTree'})
+        vim.keymap.set('n', '<Leader>tT', '<CMD>Neotree show<CR>',
+                       {silent = true, desc = 'Show NeoTree'})
+        vim.keymap.set('n', '<Leader>tb', '<Cmd>Neotree position=top buffers<CR>',
+                       {silent = true, desc = 'Toggle buffer list'})
+        vim.keymap.set('n', '<Leader>tB', '<Cmd>Neotree position=top buffers show<CR>',
+                       {silent = true, desc = 'Show buffer list'})
+        vim.keymap.set('n', '<Leader>ts', '<Cmd>Neotree position=right git_status<CR>',
+                       {silent = true, desc = 'Show Git Status'})
+        vim.keymap.set('n', '<Leader>tS',
+                       '<Cmd>Neotree position=right git_status show<CR>',
+                       {silent = true, desc = 'Show Git Status'})
+        vim.keymap.set('n', '<Leader>th', neo_tree.reveal_current_file,
+                       {silent = true, desc = 'Reveal current file'})
       end
     '';
   }
