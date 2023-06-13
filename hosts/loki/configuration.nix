@@ -37,6 +37,7 @@
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
   };
+  programs.streamdeck-ui.enable = true;
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.firewall.checkReversePath = "loose";
@@ -117,6 +118,8 @@
 
   services.flatpak.enable = true;
   services.openssh.allowSFTP = true;
+  services.input-remapper.enable = true;
+  services.input-remapper.enableUdevRules = true;
 
   services.kmonad = {
     enable = true;
