@@ -33,10 +33,10 @@ in {
               sidebery
             ] ++ commonExtensions;
             search = {
-              default = "DuckDuckGo";
+              default = "Duck_Duck_Go";
               force = true;
               engines = {
-                "DuckDuckGo" = {
+                "Duck_Duck_Go" = {
                   urls = [{
                     template = "https://duckduckgo.com";
                     params = [
