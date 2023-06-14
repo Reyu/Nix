@@ -1,10 +1,8 @@
 user_pref("browser.startup.homepage", "http://reyuzenfold.com");
 user_pref("network.dns.disableIPv6", false);
 user_pref("browser.eme.ui.enabled", false);
-user_pref("permissions.default.shortcuts", 2);
 user_pref("privacy.antitracking.enableWebcompat", false);
 user_pref("signon.rememberSignons", false);
-user_pref("permissions.memory_only", true);
 user_pref("extensions.formautofill.addresses.enabled", false);
 user_pref("extensions.formautofill.creditCards.enabled", false);
 user_pref("extensions.formautofill.heuristics.enabled", false);
