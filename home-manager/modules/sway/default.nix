@@ -39,6 +39,7 @@
           { command = "systemctl --user restart waybar.service"; always = true; }
           { command = "systemctl --user restart swayr.service"; always = true; }
           { command = "systemctl --user start keepassxc.service"; }
+          { command = "element"; }
         ];
         keybindings = {
           "${modifier}+Return" = "exec alacritty -e tmux new -As ${curWSName}";
@@ -74,19 +75,60 @@
 
           "${modifier}+Shift+minus" = "move to scratchpad";
           "${modifier}+minus" = "scratchpad show";
+          "${modifier}+c" = "[class=\"Element\"] scratchpad show";
 
           "${modifier}+Shift+c" = "reload";
-          "${modifier}+Shift+e" =
+          "${modifier}+Shift+q" =
             "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
 
           "${modifier}+r" = "mode resize";
+        };
+        assigns = {
+          "Web" = [];
+          "Refrence" = [];
+          "Video" = [];
+          "Work" = [{class="Slack";}];
+          "Games" = [{class="Steam";}];
         };
         floating = {
           criteria = [
             { class = "Pavucontrol"; }
             { app_id = "org.keepassxc.KeePassXC"; }
+            { title = "Steam - Update News"; }
           ];
         };
+        window = {
+          commands = [
+            {
+              command = "move to scratchpad";
+              criteria = {
+                class = "Element";
+              };
+            }
+          ];
+        };
+        workspaceOutputAssign = [
+          {
+            workspace = "Web";
+            output = "DP-1";
+          }
+          {
+            workspace = "Code";
+            output = "DP-1";
+          }
+          {
+            workspace = "Refrence";
+            output = "DP-2";
+          }
+          {
+            workspace = "Work";
+            output = "DP-2";
+          }
+          {
+            workspace = "Video";
+            output = "DP-3";
+          }
+        ];
       };
       wrapperFeatures.gtk = true;
     };
