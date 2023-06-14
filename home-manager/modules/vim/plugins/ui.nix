@@ -99,9 +99,9 @@
           telescope.load_extension('noice')
         end
 
-        vim.keymap.set('n', '<Leader>nl', function() noice.cmd('last') end, { desc = 'Last notification' })
-        vim.keymap.set('n', '<Leader>nh', function() noice.cmd('history') end, { desc = 'Notification history'})
-        vim.keymap.set('n', '<Leader>nd', function() noice.cmd('dismiss') end, { desc = 'Dismiss notifications'})
+        vim.keymap.set('n', '<Leader>al', function() noice.cmd('last') end, { desc = 'Last notification' })
+        vim.keymap.set('n', '<Leader>ah', function() noice.cmd('history') end, { desc = 'Notification history'})
+        vim.keymap.set('n', '<Leader>ad', function() noice.cmd('dismiss') end, { desc = 'Dismiss notifications'})
       end
     '';
   }

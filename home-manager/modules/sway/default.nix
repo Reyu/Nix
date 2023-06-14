@@ -70,12 +70,12 @@
 
           "${modifier}+w" = "exec swayr switch-workspace-or-window";
           "${modifier}+Shift+w" = "exec swayr move-focused-to";
-          "${modifier}+n" = "exec swaymsg workspace $(${prompt} -d -l0 -p 'New Workspace: ')";
           "${modifier}+Shift+r" = "exec swaymsg rename workspace to $(${prompt} -d -l0 -p 'Rename Workspace: ')";
 
           "${modifier}+Shift+minus" = "move to scratchpad";
           "${modifier}+minus" = "scratchpad show";
           "${modifier}+c" = "[class=\"Element\"] scratchpad show";
+          "${modifier}+n" = "exec alacritty --class journal -T Journal -e nvim -c 'Neorg journal today'";
 
           "${modifier}+Shift+c" = "reload";
           "${modifier}+Shift+q" =
@@ -92,6 +92,8 @@
         };
         floating = {
           criteria = [
+            { class = "journal"; }
+            { title = "Journal"; }
             { class = "Pavucontrol"; }
             { app_id = "org.keepassxc.KeePassXC"; }
             { title = "Steam - Update News"; }
@@ -103,6 +105,12 @@
               command = "move to scratchpad";
               criteria = {
                 class = "Element";
+              };
+            }
+            {
+              command = "resize set 75 ppt 75 ppt";
+              criteria = {
+                title = "Journal";
               };
             }
           ];

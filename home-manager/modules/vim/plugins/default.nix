@@ -12,7 +12,8 @@
     plugin = which-key-nvim;
     type = "lua";
     config = ''
-      require('which-key').setup({
+      local which_key = require('which-key')
+      which_key.setup({
           plugins = {spelling = {enabled = true}},
           window = {
               border = 'single',

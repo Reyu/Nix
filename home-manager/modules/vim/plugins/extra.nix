@@ -101,13 +101,31 @@
                   ['core.defaults'] = {},
                   ['core.promo'] = {},
                   ['core.dirman'] = {
-                      config = {workspaces = {home = '~/Notes'}},
+                      config = {workspaces = {default = '~/Notes'}},
                       index = 'main.norg'
                   },
                   ['core.concealer'] = {},
                   ['core.qol.todo_items'] = {},
-                  ['core.integrations.zen_mode'] = {}
+                  ['core.integrations.zen_mode'] = {},
+                  ['core.completion'] = { config = {engine = "nvim-cmp" }},
+                  ['core.ui.calendar'] = {},
               }
+          })
+
+          which_key.register({
+            n = {
+                name = "Notes",
+                i = { "<cmd>Neorg index<cr>", "Notes Index" },
+                w = { "<cmd>Neorg workspace<cr>", "Choose workspace" },
+                r = { "<cmd>Neorg return<cr>", "Return" },
+                j = {
+                  name = "Journal",
+                  t = { "<cmd>Neorg journal today<cr>", "Open today's journal" },
+                  y = { "<cmd>Neorg journal yesterday<cr>", "Open yesterday's journal" },
+                  t = { "<cmd>Neorg journal tomorrow<cr>", "Open tomorrow's journal" },
+                  c = { "<cmd>Neorg journal custom<cr>", "Open journal at date" },
+                },
+            }
           })
       end
     '';
