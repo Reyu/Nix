@@ -136,7 +136,6 @@
           home-manager.useGlobalPkgs = true;
           home-manager.backupFileExtension = "bck";
         }
-        ./users/reyu
         ./users/root
         age
         cachix
