@@ -28,6 +28,8 @@
     xsel
   ];
 
+  programs.neovim.minimal = false;
+
   programs.keychain = {
     agents = [ "ssh" "gpg" ];
     enable = true;

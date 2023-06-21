@@ -1,4 +1,4 @@
-{ pkgs, ... }: with pkgs.vimPlugins; [
+{ config, pkgs, ... }: with pkgs.vimPlugins; [
   {
     plugin = github-nvim-theme;
     type = "lua";
@@ -120,4 +120,4 @@
 ++ import ./diagnostics.nix { inherit pkgs; }
 ++ import ./extra.nix { inherit pkgs; }
 ++ import ./git.nix { inherit pkgs; }
-++ import ./lsp.nix { inherit pkgs; }
+++ (if config.programs.neovim.minimal == false then import ./lsp.nix { inherit pkgs; } else [])
