@@ -5,6 +5,6 @@
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAzblSY1FnK7aeaVK8z+cyEfDI9sIER8s4PIQhLI5QRHAAAABHNzaDo= ok-greater"
     ];
   };
-  home-manager.users.root = import ../../home-manager/profiles/common.nix;
+  home-manager.users.root = import ../../home-manager/profiles/minimal.nix;
   programs.zsh.enable = true;
 }
