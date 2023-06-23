@@ -144,7 +144,7 @@
         locale
         nix-common
         security
-        ({ _, ... }: {
+        ({ ... }: {
           _module.args = { inherit self; };
 
           # Let 'nixos-version --json' know the Git revision of this flake.
@@ -194,7 +194,8 @@
           formatter = pkgs.nixpkgs-fmt;
 
           # construct packagesBuilder to export all packages defined in overlays
-          packages = utils.lib.exportPackages self.overlays channels;
+          #packages = utils.lib.exportPackages self.overlays channels //
+          packages = import ./hosts/linode/generators.nix { inherit self inputs; lib = nixpkgs.lib; };
 
           devShells.default = mkShell { };
           devShells.terranix = mkShell {
