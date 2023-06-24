@@ -130,13 +130,7 @@
       hostDefaults.system = "x86_64-linux";
       hostDefaults.channelName = "nixpkgs";
       hostDefaults.modules = with self.nixosModules; [
-        "${inputs.home-manager}/nixos"
-        {
-          home-manager.extraSpecialArgs = { inherit inputs self; };
-          home-manager.useGlobalPkgs = true;
-          home-manager.backupFileExtension = "bck";
-        }
-        ./users/root
+        users.root
         age
         cachix
         crypto
@@ -144,7 +138,7 @@
         locale
         nix-common
         security
-        ({ ... }: {
+        {
           _module.args = { inherit self; };
 
           # Let 'nixos-version --json' know the Git revision of this flake.
@@ -153,58 +147,69 @@
           nix.linkInputs = true;
           nix.generateRegistryFromInputs = true;
           nix.generateNixPathFromInputs = true;
-          # Default stateVersion
-          system.stateVersion = "22.05";
-        })
+        }
+        home-manager
+        {
+          home-manager.extraSpecialArgs = { inherit inputs self; };
+          home-manager.useGlobalPkgs = true;
+          home-manager.backupFileExtension = "bck";
+        }
       ];
 
       hosts = import ./hosts { inherit self inputs; };
 
       homeConfigurations = import ./home-manager { inherit self inputs; };
 
-      outputsBuilder = channels:
-        let
-          pkgs = channels.nixpkgs;
-          formatter = pkg: { package = pkg; category = "formatters"; };
-          buildTool = pkg: { package = pkg; category = "build tools"; };
-          defaultShell = with pkgs; {
-            name = "FoxNet-Nix";
-            packages = [ cachix rnix-lsp ];
-            commands = [
-              {
-                package = fup-repl;
-                help = "A package that adds a kick-ass repl";
-              }
-              {
-                package = agenix;
-                category = "secrets management";
-              }
-              (buildTool nixos-generators)
-              (formatter treefmt)
-              (formatter nixpkgs-fmt)
-              (formatter luaformatter)
-              (formatter hclfmt)
-              (formatter shfmt)
-            ];
-          };
-          mkShell = extra: pkgs.devshell.mkShell (defaultShell // extra);
-        in
-        {
-          # Default Nix Formatter
-          formatter = pkgs.nixpkgs-fmt;
+      outputsBuilder = channels:  {
+        # Default Nix Formatter
+        formatter = channels.nixpkgs.nixpkgs-fmt;
 
-          # construct packagesBuilder to export all packages defined in overlays
-          #packages = utils.lib.exportPackages self.overlays channels //
-          packages = import ./hosts/linode/generators.nix { inherit self inputs; lib = nixpkgs.lib; };
-
-          devShells.default = mkShell { };
-          devShells.terranix = mkShell {
-            name = "FoxNet-Terranix";
-            commands = defaultShell.commands ++ [
-              { package = pkgs.linode-cli; }
+        # construct packagesBuilder to export all packages defined in overlays
+        packages = utils.lib.exportPackages self.overlays channels // {
+          linode = inputs.nixos-generators.nixosGenerate {
+            system = "x86_64-linux";
+            format = "linode";
+            modules = with self.nixosModules; [
+              home-manager
+              environment
+              locale
+              nix-common
+              security
+              users.root
             ];
           };
         };
+
+        devShells.default = channels.nixpkgs.devshell.mkShell (with channels.nixpkgs; {
+          name = "FoxNet-Nix";
+          packages = [ cachix rnix-lsp ];
+          commands = let
+            formatter = pkg: {
+              package = pkg;
+              category = "formatters";
+            };
+            buildTool = pkg: {
+              package = pkg;
+              category = "build tools";
+            };
+          in [
+            {
+              package = fup-repl;
+              help = "A package that adds a kick-ass repl";
+            }
+            {
+              package = agenix;
+              category = "secrets management";
+            }
+            (buildTool nixos-generators)
+            (formatter treefmt)
+            (formatter nixpkgs-fmt)
+            (formatter luaformatter)
+            (formatter hclfmt)
+            (formatter shfmt)
+          ];
+        });
+      };
 
       overlays = utils.lib.exportOverlays { inherit (self) pkgs inputs; } // {
         default = import ./overlays { inherit inputs; };
@@ -212,38 +217,33 @@
 
       nixosModules = {
         inherit (inputs.agenix.nixosModules) age;
+        inherit (inputs.home-manager.nixosModules) home-manager;
         kmonad = inputs.kmonad.nixosModules.default;
-      } // builtins.listToAttrs (map
-        (x: {
-          name = x;
-          value = import (./modules + "/${x}");
-        })
-        (builtins.attrNames (builtins.readDir ./modules)));
+      } // builtins.listToAttrs (map (x: {
+        name = x;
+        value = import (./modules + "/${x}");
+      }) (builtins.attrNames (builtins.readDir ./modules)));
 
-      homeModules = builtins.listToAttrs (map
-        (x: {
-          name = x;
-          value = import ./home-manager/modules/${x};
-        })
-        (builtins.attrNames (builtins.readDir ./home-manager/modules)));
+      homeModules = builtins.listToAttrs (map (x: {
+        name = x;
+        value = import ./home-manager/modules/${x};
+      }) (builtins.attrNames (builtins.readDir ./home-manager/modules)));
 
       checks = with builtins;
-        # Checks to run with `nix flake check -L`, will run in a QEMU VM.
-        # Looks for all ./modules/<module name>/test.nix files and adds them to
-        # the flake's checks output. The test.nix file is optional and may be
-        # added to any module.
-        listToAttrs (map
-          (x: {
-            name = x;
-            value = (import ./modules/${x}/test.nix) {
-              pkgs = nixpkgs;
-              inherit self;
-            };
-          })
-          # Filter list of modules, leaving only modules which contain a
-          # `test.nix` file
-          (filter
-            (p: pathExists (./modules/${p}/test.nix))
+      # Checks to run with `nix flake check -L`, will run in a QEMU VM.
+      # Looks for all ./modules/<module name>/test.nix files and adds them to
+      # the flake's checks output. The test.nix file is optional and may be
+      # added to any module.
+        listToAttrs (map (x: {
+          name = x;
+          value = (import ./modules/${x}/test.nix) {
+            pkgs = nixpkgs;
+            inherit self;
+          };
+        })
+        # Filter list of modules, leaving only modules which contain a
+        # `test.nix` file
+          (filter (p: pathExists (./modules/${p}/test.nix))
             (attrNames (readDir ./modules))));
     };
 }

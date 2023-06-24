@@ -20,5 +20,6 @@
       # Users allowed to run nix
       settings.allowed-users = [ "root" ];
     };
+    system.stateVersion = "22.05";
   };
 }

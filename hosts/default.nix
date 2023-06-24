@@ -3,8 +3,7 @@
     channelName = "unstable";
     modules = with self.nixosModules; [
       ./loki/configuration.nix
-      ../users/reyu
-      { home-manager.users.reyu = import ../home-manager/profiles/desktop.nix; }
+      (users.reyu { profile = "desktop"; })
       consul
       kmonad
       onlykey
@@ -17,8 +16,7 @@
   burrow = {
     modules = with self.nixosModules; [
       ./burrow/configuration.nix
-      ../users/reyu
-      { home-manager.users.reyu = import ../home-manager/profiles/server.nix; }
+      (users.reyu { profile = "server"; })
       consul
       docker
       nomad
@@ -29,8 +27,7 @@
     system = "aarch64-linux";
     modules = with self.nixosModules; [
       ./kit/configuration.nix
-      ../users/reyu
-      { home-manager.users.reyu = import ../home-manager/profiles/common.nix; }
+      (users.reyu { profile = "common"; })
       (import "${inputs.mobile-nixos}/lib/configuration.nix" {
         device = "pine64-pinephone";
       })
@@ -41,12 +38,11 @@
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x230
       inputs.impermanence.nixosModules.impermanence
       ./traveler/configuration.nix
-      ../users/reyu
+      (users.reyu { profile = "server"; })
       {
         home-manager.users.reyu = {
           imports = [
             inputs.impermanence.nixosModules.home-manager.impermanence
-            ../home-manager/profiles/server.nix
             ../home-manager/modules/impermanence
           ];
         };
