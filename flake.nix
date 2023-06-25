@@ -23,6 +23,10 @@
       url = "github:NixOS/mobile-nixos";
       flake = false;
     };
+    terranix = {
+      url = "github:terranix/terranix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
@@ -178,6 +182,16 @@
               users.root
             ];
           };
+          terranix = inputs.terranix.lib.terranixConfiguration {
+            system = channels.nixpkgs.system;
+            modules = [
+              ./terranix
+              {
+                foxnet.hashi_servers.count = 3;
+                foxnet.hashi_servers.image = "private/20676015";
+              }
+            ];
+          };
         };
 
         devShells.default = channels.nixpkgs.devshell.mkShell (with channels.nixpkgs; {
@@ -202,6 +216,7 @@
               category = "secrets management";
             }
             (buildTool nixos-generators)
+            (buildTool terraform)
             (formatter treefmt)
             (formatter nixpkgs-fmt)
             (formatter luaformatter)
@@ -247,3 +262,5 @@
             (attrNames (readDir ./modules))));
     };
 }
+
+
