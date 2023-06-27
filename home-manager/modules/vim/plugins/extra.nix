@@ -8,45 +8,52 @@
   }
   {
     plugin = firenvim;
-    optional = true;
+    optional = false;
     type = "lua";
     config = ''
-      vim.g.firenvim_config = {
-          globalSettings = {alt = 'all'},
-          localSettings = {
-              ['.*'] = {
-                  cmdline = 'firenvim',
-                  content = 'text',
-                  priority = 0,
-                  selector = 'textarea:not([readonly]), div[role="textbox"]',
-                  takeover = 'empty'
+      -- 'not not' ensures that this is a boolean
+      if not not vim.g.started_by_firenvim then
+          vim.api.nvim_create_user_command('Maximize', function()
+              vim.o.columns = 999
+              vim.o.lines = 999
+          end, { desc = "Maximize editor" })
+          vim.g.firenvim_config = {
+              globalSettings = {alt = 'all'},
+              localSettings = {
+                  ['.*'] = {
+                      cmdline = 'firenvim',
+                      content = 'text',
+                      priority = 0,
+                      selector = 'textarea:not([readonly]), div[role="textbox"]',
+                      takeover = 'empty'
+                  }
               }
           }
-      }
-      vim.api.nvim_create_autocmd({'UIEnter'}, {
-          callback = function(event)
-              local client = vim.api.nvim_get_chan_info(vim.v.event.chan).client
-              if client ~= nil and client.name == "Firenvim" then
-                  vim.keymap.set('n', '<Esc><Esc>', vim.fn['firenvim#focus_page'])
-                  vim.g.firenvim_timer_started = false
-                  vim.api.nvim_create_autocmd({"TextChanged"}, {
-                      pattern = {"*"},
-                      nested = true,
-                      callback = function()
-                          if vim.g.firenvim_timer_started then
-                              return
-                          else
-                              vim.g.firenvim_timer_started = true
-                              vim.fn.timer_start(1000, function()
-                                  vim.g.firenvim_timer_started = false
-                                  vim.cmd('write')
-                              end)
+          vim.api.nvim_create_autocmd({'UIEnter'}, {
+              callback = function(event)
+                  local client = vim.api.nvim_get_chan_info(vim.v.event.chan).client
+                  if client ~= nil and client.name == "Firenvim" then
+                      vim.keymap.set('n', '<Esc><Esc>', vim.fn['firenvim#focus_page'])
+                      vim.g.firenvim_timer_started = false
+                      vim.api.nvim_create_autocmd({"TextChanged"}, {
+                          pattern = {"*"},
+                          nested = true,
+                          callback = function()
+                              if vim.g.firenvim_timer_started then
+                                  return
+                              else
+                                  vim.g.firenvim_timer_started = true
+                                  vim.fn.timer_start(1000, function()
+                                      vim.g.firenvim_timer_started = false
+                                      vim.cmd('write')
+                                  end)
+                              end
                           end
-                      end
-                  })
+                      })
+                  end
               end
-          end
-      })
+          })
+      end
     '';
   }
   nvim-ts-context-commentstring

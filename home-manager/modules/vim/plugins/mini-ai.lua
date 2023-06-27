@@ -53,4 +53,3 @@ for key, name in pairs({n = "Next", l = "Last"}) do
                              {name = "Around " .. name .. " textobject"}, ac)
 end
 require("which-key").register({mode = {"o", "x"}, i = _i, a = _a})
-print(_i)

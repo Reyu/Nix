@@ -200,6 +200,27 @@
     plugin = lualine-nvim;
     type = "lua";
     config = ''
+	    local noiceLeft, noiceRight
+        if not vim.g.started_by_firenvim then
+            noiceLeft = {
+                {
+                    require("noice").api.status.message.get_hl,
+                    cond = require("noice").api.status.message.has
+                }, {
+                    require('noice').api.status.command.get,
+                    cond = require('noice').api.status.command.has,
+                    color = {fg = "#ff9e64"}
+                }, {
+                    require('noice').api.status.search.get,
+                    cond = require('noice').api.status.search.has,
+                    color = {fg = "#ff9e64"}
+                }
+            }
+            noiceRight = {
+                require('noice').api.status.ruler.get,
+                cond = require('noice').api.status.ruler.has
+            }
+        end
         require('lualine').setup({
             options = {
                 icons_enabled = true,
@@ -213,26 +234,8 @@
                 lualine_a = {'mode'},
                 lualine_b = {{'FugitiveHead', icon = ''}, 'diff', 'diagnostics'},
                 lualine_c = {'%S'},
-                lualine_x = {
-                    {
-                        require("noice").api.status.message.get_hl,
-                        cond = require("noice").api.status.message.has
-                    }, {
-                        require('noice').api.status.command.get,
-                        cond = require('noice').api.status.command.has,
-                        color = {fg = "#ff9e64"}
-                    }, {
-                        require('noice').api.status.search.get,
-                        cond = require('noice').api.status.search.has,
-                        color = {fg = "#ff9e64"}
-                    }
-                },
-                lualine_y = {
-                    {
-                        require('noice').api.status.ruler.get,
-                        cond = require('noice').api.status.ruler.has
-                    }, '%a'
-                },
+                lualine_x = noiceLeft,
+                lualine_y = { noiceRight, '%a' },
                 lualine_z = {'hostname'}
             },
             tabline = {

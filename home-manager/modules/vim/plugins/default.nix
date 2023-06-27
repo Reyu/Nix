@@ -3,8 +3,8 @@
     plugin = github-nvim-theme;
     type = "lua";
     config = ''
-      local transparent = not vim.g.started_by_firenvim
-      require('github-theme').setup({options = {transparent = transparent}})
+      -- local transparent = not vim.g.started_by_firenvim
+      require('github-theme').setup({options = {transparent = true}})
       vim.cmd([[ colorscheme github_dark ]])
     '';
   }
