@@ -45,6 +45,7 @@
   foxnet.consul.firewall.open = {
     http = true;
   };
+  services.blueman.enable = true;
   services.consul = {
     interface.bind = "enp73s0";
     extraConfig = {
@@ -106,6 +107,7 @@
     zfs.autoScrub.enable = true;
   };
 
+  hardware.bluetooth.enable = true;
   hardware.uinput.enable = true;
   hardware.opengl.extraPackages = with pkgs; [
     rocm-opencl-icd
