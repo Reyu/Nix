@@ -81,6 +81,15 @@
     '';
   }
   {
+    plugin = lsp_lines-nvim;
+    type = "lua";
+    config = ''
+        require("lsp_lines").setup()
+        vim.diagnostic.config({ virtual_text = false })
+        vim.keymap.set('n', '<LocalLeader>l', require("lsp_lines").toggle, { desc = "Toggle LSP Lines" })
+    '';
+  }
+  {
     plugin = null-ls-nvim;
     type = "lua";
     config = ''
