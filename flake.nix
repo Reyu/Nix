@@ -164,28 +164,48 @@
 
       homeConfigurations = import ./home-manager { inherit self inputs; };
 
-      outputsBuilder = channels:  {
+      outputsBuilder = channels: let
+        pkgs = channels.nixpkgs;
+      in {
         # Default Nix Formatter
-        formatter = channels.nixpkgs.nixpkgs-fmt;
+        formatter = pkgs.nixpkgs-fmt;
+
+        apps = {
+          linode-image-upload = {
+            type = "app";
+            program = toString (pkgs.writeShellScript "linode-image-upload" ''
+              LINODE_LABEL="NixOS_$(date -I)"
+              LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
+              LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
+              ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
+            '');
+          };
+        };
 
         # construct packagesBuilder to export all packages defined in overlays
         packages = utils.lib.exportPackages self.overlays channels // {
           linode = inputs.nixos-generators.nixosGenerate {
-            system = "x86_64-linux";
+            inherit (pkgs) system;
             format = "linode";
             modules = with self.nixosModules; [
+            {
+                _module.args = { inherit self; };
+                system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
+            }
+            {
+                home-manager.extraSpecialArgs = { inherit inputs self; };
+                home-manager.useGlobalPkgs = true;
+            }
               home-manager
               environment
               locale
               nix-common
               security
               users.root
-              users.reyu
-              { config.users.mutableUsers = false; }
             ];
           };
           terranix = inputs.terranix.lib.terranixConfiguration {
-            system = channels.nixpkgs.system;
+            system = pkgs.system;
             modules = [
               ./terranix
               {
@@ -196,7 +216,7 @@
           };
         };
 
-        devShells.default = channels.nixpkgs.devshell.mkShell (with channels.nixpkgs; {
+        devShells.default = pkgs.devshell.mkShell (with pkgs; {
           name = "FoxNet-Nix";
           packages = [ cachix rnix-lsp ];
           commands = let
