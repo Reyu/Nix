@@ -180,6 +180,8 @@
               nix-common
               security
               users.root
+              users.reyu
+              { config.users.mutableUsers = false; }
             ];
           };
           terranix = inputs.terranix.lib.terranixConfiguration {
@@ -214,6 +216,10 @@
             {
               package = agenix;
               category = "secrets management";
+            }
+            {
+              package = "linode-cli";
+              category = "deployment";
             }
             (buildTool nixos-generators)
             (buildTool terraform)
