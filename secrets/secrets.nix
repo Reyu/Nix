@@ -7,6 +7,8 @@ let
   loki = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5RyYh6rTQJrsriGzONG4Dt0cb3Y3047KSFlylzm2zZ";
   burrow = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTxnWiWCer2tijhkTDA9RfxELHy0/HxY7zA8VgbnnFl";
   traveler = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhbhOKgiYOV65i4DVIHjjeiDI6OSHc/6ci1nIb7j99v";
+
+  fg-mastodon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL45BLcH/buNSmOqAHgkhz+CFW7Xass93CZsxkdxLCGo";
 in
 {
   "consul/encrypt.hcl".publicKeys = [ reyu ] ++ home;
@@ -15,5 +17,7 @@ in
   "nomad/burrow-vault.hcl".publicKeys = [ reyu burrow ];
   "nomad/encrypt.hcl".publicKeys = [ reyu ] ++ home;
   "vault/burrow-storage.hcl".publicKeys = [ reyu burrow ];
+  "linode/fg-mastodon.db.pass".publicKeys = [ reyu fg-mastodon ];
+  "linode/fg-mastodon.smtp.pass".publicKeys = [ reyu fg-mastodon ];
 }
 
