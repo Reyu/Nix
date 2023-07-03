@@ -121,6 +121,7 @@
             "betterttv"
             "discord"
             "nomachine-client"
+            "pay-by-privacy-com"
             "pine64-pinephone-firmware"
             "plexmediaserver"
             "slack"

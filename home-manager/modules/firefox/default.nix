@@ -1,23 +1,23 @@
 { config, pkgs, lib, nur, utils, ... }:
-with lib;
-let cfg = config.reyu.programs.firefox;
-in {
-  options.reyu.programs.firefox.enable = mkEnableOption "firefox browser";
+with lib; {
+  imports = [ ./librewolf.nix ];
 
-  config = mkIf cfg.enable {
-
-    programs.firefox = {
-      enable = true;
+  config = {
+    programs.librewolf = {
+      enable = lib.mkForce true;
       package =
-        pkgs.firefox.override { cfg = { enableTridactylNative = true; }; };
+        pkgs.librewolf.override { cfg = { enableTridactylNative = true; }; };
       profiles =
         let
           commonExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
             consent-o-matic
             darkreader
+            decentraleyes
             don-t-fuck-with-paste
+            firenvim
             keepass-helper
             keepassxc-browser
+            stylus
             terms-of-service-didnt-read
             tridactyl
             ublock-origin
@@ -27,16 +27,20 @@ in {
           personal = {
             id = 0;
             isDefault = true;
-            extraConfig = readFile ./user.js;
+          # extraConfig = readFile ./user.js;
             extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+              fediact
+              pay-by-privacy-com
+              privacy-pass
               refined-github
               sidebery
+              simplelogin
             ] ++ commonExtensions;
             search = {
-              default = "Duck_Duck_Go";
+              default = "DDG";
               force = true;
               engines = {
-                "Duck_Duck_Go" = {
+                "DDG" = {
                   urls = [{
                     template = "https://duckduckgo.com";
                     params = [
@@ -66,7 +70,6 @@ in {
                   icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                   definedAliases = [ "@np" ];
                 };
-
                 "NixOS Wiki" = {
                   urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
                   iconUpdateURL = "https://nixos.wiki/favicon.png";
@@ -79,9 +82,7 @@ in {
           video = {
             id = 1;
             extraConfig = readFile ./user.js;
-            extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-              betterttv
-            ] ++ commonExtensions;
+            extensions = commonExtensions;
           };
         };
     };

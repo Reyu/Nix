@@ -14,7 +14,6 @@
   ];
 
   reyu.programs = {
-    firefox.enable = true;
     tmux.enable = true;
   };
 

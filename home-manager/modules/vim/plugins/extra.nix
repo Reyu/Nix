@@ -133,7 +133,7 @@
                   c = { "<cmd>Neorg journal custom<cr>", "Open journal at date" },
                 },
             }
-          })
+          }, { prefix = "<Leader>"})
       end
     '';
   }
