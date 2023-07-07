@@ -26,7 +26,7 @@
         smtp = {
           createLocally = false;
           host = "smtp.mailgun.org";
-          port = "587";
+          port = 587;
           user = "mastodon@fuzzygames.social";
           fromAddress = "mastodon@fuzzygames.social";
           passwordFile = config.age.secrets."smtp.pass".path;
