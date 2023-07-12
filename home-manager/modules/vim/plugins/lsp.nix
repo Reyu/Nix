@@ -1,4 +1,5 @@
-{ pkgs, ... }: with pkgs.vimPlugins; [
+{ pkgs, ... }:
+with pkgs.vimPlugins; [
   nvim-lspconfig
   {
     plugin = lsp-zero-nvim;
@@ -84,24 +85,19 @@
     plugin = lsp_lines-nvim;
     type = "lua";
     config = ''
-        require("lsp_lines").setup()
-        vim.diagnostic.config({ virtual_text = false })
-        vim.keymap.set('n', '<LocalLeader>l', require("lsp_lines").toggle, { desc = "Toggle LSP Lines" })
+      require("lsp_lines").setup()
+      vim.diagnostic.config({ virtual_text = false })
+      vim.keymap.set('n', '<LocalLeader>l', require("lsp_lines").toggle, { desc = "Toggle LSP Lines" })
     '';
   }
   {
-    plugin = null-ls-nvim;
-    type = "lua";
+    plugin = ale;
+    type = "viml";
     config = ''
-      local nls = require("null-ls")
-      nls.setup({
-          sources = {
-              nls.builtins.code_actions.gitsigns,
-              nls.builtins.code_actions.refactoring,
-              nls.builtins.diagnostics.dotenv_linter,
-              nls.builtins.hover.dictionary
-          }
-      })
+      let g:ale_disable_lsp = 1
+      let g:ale_use_neovim_diagnostics_api = 1
+      let g:ale_set_loclist = 0
+      let g:ale_fixers = { 'nix': [ 'nixfmt' ] }
     '';
   }
   {
