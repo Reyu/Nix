@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 let cfg = config.foxnet.consul;
 in {
@@ -53,9 +53,6 @@ in {
           default_policy = "deny";
           down_policy = "extend-cache";
         };
-        ports.grpc = 8502;
-        connect.enabled = true;
-        addresses.http = mkDefault "127.0.0.1";
       };
       extraConfigFiles = [
         config.age.secrets."consul_encrypt_key.hcl".path

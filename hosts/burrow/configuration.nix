@@ -1,4 +1,4 @@
-{ self, config, ... }: {
+{ config, ... }: {
   imports = [ ./hardware-configuration.nix ./MAS.nix ];
   config = {
     boot = {
@@ -27,6 +27,12 @@
       zfs.extraPools = [ "data" ];
     };
 
+    foxnet.consul.firewall.open = {
+      dns = true;
+      serf_wan = true;
+      server = true;
+    };
+
     users.groups.media = { };
     users.users = {
       media = {
@@ -43,6 +49,12 @@
     };
 
     services = {
+      consul.extraConfig = {
+        server = true;
+        bootstrap = true;
+        client_addr = "{{ GetAllInterfaces | include \"name\" \"eno[1-4]\" | join \"address\" \" \" }}";
+        advertise_addr = "{{ GetPublicInterfaces | include \"type\" \"IPv6\" | sort \"-address\" | attr \"address\" }}";
+      };
       nfs.server.enable = true;
       syncthing = {
         enable = true;
