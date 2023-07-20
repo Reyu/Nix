@@ -63,7 +63,7 @@ with pkgs.vimPlugins; [
       })
 
       lsp.setup_servers({
-          'bashls', 'dockerls', 'rnix', 'terraform_lsp',
+          'bashls', 'dockerls', 'rnix', 'terraformls',
           force = true
       })
       lsp.configure('jsonls', {
