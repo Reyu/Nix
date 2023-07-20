@@ -23,10 +23,6 @@
       url = "github:NixOS/mobile-nixos";
       flake = false;
     };
-    terranix = {
-      url = "github:terranix/terranix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
@@ -203,16 +199,6 @@
               nix-common
               security
               users.root
-            ];
-          };
-          terranix = inputs.terranix.lib.terranixConfiguration {
-            system = pkgs.system;
-            modules = [
-              ./terranix
-              {
-                foxnet.hashi_servers.count = 3;
-                foxnet.hashi_servers.image = "private/20676015";
-              }
             ];
           };
         };
