@@ -25,7 +25,7 @@
         };
         smtp = {
           createLocally = false;
-          host = "smtp.mailgun.org";
+          host = "smtp.protonmail.ch";
           port = 587;
           user = "mastodon@fuzzygames.social";
           fromAddress = "mastodon@fuzzygames.social";
