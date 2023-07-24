@@ -54,8 +54,6 @@
         vim.keymap.set('n', '<Leader>tS',
                        '<Cmd>Neotree position=right git_status show<CR>',
                        {silent = true, desc = 'Show Git Status'})
-        vim.keymap.set('n', '<Leader>th', neo_tree.reveal_current_file,
-                       {silent = true, desc = 'Reveal current file'})
       end
     '';
   }
