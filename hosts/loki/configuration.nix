@@ -1,4 +1,4 @@
-{ self, pkgs, ... }: {
+{ config, pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -42,22 +42,13 @@
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.firewall.checkReversePath = "loose";
 
-  foxnet.consul.firewall.open = {
-    http = true;
-  };
   services.blueman.enable = true;
-  services.consul = {
-    interface.bind = "enp73s0";
-    extraConfig = {
-      datacenter = "home";
-      retry_join = [ "burrow.home.reyuzenfold.com" ];
-    };
-  };
 
   home-manager.users.reyu.home.packages = with pkgs; [
     deluge
     blender
     freecad
+    mullvad-vpn
   ];
   home-manager.users.reyu.wayland.windowManager.sway.config = {
     startup = [
@@ -84,9 +75,29 @@
 
   services = {
     avahi.enable = true;
+    consul.interface.bind = "enp73s0";
+    consul.extraConfig = {
+      ui = true;
+      datacenter = "home";
+      client_addr = "{{ GetAllInterfaces | include \"name\" \"eno[1-4]|lo\" | exclude \"flags\" \"link-local unicast\" | join \"address\" \" \" }}";
+      advertise_addr = "{{ GetPublicInterfaces | include \"type\" \"IPv6\" | sort \"-address\" | attr \"address\" }}";
+    };
+    vault = {
+      storageBackend = "consul";
+      extraConfig = ''
+        ui = true
+      '';
+      extraSettingsPaths = [
+        config.age.secrets."vault_storage.hcl".path
+      ];
+    };
     udev.packages = [
       pkgs.android-udev-rules
     ];
+    mullvad-vpn = {
+        enable = true;
+        enableExcludeWrapper = false;
+    };
     tailscale.enable = true;
     sanoid = {
       interval = "*-*-* *:0..59/15 UTC";

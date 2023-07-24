@@ -33,6 +33,11 @@
       server = true;
     };
 
+    age.secrets."vault_storage.hcl" = {
+      file = ../../secrets/vault/burrow-storage.hcl;
+      owner = "vault";
+    };
+
     users.groups.media = { };
     users.users = {
       media = {
@@ -52,8 +57,19 @@
       consul.extraConfig = {
         server = true;
         bootstrap = true;
-        client_addr = "{{ GetAllInterfaces | include \"name\" \"eno[1-4]\" | join \"address\" \" \" }}";
+        ui = true;
+        datacenter = "home";
+        client_addr = "{{ GetAllInterfaces | include \"name\" \"eno[1-4]|lo\" | exclude \"flags\" \"link-local unicast\" | join \"address\" \" \" }}";
         advertise_addr = "{{ GetPublicInterfaces | include \"type\" \"IPv6\" | sort \"-address\" | attr \"address\" }}";
+      };
+      vault = {
+        storageBackend = "consul";
+        extraConfig = ''
+          ui = true
+        '';
+        extraSettingsPaths = [
+          config.age.secrets."vault_storage.hcl".path
+        ];
       };
       nfs.server.enable = true;
       syncthing = {
