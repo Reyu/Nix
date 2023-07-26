@@ -1,4 +1,6 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }: let
+  browser = "librewolf";
+in {
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -55,8 +57,8 @@
       ];
       wayland.windowManager.sway.config = {
         startup = [
-          { command = "firefox"; }
-          { command = "firefox -P video"; }
+          { command = browser; }
+          { command = "${browser} -P video"; }
           { command = "telegram-desktop"; }
           { command = "discord"; }
         ];
