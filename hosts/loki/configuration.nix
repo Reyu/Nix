@@ -75,12 +75,13 @@
 
   services = {
     avahi.enable = true;
-    consul.interface.bind = "enp73s0";
+    consul.interface.bind = "enp70s0";
     consul.extraConfig = {
       ui = true;
       datacenter = "home";
       client_addr = "{{ GetAllInterfaces | include \"name\" \"eno[1-4]|lo\" | exclude \"flags\" \"link-local unicast\" | join \"address\" \" \" }}";
       advertise_addr = "{{ GetPublicInterfaces | include \"type\" \"IPv6\" | sort \"-address\" | attr \"address\" }}";
+      retry_join = [ "172.16.0.5" ];
     };
     vault = {
       storageBackend = "consul";
