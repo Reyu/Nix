@@ -49,6 +49,7 @@
     blender
     freecad
     mullvad-vpn
+    calibre
   ];
   home-manager.users.reyu.wayland.windowManager.sway.config = {
     startup = [
