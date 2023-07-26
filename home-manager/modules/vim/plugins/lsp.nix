@@ -91,16 +91,6 @@ with pkgs.vimPlugins; [
     '';
   }
   {
-    plugin = ale;
-    type = "viml";
-    config = ''
-      let g:ale_disable_lsp = 1
-      let g:ale_use_neovim_diagnostics_api = 1
-      let g:ale_set_loclist = 0
-      let g:ale_fixers = { 'nix': [ 'nixfmt' ] }
-    '';
-  }
-  {
     plugin = haskell-tools-nvim;
     type = "lua";
     config = ''
