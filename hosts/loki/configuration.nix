@@ -44,34 +44,37 @@
 
   services.blueman.enable = true;
 
-  home-manager.users.reyu.home.packages = with pkgs; [
-    deluge
-    blender
-    freecad
-    mullvad-vpn
-    calibre
-  ];
-  home-manager.users.reyu.wayland.windowManager.sway.config = {
-    startup = [
-      { command = "firefox"; }
-      { command = "firefox -P video"; }
-      { command = "telegram-desktop"; }
-      { command = "discord"; }
-    ];
-    output = {
-      DP-1 = {
-        background = "~/Pictures/Backgrounds/The\ Downbelow.jpg fill";
-        position = "3840 720 res 3440x1440";
+  users.users.reyu.extraGroups = [ config.services.davfs2.davGroup ];
+  home-manager.users.reyu = {
+      home.packages = with pkgs; [
+        deluge
+        blender
+        freecad
+        mullvad-vpn
+        calibre
+      ];
+      wayland.windowManager.sway.config = {
+        startup = [
+          { command = "firefox"; }
+          { command = "firefox -P video"; }
+          { command = "telegram-desktop"; }
+          { command = "discord"; }
+        ];
+        output = {
+          DP-1 = {
+            background = "~/Pictures/Backgrounds/The\ Downbelow.jpg fill";
+            position = "3840 720 res 3440x1440";
+          };
+          DP-2 = {
+            background = "~/Pictures/Backgrounds/Locker.png fill";
+            position = "7280 720 res 2560x1440";
+          };
+          DP-3 = {
+            background = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
+            position = "0 0 res 3840x2160";
+          };
+        };
       };
-      DP-2 = {
-        background = "~/Pictures/Backgrounds/Locker.png fill";
-        position = "7280 720 res 2560x1440";
-      };
-      DP-3 = {
-        background = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
-        position = "0 0 res 3840x2160";
-      };
-    };
   };
 
   services = {
@@ -84,6 +87,7 @@
       advertise_addr = "{{ GetPublicInterfaces | include \"type\" \"IPv6\" | sort \"-address\" | attr \"address\" }}";
       retry_join = [ "172.16.0.5" ];
     };
+    davfs2.enable = true;
     vault = {
       storageBackend = "consul";
       extraConfig = ''
