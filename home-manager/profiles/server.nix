@@ -3,5 +3,5 @@
     ./common.nix
     ../modules/git
   ];
-  home.packages = with pkgs; [ htop ripgrep ];
+  home.packages = with pkgs; [ htop ripgrep rsync ];
 }
