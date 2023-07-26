@@ -13,8 +13,6 @@
   };
   outputs = { self, ... }@inputs:
     with inputs;
-    let extraSpecialArgs = { inherit inputs self; };
-    in
     utils.lib.mkFlake {
       inherit self inputs;
 
@@ -29,20 +27,20 @@
         locale
         nix-common
         security
-        ({ ... }: {
+        {
           # Let 'nixos-version --json' know the Git revision of this flake.
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
           nix.registry.nixpkgs.flake = nixpkgs;
           nix.registry.foxnet.flake = self;
-        })
+        }
 
         consul
-        ({ ... }: {
+        {
           config.services.consul = {
             interface.bind = "eth0";
             extraConfig.datacenter = "us-east01";
           };
-        })
+        }
       ];
 
       hosts = with foxnet.nixosModules;
@@ -50,7 +48,7 @@
           # Terraform Data
           terraform = nixpkgs.lib.importJSON ./terraform.json;
           # Roles
-          consulServer = ({ config, lib, ... }: {
+          consulServer = { config, ... }: {
             config.foxnet.consul.firewall.open = {
               server = true;
               serf_wan = true;
@@ -61,7 +59,7 @@
               bootstrap_expect = 3;
               retry_join = map (x: x.private) (builtins.attrValues terraform.consul);
             };
-          });
+          };
           # Hosts
           hosts = builtins.mapAttrs
             (name: value: {
@@ -98,9 +96,9 @@
 
       deploy.nodes =
         let
-          inherit (deploy-rs.lib.x86_64-linux.activate) nixos home-manager custom;
+          inherit (deploy-rs.lib.x86_64-linux.activate) nixos;
           nodes = builtins.mapAttrs
-            (name: value: {
+            (name: _: {
               hostname = "${name}.linode.reyuzenfold.com";
               profiles = {
                 system = {
@@ -115,7 +113,7 @@
 
       # Sanity check for deploy-rs
       checks = builtins.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy)
+        (_: deployLib: deployLib.deployChecks self.deploy)
         deploy-rs.lib;
     };
 }

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nur, inputs, ... }: {
+{
   # Imports
   imports = [
     ../modules/shell

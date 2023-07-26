@@ -196,7 +196,7 @@ in {
 
             bookmarks = mkOption {
               type = let
-                bookmarkSubmodule = types.submodule ({ config, name, ... }: {
+                bookmarkSubmodule = types.submodule ({ name, ... }: {
                   options = {
                     name = mkOption {
                       type = types.str;
@@ -227,7 +227,7 @@ in {
 
                 bookmarkType = types.addCheck bookmarkSubmodule (x: x ? "url");
 
-                directoryType = types.submodule ({ config, name, ... }: {
+                directoryType = types.submodule ({ name, ... }: {
                   options = {
                     name = mkOption {
                       type = types.str;
@@ -444,7 +444,7 @@ in {
 
       (let
         duplicates = filterAttrs (_: v: length v != 1) (zipAttrs
-          (mapAttrsToList (n: v: { "${toString v.id}" = n; }) (cfg.profiles)));
+          (mapAttrsToList (n: v: { "${toString v.id}" = n; }) cfg.profiles));
 
         mkMsg = n: v: "  - ID ${n} is used by ${concatStringsSep ", " v}";
       in {
@@ -457,7 +457,7 @@ in {
 
     home.packages = let
       # The configuration expected by the Firefox wrapper.
-      fcfg = { enableGnomeExtensions = cfg.enableGnomeExtensions; };
+      fcfg = { inherit (cfg) enableGnomeExtensions; };
 
       # A bit of hackery to force a config into the wrapper.
       browserName = cfg.package.browserName or (builtins.parseDrvName
@@ -495,7 +495,7 @@ in {
       "${profilesPath}/${profile.path}/search.json.mozlz4" = mkIf
         (profile.search.default != null || profile.search.order != [ ]
           || profile.search.engines != { }) {
-            force = profile.search.force;
+            inherit (profile.search) force;
             source = let
               settings = {
                 version = 6;

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, ... }: {
   config = {
     networking.firewall = {
       allowedTCPPorts = [
@@ -23,7 +23,7 @@
             isReadOnly = false;
           };
         };
-        config = { config, pkgs, ... }: {
+        config = { config, ... }: {
           imports = [ ../../modules/common ../../modules/kerberos ];
           config = {
             foxnet.krb = {
@@ -49,7 +49,7 @@
             isReadOnly = false;
           };
         };
-        config = { config, pkgs, ... }: {
+        config = { config, ... }: {
           imports = [ ../../modules/common ../../modules/kerberos ];
           config = {
             services.openldap = {

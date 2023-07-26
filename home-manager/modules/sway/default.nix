@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   imports = [ ./swayr.nix ];
   home.packages = with pkgs; [
     grim
@@ -20,7 +20,6 @@
     let
       prompt = "${pkgs.fuzzel}/bin/fuzzel";
       curWSName = "$(swaymsg -t get_workspaces | jq -r '.[]|select(.focused == true)|.name')";
-      workspaceList = "swaymsg -t get_workspaces | jq -r '.[]|.name'";
     in
     {
       enable = true;

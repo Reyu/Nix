@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, lib, ... }:
 with lib; {
   config = {
     # Enable the OpenSSH daemon.

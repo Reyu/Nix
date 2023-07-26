@@ -43,7 +43,7 @@ let
     };
   };
 
-  metadata = lib.importTOML ../../hosts/metadata.toml;
+  # metadata = lib.importTOML ../../hosts/metadata.toml;
 
   mkService = name:
     { source, dest, owner, group, permissions, ... }: {
@@ -73,7 +73,7 @@ in
       units = mapAttrs'
         (name: info: {
           name = "${name}-key";
-          value = (mkService name info);
+          value = mkService name info;
         })
         cfg;
     in

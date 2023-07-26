@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{
   services.picom = {
     enable = true;
     fade = true;

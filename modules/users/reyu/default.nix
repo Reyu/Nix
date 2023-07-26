@@ -1,4 +1,4 @@
-{ profile }: { self, config, pkgs, inputs, ... }: {
+{ profile }: { self, pkgs, ... }: {
 
   users.users.reyu = {
     isNormalUser = true;

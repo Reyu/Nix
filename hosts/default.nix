@@ -1,4 +1,4 @@
-{ self, inputs, ... }@args: {
+{ self, inputs, ... }: {
   loki = {
     channelName = "unstable";
     modules = with self.nixosModules; [

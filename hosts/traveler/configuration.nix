@@ -1,4 +1,4 @@
-{ self, config, pkgs, lib, ... }: {
+{ self, config, lib, ... }: {
   imports =
     [ ./hardware-configuration.nix ];
 

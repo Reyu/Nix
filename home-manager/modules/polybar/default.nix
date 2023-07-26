@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override {

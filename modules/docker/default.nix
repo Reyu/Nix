@@ -1,7 +1,5 @@
 { pkgs, config, lib, ... }:
 with lib;
-let cfg = config.foxnet.services.docker;
-in
 {
   config = {
     environment.systemPackages =

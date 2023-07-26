@@ -29,7 +29,7 @@ appimageTools.wrapType2 {
     longDescription = ''
       The latest build of https://httpie.io, in appImage form, suitably nixed
     '';
-    homepage = https://httpie.io;
+    homepage = "https://httpie.io";
     platforms = [ "x86_64-linux" ];
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, stdenv, lib, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
 pkgs.vimUtils.buildVimPluginFrom2Nix {
   pname = "bufresize.nvim";
   version = "latest";

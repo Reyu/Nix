@@ -1,4 +1,4 @@
-{ config, pkgs, libs, inputs, ... }:
+{ pkgs, inputs, ... }:
 {
   home.packages = with pkgs; [
     (inputs.replugged.lib.makeDiscordPlugged {

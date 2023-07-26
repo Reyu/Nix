@@ -1,7 +1,7 @@
 { inputs }:
 # Pass flake inputs to overlay so we can use the sources pinned in flake.lock
 # instead of having to keep hashes in each package for src
-final: prev:
+_: prev:
 let
   vimPlugins = {
     bufresize-nvim = prev.callPackage ../packages/bufresize-nvim.nix { inherit inputs; };

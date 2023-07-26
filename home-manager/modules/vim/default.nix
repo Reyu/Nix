@@ -82,14 +82,14 @@
     } // (with builtins;
       let
         # Includes all files in the given directory
-        dirContets = (dir:
+        dirContets = dir:
           let
             files = attrNames (readDir ./${dir});
             mapped_files = map (file: {
               name = "nvim/${dir}/${file}";
               value = { source = ./${dir}/${file}; };
             }) files;
-          in listToAttrs mapped_files);
+          in listToAttrs mapped_files;
 
         # Needs to find `after/queries/{type}/{file}`
         query_files = concatMap

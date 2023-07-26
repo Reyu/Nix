@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{
   services = {
     plex.enable = true;
     plex.openFirewall = true;

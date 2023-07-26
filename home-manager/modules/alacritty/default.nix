@@ -1,6 +1,3 @@
-{ config, pkgs, lib, ... }:
-let vars = import ./vars.nix;
-in
 {
   # Alacritty
   programs.alacritty = {
