@@ -65,7 +65,10 @@
       vault = {
         storageBackend = "consul";
         extraConfig = ''
-          ui = true
+          listener "tcp" {
+            address = "172.16.0.5:8200"
+            tls_disable = true
+          }
         '';
         extraSettingsPaths = [
           config.age.secrets."vault_storage.hcl".path

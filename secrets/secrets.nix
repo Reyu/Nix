@@ -11,6 +11,7 @@ let
   fg-mastodon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL45BLcH/buNSmOqAHgkhz+CFW7Xass93CZsxkdxLCGo";
 in
 {
+  "loki/davfs2_secrets".publicKeys = [ reyu loki ];
   "consul/encrypt.hcl".publicKeys = [ reyu ] ++ home;
   "consul/burrow.hcl".publicKeys = [ reyu burrow ];
   "nomad/burrow-consul.hcl".publicKeys = [ reyu burrow ];

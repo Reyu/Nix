@@ -5,6 +5,7 @@
       ./loki/configuration.nix
       (users.reyu { profile = "desktop"; })
       consul
+      vault-proxy
       kmonad
       onlykey
       qflipper

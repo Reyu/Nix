@@ -79,6 +79,11 @@ in {
       };
   };
 
+  age.secrets."davfs2_secrets" = {
+    file = ../../secrets/loki/davfs2_secrets;
+    path = "/etc/davfs2/secrets";
+  };
+
   services = {
     avahi.enable = true;
     consul.interface.bind = "enp70s0";
@@ -89,16 +94,14 @@ in {
       advertise_addr = "{{ GetPublicInterfaces | include \"type\" \"IPv6\" | sort \"-address\" | attr \"address\" }}";
       retry_join = [ "172.16.0.5" ];
     };
-    davfs2.enable = true;
-    vault = {
-      storageBackend = "consul";
-      extraConfig = ''
-        ui = true
+    vault-proxy = {
+      enable = true;
+      vault.address = "http://172.16.0.5:8200";
+      listenerExtraConfig = ''
+        tls_disable = true
       '';
-      extraSettingsPaths = [
-        config.age.secrets."vault_storage.hcl".path
-      ];
     };
+    davfs2.enable = true;
     udev.packages = [
       pkgs.android-udev-rules
     ];
