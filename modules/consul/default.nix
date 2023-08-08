@@ -89,8 +89,12 @@ in {
 
         allowedUDPPorts = concatLists [
           (checkPort "dns")
+          (checkPort "http")
+          (checkPort "https")
+          (checkPort "grpc")
           (checkPort "serf_lan")
           (checkPort "serf_wan")
+          (checkPort "server")
         ];
 
         allowedTCPPortRanges = mkIf cfg.firewall.open.sidecar [

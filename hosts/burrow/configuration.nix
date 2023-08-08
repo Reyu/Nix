@@ -30,6 +30,7 @@
     foxnet.consul.firewall.open = {
       dns = true;
       serf_wan = true;
+      serf_lan = true;
       server = true;
     };
 
