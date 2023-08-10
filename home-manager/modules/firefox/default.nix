@@ -12,13 +12,10 @@ with lib; {
           commonExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
             consent-o-matic
             darkreader
-            decentraleyes
             don-t-fuck-with-paste
             firenvim
             keepass-helper
             keepassxc-browser
-            stylus
-            terms-of-service-didnt-read
             tridactyl
             ublock-origin
           ];
