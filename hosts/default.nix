@@ -74,5 +74,6 @@
   in
   providers {
     linode = ./linode;
+    hetzner = ./hetzner;
   }
 )
