@@ -25,10 +25,6 @@
     };
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nix-on-droid = {
-      url = "github:t184256/nix-on-droid/release-23.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # Automatic deployment
     agenix = {
@@ -99,7 +95,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, utils, nix-on-droid, ... }@inputs:
+  outputs = { self, nixpkgs, utils, ... }@inputs:
     utils.lib.mkFlake {
       # Required inputs of `mkFlake`
       inherit inputs self;
@@ -164,28 +160,6 @@
       hosts = import ./hosts { inherit self inputs; };
 
       homeConfigurations = import ./home-manager { inherit self inputs; };
-
-      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        modules = with self.nixosModules; [
-            cachix
-            environment
-            locale
-            nix-common
-            security
-            {
-              _module.args = { inherit self; };
-              system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-            }
-            home-manager
-            {
-              home-manager.extraSpecialArgs = { inherit inputs self; };
-              home-manager.useGlobalPkgs = true;
-              home-manager.backupFileExtension = "bck";
-            }
-
-            (users.reyu { profile = "common"; })
-        ];
-      };
 
       outputsBuilder = channels: let
         pkgs = channels.nixpkgs;
@@ -301,5 +275,3 @@
             (attrNames (readDir ./modules))));
     };
 }
-
-
