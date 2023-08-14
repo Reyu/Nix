@@ -69,7 +69,7 @@
       })
       (builtins.attrNames attrs);
     providers = x: builtins.listToAttrs (builtins.concatMap
-      (n: prefixNames n (import x.${n}))
+      (n: prefixNames n (import x.${n} { inherit self inputs; }))
       (builtins.attrNames x));
   in
   providers {

@@ -1,3 +1,4 @@
+{ ... }:
 {
   fg-mastodon = {
     modules = [
