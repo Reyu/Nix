@@ -1,6 +1,8 @@
-{ config, pkgs, ... }: let
+{ config, pkgs, ... }:
+let
   browser = "librewolf";
-in {
+in
+{
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -48,35 +50,35 @@ in {
 
   users.users.reyu.extraGroups = [ config.services.davfs2.davGroup ];
   home-manager.users.reyu = {
-      home.packages = with pkgs; [
-        deluge
-        blender
-        freecad
-        mullvad-vpn
-        calibre
+    home.packages = with pkgs; [
+      deluge
+      blender
+      freecad
+      mullvad-vpn
+      calibre
+    ];
+    wayland.windowManager.sway.config = {
+      startup = [
+        { command = browser; }
+        { command = "${browser} -P video"; }
+        { command = "telegram-desktop"; }
+        { command = "discord"; }
       ];
-      wayland.windowManager.sway.config = {
-        startup = [
-          { command = browser; }
-          { command = "${browser} -P video"; }
-          { command = "telegram-desktop"; }
-          { command = "discord"; }
-        ];
-        output = {
-          DP-1 = {
-            background = "~/Pictures/Backgrounds/The\ Downbelow.jpg fill";
-            position = "3840 720 res 3440x1440";
-          };
-          DP-2 = {
-            background = "~/Pictures/Backgrounds/Locker.png fill";
-            position = "7280 720 res 2560x1440";
-          };
-          DP-3 = {
-            background = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
-            position = "0 0 res 3840x2160";
-          };
+      output = {
+        DP-1 = {
+          background = "~/Pictures/Backgrounds/The\ Downbelow.jpg fill";
+          position = "3840 720 res 3440x1440";
+        };
+        DP-2 = {
+          background = "~/Pictures/Backgrounds/Locker.png fill";
+          position = "7280 720 res 2560x1440";
+        };
+        DP-3 = {
+          background = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
+          position = "0 0 res 3840x2160";
         };
       };
+    };
   };
 
   age.secrets."davfs2_secrets" = {
@@ -104,8 +106,8 @@ in {
       pkgs.android-udev-rules
     ];
     mullvad-vpn = {
-        enable = true;
-        enableExcludeWrapper = false;
+      enable = true;
+      enableExcludeWrapper = false;
     };
     tailscale.enable = true;
     sanoid = {

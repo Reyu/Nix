@@ -161,83 +161,87 @@
 
       homeConfigurations = import ./home-manager { inherit self inputs; };
 
-      outputsBuilder = channels: let
-        pkgs = channels.nixpkgs;
-      in {
-        # Default Nix Formatter
-        formatter = pkgs.nixpkgs-fmt;
+      outputsBuilder = channels:
+        let
+          pkgs = channels.nixpkgs;
+        in
+        {
+          # Default Nix Formatter
+          formatter = pkgs.nixpkgs-fmt;
 
-        apps = {
-          linode-image-upload = {
-            type = "app";
-            program = toString (pkgs.writeShellScript "linode-image-upload" ''
-              LINODE_LABEL="NixOS_$(date -I)"
-              LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
-              LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
-              ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
-            '');
-          };
-        };
-
-        # construct packagesBuilder to export all packages defined in overlays
-        packages = utils.lib.exportPackages self.overlays channels // {
-          linode = inputs.nixos-generators.nixosGenerate {
-            inherit (pkgs) system;
-            format = "linode";
-            modules = with self.nixosModules; [
-            {
-                _module.args = { inherit self; };
-                system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-            }
-            {
-                home-manager.extraSpecialArgs = { inherit inputs self; };
-                home-manager.useGlobalPkgs = true;
-            }
-              home-manager
-              environment
-              locale
-              nix-common
-              security
-              users.root
-            ];
-          };
-        };
-
-        devShells.default = pkgs.devshell.mkShell (with pkgs; {
-          name = "FoxNet-Nix";
-          packages = [ cachix rnix-lsp ];
-          commands = let
-            formatter = pkg: {
-              package = pkg;
-              category = "formatters";
+          apps = {
+            linode-image-upload = {
+              type = "app";
+              program = toString (pkgs.writeShellScript "linode-image-upload" ''
+                LINODE_LABEL="NixOS_$(date -I)"
+                LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
+                LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
+                ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
+              '');
             };
-            buildTool = pkg: {
-              package = pkg;
-              category = "build tools";
+          };
+
+          # construct packagesBuilder to export all packages defined in overlays
+          packages = utils.lib.exportPackages self.overlays channels // {
+            linode = inputs.nixos-generators.nixosGenerate {
+              inherit (pkgs) system;
+              format = "linode";
+              modules = with self.nixosModules; [
+                {
+                  _module.args = { inherit self; };
+                  system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
+                }
+                {
+                  home-manager.extraSpecialArgs = { inherit inputs self; };
+                  home-manager.useGlobalPkgs = true;
+                }
+                home-manager
+                environment
+                locale
+                nix-common
+                security
+                users.root
+              ];
             };
-          in [
-            {
-              package = fup-repl;
-              help = "A package that adds a kick-ass repl";
-            }
-            {
-              package = agenix;
-              category = "secrets management";
-            }
-            {
-              package = "linode-cli";
-              category = "deployment";
-            }
-            (buildTool nixos-generators)
-            (buildTool terraform)
-            (formatter treefmt)
-            (formatter nixpkgs-fmt)
-            (formatter luaformatter)
-            (formatter hclfmt)
-            (formatter shfmt)
-          ];
-        });
-      };
+          };
+
+          devShells.default = pkgs.devshell.mkShell (with pkgs; {
+            name = "FoxNet-Nix";
+            packages = [ cachix rnix-lsp ];
+            commands =
+              let
+                formatter = pkg: {
+                  package = pkg;
+                  category = "formatters";
+                };
+                buildTool = pkg: {
+                  package = pkg;
+                  category = "build tools";
+                };
+              in
+              [
+                {
+                  package = fup-repl;
+                  help = "A package that adds a kick-ass repl";
+                }
+                {
+                  package = agenix;
+                  category = "secrets management";
+                }
+                {
+                  package = "linode-cli";
+                  category = "deployment";
+                }
+                (buildTool nixos-generators)
+                (buildTool terraform)
+                (formatter treefmt)
+                (formatter nixpkgs-fmt)
+                (formatter luaformatter)
+                (formatter hclfmt)
+                (formatter shfmt)
+              ];
+          });
+        };
 
       overlays = utils.lib.exportOverlays { inherit (self) pkgs inputs; } // {
         default = import ./overlays { inherit inputs; };
@@ -247,30 +251,35 @@
         inherit (inputs.agenix.nixosModules) age;
         inherit (inputs.home-manager.nixosModules) home-manager;
         kmonad = inputs.kmonad.nixosModules.default;
-      } // builtins.listToAttrs (map (x: {
-        name = x;
-        value = import (./modules + "/${x}");
-      }) (builtins.attrNames (builtins.readDir ./modules)));
+      } // builtins.listToAttrs (map
+        (x: {
+          name = x;
+          value = import (./modules + "/${x}");
+        })
+        (builtins.attrNames (builtins.readDir ./modules)));
 
-      homeModules = builtins.listToAttrs (map (x: {
-        name = x;
-        value = import ./home-manager/modules/${x};
-      }) (builtins.attrNames (builtins.readDir ./home-manager/modules)));
+      homeModules = builtins.listToAttrs (map
+        (x: {
+          name = x;
+          value = import ./home-manager/modules/${x};
+        })
+        (builtins.attrNames (builtins.readDir ./home-manager/modules)));
 
       checks = with builtins;
-      # Checks to run with `nix flake check -L`, will run in a QEMU VM.
-      # Looks for all ./modules/<module name>/test.nix files and adds them to
-      # the flake's checks output. The test.nix file is optional and may be
-      # added to any module.
-        listToAttrs (map (x: {
-          name = x;
-          value = (import ./modules/${x}/test.nix) {
-            pkgs = nixpkgs;
-            inherit self;
-          };
-        })
-        # Filter list of modules, leaving only modules which contain a
-        # `test.nix` file
+        # Checks to run with `nix flake check -L`, will run in a QEMU VM.
+        # Looks for all ./modules/<module name>/test.nix files and adds them to
+        # the flake's checks output. The test.nix file is optional and may be
+        # added to any module.
+        listToAttrs (map
+          (x: {
+            name = x;
+            value = (import ./modules/${x}/test.nix) {
+              pkgs = nixpkgs;
+              inherit self;
+            };
+          })
+          # Filter list of modules, leaving only modules which contain a
+          # `test.nix` file
           (filter (p: pathExists (./modules/${p}/test.nix))
             (attrNames (readDir ./modules))));
     };

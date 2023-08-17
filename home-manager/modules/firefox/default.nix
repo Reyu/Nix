@@ -24,7 +24,7 @@ with lib; {
           personal = {
             id = 0;
             isDefault = true;
-          # extraConfig = readFile ./user.js;
+            # extraConfig = readFile ./user.js;
             extensions = with pkgs.nur.repos.rycee.firefox-addons; [
               fediact
               pay-by-privacy-com

@@ -19,7 +19,7 @@
         database = {
           createLocally = false;
           host = "lin-11473-3085-pgsql-primary.servers.linodedb.net";
-          name  = "fuzzygames_mastodon";
+          name = "fuzzygames_mastodon";
           user = "fuzzygames_mastodon";
           passwordFile = config.age.secrets."database.pass".path;
         };

@@ -136,7 +136,7 @@ in
 
       extraSettingsPaths = mkOption {
         type = types.listOf types.path;
-        default = [];
+        default = [ ];
         description = lib.mdDoc ''
           Configuration files to load besides the immutable one defined by the NixOS module.
           This can be used to avoid putting credentials in the Nix store, which can be read by any user.
@@ -179,7 +179,7 @@ in
       description = "Vault Proxy daemon user";
       isSystemUser = true;
     };
-    users.groups.vault-proxy = {};
+    users.groups.vault-proxy = { };
 
     systemd.services.vault-proxy = {
       description = "Vault proxy daemon";

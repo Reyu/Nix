@@ -200,73 +200,73 @@
     plugin = lualine-nvim;
     type = "lua";
     config = ''
-	    local noiceLeft, noiceRight
-        if not vim.g.started_by_firenvim then
-            noiceLeft = {
-                {
-                    require("noice").api.status.message.get_hl,
-                    cond = require("noice").api.status.message.has
-                }, {
-                    require('noice').api.status.command.get,
-                    cond = require('noice').api.status.command.has,
-                    color = {fg = "#ff9e64"}
-                }, {
-                    require('noice').api.status.search.get,
-                    cond = require('noice').api.status.search.has,
-                    color = {fg = "#ff9e64"}
-                }
-            }
-            noiceRight = {
-                require('noice').api.status.ruler.get,
-                cond = require('noice').api.status.ruler.has
-            }
-        end
-        require('lualine').setup({
-            options = {
-                icons_enabled = true,
-                component_separators = {left = "", right = ""},
-                section_separators = {left = "", right = ""},
-                disabled_filetypes = {"dashboard", "lazy"},
-                always_divide_middle = true,
-                globalstatus = true
-            },
-            sections = {
-                lualine_a = {'mode'},
-                lualine_b = {{'FugitiveHead', icon = ''}, 'diff', 'diagnostics'},
-                lualine_c = {'%S'},
-                lualine_x = noiceLeft,
-                lualine_y = { noiceRight, '%a' },
-                lualine_z = {'hostname'}
-            },
-            tabline = {
-                lualine_a = {},
-                lualine_b = {{'tabs', mode = 2}},
-                lualine_c = {},
-                lualine_x = {},
-                lualine_y = {},
-                lualine_z = {{'buffers', mode = 4}}
-            },
-            winbar = {
-                lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
-                lualine_b = {'filesize', '%r'},
-                lualine_c = {'%w', 'searchcount'},
-                lualine_x = {'diagnostics'},
-                lualine_y = {'encoding', 'fileformat', {'filetype', icon = ""}},
-                lualine_z = {'%P', 'location'},
-            },
-            inactive_winbar = {
-                lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
-                lualine_b = {'filesize', '%r'},
-                lualine_c = {'%w', 'searchcount'},
-                lualine_x = {'diagnostics'},
-                lualine_y = {'encoding', 'fileformat', 'filetype'},
-                lualine_z = {'%P', 'location'},
-            },
-            extensions = {
-                "man", "quickfix", "trouble", "toggleterm", "fugitive", "neo-tree",
-                "nvim-dap-ui"
-            }
-        })
+      	    local noiceLeft, noiceRight
+              if not vim.g.started_by_firenvim then
+                  noiceLeft = {
+                      {
+                          require("noice").api.status.message.get_hl,
+                          cond = require("noice").api.status.message.has
+                      }, {
+                          require('noice').api.status.command.get,
+                          cond = require('noice').api.status.command.has,
+                          color = {fg = "#ff9e64"}
+                      }, {
+                          require('noice').api.status.search.get,
+                          cond = require('noice').api.status.search.has,
+                          color = {fg = "#ff9e64"}
+                      }
+                  }
+                  noiceRight = {
+                      require('noice').api.status.ruler.get,
+                      cond = require('noice').api.status.ruler.has
+                  }
+              end
+              require('lualine').setup({
+                  options = {
+                      icons_enabled = true,
+                      component_separators = {left = "", right = ""},
+                      section_separators = {left = "", right = ""},
+                      disabled_filetypes = {"dashboard", "lazy"},
+                      always_divide_middle = true,
+                      globalstatus = true
+                  },
+                  sections = {
+                      lualine_a = {'mode'},
+                      lualine_b = {{'FugitiveHead', icon = ''}, 'diff', 'diagnostics'},
+                      lualine_c = {'%S'},
+                      lualine_x = noiceLeft,
+                      lualine_y = { noiceRight, '%a' },
+                      lualine_z = {'hostname'}
+                  },
+                  tabline = {
+                      lualine_a = {},
+                      lualine_b = {{'tabs', mode = 2}},
+                      lualine_c = {},
+                      lualine_x = {},
+                      lualine_y = {},
+                      lualine_z = {{'buffers', mode = 4}}
+                  },
+                  winbar = {
+                      lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
+                      lualine_b = {'filesize', '%r'},
+                      lualine_c = {'%w', 'searchcount'},
+                      lualine_x = {'diagnostics'},
+                      lualine_y = {'encoding', 'fileformat', {'filetype', icon = ""}},
+                      lualine_z = {'%P', 'location'},
+                  },
+                  inactive_winbar = {
+                      lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
+                      lualine_b = {'filesize', '%r'},
+                      lualine_c = {'%w', 'searchcount'},
+                      lualine_x = {'diagnostics'},
+                      lualine_y = {'encoding', 'fileformat', 'filetype'},
+                      lualine_z = {'%P', 'location'},
+                  },
+                  extensions = {
+                      "man", "quickfix", "trouble", "toggleterm", "fugitive", "neo-tree",
+                      "nvim-dap-ui"
+                  }
+              })
     '';
   }
   {

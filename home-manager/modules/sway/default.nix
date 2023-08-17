@@ -53,7 +53,7 @@
           "${modifier}+0" = "workspace 0";
 
           "${modifier}+Return" = "exec alacritty -e tmux new -As ${curWSName}";
-          "${modifier}+z" = "xdg-open http:";  # Open default browser
+          "${modifier}+z" = "xdg-open http:"; # Open default browser
           "${modifier}+Backspace" = "kill";
           "${modifier}+d" = "exec ${prompt}";
 
@@ -98,11 +98,11 @@
           "${modifier}+r" = "mode resize";
         };
         assigns = {
-          "Web" = [];
-          "Refrence" = [];
-          "Video" = [];
-          "Work" = [{class="Slack";}];
-          "Games" = [{class="Steam";}];
+          "Web" = [ ];
+          "Refrence" = [ ];
+          "Video" = [ ];
+          "Work" = [{ class = "Slack"; }];
+          "Games" = [{ class = "Steam"; }];
         };
         floating = {
           criteria = [

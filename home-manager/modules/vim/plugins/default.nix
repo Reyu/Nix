@@ -120,4 +120,4 @@
 ++ import ./diagnostics.nix { inherit pkgs; }
 ++ import ./extra.nix { inherit pkgs; }
 ++ import ./git.nix { inherit pkgs; }
-++ (if config.programs.neovim.minimal == false then import ./lsp.nix { inherit pkgs; } else [])
+++ (if config.programs.neovim.minimal == false then import ./lsp.nix { inherit pkgs; } else [ ])
