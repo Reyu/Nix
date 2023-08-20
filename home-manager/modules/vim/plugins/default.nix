@@ -3,8 +3,8 @@
     plugin = github-nvim-theme;
     type = "lua";
     config = ''
-      -- local transparent = not vim.g.started_by_firenvim
-      require('github-theme').setup({options = {transparent = true}})
+      local transparent = not vim.g.started_by_firenvim
+      require('github-theme').setup({options = {transparent = transparent}})
       vim.cmd([[ colorscheme github_dark ]])
     '';
   }
@@ -12,22 +12,22 @@
     plugin = which-key-nvim;
     type = "lua";
     config = ''
-      local which_key = require('which-key')
-      which_key.setup({
-          plugins = {spelling = {enabled = true}},
-          window = {
-              border = 'single',
-              margin = {5, 10, 5, 10},
-              padding = {1, 2, 1, 2}
-          }
-      })
+        local which_key = require('which-key')
+        which_key.setup({
+            plugins = {spelling = {enabled = true}},
+            window = {
+                border = 'single',
+                margin = {5, 10, 5, 10},
+                padding = {1, 2, 1, 2}
+            }
+        })
     '';
   }
   {
     plugin = nvim-treesitter.withAllGrammars;
     type = "lua";
     config = ''
-      require('nvim-treesitter.configs').setup({
+        require('nvim-treesitter.configs').setup({
             highlight = {enable = true},
             indent = {enable = true, disable = {"python"}},
             context_commentstring = {enable = true, enable_autocmd = false},
@@ -81,9 +81,9 @@
                     unfocus_language = "F",
                     update = "R",
                     goto_node = "<cr>",
-                    show_help = "?",
-                },
-            },
+                    show_help = "?"
+                }
+            }
         })
     '';
   }
@@ -91,17 +91,17 @@
     plugin = nvim-treesitter-context;
     type = "lua";
     config = ''
-      require('treesitter-context').setup({
-          enable = true,
-          max_lines = 0,
-          trim_scope = 'outer',
-          patterns = {
-              default = {
-                  'class', 'function', 'method', 'for', 'while', 'if', 'switch',
-                  'case'
-              }
-          }
-      })
+        require('treesitter-context').setup({
+            enable = true,
+            max_lines = 0,
+            trim_scope = 'outer',
+            patterns = {
+                default = {
+                    'class', 'function', 'method', 'for', 'while', 'if', 'switch',
+                    'case'
+                }
+            }
+        })
     '';
   }
   { plugin = nvim-treesitter-textobjects; }
