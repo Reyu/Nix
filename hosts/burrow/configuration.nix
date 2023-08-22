@@ -81,7 +81,6 @@
         user = "syncthing";
         dataDir = "/data/service/sync";
         configDir = "/data/etc/syncthing";
-        guiAddress = "100.82.76.79:8384";
       };
       tailscale.enable = true;
     };
