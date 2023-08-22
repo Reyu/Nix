@@ -87,37 +87,43 @@ with pkgs.vimPlugins; [
         local haskell_tools = require('haskell-tools')
         local hls_lsp = require('lsp-zero').build_options('hls', {})
 
+        local cmd = 'haskell-language-server-wrapper'
+        if vim.fn.executable('haskell-language-server') == 1 then
+            cmd = 'haskell-language-server'
+        end
+
         local hls_augroup = vim.api.nvim_create_augroup('haskell-lsp', {clear = true})
         vim.api.nvim_create_autocmd('FileType', {
             group = hls_augroup,
             pattern = {'haskell'},
             callback = function(ev)
                 haskell_tools.start_or_attach({
-                    hls = {
-                        capabilities = hls_lsp.capabilities,
-                        on_attach = function(_, bufnr)
-                            map('n', '<leader>ca', vim.lsp.codelens.run,
-                                {desc = "Run Codelens"}, bufnr)
-                            map('n', '<leader>hs',
-                                haskell_tools.hoogle.hoogle_signature,
-                                {desc = "Hoogle Signature"}, bufnr)
-                            map('n', '<leader>ea', haskell_tools.lsp.buf_eval_all,
-                                {desc = "Evaluate Buffer"}, bufnr)
-                        end
-                    },
-                    tools = {
-                        hover = {stylize_markdown = true},
-                        definition = {hoogle_signature_fallback = true}
-                    }
-                })
-                haskell_tools.dap.discover_configurations(ev.buf)
-                map('n', '<leader>rr', haskell_tools.repl.toggle,
-                    {desc = 'Open REPL for package'}, ev.buf)
-                map('n', '<leader>rf', function()
-                    haskell_tools.repl.toggle(vim.api.nvim_buf_get_name(0))
-                end, {desc = 'Toggle REPL for buffer'}, ev.buf)
-                map('n', '<leader>rq', haskell_tools.repl.quit, {desc = 'Quit REPL'},
-                    ev.buf)
+            hls = {
+                capabilities = hls_lsp.capabilities,
+                cmd = {cmd, '--lsp'},
+                on_attach = function(_, bufnr)
+                    haskell_tools.dap.discover_configurations(ev.buf)
+                    map('n', '<leader>ca', vim.lsp.codelens.run,
+                            {desc = "Run Codelens"}, bufnr)
+                    map('n', '<leader>hs',
+                            haskell_tools.hoogle.hoogle_signature,
+                            {desc = "Hoogle Signature"}, bufnr)
+                    map('n', '<leader>ea', haskell_tools.lsp.buf_eval_all,
+                            {desc = "Evaluate Buffer"}, bufnr)
+                    map('n', '<leader>rr', haskell_tools.repl.toggle,
+                        {desc = 'Open REPL for package'}, ev.buf)
+                    map('n', '<leader>rf', function()
+                        haskell_tools.repl.toggle(vim.api.nvim_buf_get_name(0))
+                    end, {desc = 'Toggle REPL for buffer'}, ev.buf)
+                    map('n', '<leader>rq', haskell_tools.repl.quit, {desc = 'Quit REPL'}, ev.buf)
+                end
+            },
+            tools = {
+                hover = {stylize_markdown = true},
+                definition = {hoogle_signature_fallback = true},
+                repl = {handler = 'toggleterm'},
+            }
+        })
             end
         })
     '';
