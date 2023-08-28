@@ -41,19 +41,8 @@
           { command = "element"; }
         ];
         keybindings = {
-          "${modifier}+1" = "workspace 1";
-          "${modifier}+2" = "workspace 2";
-          "${modifier}+3" = "workspace 3";
-          "${modifier}+4" = "workspace 4";
-          "${modifier}+5" = "workspace 5";
-          "${modifier}+6" = "workspace 6";
-          "${modifier}+7" = "workspace 7";
-          "${modifier}+8" = "workspace 8";
-          "${modifier}+9" = "workspace 9";
-          "${modifier}+0" = "workspace 0";
-
           "${modifier}+Return" = "exec alacritty -e tmux new -As ${curWSName}";
-          "${modifier}+z" = "xdg-open http:"; # Open default browser
+          "${modifier}+z" = "exec xdg-open http:"; # Open default browser
           "${modifier}+Backspace" = "kill";
           "${modifier}+d" = "exec ${prompt}";
 
@@ -84,7 +73,6 @@
           "${modifier}+w" = "exec swayr switch-workspace-or-window";
           "${modifier}+Shift+w" = "exec swayr move-focused-to";
           "${modifier}+Shift+r" = "exec swaymsg rename workspace to $(${prompt} -d -l0 -p 'Rename Workspace: ')";
-          "${modifier}+Shift+n" = "exec swaymsg rename workspace to $(${prompt} -d -l0 -p 'Rename Workspace: ')";
 
           "${modifier}+Shift+minus" = "move to scratchpad";
           "${modifier}+minus" = "scratchpad show";
@@ -107,7 +95,6 @@
         floating = {
           criteria = [
             { class = "journal"; }
-            { title = "Journal"; }
             { class = "Pavucontrol"; }
             { app_id = "org.keepassxc.KeePassXC"; }
             { title = "Steam - Update News"; }
