@@ -115,7 +115,6 @@
                     ['core.qol.todo_items'] = {},
                     ['core.integrations.zen_mode'] = {},
                     ['core.completion'] = {config = {engine = "nvim-cmp"}},
-                    ['core.ui.calendar'] = {}
                 }
             })
 
