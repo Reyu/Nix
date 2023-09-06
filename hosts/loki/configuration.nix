@@ -34,6 +34,11 @@ in
     max-jobs = 16;
   };
 
+  age.secrets."davfs2_secrets" = {
+    file = ../../secrets/loki/davfs2_secrets;
+    path = "/etc/davfs2/secrets";
+  };
+
   console.useXkbConfig = true;
   programs.dconf.enable = true;
   programs.steam = {
@@ -45,8 +50,8 @@ in
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.firewall.checkReversePath = "loose";
-
-  services.blueman.enable = true;
+  networking.hostName = "loki";
+  networking.hostId = "d540cb4f";
 
   users.users.reyu.extraGroups = [ config.services.davfs2.davGroup ];
   home-manager.users.reyu = {
@@ -81,13 +86,9 @@ in
     };
   };
 
-  age.secrets."davfs2_secrets" = {
-    file = ../../secrets/loki/davfs2_secrets;
-    path = "/etc/davfs2/secrets";
-  };
-
   services = {
     avahi.enable = true;
+    blueman.enable = true;
     consul.extraConfig = {
       datacenter = "home";
       client_addr = "{{ GetAllInterfaces | include \"name\" \"eno[1-4]|lo\" | exclude \"flags\" \"link-local unicast\" | join \"address\" \" \" }}";
@@ -105,6 +106,10 @@ in
     udev.packages = [
       pkgs.android-udev-rules
     ];
+    kubo = {
+      enable = true;
+      settings.Addresses.API = ["/ip4/127.0.0.1/tcp/5001"];
+    };
     mullvad-vpn = {
       enable = true;
       enableExcludeWrapper = false;
@@ -158,9 +163,6 @@ in
       config = builtins.readFile ./kmonad-kinesis.cfg;
     };
   };
-
-  networking.hostName = "loki";
-  networking.hostId = "d540cb4f";
 
   xdg.portal.enable = true;
   xdg.portal.wlr.enable = true;

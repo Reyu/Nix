@@ -55,6 +55,7 @@
       mv = "nocorrect mv";
       cp = "nocorrect cp";
       mkdir = "nocorrect mkdir";
+      ipfs = "ipfs --api=/ip4/127.0.0.1/tcp/5001";
 
       # ls replacement
       ls = "${pkgs.lsd}/bin/lsd --group-dirs first";
