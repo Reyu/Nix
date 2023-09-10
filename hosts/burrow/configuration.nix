@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ./MAS.nix ];
   config = {
     boot = {
@@ -39,18 +39,16 @@
       owner = "vault";
     };
 
-    users.groups.media = { };
-    users.users = {
-      media = {
-        shell = null;
-        group = "media";
-        isSystemUser = true;
-      };
-      syncthing = {
-        shell = null;
-        group = "syncthing";
-        extraGroups = [ "media" ];
-        isSystemUser = true;
+    users = {
+      mutableUsers = false;
+      users.reyu.extraGroups = [ "podman" ];
+      extraUsers = {
+        syncthing = {
+          shell = null;
+          group = "syncthing";
+          extraGroups = [ "media" ];
+          isSystemUser = true;
+        };
       };
     };
 
@@ -107,7 +105,18 @@
       };
     };
 
-    virtualisation.docker.enable = true;
-    virtualisation.docker.storageDriver = "zfs";
+    virtualisation = {
+      containers.storage.settings = {
+        storage = {
+          driver = "zfs";
+          graphroot = "/var/lib/containers/storage";
+          runroot = "/run/containers/storage";
+          options.zfs.fsname = "data/containers/storage";
+        };
+      };
+      podman = {
+        extraPackages = [ pkgs.zfs ];
+      };
+    };
   };
 }

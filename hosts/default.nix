@@ -19,7 +19,6 @@
       ./burrow/configuration.nix
       (users.reyu { profile = "server"; })
       consul
-      docker
       nomad
       vault
     ];

@@ -12,6 +12,5 @@ with lib;
         dates = "weekly";
       };
     };
-    users.users.reyu.extraGroups = [ "docker" ];
   };
 }

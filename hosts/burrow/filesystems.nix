@@ -7,17 +7,17 @@
     };
 
     "/usr" = {
-      device = "rpool/ROOT/nixos/usr";
+      device = "rpool/ROOT/nixos/USR";
       fsType = "zfs";
     };
 
     "/var" = {
-      device = "rpool/ROOT/nixos/var";
+      device = "rpool/ROOT/nixos/VAR";
       fsType = "zfs";
     };
 
     "/opt" = {
-      device = "rpool/ROOT/nixos/opt";
+      device = "rpool/ROOT/nixos/OPT";
       fsType = "zfs";
     };
 
@@ -46,7 +46,11 @@
       fsType = "zfs";
       options = [ "zfsutil" ];
     };
-
+    "/var/lib/containters/storgae" = {
+      device = "data/containers/storage";
+      fsType = "zfs";
+      options = [ "zfsutil" ];
+    };
     "/data/etc" = {
       device = "data/etc";
       fsType = "zfs";
