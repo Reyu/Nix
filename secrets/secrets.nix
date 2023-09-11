@@ -11,14 +11,15 @@ let
   fg-mastodon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL45BLcH/buNSmOqAHgkhz+CFW7Xass93CZsxkdxLCGo";
 in
 {
-  "loki/davfs2_secrets".publicKeys = [ reyu loki ];
-  "consul/encrypt.hcl".publicKeys = [ reyu ] ++ home;
   "consul/burrow.hcl".publicKeys = [ reyu burrow ];
+  "consul/encrypt.hcl".publicKeys = [ reyu ] ++ home;
+  "linode/fg-mastodon.db.pass".publicKeys = [ reyu fg-mastodon ];
+  "linode/fg-mastodon.smtp.pass".publicKeys = [ reyu fg-mastodon ];
+  "loki/davfs2_secrets".publicKeys = [ reyu loki ];
+  "networks/wpa_supplicant.env".publicKeys = [ reyu traveler ];
   "nomad/burrow-consul.hcl".publicKeys = [ reyu burrow ];
   "nomad/burrow-vault.hcl".publicKeys = [ reyu burrow ];
   "nomad/encrypt.hcl".publicKeys = [ reyu ] ++ home;
   "vault/burrow-storage.hcl".publicKeys = [ reyu burrow ];
-  "linode/fg-mastodon.db.pass".publicKeys = [ reyu fg-mastodon ];
-  "linode/fg-mastodon.smtp.pass".publicKeys = [ reyu fg-mastodon ];
 }
 

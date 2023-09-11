@@ -1,4 +1,4 @@
-#! @bash@/bin/sh -e
+#! @bash@/bin/bash -e
 
 shopt -s nullglob
 

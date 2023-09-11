@@ -45,6 +45,12 @@
       fsType = "zfs";
     };
 
+  fileSystems."/var/lib/containers/storage" =
+    {
+      device = "rpool/local/containers";
+      fsType = "zfs";
+    };
+
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

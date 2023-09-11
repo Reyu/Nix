@@ -134,7 +134,6 @@
         users.root
         age
         cachix
-        crypto
         environment
         locale
         nix-common
