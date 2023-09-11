@@ -105,14 +105,7 @@
       };
     };
 
-    virtualisation = {
-      containers.storage.settings.storage = {
-        driver = "zfs";
-        options.zfs.fsname = "data/containers/storage";
-      };
-      podman = {
-        extraPackages = [ pkgs.zfs ];
-      };
-    };
+    virtualisation.podman.zfs = true;
+    virtualisation.storage.settings.storage.options.zfs.fsname = "data/containers/storage";
   };
 }

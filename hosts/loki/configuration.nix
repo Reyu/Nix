@@ -161,13 +161,7 @@ in {
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
-  virtualisation = {
-    containers.storage.settings.storage = {
-      driver = "zfs";
-      options.zfs.fsname = "rpool/local/podman";
-    };
-    podman = { extraPackages = [ pkgs.zfs ]; };
-  };
+  virtualisation.podman.zfs = true;
 
   systemd.tmpfiles.rules =
     [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}" ];

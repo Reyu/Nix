@@ -49,9 +49,6 @@
     };
   };
 
-  virtualisation.podman.enable = true;
-  virtualisation.containers.storage.settings.storage.driver = "zfs";
-
   environment.persistence = {
     "/persist/system" = {
       directories = [
@@ -67,6 +64,8 @@
       ];
     };
   };
+
+  virtualisation.podman.zfs = true;
 
   specialisation.graphical.configuration = {
     imports = with self.nixosModules; [ xserver ];
