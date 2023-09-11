@@ -5,12 +5,13 @@
       ./loki/configuration.nix
       (users.reyu { profile = "desktop"; })
       consul
-      vault-proxy
       kmonad
       onlykey
+      podman
       qflipper
       sound
       u2f
+      vault-proxy
       xserver
     ];
   };
@@ -20,6 +21,7 @@
       (users.reyu { profile = "server"; })
       consul
       nomad
+      podman
       vault
     ];
   };
@@ -48,9 +50,10 @@
         };
       }
       heads
-      onlykey
-      qflipper
       kmonad
+      onlykey
+      podman
+      qflipper
     ];
   };
 } // (

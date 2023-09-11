@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
-let
-  browser = "librewolf";
-in
-{
+let browser = "librewolf";
+in {
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -19,7 +17,8 @@ in
         path = "/boot2";
       }
     ];
-    users.reyu.hashedPasswordFile = builtins.toString ../../secrets/grub-reyu.passwd;
+    users.reyu.hashedPasswordFile =
+      builtins.toString ../../secrets/grub-reyu.passwd;
     zfsSupport = true;
   };
   boot.supportedFilesystems = [ "zfs" ];
@@ -53,15 +52,9 @@ in
   networking.hostName = "loki";
   networking.hostId = "d540cb4f";
 
-  users.users.reyu.extraGroups = [ config.services.davfs2.davGroup ];
+  users.users.reyu.extraGroups = [ config.services.davfs2.davGroup "podman" ];
   home-manager.users.reyu = {
-    home.packages = with pkgs; [
-      deluge
-      blender
-      freecad
-      mullvad-vpn
-      calibre
-    ];
+    home.packages = with pkgs; [ deluge blender freecad mullvad-vpn calibre ];
     wayland.windowManager.sway.config = {
       startup = [
         { command = browser; }
@@ -71,7 +64,7 @@ in
       ];
       output = {
         DP-1 = {
-          background = "~/Pictures/Backgrounds/The\ Downbelow.jpg fill";
+          background = "~/Pictures/Backgrounds/The Downbelow.jpg fill";
           position = "3840 720 res 3440x1440";
         };
         DP-2 = {
@@ -91,9 +84,25 @@ in
     blueman.enable = true;
     consul.extraConfig = {
       datacenter = "home";
-      client_addr = "{{ GetAllInterfaces | include \"name\" \"eno[1-4]|lo\" | exclude \"flags\" \"link-local unicast\" | join \"address\" \" \" }}";
-      advertise_addr = "{{ GetPublicInterfaces | include \"type\" \"IPv6\" | sort \"-address\" | attr \"address\" }}";
+      client_addr = ''
+        {{ GetAllInterfaces | include "name" "eno[1-4]|lo" | exclude "flags" "link-local unicast" | join "address" " " }}'';
+      advertise_addr = ''
+        {{ GetPublicInterfaces | include "type" "IPv6" | sort "-address" | attr "address" }}'';
       retry_join = [ "172.16.0.5" ];
+    };
+    kmonad = {
+      enable = true;
+      keyboards.kinesis = {
+        name = "kinesis";
+        device =
+          "/dev/input/by-id/usb-Kinesis_Advantage2_Keyboard_314159265359-if01-event-kbd";
+        defcfg = {
+          enable = true;
+          compose.key = "lalt";
+          fallthrough = true;
+        };
+        config = builtins.readFile ./kmonad-kinesis.cfg;
+      };
     };
     vault-proxy = {
       enable = true;
@@ -103,17 +112,19 @@ in
       '';
     };
     davfs2.enable = true;
-    udev.packages = [
-      pkgs.android-udev-rules
-    ];
+    udev.packages = [ pkgs.android-udev-rules ];
     kubo = {
       enable = true;
-      settings.Addresses.API = ["/ip4/127.0.0.1/tcp/5001"];
+      settings.Addresses.API = [ "/ip4/127.0.0.1/tcp/5001" ];
     };
     mullvad-vpn = {
       enable = true;
       enableExcludeWrapper = false;
     };
+    flatpak.enable = true;
+    openssh.allowSFTP = true;
+    input-remapper.enable = true;
+    input-remapper.enableUdevRules = true;
     tailscale.enable = true;
     sanoid = {
       interval = "*-*-* *:0..59/15 UTC";
@@ -134,44 +145,30 @@ in
     zfs.autoScrub.enable = true;
   };
 
-  hardware.bluetooth.enable = true;
-  hardware.uinput.enable = true;
-  hardware.opengl.extraPackages = with pkgs; [
-    rocm-opencl-icd
-    rocm-opencl-runtime
-  ];
-  hardware.openrazer = {
-    enable = true;
-    users = [ "reyu" ];
-  };
-
-  services.flatpak.enable = true;
-  services.openssh.allowSFTP = true;
-  services.input-remapper.enable = true;
-  services.input-remapper.enableUdevRules = true;
-
-  services.kmonad = {
-    enable = true;
-    keyboards.kinesis = {
-      name = "kinesis";
-      device = "/dev/input/by-id/usb-Kinesis_Advantage2_Keyboard_314159265359-if01-event-kbd";
-      defcfg = {
-        enable = true;
-        compose.key = "lalt";
-        fallthrough = true;
-      };
-      config = builtins.readFile ./kmonad-kinesis.cfg;
+  hardware = {
+    bluetooth.enable = true;
+    uinput.enable = true;
+    opengl.extraPackages = with pkgs; [ rocm-opencl-icd rocm-opencl-runtime ];
+    openrazer = {
+      enable = true;
+      users = [ "reyu" ];
     };
   };
 
-  xdg.portal.enable = true;
-  xdg.portal.wlr.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
 
-  virtualisation.podman.enable = true;
-  virtualisation.containers.storage.settings.storage.driver = "zfs";
+  virtualisation = {
+    containers.storage.settings.storage = {
+      driver = "zfs";
+      options.zfs.fsname = "rpool/local/podman";
+    };
+    podman = { extraPackages = [ pkgs.zfs ]; };
+  };
 
-  systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}"
-  ];
+  systemd.tmpfiles.rules =
+    [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}" ];
 }

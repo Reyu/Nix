@@ -106,13 +106,9 @@
     };
 
     virtualisation = {
-      containers.storage.settings = {
-        storage = {
-          driver = "zfs";
-          graphroot = "/var/lib/containers/storage";
-          runroot = "/run/containers/storage";
-          options.zfs.fsname = "data/containers/storage";
-        };
+      containers.storage.settings.storage = {
+        driver = "zfs";
+        options.zfs.fsname = "data/containers/storage";
       };
       podman = {
         extraPackages = [ pkgs.zfs ];
