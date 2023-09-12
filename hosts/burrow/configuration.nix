@@ -76,9 +76,9 @@
       nfs.server.enable = true;
       syncthing = {
         enable = true;
-        user = "syncthing";
         dataDir = "/data/service/sync";
         configDir = "/data/etc/syncthing";
+        guiAddress = "0.0.0.0:8384";
       };
       tailscale.enable = true;
     };
@@ -106,6 +106,6 @@
     };
 
     virtualisation.podman.zfs = true;
-    virtualisation.storage.settings.storage.options.zfs.fsname = "data/containers/storage";
+    virtualisation.containers.storage.settings.storage.options.zfs.fsname = "data/containers/storage";
   };
 }
