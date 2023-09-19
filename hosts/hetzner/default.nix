@@ -3,6 +3,8 @@
 let
   commonModules = with self.nixosModules; [
     ./configuration.nix
+    inputs.impermanence.nixosModules.impermanence
+    hetzner
   ];
 in
 {
