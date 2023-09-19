@@ -4,7 +4,7 @@
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot.loader.timeout = 0;
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub.device = "nodev";
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r rpool/local/root@blank
   '';
