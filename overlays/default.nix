@@ -10,6 +10,7 @@ let
   };
 in
 {
+  hc-utils = prev.callPackage ../packages/hc-utils.nix {};
   httpie-desktop = prev.callPackage ../packages/httpie-desktop.nix { inherit inputs; };
   vimPlugins = prev.vimPlugins // vimPlugins;
 }
