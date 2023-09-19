@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, dpkg, ... }:
+{ stdenv, fetchurl, dpkg, lib, ... }:
 let
   version = "0.0.4";
   pname = "hc-utils";
