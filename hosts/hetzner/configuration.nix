@@ -1,10 +1,10 @@
-{ modulesPath, ... }:
+{ modulesPath, lib, ... }:
 
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot.loader.timeout = 0;
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.systemd-boot.enable = true;
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r rpool/local/root@blank
   '';
@@ -17,7 +17,7 @@
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/75B8-9854";
+      device = "/dev/disk/by-uuid/6732-A269";
       fsType = "vfat";
     };
 
@@ -65,4 +65,5 @@
   };
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
+  networking.hostId = "8425e349";
 }

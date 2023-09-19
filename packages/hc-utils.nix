@@ -1,4 +1,11 @@
-{ stdenv, fetchurl, dpkg, lib, ... }:
+{
+stdenv,
+fetchurl,
+lib,
+dpkg,
+bash,
+coreutils,
+... }:
 let
   version = "0.0.4";
   pname = "hc-utils";
@@ -29,13 +36,18 @@ stdenv.mkDerivation {
     mkdir -p $out
     mv {lib,usr/*} $out
 
+    substituteInPlace $out/lib/udev/rules.d/99-hc-volume-automount.rules \
+        --replace /bin/sh "${bash}/bin/bash" \
+        --replace /bin/mkdir "${coreutils}/bin/mkdir" \
+        --replace /bin/systemctl "/run/current-system/systemd/bin/systemctl"
+
     runHook postInstall
   '';
 
   meta = {
     description = "Hetzner Cloud Networks Configuration";
     homepage = "https://docs.hetzner.com/cloud/networks/server-configuration";
-    license = lib.licenses.MIT;
+    license = lib.licenses.mit;
     maintainers = [{ email = "reyu@reyuzenfold.com"; github = "Reyu"; githubId = 1259365; name = "Timothy Millican"; }];
     platforms = lib.platforms.linux;
   };
