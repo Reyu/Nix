@@ -5,7 +5,6 @@
   }
 }
 
-
 /* Styles */
 
 /* Colors (gruvbox) */
@@ -59,7 +58,7 @@
 #waybar {
   background: rgba(40, 40, 40, 0.8784313725); /* #282828e0 */
   color: @white;
-  font-family: Source Code Pro Black for Powerline;
+  font-family: Source Code Pro Powerline;
   font-size: 10pt;
 }
 

@@ -3,12 +3,18 @@
   home.packages = with pkgs; [
     grim
     slurp
+    sway-contrib.grimshot
     swayidle
     swayr
     wl-clipboard
     wlr-randr
     xdg-utils
   ];
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+  };
   programs = {
     swaylock.enable = true;
     zathura.enable = true;
@@ -84,6 +90,8 @@
             "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
 
           "${modifier}+r" = "mode resize";
+
+          "${modifier}+Shift+s" = "grimshot --notify copy area";
         };
         assigns = {
           "Web" = [ ];
