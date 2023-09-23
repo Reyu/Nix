@@ -11,6 +11,7 @@ let
   fg-mastodon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL45BLcH/buNSmOqAHgkhz+CFW7Xass93CZsxkdxLCGo";
 in
 {
+  "burrow/romm.env".publicKeys = [ reyu burrow ];
   "consul/burrow.hcl".publicKeys = [ reyu burrow ];
   "consul/encrypt.hcl".publicKeys = [ reyu ] ++ home;
   "linode/fg-mastodon.db.pass".publicKeys = [ reyu fg-mastodon ];

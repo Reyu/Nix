@@ -1,4 +1,7 @@
 { config, ... }: {
+  age.secrets."romm.env" = {
+    file = ../../secrets/burrow/romm.env;
+  };
   users = {
     extraUsers = {
       media = {
@@ -73,6 +76,24 @@
           config.users.extraGroups.media.gid
         ]);
     in {
+      romm = {
+        image = "zurdi15/romm";
+        ports = [ "8888:8888" ];
+        environment = {
+          PUID = builtins.toString config.users.extraUsers.media.uid;
+          PGID = builtins.toString config.users.extraGroups.media.gid;
+          TZ = "America/New_York";
+        };
+        environmentFiles = [
+          config.age.secrets."romm.env".path
+        ];
+        volumes = [
+          "/data/media/roms:/romm/library"
+          "/data/service/romm/config.yml:/romm/config.yml"
+          "/data/service/romm/resources:/romm/resources"
+          "/data/service/romm/database:/romm/database"
+        ];
+      };
       seedsync-ct21154-deluge = {
         image = "ipsingh06/seedsync";
         ports = [ "8800:8800" ];
