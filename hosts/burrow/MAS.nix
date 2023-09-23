@@ -78,7 +78,8 @@
     in {
       romm = {
         image = "zurdi15/romm";
-        ports = [ "8888:8888" ];
+        # ports = [ "8888:8888" ];
+        extraOptions = ["--network=host"];
         environment = {
           PUID = builtins.toString config.users.extraUsers.media.uid;
           PGID = builtins.toString config.users.extraGroups.media.gid;
@@ -88,7 +89,7 @@
           config.age.secrets."romm.env".path
         ];
         volumes = [
-          "/data/media/roms:/romm/library"
+          "/data/media/roms:/romm/library/roms"
           "/data/service/romm/config.yml:/romm/config.yml"
           "/data/service/romm/resources:/romm/resources"
           "/data/service/romm/database:/romm/database"
