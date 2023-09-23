@@ -2,7 +2,8 @@
   imports =
     [ ./hardware-configuration.nix ];
 
-  age.secrets."wpa_supplicant.env".file = ../../secrets/networks/wpa_supplicant.env;
+  age.secrets."wpa_supplicant.env".file = 
+    builtins.toString "${self}/secrets/networks/wpa_supplicant.env";
 
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ self, config, pkgs, ... }:
 let browser = "librewolf";
 in {
   imports = [ ./hardware-configuration.nix ];
@@ -18,7 +18,7 @@ in {
       }
     ];
     users.reyu.hashedPasswordFile =
-      builtins.toString ../../secrets/grub-reyu.passwd;
+      builtins.toString "${self}/secrets/grub-reyu.passwd";
     zfsSupport = true;
   };
   boot.supportedFilesystems = [ "zfs" ];
@@ -34,7 +34,7 @@ in {
   };
 
   age.secrets."davfs2_secrets" = {
-    file = ../../secrets/loki/davfs2_secrets;
+    file = ./secrets/davfs2;
     path = "/etc/davfs2/secrets";
   };
 

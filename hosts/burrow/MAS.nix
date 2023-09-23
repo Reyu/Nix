@@ -1,6 +1,6 @@
 { config, ... }: {
   age.secrets."romm.env" = {
-    file = ../../secrets/burrow/romm.env;
+    file = ./secrets/romm.env;
   };
   users = {
     extraUsers = {

@@ -2,11 +2,11 @@
   config = {
     age.secrets = {
       "database.pass" = {
-        file = ../../../secrets/linode/fg-mastodon.db.pass;
+        file = ./secrets/db.pass;
         owner = "mastodon";
       };
       "smtp.pass" = {
-        file = ../../../secrets/linode/fg-mastodon.smtp.pass;
+        file = ./secrets/smtp.pass;
         owner = "mastodon";
       };
     };

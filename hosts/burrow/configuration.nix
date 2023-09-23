@@ -35,7 +35,7 @@
     };
 
     age.secrets."vault_storage.hcl" = {
-      file = ../../secrets/vault/burrow-storage.hcl;
+      file = ./secrets/vault-storage.hcl;
       owner = "vault";
     };
 

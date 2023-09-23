@@ -27,8 +27,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     # Automatic deployment
-    agenix = {
-      url = "github:ryantm/agenix/19bf5a20d835145e5f3fc8d61672eefee4c33450";
+    ragenix = {
+      url = "github:/yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -103,7 +103,7 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
       sharedOverlays = with inputs; [
-        agenix.overlays.default
+        ragenix.overlays.default
         devshell.overlays.default
         neovim-nightly.overlay
         nur.overlay
@@ -224,7 +224,7 @@
                   help = "A package that adds a kick-ass repl";
                 }
                 {
-                  package = agenix;
+                  package = ragenix;
                   category = "secrets management";
                 }
                 {
@@ -247,7 +247,7 @@
       };
 
       nixosModules = {
-        inherit (inputs.agenix.nixosModules) age;
+        inherit (inputs.ragenix.nixosModules) age;
         inherit (inputs.home-manager.nixosModules) home-manager;
         kmonad = inputs.kmonad.nixosModules.default;
       } // builtins.listToAttrs (map
