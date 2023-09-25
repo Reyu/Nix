@@ -164,5 +164,5 @@ in {
   virtualisation.podman.zfs = true;
 
   systemd.tmpfiles.rules =
-    [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}" ];
+    [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}/hip" ];
 }

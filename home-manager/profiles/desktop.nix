@@ -59,9 +59,9 @@
       };
     };
     tmpfiles.rules = [
-      "d ${config.home.homeDirectory}/Downloads - - - 7d -"
       "x ${config.home.homeDirectory}/Downloads/Torrents/Watch - - - 7d -"
-      "X ${config.home.homeDirectory}/Downloads/Torrents/Completed - - - 7d -"
+      "x ${config.home.homeDirectory}/Downloads/Torrents/Completed - - - 7d -"
+      "d ${config.home.homeDirectory}/Downloads - - - 7d -"
     ];
   };
 }
