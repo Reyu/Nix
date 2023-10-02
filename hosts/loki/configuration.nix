@@ -18,7 +18,7 @@ in {
       }
     ];
     users.reyu.hashedPasswordFile =
-      builtins.toString "${self}/secrets/grub-reyu.passwd";
+      builtins.toString "${self}/secrets/grub/reyu.passwd";
     zfsSupport = true;
   };
   boot.supportedFilesystems = [ "zfs" ];
