@@ -232,7 +232,6 @@
                   category = "deployment";
                 }
                 (buildTool nixos-generators)
-                (buildTool terraform)
                 (formatter treefmt)
                 (formatter nixpkgs-fmt)
                 (formatter luaformatter)
