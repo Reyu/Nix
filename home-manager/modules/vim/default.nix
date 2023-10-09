@@ -77,7 +77,7 @@
           ];
     };
     xdg.configFile = {
-      "nvim/lua/reyu.lua".source = ./lua/reyu.lua;
+      "nvim/lua/reyu/init.lua".source = ./lua/reyu/init.lua;
       "nvim/lua/reyu/options.lua".source = ./lua/reyu/options.lua;
       "nvim/lua/reyu/util.lua".source = ./lua/reyu/util.lua;
     } // (with builtins;
