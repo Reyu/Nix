@@ -50,7 +50,8 @@
           "${modifier}+Return" = "exec alacritty -e tmux new -As ${curWSName}";
           "${modifier}+z" = "exec xdg-open http:"; # Open default browser
           "${modifier}+Backspace" = "kill";
-          "${modifier}+d" = "exec ${prompt}";
+          "${modifier}+d" = "exec ${pkgs.wofi}/bin/wofi --show=drun";
+          "${modifier}+Shift+v" = "exec pavucontrol";
 
           "${modifier}+h" = "focus left";
           "${modifier}+j" = "focus down";
@@ -68,7 +69,15 @@
           "${modifier}+b" = "splith";
           "${modifier}+v" = "splitv";
           "${modifier}+f" = "fullscreen toggle";
-          "${modifier}+a" = "exec swayr switch-to-urgent-or-lru-window";
+
+          "${modifier}+g" = "exec swayr switch-window";
+          "${modifier}+Delete" = "exec swayr quit-window";
+          "${modifier}+Tab" = "exec swayr switch-to-urgent-or-lru-window";
+          "${modifier}+Next" = "exec swayr next-window all-workspaces";
+          "${modifier}+Prior" = "exec swayr prev-window all-workspaces";
+          "${modifier}+Shift+g" = "exec swayr switch-workspace-or-window";
+          "${modifier}+Mod1+c" = "exec swayr execute-swaymsg-command";
+          "${modifier}+Mod1+Shift+c" = "exec swayr execute-swayr-command";
 
           "${modifier}+s" = "layout stacking";
           "${modifier}+e" = "layout toggle split";
@@ -83,9 +92,9 @@
           "${modifier}+Shift+minus" = "move to scratchpad";
           "${modifier}+minus" = "scratchpad show";
           "${modifier}+c" = "[class=\"Element\"] scratchpad show";
+          "${modifier}+Shift+c" = "exec element";
           "${modifier}+n" = "exec alacritty --class journal -T Journal -e nvim -c 'Neorg journal today'";
 
-          "${modifier}+Shift+c" = "reload";
           "${modifier}+Shift+q" =
             "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
 
@@ -98,13 +107,14 @@
           "Refrence" = [ ];
           "Video" = [ ];
           "Work" = [{ class = "Slack"; }];
-          "Games" = [{ class = "Steam"; }];
+          "Games" = [{ class = "steam"; }];
         };
         floating = {
           criteria = [
-            { class = "journal"; }
-            { class = "Pavucontrol"; }
+            { app_id = "pavucontrol"; }
             { app_id = "org.keepassxc.KeePassXC"; }
+            { app_id = "journal"; }
+            { class = "Element"; }
             { title = "Steam - Update News"; }
           ];
         };
