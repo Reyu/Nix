@@ -1,5 +1,5 @@
 { pkgs, lib, inputs, ... }:
-pkgs.vimUtils.buildVimPluginFrom2Nix {
+pkgs.vimUtils.buildVimPlugin {
   pname = "vimplugin-github-nvim-theme";
   version = "latest";
   src = inputs.github-nvim-theme;

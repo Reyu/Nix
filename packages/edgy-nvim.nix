@@ -1,5 +1,5 @@
 { pkgs, stdenv, lib, inputs, ... }:
-pkgs.vimUtils.buildVimPluginFrom2Nix {
+pkgs.vimUtils.buildVimPlugin {
   pname = "edgy.nvim";
   version = "latest";
   src = inputs.edgy-nvim;
