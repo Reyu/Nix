@@ -52,7 +52,7 @@
 
   fileSystems."/persist" =
     {
-      device = "rpool/persist";
+      device = "rpool/safe/persist";
       fsType = "zfs";
     };
 
