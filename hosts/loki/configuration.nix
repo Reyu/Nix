@@ -54,7 +54,7 @@ in {
 
   users.users.reyu.extraGroups = [ config.services.davfs2.davGroup "podman" ];
   home-manager.users.reyu = {
-    home.packages = with pkgs; [ deluge blender freecad mullvad-vpn calibre ];
+    home.packages = with pkgs; [ deluge blender-hip freecad mullvad-vpn calibre ];
     wayland.windowManager.sway.config = {
       startup = [
         { command = browser; }
@@ -148,7 +148,7 @@ in {
   hardware = {
     bluetooth.enable = true;
     uinput.enable = true;
-    opengl.extraPackages = with pkgs; [ rocm-opencl-icd rocm-opencl-runtime ];
+    opengl.extraPackages = with pkgs.rocmPackages; [ clr clr.icd ];
     openrazer = {
       enable = true;
       users = [ "reyu" ];
@@ -164,5 +164,5 @@ in {
   virtualisation.podman.zfs = true;
 
   systemd.tmpfiles.rules =
-    [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}/hip" ];
+    [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}/hip" ];
 }
