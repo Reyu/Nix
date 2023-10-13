@@ -1,16 +1,16 @@
 { config, pkgs, ... }: {
   # Imports
   imports = [
-    ./common.nix
-    ../modules/alacritty
     ../modules/chat
     ../modules/dunst
     ../modules/firefox
     ../modules/fonts
     ../modules/git
     ../modules/gpg
+    ../modules/kitty
     ../modules/sway
     ../modules/waybar
+    ./common.nix
   ];
 
   reyu.programs = {

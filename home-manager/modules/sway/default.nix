@@ -32,7 +32,7 @@
       config = rec {
         bars = [ ];
         modifier = "Mod4";
-        terminal = "alacritty";
+        terminal = "kitty";
         focus.followMouse = false;
         focus.newWindow = "urgent";
         gaps = {
@@ -47,7 +47,7 @@
           { command = "element"; }
         ];
         keybindings = {
-          "${modifier}+Return" = "exec alacritty -e tmux new -As ${curWSName}";
+          "${modifier}+Return" = "exec ${terminal} -e tmux new -As ${curWSName}";
           "${modifier}+z" = "exec xdg-open http:"; # Open default browser
           "${modifier}+Backspace" = "kill";
           "${modifier}+d" = "exec ${pkgs.wofi}/bin/wofi --show=drun";
@@ -93,7 +93,7 @@
           "${modifier}+minus" = "scratchpad show";
           "${modifier}+c" = "[class=\"Element\"] scratchpad show";
           "${modifier}+Shift+c" = "exec element";
-          "${modifier}+n" = "exec alacritty --class journal -T Journal -e nvim -c 'Neorg journal today'";
+          "${modifier}+n" = "exec ${terminal} --class journal -T Journal -e nvim -c 'Neorg journal today'";
 
           "${modifier}+Shift+q" =
             "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";

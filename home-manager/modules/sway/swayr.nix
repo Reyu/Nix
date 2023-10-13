@@ -26,7 +26,6 @@
     insensitive=true
     key_down=Control_L-n
     key_up=Control_L-p
-    term=alacritty
 
     location=center
     height=800

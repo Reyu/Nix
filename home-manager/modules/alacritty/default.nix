@@ -8,7 +8,7 @@
       window.decorations = "none";
       window.opacity = 0.9;
       scrolling.history = 0;
-      font.normal.family = "SauceCodePro Nerd Font";
+      font.normal.family = "Hasklig";
       font.size = 12;
       colors = {
         primary = {
