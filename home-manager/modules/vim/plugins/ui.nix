@@ -185,11 +185,16 @@
     plugin = indent-blankline-nvim;
     type = "lua";
     config = ''
-        require('indent_blankline').setup({
-            char = "│",
-            filetype_exclude = {"help", "alpha", "dashboard", "neo-tree", "Trouble"},
-            show_trailing_blankline_indent = false,
-            show_current_context = false
+        require('ibl').setup({
+            indent = {
+                char = "│",
+            },
+            exclude = {
+                filetypes = {
+                    "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy",
+                    "gitcommit", "TelescopePrompt", "TelescopeResults"
+                },
+            },
         })
     '';
   }
