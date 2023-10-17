@@ -1,205 +1,173 @@
-@keyframes blink-critical {
-  to {
-    /*color: @white;*/
-    background-color: @critical;
-  }
-}
-
 /* Styles */
 
-/* Colors (gruvbox) */
-@define-color black  #282828;
-@define-color red  #cc241d;
-@define-color green  #98971a;
-@define-color yellow  #d79921;
-@define-color blue  #458588;
-@define-color purple  #b16286;
-@define-color aqua  #689d6a;
-@define-color gray  #a89984;
-@define-color brgray  #928374;
-@define-color brred  #fb4934;
-@define-color brgreen  #b8bb26;
-@define-color bryellow  #fabd2f;
-@define-color brblue  #83a598;
-@define-color brpurple  #d3869b;
-@define-color braqua  #8ec07c;
-@define-color white  #ebdbb2;
-@define-color bg2  #504945;
+/* Colors (Solarized Dark) */
+@define-color base03   #002b36;
+@define-color base02   #073642;
+@define-color base01   #586e75;
+@define-color base00   #657b83;
+@define-color base0    #839496;
+@define-color base1    #93a1a1;
+@define-color base2    #eee8d5;
+@define-color base3    #fdf6e3;
+@define-color yellow   #b58900;
+@define-color orange   #cb4b16;
+@define-color red      #dc322f;
+@define-color magenta  #d33682;
+@define-color violet   #6c71c4;
+@define-color blue     #268bd2;
+@define-color cyan     #2aa198;
+@define-color green    #859900;
 
+@define-color right-color  @base2;
+@define-color warning      @yellow;
+@define-color critical     @red;
+@define-color mode         @base0;
+@define-color unfocused    @base3;
+@define-color focused      @base2;
+@define-color sound        @magenta;
+@define-color network      @violet;
+@define-color memory       @cyan;
+@define-color cpu          @green;
+@define-color temp         @red;
+@define-color layout       @yellow;
+@define-color battery      @magenta;
+@define-color tray         @base02;
+@define-color time         @unfocused;
 
-@define-color warning   @bryellow;
-@define-color critical  @red;
-@define-color mode  @black;
-@define-color unfocused  @bg2;
-@define-color focused  @braqua;
-@define-color inactive  @purple;
-@define-color sound  @brpurple;
-@define-color network  @purple;
-@define-color memory  @braqua;
-@define-color cpu  @green;
-@define-color temp  @brgreen;
-@define-color layout  @bryellow;
-@define-color battery  @aqua;
-@define-color date  @black;
-@define-color time  @white;
-
-/* Reset all styles */
 * {
-  border: none;
-  border-radius: 0;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-  box-shadow: none;
-  text-shadow: none;
+    border: none;
+    border-radius: 0;
+    font-family: Hasklig, Symbols Nerd Font Mono;
+    font-size: 12px;
+    min-height: 0;
 }
 
-/* The whole bar */
-#waybar {
-  background: rgba(40, 40, 40, 0.8784313725); /* #282828e0 */
-  color: @white;
-  font-family: Source Code Pro Powerline;
-  font-size: 10pt;
+window#waybar {
+    color: @base0;
+    background: alpha(@base03, 0.5);
+    border-bottom: 3px solid alpha(@base00, 0.5);
 }
 
-/* Each module */
-#battery,
-#clock,
-#cpu,
-#language,
-#memory,
-#mode,
-#network,
-#pulseaudio,
-#temperature,
-#custom-alsa,
-#sndio,
-#tray {
-  padding-left: 8pt;
-  padding-right: 8pt;
+tooltip {
+  background: alpha(@base02, 0.9);
+  border: 1px solid alpha(@base00, 0.75);
+}
+tooltip label {
+  color: @base0;
 }
 
-/* Each critical module */
-#mode,
-#memory.critical,
-#cpu.critical,
-#temperature.critical,
-#battery.critical.discharging {
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  animation-name: blink-critical;
-  animation-duration: 1s;
-}
-
-/* Each warning */
-#network.disconnected,
-#memory.warning,
-#cpu.warning,
-#temperature.warning,
-#battery.warning.discharging {
-  color: @warning;
-}
-
-/* And now modules themselves in their respective order */
-
-/* Current sway mode (resize etc) */
-#mode {
-  color: @white;
-  background: @mode;
-}
-
-/* Workspaces stuff */
 #workspaces button {
-  /*font-weight: bold;*/
-  padding-left: 2pt;
-  padding-right: 2pt;
-  color: @white;
-  background: @unfocused;
+    padding: 0 5px;
+    background: @unfocused;
+    color: @base00;
+    border-bottom: 3px solid alpha(@base00, 0.5);
 }
 
 /* Inactive (on unfocused output) */
 #workspaces button.visible {
-  color: @white;
-  background: @inactive;
+    border-bottom: 3px solid @yellow;
 }
 
 /* Active (on focused output) */
 #workspaces button.focused {
-  color: @black;
-  background: @focused;
+    background: @focused;
+    border-bottom: 3px solid @green;
 }
 
-/* Contains an urgent window */
 #workspaces button.urgent {
-  color: @black;
-  background: @warning;
+    color: orange;
 }
 
-/* Style when cursor is on the button */
-#workspaces button:hover {
-  background: @black;
-  color: @white;
+.modules-right * {
+  color: @right-color;
+  padding: 0 0 0 5px;
 }
 
-#window {
-  margin-right: 35pt;
-  margin-left: 35pt;
+#mode {
+    background: #64727D;
+    border-bottom: 3px solid @base00;
+}
+
+#clock {
+    background-color: #64727D;
+}
+
+#battery {
+    background-color: #ffffff;
+}
+
+#battery.charging {
+    background-color: #26A65B;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+    }
+}
+
+#battery.warning:not(.charging) {
+    background: #f53c3c;
+    color: white;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
 #custom-alsa,
 #pulseaudio,
 #sndio {
   background: @sound;
-  color: @black;
 }
 
 #network {
   background: @network;
-  color: @white;
 }
 
 #memory {
   background: @memory;
-  color: @black;
 }
 
 #cpu {
   background: @cpu;
-  color: @white;
 }
 
 #temperature {
   background: @temp;
-  color: @black;
 }
 
 #language {
   background: @layout;
-  color: @black;
 }
 
 #battery {
   background: @battery;
-  color: @white;
 }
 
 #tray {
-  background: @date;
+  background: @tray;
+  padding: 0 2px;
+}
+#tray .needs-attention {
+  background: @yellow;
 }
 
-#clock.date {
-  background: @date;
-  color: @white;
-}
-
-#clock.time {
+#clock {
   background: @time;
-  color: @black;
+  color: @base00;
+  padding: 0 5px;
 }
 
 #custom-arrowLeft, #custom-arrowRight {
-  font-size: 11pt;
+  font-size: 13pt;
+ }
+#custom-arrowLeft {
+  padding: 0 0 0 5px;
+}
+#custom-arrowRight {
+  padding: 0 5px 0 0;
 }
 
 #custom-arrowLeft.network {
@@ -228,13 +196,13 @@
 }
 
 #custom-arrowLeft.tray {
-  color: @date;
+  color: @tray;
   background: @layout;
 }
 
 #custom-arrowLeft.clock {
-  color: @clock;
-  background: @date;
+  color: @time;
+  background: @tray;
 }
 
 #custom-arrowRight.workspaces {
