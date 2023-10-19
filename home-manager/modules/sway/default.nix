@@ -41,8 +41,8 @@
           smartBorders = "on";
         };
         startup = [
-          { command = "systemctl --user restart waybar.service"; always = true; }
-          { command = "systemctl --user restart swayr.service"; always = true; }
+          { command = "systemctl --user reload-or-restart waybar.service"; always = true; }
+          { command = "systemctl --user reload-or-restart swayr.service"; always = true; }
           { command = "systemctl --user start keepassxc.service"; }
           { command = "element"; }
         ];
@@ -95,12 +95,11 @@
           "${modifier}+Shift+c" = "exec element";
           "${modifier}+n" = "exec ${terminal} --class journal -T Journal -e nvim -c 'Neorg journal today'";
 
-          "${modifier}+Shift+q" =
-            "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+          "${modifier}+Shift+q" = "exec swaynag -t warning -m 'Do you really want to exit sway?' -b 'Yes, exit sway' 'swaymsg exit'";
 
           "${modifier}+r" = "mode resize";
 
-          "${modifier}+Shift+s" = "grimshot --notify copy area";
+          "${modifier}+Shift+s" = "${pkgs.sway-contrib.grimshot}/bin/grimshot --notify copy area";
         };
         assigns = {
           "Web" = [ ];
@@ -157,6 +156,9 @@
           }
         ];
       };
+      extraConfig = ''
+        seat seat0 hide_cursor 3000
+      '';
       wrapperFeatures.gtk = true;
     };
 }
