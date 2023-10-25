@@ -1,6 +1,7 @@
 { config, pkgs, ... }: {
   # Imports
   imports = [
+    ../modules/accounts
     ../modules/chat
     ../modules/dunst
     ../modules/firefox
@@ -8,6 +9,7 @@
     ../modules/git
     ../modules/gpg
     ../modules/kitty
+    ../modules/neomutt
     ../modules/sway
     ../modules/waybar
     ./common.nix
@@ -37,6 +39,11 @@
     keys = [ ]; # No keys by default
   };
 
+  programs.khard.enable = true;
+  programs.khard.settings = {
+  };
+  programs.vdirsyncer.enable = true;
+
   services = {
     udiskie.enable = true;
     unclutter.enable = true;
@@ -48,6 +55,7 @@
       # the tray is not loaded yet.
       command = "syncthingtray --wait";
     };
+    vdirsyncer.enable = true;
   };
 
   systemd.user = {
