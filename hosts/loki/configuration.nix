@@ -54,7 +54,7 @@ in {
 
   users.users.reyu.extraGroups = [ config.services.davfs2.davGroup "podman" ];
   home-manager.users.reyu = {
-    home.packages = with pkgs; [ deluge blender-hip freecad mullvad-vpn calibre ];
+    home.packages = with pkgs; [ deluge blender-hip freecad mullvad-vpn calibre simplex-chat ];
     wayland.windowManager.sway.config = {
       startup = [
         { command = browser; }

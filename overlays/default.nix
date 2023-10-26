@@ -11,6 +11,7 @@ let
 in
 {
   hc-utils = prev.callPackage ../packages/hc-utils.nix {};
+  simplex-chat = prev.callPackage ../packages/simplex-chat.nix {};
   httpie-desktop = prev.callPackage ../packages/httpie-desktop.nix { inherit inputs; };
   vimPlugins = prev.vimPlugins // vimPlugins;
 }
