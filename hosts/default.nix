@@ -56,6 +56,52 @@
       qflipper
     ];
   };
+  consul-ash-00 = {
+    modules = with self.nixosModules; [
+      inputs.impermanence.nixosModules.impermanence
+      ./hetzner/configuration.nix
+      hetzner
+      consul
+
+      {
+        foxnet.consul.firewall.open = {
+          server = true;
+          serf_wan = true;
+        };
+        services.consul = {
+          extraConfig = {
+            server = true;
+            bootstrap = true;
+            datacenter = "ash";
+          };
+        };
+      }
+    ];
+  };
+  vault-ash-00 = {
+    modules = with self.nixosModules; [
+      inputs.impermanence.nixosModules.impermanence
+      ./hetzner/configuration.nix
+      hetzner
+      consul
+      vault
+
+      {
+        foxnet.vault.firewall.open = {
+          http = true;
+          server = true;
+        };
+        services.consul = {
+          extraConfig = {
+
+          };
+        };
+        services.vault = {
+
+        };
+      }
+    ];
+  };
 } // (
   /* Cloud Providers
    *

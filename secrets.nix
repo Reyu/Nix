@@ -7,6 +7,9 @@ let
   loki = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5RyYh6rTQJrsriGzONG4Dt0cb3Y3047KSFlylzm2zZ";
   burrow = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTxnWiWCer2tijhkTDA9RfxELHy0/HxY7zA8VgbnnFl";
   traveler = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhbhOKgiYOV65i4DVIHjjeiDI6OSHc/6ci1nIb7j99v";
+
+  consul-ash = [ consul-ash-01 ];
+  consul-ash-01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMqfVGp3BXqPu2927qlyuQcufcoxjbyu+R9M/NnsM1r";
 in
 {
   "hosts/burrow/secrets/romm.env".publicKeys = [ reyu burrow ];
@@ -17,7 +20,7 @@ in
 
   "hosts/loki/secrets/davfs2".publicKeys = [ reyu loki ];
 
-  "secrets/consul/encrypt.hcl".publicKeys = [ reyu ] ++ home;
+  "secrets/consul/encrypt.hcl".publicKeys = [ reyu ] ++ home ++ consul-ash;
   "secrets/networks/wpa_supplicant.env".publicKeys = [ reyu traveler ];
   "secrets/nomad/encrypt.hcl".publicKeys = [ reyu ] ++ home;
 }
