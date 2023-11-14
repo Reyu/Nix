@@ -112,7 +112,10 @@ in {
       '';
     };
     davfs2.enable = true;
-    udev.packages = [ pkgs.android-udev-rules ];
+    udev.packages = [
+      pkgs.android-udev-rules
+      pkgs.qmk-udev-rules
+    ];
     kubo = {
       enable = true;
       settings.Addresses.API = [ "/ip4/127.0.0.1/tcp/5001" ];
