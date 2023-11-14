@@ -6,7 +6,7 @@ with lib; {
     programs.librewolf = {
       enable = lib.mkForce true;
       package =
-        pkgs.librewolf.override { cfg = { enableTridactylNative = true; }; };
+        pkgs.librewolf.override { cfg = { nativeMessagingHosts = [ pkgs.tridactyl-native ]; }; };
       profiles =
         let
           commonExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
