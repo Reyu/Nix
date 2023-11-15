@@ -112,10 +112,7 @@ in {
       '';
     };
     davfs2.enable = true;
-    udev.packages = [
-      pkgs.android-udev-rules
-      pkgs.qmk-udev-rules
-    ];
+    udev.packages = [ pkgs.android-udev-rules ];
     kubo = {
       enable = true;
       settings.Addresses.API = [ "/ip4/127.0.0.1/tcp/5001" ];
@@ -156,6 +153,7 @@ in {
       enable = true;
       users = [ "reyu" ];
     };
+    keyboard.qmk.enable = true;
   };
 
   xdg.portal = {
