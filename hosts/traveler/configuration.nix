@@ -2,7 +2,7 @@
   imports =
     [ ./hardware-configuration.nix ];
 
-  age.secrets."wpa_supplicant.env".file = 
+  age.secrets."wpa_supplicant.env".file =
     builtins.toString "${self}/secrets/networks/wpa_supplicant.env";
 
   boot.loader.grub.enable = true;
@@ -48,7 +48,7 @@
         config = builtins.readFile ./kmonad-builtin.cfg;
       };
       keyboards.kinesis = {
-      # Useful when docked at KVM
+        # Useful when docked at KVM
         name = "kinesis";
         device =
           "/dev/input/by-id/usb-Kinesis_Advantage2_Keyboard_314159265359-if01-event-kbd";

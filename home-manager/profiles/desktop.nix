@@ -40,8 +40,7 @@
   };
 
   programs.khard.enable = true;
-  programs.khard.settings = {
-  };
+  programs.khard.settings = { };
   programs.vdirsyncer.enable = true;
 
   services = {

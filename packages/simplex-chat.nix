@@ -1,12 +1,12 @@
-{
-autoPatchelfHook,
-fetchurl,
-gmp,
-lib,
-openssl,
-stdenv,
-zlib,
-... }:
+{ autoPatchelfHook
+, fetchurl
+, gmp
+, lib
+, openssl
+, stdenv
+, zlib
+, ...
+}:
 let
   version = "5.3.2";
   pname = "simplex-chat";

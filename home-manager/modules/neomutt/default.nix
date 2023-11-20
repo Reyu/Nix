@@ -67,7 +67,7 @@
         hooks.postNew = "";
       };
       mbsync = { enable = true; };
-      khal = { enable = false; };  # BROKEN
+      khal = { enable = false; }; # BROKEN
     };
 
     home.file.".config/mailcap" = {

@@ -2,8 +2,9 @@
 with lib;
 
 let
-cfg = config.hetzner-cloud;
-in {
+  cfg = config.hetzner-cloud;
+in
+{
   options = {
     hetzner-cloud.enable = mkEnableOption "Hetzner Cloud Utilities";
   };

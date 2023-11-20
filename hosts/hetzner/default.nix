@@ -13,20 +13,20 @@ in
   };
   consul = {
     modules = commonModules ++ (with self.nixosModules; [
-        consul
+      consul
     ]);
   };
   vault = {
     modules = commonModules ++ (with self.nixosModules; [
-        consul
-        vault
+      consul
+      vault
     ]);
   };
   nomad = {
     modules = commonModules ++ (with self.nixosModules; [
-        consul
-        vault
-        nomad
+      consul
+      vault
+      nomad
     ]);
   };
 }
