@@ -28,13 +28,13 @@
 
   fileSystems."/home" =
     {
-      device = "rpool/home";
+      device = "data/home";
       fsType = "zfs";
     };
 
   fileSystems."/home/reyu" =
     {
-      device = "rpool/home/reyu";
+      device = "data/home/reyu";
       fsType = "zfs";
     };
 
