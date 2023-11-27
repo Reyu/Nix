@@ -26,7 +26,6 @@ in {
   boot.tmp.useTmpfs = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.zfs.extraPools = [ "projects" ];
 
   nix.settings = {
     cores = 32;
@@ -135,16 +134,37 @@ in {
     input-remapper.enableUdevRules = true;
     tailscale.enable = true;
     sanoid = {
-      interval = "*-*-* *:0..59/15 UTC";
+      enable = true;
       datasets = {
-        "rpool/home" = {
+        "data/home" = {
           processChildrenOnly = true;
           recursive = true;
+          daily = 7;
+          monthly = 6;
           yearly = 1;
         };
         "projects" = {
           processChildrenOnly = true;
           recursive = true;
+          hourly = 48;
+        };
+      };
+    };
+    syncoid = {
+      enable = true;
+      commonArgs = [ "--no-sync-snap" "--create-bookmark" "--use-hold" ];
+      commands = {
+        "data/home" = {
+          recursive = true;
+          target = "root@burrow:data/backup/loki/home";
+          sendOptions = "rp";
+          recvOptions = "udo compression=lz4";
+        };
+        "projects" = {
+          recursive = true;
+          target = "root@burrow:data/backup/loki/projects";
+          sendOptions = "props";
+          recvOptions = "udo compression=lz4";
         };
       };
     };

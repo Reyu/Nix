@@ -40,7 +40,7 @@
 
   fileSystems."/root" =
     {
-      device = "rpool/home/root";
+      device = "data/home/root";
       fsType = "zfs";
     };
 
