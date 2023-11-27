@@ -187,7 +187,7 @@ in {
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    configPackages = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
   virtualisation.podman.zfs = true;
