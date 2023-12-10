@@ -22,6 +22,7 @@ in {
     zfsSupport = true;
   };
   boot.supportedFilesystems = [ "zfs" ];
+  boot.kernelPackages = pkgs.linuxPackages_6_5;
   boot.kernelParams = [ "elevator=noop" ];
   boot.tmp.useTmpfs = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -45,6 +46,7 @@ in {
     dedicatedServer.openFirewall = true;
   };
   programs.streamdeck-ui.enable = true;
+  programs.xonsh.enable = true;
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.firewall.checkReversePath = "loose";
@@ -57,7 +59,6 @@ in {
       deluge
       blender-hip
       freecad
-      mullvad-vpn
       calibre
       simplex-chat
       tidal-hifi
@@ -176,7 +177,7 @@ in {
   hardware = {
     bluetooth.enable = true;
     uinput.enable = true;
-    opengl.extraPackages = with pkgs.rocmPackages; [ clr clr.icd ];
+    opengl.extraPackages = with pkgs; [ rocmPackages.clr.icd ];
     openrazer = {
       enable = true;
       users = [ "reyu" ];
