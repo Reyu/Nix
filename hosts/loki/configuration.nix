@@ -44,7 +44,7 @@ in {
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
   };
-  # programs.streamdeck-ui.enable = true;
+  programs.streamdeck-ui.enable = true;
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.firewall.checkReversePath = "loose";
