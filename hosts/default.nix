@@ -75,7 +75,6 @@
       (builtins.attrNames x));
   in
   providers {
-    linode = ./linode;
     hetzner = ./hetzner;
   }
 )
