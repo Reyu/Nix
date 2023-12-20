@@ -90,14 +90,6 @@ in {
   services = {
     avahi.enable = true;
     blueman.enable = true;
-    consul.extraConfig = {
-      datacenter = "home";
-      client_addr = ''
-        {{ GetAllInterfaces | include "name" "eno[1-4]|lo" | exclude "flags" "link-local unicast" | join "address" " " }}'';
-      advertise_addr = ''
-        {{ GetPublicInterfaces | include "type" "IPv6" | sort "-address" | attr "address" }}'';
-      retry_join = [ "172.16.0.5" ];
-    };
     kmonad = {
       enable = true;
       keyboards.kinesis = {
@@ -111,13 +103,6 @@ in {
         };
         config = builtins.readFile ./kmonad-kinesis.cfg;
       };
-    };
-    vault-proxy = {
-      enable = true;
-      vault.address = "http://172.16.0.5:8200";
-      listenerExtraConfig = ''
-        tls_disable = true
-      '';
     };
     davfs2.enable = true;
     udev.packages = [ pkgs.android-udev-rules ];

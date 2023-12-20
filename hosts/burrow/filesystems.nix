@@ -216,11 +216,6 @@
       fsType = "zfs";
       options = [ "zfsutil" ];
     };
-    "/data/service/consul" = {
-      device = "data/service/consul";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
     "/data/service/dns" = {
       device = "data/service/dns";
       fsType = "zfs";
@@ -231,18 +226,8 @@
       fsType = "zfs";
       options = [ "zfsutil" ];
     };
-    "/data/service/nomad" = {
-      device = "data/service/nomad";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
     "/data/service/openldap" = {
       device = "data/service/openldap";
-      fsType = "zfs";
-      options = [ "zfsutil" ];
-    };
-    "/data/service/vault" = {
-      device = "data/service/vault";
       fsType = "zfs";
       options = [ "zfsutil" ];
     };

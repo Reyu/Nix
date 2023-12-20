@@ -4,14 +4,12 @@
     modules = with self.nixosModules; [
       ./loki/configuration.nix
       (users.reyu { profile = "desktop"; })
-      consul
       kmonad
       onlykey
       podman
       qflipper
       sound
       u2f
-      vault-proxy
       xserver
     ];
   };
@@ -19,10 +17,7 @@
     modules = with self.nixosModules; [
       ./burrow/configuration.nix
       (users.reyu { profile = "server"; })
-      consul
-      nomad
       podman
-      vault
     ];
   };
   kit = {
@@ -54,52 +49,6 @@
       onlykey
       podman
       qflipper
-    ];
-  };
-  consul-ash-00 = {
-    modules = with self.nixosModules; [
-      inputs.impermanence.nixosModules.impermanence
-      ./hetzner/configuration.nix
-      hetzner
-      consul
-
-      {
-        foxnet.consul.firewall.open = {
-          server = true;
-          serf_wan = true;
-        };
-        services.consul = {
-          extraConfig = {
-            server = true;
-            bootstrap = true;
-            datacenter = "ash";
-          };
-        };
-      }
-    ];
-  };
-  vault-ash-00 = {
-    modules = with self.nixosModules; [
-      inputs.impermanence.nixosModules.impermanence
-      ./hetzner/configuration.nix
-      hetzner
-      consul
-      vault
-
-      {
-        foxnet.vault.firewall.open = {
-          http = true;
-          server = true;
-        };
-        services.consul = {
-          extraConfig = {
-
-          };
-        };
-        services.vault = {
-
-        };
-      }
     ];
   };
 } // (

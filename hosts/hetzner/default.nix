@@ -11,22 +11,4 @@ in
   base = {
     modules = commonModules;
   };
-  consul = {
-    modules = commonModules ++ (with self.nixosModules; [
-      consul
-    ]);
-  };
-  vault = {
-    modules = commonModules ++ (with self.nixosModules; [
-      consul
-      vault
-    ]);
-  };
-  nomad = {
-    modules = commonModules ++ (with self.nixosModules; [
-      consul
-      vault
-      nomad
-    ]);
-  };
 }

@@ -46,7 +46,6 @@
             rnix-lsp
             statix
             sumneko-lua-language-server
-            terraform-ls
 
             # Linters
             actionlint
