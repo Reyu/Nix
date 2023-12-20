@@ -231,6 +231,10 @@
                   package = "linode-cli";
                   category = "deployment";
                 }
+                {
+                  package = "hcloud";
+                  category = "deployment";
+                }
                 (buildTool nixos-generators)
                 (formatter treefmt)
                 (formatter nixpkgs-fmt)
