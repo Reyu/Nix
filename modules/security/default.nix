@@ -1,18 +1,16 @@
 { config, lib, ... }:
-with lib; {
+with lib; 
+{
+  imports = [
+    ./fail2ban.nix
+  ];
+
   # Enable GPG Agent by default
   programs.gnupg.agent.enable = true;
 
   ## System security tweaks
   security.sudo.execWheelOnly = true;
   environment.defaultPackages = mkForce [ ];
-
-  # security.auditd.enable = true;
-  # security.audit.enable = true;
-  # security.audit.rules = [
-  #   "-w /etc/passwd -p wa -k passwd_changes"
-  #   "-w /sbin/insmod -p x -k module_insertion"
-  # ];
 
   # Configure OpenSSH to be a bit more secure
   services.openssh = {
@@ -90,9 +88,6 @@ with lib; {
     "net.core.default_qdisc" = "cake";
   };
   boot.kernelModules = [ "tcp_bbr" ];
-
-  # So we don't have to do this later...
-  security.acme.acceptTerms = true;
 
   # Add custom CA Roots
   security.pki.certificateFiles =
