@@ -11,4 +11,10 @@ in
   base = {
     modules = commonModules;
   };
+  auth01 = {
+    modules = commonModules ++ [
+      ./auth.nix
+      self.nixosModules.acme
+    ];
+  };
 }

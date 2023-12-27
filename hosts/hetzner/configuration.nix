@@ -17,7 +17,7 @@
 
   fileSystems."/boot" =
     {
-      device = "/dev/sda15";
+      device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_40659075-part15";
       fsType = "vfat";
     };
 
@@ -65,5 +65,5 @@
   };
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
-  networking.hostId = "8425e349";
+  networking.hostId = lib.mkDefault "8425e349";
 }
