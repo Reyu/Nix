@@ -66,9 +66,11 @@
             stylua
 
             # Extras
+            biber
             fd
             gcc
             gh
+            manix
             texlive.combined.scheme-medium
             tree-sitter
             unzip

@@ -30,7 +30,7 @@
       require('nvim-treesitter.configs').setup({
           highlight = {enable = true},
           indent = {enable = true, disable = {"python"}},
-          context_commentstring = {enable = true, enable_autocmd = false},
+          context_commentstring = {enable = false},
           endwise = {enable = true},
           incremental_selection = {
               enable = true,
@@ -85,6 +85,7 @@
               }
           }
       })
+      require('ts_context_commentstring').setup({})
     '';
   }
   {
