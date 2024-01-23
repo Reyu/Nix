@@ -56,6 +56,10 @@
       url = "github:projekt0n/github-nvim-theme";
       flake = false;
     };
+    nvim-projector = {
+      url = "github:kndndrj/nvim-projector";
+      flake = false;
+    };
 
     # Discord + Plugins
     replugged = {

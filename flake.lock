@@ -610,6 +610,22 @@
         "type": "github"
       }
     },
+    "nvim-projector": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1704301048,
+        "narHash": "sha256-1peb3U0f1+V+GSN5+hZPCTYbpJC45ZyEibxumNgxOIU=",
+        "owner": "kndndrj",
+        "repo": "nvim-projector",
+        "rev": "fdd9936deacd54b9bc69eef62b2835d9deaec53b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kndndrj",
+        "repo": "nvim-projector",
+        "type": "github"
+      }
+    },
     "ragenix": {
       "inputs": {
         "agenix": "agenix",
@@ -692,6 +708,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nur": "nur",
+        "nvim-projector": "nvim-projector",
         "ragenix": "ragenix",
         "replugged": "replugged",
         "unstable": "unstable",
