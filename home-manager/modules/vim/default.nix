@@ -26,37 +26,39 @@
       withNodeJs = true;
       extraPython3Packages = ps: with ps; [ rope jedi ];
       package = pkgs.neovim-nightly;
-      extraLuaConfig = let
-        plugins = import ./plugins.nix { inherit config pkgs; };
-        mkEntryFromDrv = drv:
-          if lib.isDerivation drv then
-            { name = "${lib.getName drv}"; path = drv; }
-          else
-            drv;
-        lazyPath = pkgs.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv plugins);
-      in ''
-        require("lazy").setup({
-          defaults = {
-            lazy = true,
-          },
-          dev = {
-            -- reuse files from pkgs.vimPlugins
-            path = "${lazyPath}",
-            patterns = { "." },
-            -- fallback to download
-            fallback = true,
-          },
-          spec = {
-            -- The following configs are needed for fixing lazyvim on nix
-            -- force enable telescope-fzf-native.nvim
-            { "nvim-telescope/telescope-fzf-native.nvim", enabled = true },
-            -- import/override with your plugins
-            { import = "plugins" },
-            -- treesitter handled by xdg.configFile."nvim/parser", put this line at the end of spec to clear ensure_installed
-            { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = {} } },
-          },
-        })
-      '';
+      extraLuaConfig =
+        let
+          plugins = import ./plugins.nix { inherit config pkgs; };
+          mkEntryFromDrv = drv:
+            if lib.isDerivation drv then
+              { name = "${lib.getName drv}"; path = drv; }
+            else
+              drv;
+          lazyPath = pkgs.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv plugins);
+        in
+        ''
+          require("lazy").setup({
+            defaults = {
+              lazy = true,
+            },
+            dev = {
+              -- reuse files from pkgs.vimPlugins
+              path = "${lazyPath}",
+              patterns = { "." },
+              -- fallback to download
+              fallback = true,
+            },
+            spec = {
+              -- The following configs are needed for fixing lazyvim on nix
+              -- force enable telescope-fzf-native.nvim
+              { "nvim-telescope/telescope-fzf-native.nvim", enabled = true },
+              -- import/override with your plugins
+              { import = "plugins" },
+              -- treesitter handled by xdg.configFile."nvim/parser", put this line at the end of spec to clear ensure_installed
+              { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = {} } },
+            },
+          })
+        '';
       plugins = [ pkgs.vimPlugins.lazy-nvim ];
       extraPackages =
         if config.programs.neovim.minimal then

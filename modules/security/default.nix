@@ -1,5 +1,5 @@
 { config, lib, ... }:
-with lib; 
+with lib;
 {
   imports = [
     ./fail2ban.nix

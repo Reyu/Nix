@@ -21,17 +21,17 @@
     networking.firewall.allowedTCPPorts = [ 636 ];
     networking.interfaces.enp1s0.ipv6 = {
       addresses = [
-      {
-        address = "2a01:4ff:f0:987c::1";
-        prefixLength = 64;
-      }
+        {
+          address = "2a01:4ff:f0:987c::1";
+          prefixLength = 64;
+        }
       ];
       routes = [
-      {
-        address = "2a01:4ff:f0:987c::";
-        prefixLength = 64;
-        type = "local";
-      }
+        {
+          address = "2a01:4ff:f0:987c::";
+          prefixLength = 64;
+          type = "local";
+        }
       ];
     };
 

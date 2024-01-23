@@ -1,6 +1,7 @@
 { config, pkgs, ... }: with pkgs.vimPlugins; let
   minimal = config.programs.neovim.minimal;
-in [
+in
+[
   # Telescope
   telescope-nvim
   telescope-dap-nvim
@@ -90,7 +91,7 @@ in [
   plenary-nvim
   nui-nvim
   promise-async
-] ++ (if minimal then [] else [
+] ++ (if minimal then [ ] else [
   # Coding
   { name = "lspkind.nvim"; path = lspkind-nvim; }
 
