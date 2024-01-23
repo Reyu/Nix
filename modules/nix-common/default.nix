@@ -4,7 +4,7 @@
       # Enable flakes
       package = pkgs.nixVersions.stable;
       extraOptions = pkgs.lib.mkForce ''
-        experimental-features = nix-command flakes
+        experimental-features = nix-command flakes ca-derivations
       '';
 
       # Clean up old generations after 30 days
