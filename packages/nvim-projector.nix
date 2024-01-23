@@ -1,4 +1,4 @@
-{ pkgs, stdenv, lib, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
 pkgs.vimUtils.buildVimPlugin {
   pname = "nvim-projector";
   version = "latest";

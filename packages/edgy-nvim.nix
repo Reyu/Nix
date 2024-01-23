@@ -1,4 +1,4 @@
-{ pkgs, stdenv, lib, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
 pkgs.vimUtils.buildVimPlugin {
   pname = "edgy.nvim";
   version = "latest";
