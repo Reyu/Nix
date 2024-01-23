@@ -10,19 +10,14 @@ local function filter(arr, func)
     for i = new_index, size_orig do arr[i] = nil end
 end
 
-
 local function filter_diagnostics(diagnostic)
     -- Only filter out Pyright stuff for now
-    if diagnostic.source ~= "Pyright" then
-        return true
-    end
+    if diagnostic.source ~= "Pyright" then return true end
 
     -- Allow kwargs to be unused, sometimes you want many functions to take the
     -- same arguments but you don't use all the arguments in all the functions,
     -- so kwargs is used to suck up all the extras
-    if diagnostic.message == '"kwargs" is not accessed' then
-        return false
-    end
+    if diagnostic.message == '"kwargs" is not accessed' then return false end
 
     -- Allow variables starting with an underscore
     if string.match(diagnostic.message, '"_.+" is not accessed') then
@@ -64,9 +59,11 @@ return {
                 jsonls = {
                     -- lazy-load schemastore when needed
                     on_new_config = function(new_config)
-                        new_config.settings.json.schemas = new_config.settings.json.schemas or {}
+                        new_config.settings.json.schemas = new_config.settings
+                                                               .json.schemas or
+                                                               {}
                         vim.list_extend(new_config.settings.json.schemas,
-                            require("schemastore").json.schemas())
+                                        require("schemastore").json.schemas())
                     end,
                     settings = {
                         json = {
@@ -87,13 +84,15 @@ return {
                 dockerls = {},
                 html = {},
                 pyright = {
-                    before_init = function (client, config)
+                    before_init = function(client, config)
                         local f = io.open(client.rootPath .. "/.python-version")
                         if f ~= nil then
-                            config.settings.python.pythonPath = vim.fn['trim'](vim.fn['system']('pyenv which python'))
+                            config.settings.python.pythonPath = vim.fn['trim'](
+                                                                    vim.fn['system'](
+                                                                        'pyenv which python'))
                         end
                     end,
-                    settings = { python = { pythonPath = {} } },
+                    settings = {python = {pythonPath = {}}}
                 },
                 vimls = {},
                 yamlls = {
@@ -102,39 +101,42 @@ return {
                         textDocument = {
                             foldingRange = {
                                 dynamicRegistration = false,
-                                lineFoldingOnly = true,
-                            },
-                        },
+                                lineFoldingOnly = true
+                            }
+                        }
                     },
                     -- lazy-load schemastore when needed
                     on_new_config = function(new_config)
-                        new_config.settings.yaml.schemas = new_config.settings.yaml.schemas or {}
-                        vim.list_extend(new_config.settings.yaml.schemas, require("schemastore").yaml.schemas())
+                        new_config.settings.yaml.schemas = new_config.settings
+                                                               .yaml.schemas or
+                                                               {}
+                        vim.list_extend(new_config.settings.yaml.schemas,
+                                        require("schemastore").yaml.schemas())
                     end,
                     settings = {
-                        redhat = { telemetry = { enabled = false } },
+                        redhat = {telemetry = {enabled = false}},
                         yaml = {
                             keyOrdering = false,
-                            format = {
-                                enable = true,
-                            },
+                            format = {enable = true},
                             validate = true,
                             schemaStore = {
                                 -- Must disable built-in schemaStore support to use
                                 -- schemas from SchemaStore.nvim plugin
                                 enable = false,
                                 -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-                                url = "",
-                            },
-                        },
-                    },
-                },
+                                url = ""
+                            }
+                        }
+                    }
+                }
             },
             setup = {}
         },
         config = function(_, opts)
             vim.diagnostic.config(opts.diagnostics)
-            vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(custom_on_publish_diagnostics, {})
+            vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+                                                                      custom_on_publish_diagnostics,
+                                                                      {})
 
             require("lspconfig").util.default_config =
                 vim.tbl_extend("force",
@@ -208,46 +210,63 @@ return {
         event = {"BufReadPre", "BufNewFile"},
         config = true,
         keys = {
-            {"<Leader>l", function() require('lsp_lines').toggle() end, silent = true, desc = "Toggle lsp_lines"}
-        },
+            {
+                "<Leader>l",
+                function() require('lsp_lines').toggle() end,
+                silent = true,
+                desc = "Toggle lsp_lines"
+            }
+        }
     }, {
         "mrcjkb/haskell-tools.nvim",
         dependencies = {
             "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim"
         },
         ft = "haskell",
-        opts = {
-            tools = {
-                hover = {stylize_markdown = true},
-                definition = {hoogle_signature_fallback = true}
-            },
-            hls = {
-                on_attach = require('plugins.lsp.keymaps').on_attach,
-                filetypes = {"haskell"}
+        opts = function()
+            return {
+                tools = {
+                    hover = {stylize_markdown = true},
+                    definition = {hoogle_signature_fallback = true}
+                },
+                hls = {
+                    on_attach = require('plugins.lsp.keymaps').on_attach,
+                    filetypes = {"haskell"},
+                    settings = function(project_root)
+                        local ht = require('haskell-tools')
+                        return ht.lsp.load_hls_settings(project_root, {
+                            settings_file_pattern = 'hls.json'
+                        })
+                    end
+                }
             }
-        },
+        end,
         config = function(_, opts)
             local ht = require("haskell-tools")
-            ht.setup(opts)
+            vim.g.haskell_tools = opts
+
             local def_opts = {noremap = true, silent = true}
             vim.api.nvim_create_autocmd({'BufEnter', 'BufRead'}, {
                 pattern = {"*.hs", "*.hls"},
                 desc = "Haskell-Tools keymaps",
                 callback = function(ev)
                     local map_opts = vim.tbl_extend('keep', def_opts,
-                                                {buffer = ev.buf})
+                                                    {buffer = ev.buf})
                     require('which-key').register({
                         ["<LocalLeader>r"] = {name = "Repl"}
                     })
                     map_opts.desc = "Toggle Repl (for package)"
-                    vim.keymap.set('n', '<LocalLeader>rr', ht.repl.toggle, map_opts)
+                    vim.keymap.set('n', '<LocalLeader>rr', ht.repl.toggle,
+                                   map_opts)
                     map_opts.desc = "Toggle Repl (for file)"
                     vim.keymap.set('n', '<LocalLeader>rf', function()
                         ht.repl.toggle(vim.api.nvim_buf_get_name(0))
                     end, map_opts)
                     map_opts.desc = "Quit Repl"
-                    vim.keymap.set('n', '<LocalLeader>rq', ht.repl.quit, map_opts)
+                    vim.keymap.set('n', '<LocalLeader>rq', ht.repl.quit,
+                                   map_opts)
                     ht.dap.discover_configurations(ev.buf)
+                    require('telescope').load_extension('ht')
                 end
             })
         end
