@@ -247,7 +247,7 @@ return {
                 config = {
                     color = 'pink',
                     invoke_on_body = true,
-                    hint = {position = 'bottom', border = 'rounded'}
+                    hint = {position = 'bottom'}
                 },
                 name = 'dap',
                 mode = {'n', 'x'},

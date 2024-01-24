@@ -15,7 +15,7 @@ return {
             }
         }
     }, {
-        "anuvyklack/hydra.nvim",
+        "nvimtools/hydra.nvim",
         cond = not vim.g.started_by_firenvim,
         keys = {{"<Leader>o", mode = {"n", "x"}, desc = "Options Hydra"}},
         config = function()
@@ -41,7 +41,6 @@ return {
                     invoke_on_body = true,
                     hint = {
                         position = "middle",
-                        border = "single",
                         funcs = {
                             c = displayOpt('cursorline'),
                             i = displayOpt('list'),
