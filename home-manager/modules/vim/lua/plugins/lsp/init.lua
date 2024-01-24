@@ -213,7 +213,7 @@ return {
                     vim.keymap.set('n', '<LocalLeader>rq', ht.repl.quit,
                                    map_opts)
                     map_opts.desc = 'Hoogle Signature'
-                    vim.keymap.set('n', '<LocalLeader>h', ht.hoogle.hoogle_signature(),
+                    vim.keymap.set('n', '<LocalLeader>h', ht.hoogle.hoogle_signature,
                                    map_opts)
                     ht.dap.discover_configurations(ev.buf)
                     require('telescope').load_extension('ht')
