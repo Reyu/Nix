@@ -43,7 +43,6 @@ return {
                 opts = {plugins = {jsonls = {configured_servers_only = false}}}
             },
             {"folke/neodev.nvim", opts = {experimental = {pathStrict = true}}},
-            {"mason.nvim"}, {"williamboman/mason-lspconfig.nvim"},
             "b0o/SchemaStore.nvim"
         },
         opts = {
@@ -56,6 +55,7 @@ return {
             autoformat = true,
             defaults = {on_attach = require('plugins.lsp.util').on_attach},
             servers = {
+                nil_ls = {},
                 jsonls = {
                     -- lazy-load schemastore when needed
                     on_new_config = function(new_config)
@@ -129,80 +129,27 @@ return {
                         }
                     }
                 }
-            },
-            setup = {}
+            }
         },
         config = function(_, opts)
+            local nvim_lsp = require('lspconfig')
             vim.diagnostic.config(opts.diagnostics)
             vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
                                                                       custom_on_publish_diagnostics,
                                                                       {})
 
-            require("lspconfig").util.default_config =
-                vim.tbl_extend("force",
-                               require("lspconfig").util.default_config,
+            nvim_lsp.util.default_config =
+                vim.tbl_extend("force", nvim_lsp.util.default_config,
                                opts.defaults or {})
-
-            local servers = opts.servers
 
             local capabilities = require("cmp_nvim_lsp").default_capabilities(
                                      vim.lsp.protocol.make_client_capabilities())
 
-            local function setup(server)
+            for server, server_opts_ in pairs(opts.servers) do
                 local server_opts = vim.tbl_deep_extend("force", {
                     capabilities = vim.deepcopy(capabilities)
-                }, servers[server] or {})
-
-                if opts.setup[server] then
-                    if opts.setup[server](server, server_opts) then
-                        return
-                    end
-                elseif opts.setup["*"] then
-                    if opts.setup["*"](server, server_opts) then
-                        return
-                    end
-                end
-                require("lspconfig")[server].setup(server_opts)
-            end
-
-            local mlsp = require("mason-lspconfig")
-            local available = mlsp.get_available_servers()
-
-            local ensure_installed = {} ---@type string[]
-            for server, server_opts in pairs(servers) do
-                if server_opts then
-                    server_opts = server_opts == true and {} or server_opts
-                    -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-                    if server_opts.mason == false or
-                        not vim.tbl_contains(available, server) then
-                        setup(server)
-                    else
-                        ensure_installed[#ensure_installed + 1] = server
-                    end
-                end
-            end
-
-            require("mason-lspconfig").setup({
-                ensure_installed = ensure_installed
-            })
-            require("mason-lspconfig").setup_handlers({setup})
-        end
-    }, {
-        "williamboman/mason.nvim",
-        dependencies = {
-            {
-                "jayp0521/mason-nvim-dap.nvim",
-                dependencies = {"mfussenegger/nvim-dap"}
-            }
-        },
-        cmd = "Mason",
-        opts = {ensure_installed = {"shfmt"}},
-        config = function(_, opts)
-            require("mason").setup(opts)
-            local mr = require("mason-registry")
-            for _, tool in ipairs(opts.ensure_installed) do
-                local p = mr.get_package(tool)
-                if not p:is_installed() then p:install() end
+                }, server_opts_ or {})
+                nvim_lsp[server].setup(server_opts)
             end
         end
     }, {
@@ -264,6 +211,9 @@ return {
                     end, map_opts)
                     map_opts.desc = "Quit Repl"
                     vim.keymap.set('n', '<LocalLeader>rq', ht.repl.quit,
+                                   map_opts)
+                    map_opts.desc = 'Hoogle Signature'
+                    vim.keymap.set('n', '<LocalLeader>h', ht.hoogle.hoogle_signature(),
                                    map_opts)
                     ht.dap.discover_configurations(ev.buf)
                     require('telescope').load_extension('ht')

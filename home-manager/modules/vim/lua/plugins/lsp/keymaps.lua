@@ -1,16 +1,5 @@
 local M = {}
 
-local function preview_location_callback(_, result)
-    if result == nil or vim.tbl_isempty(result) then return nil end
-    vim.lsp.util.preview_location(result[1], {border = "rounded"})
-end
-
-local function peekDefinition(bufnr)
-    local params = vim.lsp.util.make_position_params(0, 'utf-16')
-    return vim.lsp.buf_request(bufnr, 'textDocument/definition', params,
-                               preview_location_callback)
-end
-
 M.keys = {
     {'gD', vim.lsp.buf.declaration, desc = 'Goto Declaration'},
     {'gd', '<Cmd>Trouble lsp_type_definitions<CR>', desc = 'Goto Definition'},
@@ -51,16 +40,6 @@ M.keys = {
         '<LocalLeader>f',
         vim.lsp.buf.format,
         desc = 'Run formatter',
-    }, {
-        '<LocalLeader>f',
-        vim.lsp.buf.range_format,
-        desc = 'Run formatter',
-    }, {
-        '<LocalLeader>h',
-        function()
-            require('haskell-tools').hoogle.hoogle_signature()
-        end,
-        desc = 'Hoogle Signature'
     }
 }
 
@@ -88,7 +67,9 @@ function M.on_attach(client, bufnr)
             opts.has = nil
             opts.silent = true
             opts.buffer = bufnr
-            vim.keymap.set(keys.mode or "n", keys[1], keys[2], opts)
+            if not pcall(function() vim.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts) end) then
+                vim.print("Failed on LSP keymap: " .. keys.lhs)
+            end
         end
     end
 end
