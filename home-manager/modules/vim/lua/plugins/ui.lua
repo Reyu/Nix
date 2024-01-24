@@ -39,8 +39,7 @@ return {
         cond = not vim.g.started_by_firenvim,
         cmd = "ZenMode",
         keys = {
-            {'<Leader>z', desc = '+ZenMode'},
-            {
+            {'<Leader>z', desc = '+ZenMode'}, {
                 "<Leader>zz",
                 function() require("zen-mode").toggle() end,
                 desc = "Toggle ZenMode"
@@ -56,19 +55,19 @@ return {
                     relativenumber = false,
                     cursorline = false,
                     cursorcolumn = false,
-                    foldcolumn = "0",
-                },
+                    foldcolumn = "0"
+                }
             },
             plugins = {
-                tmux = { enabled = true },
+                tmux = {enabled = true},
                 kitty = {
                     enabled = true,
-                    font = "+8", -- font size increment
+                    font = "+8" -- font size increment
                 },
                 alacritty = {
                     enabled = true,
-                    font = "14", -- font size
-                },
+                    font = "14" -- font size
+                }
             }
         }
     }, {
@@ -111,11 +110,7 @@ return {
         event = "VeryLazy",
         dependencies = {{"MunifTanjim/nui.nvim"}},
         keys = {
-            {
-                '<Leader>n',
-                desc = "+Noice",
-            },
-            {
+            {'<Leader>n', desc = "+Noice"}, {
                 '<Leader>nl',
                 function() require("noice").cmd('last') end,
                 silent = true,
@@ -217,9 +212,7 @@ return {
         dependencies = {
             {
                 'jlanzarotta/bufexplorer',
-                keys = {
-                    {'<Leader>b', desc = '+BufExplorer'},
-                },
+                keys = {{'<Leader>b', desc = '+BufExplorer'}}
             }, {'sindrets/winshift.nvim', config = true}
         },
         opts = {
@@ -230,8 +223,7 @@ return {
             multiplexer_integration = 'tmux'
         },
         keys = {
-            {'<C-w>', desc = "+Manage Windows"},
-            {'gb', desc = "Choose Buffer"},
+            {'<C-w>', desc = "+Manage Windows"}, {'gb', desc = "Choose Buffer"},
             {'<S-A-h>', function()
                 require('smart-splits').resize_left()
             end},
@@ -349,15 +341,13 @@ return {
         event = {"BufReadPost", "BufNewFile"},
         main = "ibl",
         opts = {
-            indent = {
-                char = "│",
-            },
+            indent = {char = "│"},
             exclude = {
                 filetypes = {
                     "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy",
                     "gitcommit", "TelescopePrompt", "TelescopeResults"
-                },
-            },
+                }
+            }
         }
     }, {
         "echasnovski/mini.indentscope",
@@ -368,8 +358,7 @@ return {
         init = function()
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = {
-                    "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy",
-                    "mason"
+                    "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy"
                 },
                 callback = function()
                     vim.b.miniindentscope_disable = true
@@ -392,7 +381,9 @@ return {
                 },
                 sections = {
                     lualine_a = {'mode'},
-                    lualine_b = {{'FugitiveHead', icon = ''}, 'diff', 'diagnostics'},
+                    lualine_b = {
+                        {'FugitiveHead', icon = ''}, 'diff', 'diagnostics'
+                    },
                     lualine_c = {'%S'},
                     lualine_x = {
                         {
@@ -425,79 +416,94 @@ return {
                     lualine_z = {{'buffers', mode = 4}}
                 },
                 winbar = {
-                    lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
+                    lualine_a = {
+                        {'filetype', icon_only = true}, {'filename', path = 1}
+                    },
                     lualine_b = {'filesize', '%r'},
                     lualine_c = {'%w', 'searchcount'},
                     lualine_x = {'diagnostics'},
-                    lualine_y = {'encoding', 'fileformat', {'filetype', icon = ""}},
-                    lualine_z = {'%P', 'location'},
+                    lualine_y = {
+                        'encoding', 'fileformat', {'filetype', icon = ""}
+                    },
+                    lualine_z = {'%P', 'location'}
                 },
                 inactive_winbar = {
-                    lualine_a = {{'filetype', icon_only = true}, {'filename', path = 1}},
+                    lualine_a = {
+                        {'filetype', icon_only = true}, {'filename', path = 1}
+                    },
                     lualine_b = {'filesize', '%r'},
                     lualine_c = {'%w', 'searchcount'},
                     lualine_x = {'diagnostics'},
                     lualine_y = {'encoding', 'fileformat', 'filetype'},
-                    lualine_z = {'%P', 'location'},
+                    lualine_z = {'%P', 'location'}
                 },
                 extensions = {
-                    "man", "quickfix", "trouble", "toggleterm", "fugitive", "neo-tree",
-                    "nvim-dap-ui"
+                    "man", "quickfix", "trouble", "toggleterm", "fugitive",
+                    "neo-tree", "nvim-dap-ui"
                 }
             }
         end
-    }, {"nvim-tree/nvim-web-devicons", lazy = true},
-    {
+    }, {"nvim-tree/nvim-web-devicons", lazy = true}, {
         "folke/edgy.nvim",
         cond = not vim.g.started_by_firenvim,
         event = "VeryLazy",
         keys = {
-            {"<Leader>e", desc = "+Edgy"},
-            {"<Leader>ee", function() require('edgy').toggle() end, desc = "Toggle Edgy pinned views", silent = true},
-            {"<Leader>em", function() require('edgy').goto_main() end, desc = "Goto Main window", silent = true},
-            {"<Leader>es", function() require('edgy').select() end, desc = "Select window in edgebar", silent = true},
+            {"<Leader>e", desc = "+Edgy"}, {
+                "<Leader>ee",
+                function() require('edgy').toggle() end,
+                desc = "Toggle Edgy pinned views",
+                silent = true
+            }, {
+                "<Leader>em",
+                function() require('edgy').goto_main() end,
+                desc = "Goto Main window",
+                silent = true
+            }, {
+                "<Leader>es",
+                function() require('edgy').select() end,
+                desc = "Select window in edgebar",
+                silent = true
+            }
         },
         opts = function()
             local opts = {
                 bottom = {
                     {
                         ft = "toggleterm",
-                        size = { height = 0.4 },
+                        size = {height = 0.4},
                         filter = function(_, win)
-                            return vim.api.nvim_win_get_config(win).relative == ""
-                        end,
-                    },
-                    {
+                            return vim.api.nvim_win_get_config(win).relative ==
+                                       ""
+                        end
+                    }, {
                         ft = "noice",
-                        size = { height = 0.4 },
+                        size = {height = 0.4},
                         filter = function(_, win)
-                            return vim.api.nvim_win_get_config(win).relative == ""
-                        end,
-                    },
-                    {
+                            return vim.api.nvim_win_get_config(win).relative ==
+                                       ""
+                        end
+                    }, {
                         ft = "lazyterm",
                         title = "LazyTerm",
-                        size = { height = 0.4 },
+                        size = {height = 0.4},
                         filter = function(buf)
                             return not vim.b[buf].lazyterm_cmd
-                        end,
-                    },
-                    "Trouble",
-                    { ft = "qf", title = "QuickFix" },
-                    {
+                        end
+                    }, "Trouble", {ft = "qf", title = "QuickFix"}, {
                         ft = "help",
-                        size = { height = 20 },
+                        size = {height = 20},
                         -- don't open help files in edgy that we're editing
                         filter = function(buf)
                             return vim.bo[buf].buftype == "help"
-                        end,
-                    },
-                    { ft = "spectre_panel", size = { height = 0.4 } },
-                    { title = "Neotest Output", ft = "neotest-output-panel", size = { height = 15 } },
+                        end
+                    }, {ft = "spectre_panel", size = {height = 0.4}},
+                    {
+                        title = "Neotest Output",
+                        ft = "neotest-output-panel",
+                        size = {height = 15}
+                    }
                 },
-                right = {
-                    { title = "Neotest Summary", ft = "neotest-summary" },
-                },
+                right = {{title = "Neotest Summary", ft = "neotest-summary"}},
                 left = {
                     {
                         title = "Neo-Tree",
@@ -509,27 +515,24 @@ return {
                         open = function()
                             vim.api.nvim_input("<esc><space>e")
                         end,
-                        size = { height = 0.5 },
-                    },
-                    {
+                        size = {height = 0.5}
+                    }, {
                         title = "Neo-Tree Git",
                         ft = "neo-tree",
                         filter = function(buf)
                             return vim.b[buf].neo_tree_source == "git_status"
                         end,
                         pinned = true,
-                        open = "Neotree left git_status",
-                    },
-                    {
+                        open = "Neotree left git_status"
+                    }, {
                         title = "Neo-Tree Buffers",
                         ft = "neo-tree",
                         filter = function(buf)
                             return vim.b[buf].neo_tree_source == "buffers"
                         end,
                         pinned = true,
-                        open = "Neotree top buffers",
-                    },
-                    "neo-tree",
+                        open = "Neotree top buffers"
+                    }, "neo-tree"
                 },
                 keys = {
                     -- increase width
@@ -547,21 +550,17 @@ return {
                     -- decrease height
                     ["<c-Down>"] = function(win)
                         win:resize("height", -2)
-                    end,
-                },
+                    end
+                }
             }
             return opts
-        end,
-    },
-    {
+        end
+    }, {
         'akinsho/toggleterm.nvim',
         version = "v2.*",
         cond = not vim.g.started_by_firenvim,
-        opts =  {
-            open_mapping = [[<C-\>]],
-            direction = "float",
-        },
-        init = function ()
+        opts = {open_mapping = [[<C-\>]], direction = "float"},
+        init = function()
             vim.api.nvim_create_autocmd("TermOpen", {
                 callback = function()
                     local opts = {buffer = 0}
@@ -571,31 +570,60 @@ return {
         end,
         keys = {
             {[[<C-\>]], desc = "Toggle Term"},
-            {"<LocalLeader>s", desc = "+Send to term"},
-            {"<LocalLeader>sl", "<CMD>ToggleTermSendCurentLine<CR>", desc = "Send line to terminal"},
-            {"<LocalLeader>sl", "<CMD>ToggleTermSendVisualLines<CR>", mode = 'v', desc = "Send lines to terminal"},
-            {"<LocalLeader>ss", "<CMD>ToggleTermSendVisualSelection<CR>", mode = 'v', desc = "Send selection to terminal"},
+            {"<LocalLeader>s", desc = "+Send to term"}, {
+                "<LocalLeader>sl",
+                "<CMD>ToggleTermSendCurentLine<CR>",
+                desc = "Send line to terminal"
+            }, {
+                "<LocalLeader>sl",
+                "<CMD>ToggleTermSendVisualLines<CR>",
+                mode = 'v',
+                desc = "Send lines to terminal"
+            }, {
+                "<LocalLeader>ss",
+                "<CMD>ToggleTermSendVisualSelection<CR>",
+                mode = 'v',
+                desc = "Send selection to terminal"
+            }
         },
         commands = {
-            "ToggleTerm",
-            "ToggleTermSendCurrentLine",
-            "ToggleTermSendVisualLines",
-            "ToggleTermSendVisualSelection",
-            "ToggleTermSetName",
-            "ToggleTermToggleAll",
-        },
+            "ToggleTerm", "ToggleTermSendCurrentLine",
+            "ToggleTermSendVisualLines", "ToggleTermSendVisualSelection",
+            "ToggleTermSetName", "ToggleTermToggleAll"
+        }
     }, {
         "folke/flash.nvim",
         enabled = false,
         event = "VeryLazy",
         opts = {},
         keys = {
-            { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash", },
-            { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter", },
-            { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash", },
-            { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Flash Treesitter Search", },
-            { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search", },
-        },
+            {
+                "s",
+                mode = {"n", "x", "o"},
+                function() require("flash").jump() end,
+                desc = "Flash"
+            }, {
+                "S",
+                mode = {"n", "o", "x"},
+                function() require("flash").treesitter() end,
+                desc = "Flash Treesitter"
+            }, {
+                "r",
+                mode = "o",
+                function() require("flash").remote() end,
+                desc = "Remote Flash"
+            }, {
+                "R",
+                mode = {"o", "x"},
+                function() require("flash").treesitter_search() end,
+                desc = "Flash Treesitter Search"
+            }, {
+                "<c-s>",
+                mode = {"c"},
+                function() require("flash").toggle() end,
+                desc = "Toggle Flash Search"
+            }
+        }
     },
     {"luukvbaal/statuscol.nvim", config = true, },
 }
