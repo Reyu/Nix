@@ -1,10 +1,8 @@
-{ pkgs, ... }:
 {
   programs.kitty = {
     enable = true;
     font = {
-      package = pkgs.hasklig;
-      name = "Hasklig";
+      name = "Hasklug Nerd Font Mono";
       size = 12;
     };
     settings = {
