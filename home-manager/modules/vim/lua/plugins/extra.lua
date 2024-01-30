@@ -152,35 +152,35 @@ return {
                 silent = true
             },
             {
-                "<LocalLeader>c",
+                "<Leader>c",
                 function() require('projector').continue() end,
                 desc = 'Debug: Continue',
                 noremap = true,
                 silent = true
             },
             {
-                "<LocalLeader>k",
+                "<Leader>k",
                 function() require('projector').kill() end,
                 desc = 'Debug: Kill Session',
                 noremap = true,
                 silent = true
             },
             {
-                "<LocalLeader>n",
+                "<Leader>N",
                 function() require('projector').next() end,
                 desc = 'Debug: Next',
                 noremap = true,
                 silent = true
             },
             {
-                "<LocalLeader>p",
+                "<Leader>P",
                 function() require('projector').previous() end,
                 desc = 'Debug: Previous',
                 noremap = true,
                 silent = true
             },
             {
-                "<LocalLeader>r",
+                "<Leader>R",
                 function() require('projector').restart() end,
                 desc = 'Debug: Restart',
                 noremap = true,
