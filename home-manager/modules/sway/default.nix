@@ -99,7 +99,7 @@
 
           "${modifier}+r" = "mode resize";
 
-          "${modifier}+Shift+s" = "${pkgs.sway-contrib.grimshot}/bin/grimshot --notify copy area";
+          "${modifier}+Shift+s" = "exec ${pkgs.sway-contrib.grimshot}/bin/grimshot --notify --cursor copy area";
         };
         assigns = {
           "Web" = [ ];
