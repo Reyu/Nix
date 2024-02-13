@@ -15,9 +15,11 @@ with lib; {
     services.xserver = {
       enable = true;
       autorun = true;
-      layout = "us";
       dpi = 125;
-      xkbOptions = "caps:escape";
+      xkb = {
+        options = "caps:escape";
+        layout = "us";
+      };
 
       libinput = { enable = true; };
 
