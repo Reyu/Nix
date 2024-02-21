@@ -12,9 +12,10 @@ in
     modules = commonModules;
   };
   auth01 = {
-    modules = commonModules ++ [
+    modules = commonModules ++ (with self.nixosModules; [
       ./auth.nix
-      self.nixosModules.acme
-    ];
+      acme
+      kerberos
+    ]);
   };
 }

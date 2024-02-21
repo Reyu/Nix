@@ -17,6 +17,7 @@ in
   "hosts/burrow/secrets/romm.env".publicKeys = [ reyu burrow ];
   "hosts/loki/secrets/davfs2".publicKeys = [ reyu loki ];
   "hosts/hetzner/secrets/openldap/rootpw".publicKeys = [ reyu auth ];
+  "hosts/hetzner/secrets/krb5/ldap_service_password".publicKeys = [ reyu auth ];
   "secrets/networks/wpa_supplicant.env".publicKeys = [ reyu traveler ];
   "secrets/acme/hetzner_apikey".publicKeys = acme;
 }
