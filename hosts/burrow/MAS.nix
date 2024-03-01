@@ -36,6 +36,11 @@
     #   openFirewall = true;
     #   options.calibreLibrary = "/data/media/books";
     # };
+    jellyfin = {
+      enable = true;
+      group = "media";
+      openFirewall = true;
+    };
     lidarr = {
       enable = true;
       group = "media";
