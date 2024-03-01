@@ -58,7 +58,7 @@
               }
           })
         '';
-      plugins = [ pkgs.vimPlugins.lazy-nvim ];
+      plugins = [ pkgs.vimPlugins.lazy-nvim pkgs.vimPlugins.nvim-treesitter.withAllGrammars ];
       extraPackages =
         if config.programs.neovim.minimal then
           with pkgs; [ fd tree-sitter ]

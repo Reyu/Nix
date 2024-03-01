@@ -81,7 +81,6 @@ in
   # General / Dependencies
   github-nvim-theme
   which-key-nvim
-  nvim-treesitter.withAllGrammars
   nvim-treesitter-context
   nvim-treesitter-textobjects
   nvim-treesitter-endwise
