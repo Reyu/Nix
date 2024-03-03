@@ -85,8 +85,7 @@
       {
         romm = {
           image = "zurdi15/romm";
-          # ports = [ "8888:8888" ];
-          extraOptions = [ "--network=host" ];
+          ports = [ "8888:80" ];
           environment = {
             PUID = builtins.toString config.users.extraUsers.media.uid;
             PGID = builtins.toString config.users.extraGroups.media.gid;
@@ -118,7 +117,7 @@
         };
         seedsync-ct21154-nzbget = {
           image = "ipsingh06/seedsync";
-          ports = [ "8801:8801" ];
+          ports = [ "8801:8800" ];
           user = mediaUser;
           environment = {
             UMASK = "022";
