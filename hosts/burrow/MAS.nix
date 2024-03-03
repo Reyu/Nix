@@ -41,6 +41,10 @@
       group = "media";
       openFirewall = true;
     };
+    jellyseerr = {
+      enable = true;
+      openFirewall = true;
+    };
     lidarr = {
       enable = true;
       group = "media";
