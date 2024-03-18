@@ -71,7 +71,6 @@
             nodePackages.vim-language-server
             nodePackages.vscode-json-languageserver-bin
             nodePackages.yaml-language-server
-            rnix-lsp
             statix
             sumneko-lua-language-server
 

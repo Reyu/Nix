@@ -149,8 +149,8 @@
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
           # flake-utils-plus options
           nix.linkInputs = true;
-          nix.generateRegistryFromInputs = true;
-          nix.generateNixPathFromInputs = true;
+          # nix.generateRegistryFromInputs = true;
+          # nix.generateNixPathFromInputs = true;
         }
         home-manager
         {
@@ -210,7 +210,7 @@
 
           devShells.default = pkgs.devshell.mkShell (with pkgs; {
             name = "FoxNet-Nix";
-            packages = [ cachix rnix-lsp ];
+            packages = [ cachix ];
             commands =
               let
                 formatter = pkg: {
