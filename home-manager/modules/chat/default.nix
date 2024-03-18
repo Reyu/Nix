@@ -9,7 +9,6 @@
       themes = { inherit (inputs) discord-theme-slate; };
     })
     element-desktop
-    slack
     tdesktop
     toot
   ];

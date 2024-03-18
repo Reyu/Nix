@@ -103,9 +103,8 @@
         };
         assigns = {
           "Web" = [ ];
-          "Refrence" = [ ];
+          "Chat" = [ ];
           "Video" = [ ];
-          "Work" = [{ class = "Slack"; }];
           "Games" = [{ class = "steam"; }];
         };
         floating = {
@@ -143,7 +142,7 @@
             output = "DP-1";
           }
           {
-            workspace = "Refrence";
+            workspace = "Chat";
             output = "DP-2";
           }
           {

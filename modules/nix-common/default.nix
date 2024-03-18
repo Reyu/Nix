@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ self, pkgs, lib, ... }: {
   config = {
     nix = {
       # Enable flakes
@@ -20,6 +20,7 @@
       # Users allowed to run nix
       settings.allowed-users = [ "root" ];
     };
+    system.configurationRevision = lib.mkIf (self ? rev) self.rev;
     system.stateVersion = "22.05";
   };
 }

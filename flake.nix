@@ -5,7 +5,7 @@
     # Core
     nixpkgs.url = "github:nixos/nixpkgs";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    systems.url = "github:nix-systems/default";
     devshell = {
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -99,159 +99,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, utils, ... }@inputs:
-    utils.lib.mkFlake {
-      # Required inputs of `mkFlake`
-      inherit inputs self;
+  outputs = { self, nixpkgs, systems, ... }@inputs:
+    let
+      eachSystem = nixpkgs.lib.genAttrs (import systems);
+    in
+    {
 
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
-
-      sharedOverlays = with inputs; [
-        ragenix.overlays.default
-        devshell.overlays.default
-        neovim-nightly.overlay
-        nur.overlay
-        kmonad.overlays.default
-        (import ./overlays { inherit inputs; })
-      ];
-
-      channelsConfig = {
-        allowUnfreePredicate = pkg:
-          builtins.elem (nixpkgs.lib.getName pkg) [
-            "betterttv"
-            "discord"
-            "nomachine-client"
-            "pay-by-privacy-com"
-            "pine64-pinephone-firmware"
-            "plexmediaserver"
-            "slack"
-            "steam"
-            "steam-original"
-            "steam-run"
-            "steam-runtime"
-          ];
-      };
-
-      hostDefaults.system = "x86_64-linux";
-      hostDefaults.channelName = "nixpkgs";
-      hostDefaults.modules = with self.nixosModules; [
-        users.root
-        age
-        cachix
-        environment
-        locale
-        nix-common
-        security
-        {
-          _module.args = { inherit self; };
-
-          # Let 'nixos-version --json' know the Git revision of this flake.
-          system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-          # flake-utils-plus options
-          nix.linkInputs = true;
-          # nix.generateRegistryFromInputs = true;
-          # nix.generateNixPathFromInputs = true;
-        }
-        home-manager
-        {
-          home-manager.extraSpecialArgs = { inherit inputs self; };
-          home-manager.useGlobalPkgs = true;
-          home-manager.backupFileExtension = "bck";
-        }
-      ];
-
-      hosts = import ./hosts { inherit self inputs; };
-
-      homeConfigurations = import ./home-manager { inherit self inputs; };
-
-      outputsBuilder = channels:
-        let
-          pkgs = channels.nixpkgs;
-        in
-        {
-          # Default Nix Formatter
-          formatter = pkgs.nixpkgs-fmt;
-
-          apps = {
-            linode-image-upload = {
-              type = "app";
-              program = toString (pkgs.writeShellScript "linode-image-upload" ''
-                LINODE_LABEL="NixOS_$(date -I)"
-                LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
-                LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
-                ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
-              '');
-            };
-          };
-
-          # construct packagesBuilder to export all packages defined in overlays
-          packages = utils.lib.exportPackages self.overlays channels // {
-            linode = inputs.nixos-generators.nixosGenerate {
-              inherit (pkgs) system;
-              format = "linode";
-              modules = with self.nixosModules; [
-                {
-                  _module.args = { inherit self; };
-                  system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-                }
-                {
-                  home-manager.extraSpecialArgs = { inherit inputs self; };
-                  home-manager.useGlobalPkgs = true;
-                }
-                home-manager
-                environment
-                locale
-                nix-common
-                security
-                users.root
-              ];
-            };
-          };
-
-          devShells.default = pkgs.devshell.mkShell (with pkgs; {
-            name = "FoxNet-Nix";
-            packages = [ cachix ];
-            commands =
-              let
-                formatter = pkg: {
-                  package = pkg;
-                  category = "formatters";
-                };
-                buildTool = pkg: {
-                  package = pkg;
-                  category = "build tools";
-                };
-              in
-              [
-                {
-                  package = fup-repl;
-                  help = "A package that adds a kick-ass repl";
-                }
-                {
-                  package = ragenix;
-                  category = "secrets management";
-                }
-                {
-                  package = "linode-cli";
-                  category = "deployment";
-                }
-                {
-                  package = "hcloud";
-                  category = "deployment";
-                }
-                (buildTool nixos-generators)
-                (formatter treefmt)
-                (formatter nixpkgs-fmt)
-                (formatter luaformatter)
-                (formatter hclfmt)
-                (formatter shfmt)
-              ];
-          });
-        };
-
-      overlays = utils.lib.exportOverlays { inherit (self) pkgs inputs; } // {
-        default = import ./overlays { inherit inputs; };
-      };
+      nixosConfigurations = import ./hosts { inherit self inputs; };
 
       nixosModules = {
         inherit (inputs.ragenix.nixosModules) age;
@@ -264,6 +118,8 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
+      homeConfigurations = import ./home-manager { inherit self inputs; };
+
       homeModules = builtins.listToAttrs (map
         (x: {
           name = x;
@@ -271,7 +127,104 @@
         })
         (builtins.attrNames (builtins.readDir ./home-manager/modules)));
 
-      checks = with builtins;
+      overlays.default = import ./overlays { inherit inputs; };
+
+      devShells = eachSystem (system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = with inputs; [
+              ragenix.overlays.default
+              devshell.overlays.default
+            ];
+          };
+          formatter = pkg: {
+            package = pkg;
+            category = "formatters";
+          };
+          buildTool = pkg: {
+            package = pkg;
+            category = "build tools";
+          };
+        in
+        {
+          default = pkgs.devshell.mkShell (with pkgs; {
+            name = "FoxNet-Nix";
+            packages = [ cachix ];
+            commands = [
+              {
+                package = ragenix;
+                category = "secrets management";
+              }
+              {
+                package = "linode-cli";
+                category = "deployment";
+              }
+              {
+                package = "hcloud";
+                category = "deployment";
+              }
+              (buildTool nixos-generators)
+              (formatter treefmt)
+              (formatter nixpkgs-fmt)
+              (formatter luaformatter)
+              (formatter hclfmt)
+              (formatter shfmt)
+            ];
+          });
+        });
+
+      apps = eachSystem (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          linode-image-upload = {
+            type = "app";
+            program = toString (pkgs.writeShellScript "linode-image-upload" ''
+              LINODE_LABEL="NixOS_$(date -I)"
+              LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
+              LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
+              ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
+            '');
+          };
+        });
+
+      packages = {
+        x86_64-linux.linode =
+          let
+            pkgs = import nixpkgs { system = "x86_64-linux"; };
+          in
+          inputs.nixos-generators.nixosGenerate {
+            inherit (pkgs) system;
+            format = "linode";
+            modules = with self.nixosModules; [
+              {
+                _module.args = { inherit self; };
+                system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
+              }
+              {
+                home-manager.extraSpecialArgs = { inherit inputs self; };
+                home-manager.useGlobalPkgs = true;
+              }
+              home-manager
+              environment
+              locale
+              nix-common
+              security
+              users.root
+            ];
+          };
+      };
+
+      formatter = eachSystem (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        pkgs.nixpkgs-fmt);
+
+      checks = eachSystem (_:
+        with builtins;
         # Checks to run with `nix flake check -L`, will run in a QEMU VM.
         # Looks for all ./modules/<module name>/test.nix files and adds them to
         # the flake's checks output. The test.nix file is optional and may be
@@ -287,6 +240,6 @@
           # Filter list of modules, leaving only modules which contain a
           # `test.nix` file
           (filter (p: pathExists (./modules/${p}/test.nix))
-            (attrNames (readDir ./modules))));
+            (attrNames (readDir ./modules)))));
     };
 }
