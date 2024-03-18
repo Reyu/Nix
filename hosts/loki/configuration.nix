@@ -22,7 +22,6 @@ in {
     zfsSupport = true;
   };
   boot.supportedFilesystems = [ "zfs" ];
-  boot.kernelPackages = pkgs.linuxPackages_6_5;
   boot.kernelParams = [ "elevator=noop" ];
   boot.tmp.useTmpfs = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
