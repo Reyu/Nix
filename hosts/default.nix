@@ -31,6 +31,7 @@ let
     nix-common
     security
     home-manager
+    openssh
     {
       home-manager.extraSpecialArgs = { inherit inputs self; };
       home-manager.useGlobalPkgs = true;
