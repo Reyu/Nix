@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, lib, pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ./MAS.nix ];
   config = {
     boot = {
@@ -37,6 +37,14 @@
           extraGroups = [ "media" ];
           isSystemUser = true;
         };
+        ${config.services.syncoid.user} = {
+          createHome = lib.mkForce true;
+          description = "Syncoid ZFS snapshot transfer tool";
+          openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgBOWfRPHca+rsVzxY51zOJP7J5TcnOXCw1M7N418JS"
+          ];
+          shell = pkgs.shadow;
+        };
       };
     };
 
@@ -47,6 +55,11 @@
         dataDir = "/data/service/sync";
         configDir = "/data/etc/syncthing";
         guiAddress = "0.0.0.0:8384";
+      };
+      syncoid = {
+        enable = true;
+        commonArgs = [ "--no-sync-snap" "--create-bookmark" "--use-hold" ];
+
       };
       tailscale.enable = true;
     };

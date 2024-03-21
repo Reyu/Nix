@@ -13,6 +13,7 @@ in with hosts;
   "hosts/loki/secrets/davfs2".publicKeys = [ reyu loki ];
   "hosts/hetzner/secrets/openldap/rootpw".publicKeys = [ reyu auth ];
   "hosts/hetzner/secrets/krb5/ldap_service_password".publicKeys = [ reyu auth ];
+  "secrets/syncoid/ssh_key".publicKeys = [ reyu loki ];
   "secrets/networks/wpa_supplicant.env".publicKeys = [ reyu traveler ];
   "secrets/acme/hetzner_apikey".publicKeys = acme;
 }

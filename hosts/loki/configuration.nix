@@ -32,9 +32,17 @@ in {
     max-jobs = 16;
   };
 
-  age.secrets."davfs2_secrets" = {
-    file = ./secrets/davfs2;
-    path = "/etc/davfs2/secrets";
+  age.secrets = {
+    "davfs2_secrets" = {
+        file = ./secrets/davfs2;
+        path = "/etc/davfs2/secrets";
+    };
+    "syncoid" = {
+      file = self + /secrets/syncoid/ssh_key;
+      path = config.users.extraUsers.syncoid.home + "/.ssh/id_ed25519";
+      owner = config.services.syncoid.user;
+      group = config.services.syncoid.group;
+    };
   };
 
   console.useXkbConfig = true;
@@ -138,20 +146,23 @@ in {
     syncoid = {
       enable = true;
       commonArgs = [ "--no-sync-snap" "--create-bookmark" "--use-hold" ];
-      commands = {
+      commands = let
+        user = config.services.syncoid.user;
+      in {
         "data/home" = {
           recursive = true;
-          target = "root@burrow:data/backup/loki/home";
-          sendOptions = "rp";
-          recvOptions = "udo compression=lz4";
+          target = "${user}@burrow.home.reyuzenfold.com:data/BACKUP/loki";
+          sendOptions = "pw";
+          recvOptions = "Fdesuo compression=lz4";
         };
         "projects" = {
           recursive = true;
-          target = "root@burrow:data/backup/loki/projects";
-          sendOptions = "props";
-          recvOptions = "udo compression=lz4";
+          target = "${user}@burrow:data/backup/loki/projects";
+          sendOptions = "pw";
+          recvOptions = "Fdesuo compression=lz4";
         };
       };
+      sshKey = config.age.secrets."syncoid".path;
     };
     xserver.wacom.enable = true;
     xserver.videoDrivers = [ "amdgpu" ];
