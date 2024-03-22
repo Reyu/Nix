@@ -25,7 +25,15 @@
     ];
   };
 
-  programs.direnv.enable = true;
+  programs.direnv = {
+    enable = true;
+    config = {
+      global = {
+        strict_env = true;
+        warn_timeout = 0;
+      };
+    };
+  };
 
   programs.dircolors = {
     enable = true;
