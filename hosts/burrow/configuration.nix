@@ -43,9 +43,13 @@
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgBOWfRPHca+rsVzxY51zOJP7J5TcnOXCw1M7N418JS"
           ];
-          shell = pkgs.shadow;
+          useDefaultShell = true;
         };
       };
+    };
+    home-manager.users.${config.services.syncoid.user} = {
+      home.packages = [ pkgs.mbuffer pkgs.lzop ];
+      home.stateVersion = "22.11";
     };
 
     services = {

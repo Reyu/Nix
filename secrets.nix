@@ -7,7 +7,8 @@ let
 
   # Hosts generating Lets Encrypt certs
   acme = [ reyu hosts.auth ];
-in with hosts;
+in
+with hosts;
 {
   "hosts/burrow/secrets/romm.env".publicKeys = [ reyu burrow ];
   "hosts/loki/secrets/davfs2".publicKeys = [ reyu loki ];

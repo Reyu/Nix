@@ -1,7 +1,7 @@
 { self, inputs, ... }:
 with inputs.nixpkgs.lib;
 let
-  mkPkgs = { system, config ? {}, overlays ? [] }: import inputs.nixpkgs {
+  mkPkgs = { system, config ? { }, overlays ? [ ] }: import inputs.nixpkgs {
     inherit system config overlays;
   };
 
@@ -30,7 +30,8 @@ let
       home-manager.backupFileExtension = "bck";
     }
   ];
-in with inputs.nixpkgs.lib; 
+in
+with inputs.nixpkgs.lib;
 {
   base = nixosSystem {
     system = "x86_64-linux";

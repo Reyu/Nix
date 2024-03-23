@@ -152,8 +152,8 @@
     };
 
     systemd.services.openldap = {
-        wants = [ "acme-ldap.${config.networking.domain}.service" ];
-        after = [ "acme-ldap.${config.networking.domain}.service" ];
+      wants = [ "acme-ldap.${config.networking.domain}.service" ];
+      after = [ "acme-ldap.${config.networking.domain}.service" ];
     };
 
     users.groups.acme.members = [ config.services.openldap.group ];

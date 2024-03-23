@@ -34,8 +34,8 @@ in {
 
   age.secrets = {
     "davfs2_secrets" = {
-        file = ./secrets/davfs2;
-        path = "/etc/davfs2/secrets";
+      file = ./secrets/davfs2;
+      path = "/etc/davfs2/secrets";
     };
     "syncoid" = {
       file = self + /secrets/syncoid/ssh_key;
@@ -146,22 +146,24 @@ in {
     syncoid = {
       enable = true;
       commonArgs = [ "--no-sync-snap" "--create-bookmark" "--use-hold" ];
-      commands = let
-        user = config.services.syncoid.user;
-      in {
-        "data/home" = {
-          recursive = true;
-          target = "${user}@burrow.home.reyuzenfold.com:data/BACKUP/loki";
-          sendOptions = "pw";
-          recvOptions = "Fdesuo compression=lz4";
+      commands =
+        let
+          user = config.services.syncoid.user;
+        in
+        {
+          "data/home" = {
+            recursive = true;
+            target = "${user}@burrow.home.reyuzenfold.com:data/BACKUP/loki";
+            sendOptions = "pw";
+            recvOptions = "Fdesuo compression=lz4";
+          };
+          "projects" = {
+            recursive = true;
+            target = "${user}@burrow:data/backup/loki/projects";
+            sendOptions = "pw";
+            recvOptions = "Fdesuo compression=lz4";
+          };
         };
-        "projects" = {
-          recursive = true;
-          target = "${user}@burrow:data/backup/loki/projects";
-          sendOptions = "pw";
-          recvOptions = "Fdesuo compression=lz4";
-        };
-      };
       sshKey = config.age.secrets."syncoid".path;
     };
     xserver.wacom.enable = true;

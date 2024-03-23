@@ -106,10 +106,12 @@
   outputs = { self, nixpkgs, systems, ... }@inputs:
     let
       eachSystem = f: nixpkgs.lib.genAttrs (import systems)
-        (system: f (import nixpkgs { inherit system; overlays = [
-            inputs.devshell.overlays.default
-            inputs.ragenix.overlays.default
-        ]; }));
+        (system: f (import nixpkgs {
+          inherit system; overlays = [
+          inputs.devshell.overlays.default
+          inputs.ragenix.overlays.default
+        ];
+        }));
     in
     {
 
@@ -176,16 +178,16 @@
         });
 
       apps = eachSystem (pkgs: {
-          linode-image-upload = {
-            type = "app";
-            program = toString (pkgs.writeShellScript "linode-image-upload" ''
-              LINODE_LABEL="NixOS_$(date -I)"
-              LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
-              LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
-              ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
-            '');
-          };
-        });
+        linode-image-upload = {
+          type = "app";
+          program = toString (pkgs.writeShellScript "linode-image-upload" ''
+            LINODE_LABEL="NixOS_$(date -I)"
+            LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
+            LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
+            ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
+          '');
+        };
+      });
 
       packages = {
         x86_64-linux.linode =

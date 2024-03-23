@@ -1,9 +1,9 @@
 { self, inputs, ... }:
 with inputs.nixpkgs.lib;
 let
-  flakes = filterAttrs (name: value: value ? outputs) inputs;
+  flakes = filterAttrs (_name: value: value ? outputs) inputs;
 
-  mkPkgs = { system, config ? {}, overlays ? [] }: import inputs.nixpkgs {
+  mkPkgs = { system, config ? { }, overlays ? [ ] }: import inputs.nixpkgs {
     inherit system config overlays;
   };
 
@@ -15,7 +15,7 @@ let
     }
     {
       # Add flake inputs to the system registry
-      nix.registry = builtins.mapAttrs (name: v: { flake = v; }) flakes;
+      nix.registry = builtins.mapAttrs (_name: v: { flake = v; }) flakes;
       # Allow lookup of flakes via search path (e.g. "<unstable>")
       nix.nixPath = builtins.map (n: n + "=flake:" + n) (builtins.attrNames flakes);
       # Symlink flakes into /etc/nix/inputs
