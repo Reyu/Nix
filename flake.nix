@@ -10,6 +10,10 @@
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -101,7 +105,11 @@
 
   outputs = { self, nixpkgs, systems, ... }@inputs:
     let
-      eachSystem = nixpkgs.lib.genAttrs (import systems);
+      eachSystem = f: nixpkgs.lib.genAttrs (import systems)
+        (system: f (import nixpkgs { inherit system; overlays = [
+            inputs.devshell.overlays.default
+            inputs.ragenix.overlays.default
+        ]; }));
     in
     {
 
@@ -129,15 +137,8 @@
 
       overlays.default = import ./overlays { inherit inputs; };
 
-      devShells = eachSystem (system:
+      devShells = eachSystem (pkgs:
         let
-          pkgs = import nixpkgs {
-            inherit system;
-            overlays = with inputs; [
-              ragenix.overlays.default
-              devshell.overlays.default
-            ];
-          };
           formatter = pkg: {
             package = pkg;
             category = "formatters";
@@ -174,11 +175,7 @@
           });
         });
 
-      apps = eachSystem (system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
+      apps = eachSystem (pkgs: {
           linode-image-upload = {
             type = "app";
             program = toString (pkgs.writeShellScript "linode-image-upload" ''
@@ -217,11 +214,13 @@
           };
       };
 
-      formatter = eachSystem (system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        pkgs.nixpkgs-fmt);
+      formatter = eachSystem (pkgs: inputs.treefmt-nix.lib.mkWrapper pkgs {
+        projectRootFile = "flake.nix";
+        programs = {
+          deadnix.enable = true;
+          nixpkgs-fmt.enable = true;
+        };
+      });
 
       checks = eachSystem (_:
         with builtins;
