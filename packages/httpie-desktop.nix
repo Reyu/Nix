@@ -1,4 +1,4 @@
-{ pkgs, stdenv, ... }:
+{ pkgs, ... }:
 let
   inherit (pkgs) appimageTools fetchurl;
   version = "2022.11.1";
@@ -24,7 +24,7 @@ appimageTools.wrapType2 {
     substituteInPlace $out/share/applications/httpie.desktop --replace 'Exec=AppRun' 'Exec=${pname}'
   '';
 
-  meta = with stdenv.lib; {
+  meta = {
     description = "HTTPie.io appImage";
     longDescription = ''
       The latest build of https://httpie.io, in appImage form, suitably nixed

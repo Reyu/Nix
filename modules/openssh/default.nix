@@ -1,7 +1,7 @@
-{
+{ self, ... }: {
   config.services.openssh = {
     enable = true;
     startWhenNeeded = true;
-    knownHosts = import ./knownHosts.nix;
+    knownHosts = import ./knownHosts.nix { inherit self; };
   };
 }

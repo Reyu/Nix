@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, ... }:
 with lib; {
   config = {
     # Set localization and tty options

@@ -1,5 +1,4 @@
-{ config, pkgs, lib, ... }:
-with lib; {
+{ pkgs, ... }: {
   config = {
     services.physlock = { enable = true; };
     services.greetd = {

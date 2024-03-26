@@ -1,20 +1,33 @@
+{ self, ... }:
 let
   tailscale_domain = "wolf-diatonic.ts.net";
+  metadata = builtins.fromTOML (builtins.readFile (self + /hosts/metadata.toml));
 in
 {
-  auth = {
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLh/19bPHzmaJNswjqqt1aR/DwCdAsWRnjnCHQ/0VJc";
-    extraHostNames = [
-      "auth.reyuzenfold.com"
-    ];
-  };
+  # NixOS Hosts
   burrow = {
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTxnWiWCer2tijhkTDA9RfxELHy0/HxY7zA8VgbnnFl";
-    extraHostNames = [
-      "burrow.home.reyuzenfold.com"
+    inherit (metadata.hetzner-auth) publicKey;
+    extraHostNames = metadata.burrow.extraHostNames ++ [
       "burrow.${tailscale_domain}"
     ];
   };
+  loki = {
+    inherit (metadata.loki) publicKey;
+    extraHostNames = metadata.loki.extraHostNames ++ [
+      "loki.${tailscale_domain}"
+    ];
+  };
+  traveler = {
+    inherit (metadata.traveler) publicKey;
+    extraHostNames = [
+      "traveler.${tailscale_domain}"
+    ];
+  };
+  auth = {
+    inherit (metadata.hetzner-auth) publicKey extraHostNames;
+  };
+
+  # Other Hosts
   cloud = {
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILBMdlD2uBxtZLHfOUQ61JbjyLmoU4yOXSYyWG2KFrTz";
     extraHostNames = [
@@ -41,13 +54,6 @@ in
       "gitlab.reyuzenfold.com"
     ];
   };
-  loki = {
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5RyYh6rTQJrsriGzONG4Dt0cb3Y3047KSFlylzm2zZ";
-    extraHostNames = [
-      "loki.home.reyuzenfold.com"
-      "loki.${tailscale_domain}"
-    ];
-  };
   mastodon = {
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHtONif8fHUnxLakF6D5Solv/Xm2bN1z3d3GUrmOg0vF";
     extraHostNames = [
@@ -65,12 +71,6 @@ in
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINnyBQsKM1xbT9+kqPSezrHyxHM7/rzqx89vwaHMliRo";
     extraHostNames = [
       "steamdeck.${tailscale_domain}"
-    ];
-  };
-  traveler = {
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhbhOKgiYOV65i4DVIHjjeiDI6OSHc/6ci1nIb7j99v";
-    extraHostNames = [
-      "traveler.${tailscale_domain}"
     ];
   };
 }

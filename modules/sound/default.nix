@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 with lib; {
   config = {
     environment.systemPackages = with pkgs; [ pavucontrol ];

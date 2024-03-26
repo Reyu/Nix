@@ -1,4 +1,4 @@
-{ config, ... }: {
+{
   config.services.telegraf = {
     enable = true;
     extraConfig = {

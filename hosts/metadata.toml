@@ -1,5 +1,20 @@
-[hosts.loki]
-ssh_pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKnHNzgn/8WNjzUpjBJe3fWe7lFkvT8/v0nwEqvEtiOb"
+[loki]
+publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5RyYh6rTQJrsriGzONG4Dt0cb3Y3047KSFlylzm2zZ"
+extraHostNames = [
+  "loki.home.reyuzenfold.com"
+]
 
-[hosts.burrow]
-ssh_pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTxnWiWCer2tijhkTDA9RfxELHy0/HxY7zA8VgbnnFl"
+[burrow]
+publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTxnWiWCer2tijhkTDA9RfxELHy0/HxY7zA8VgbnnFl"
+extraHostNames = [
+  "burrow.home.reyuzenfold.com",
+]
+
+[hetzner-auth]
+publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLh/19bPHzmaJNswjqqt1aR/DwCdAsWRnjnCHQ/0VJc"
+extraHostNames = [
+  "auth.reyuzenfold.com"
+]
+
+[traveler]
+publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhbhOKgiYOV65i4DVIHjjeiDI6OSHc/6ci1nIb7j99v"

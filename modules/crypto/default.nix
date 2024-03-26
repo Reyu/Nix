@@ -43,8 +43,6 @@ let
     };
   };
 
-  # metadata = lib.importTOML ../../hosts/metadata.toml;
-
   mkService = name:
     { source, dest, owner, group, permissions, ... }: {
       description = "decrypt secret for ${name}";

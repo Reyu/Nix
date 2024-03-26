@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, ... }: {
   config.environment.systemPackages = with pkgs; [ onlykey-cli ];
   config.services.udev.extraRules = ''
     # UDEV Rules for OnlyKey, https://docs.crp.to/linux.html
