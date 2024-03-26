@@ -30,23 +30,14 @@
   ];
 
   programs.neovim.minimal = false;
-
-  programs.keychain = {
-    agents = [ "ssh" "gpg" ];
-    enable = true;
-    enableXsessionIntegration = true;
-    enableZshIntegration = true;
-    keys = [ ]; # No keys by default
-  };
-
   programs.khard.enable = true;
   programs.khard.settings = { };
-  programs.vdirsyncer.enable = true;
+  # programs.vdirsyncer.enable = true;
 
   services = {
     udiskie.enable = true;
     unclutter.enable = true;
-    flameshot.enable = true;
+    unclutter.timeout = 5;
     syncthing.enable = true;
     syncthing.tray = {
       enable = true;
@@ -54,7 +45,6 @@
       # the tray is not loaded yet.
       command = "syncthingtray --wait";
     };
-    vdirsyncer.enable = true;
   };
 
   systemd.user = {

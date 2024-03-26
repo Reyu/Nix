@@ -125,7 +125,6 @@ in {
     openssh.allowSFTP = true;
     input-remapper.enable = true;
     input-remapper.enableUdevRules = true;
-    tailscale.enable = true;
     sanoid = {
       enable = true;
       datasets = {
@@ -166,6 +165,8 @@ in {
         };
       sshKey = config.age.secrets."syncoid".path;
     };
+    tailscale.enable = true;
+    udisks2.enable = true;
     xserver.wacom.enable = true;
     xserver.videoDrivers = [ "amdgpu" ];
     zfs.autoScrub.enable = true;
@@ -184,8 +185,14 @@ in {
 
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
-    configPackages = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+    ];
+    configPackages = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+    ];
   };
 
   virtualisation.podman.zfs = true;

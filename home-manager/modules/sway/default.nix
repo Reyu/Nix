@@ -1,10 +1,9 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   imports = [ ./swayr.nix ];
   home.packages = with pkgs; [
     grim
     slurp
     sway-contrib.grimshot
-    swayidle
     swayr
     wl-clipboard
     wlr-randr
@@ -20,7 +19,12 @@
     zathura.enable = true;
   };
   services = {
+    swayosd = {
+      display = "DP-1";
+      enable = true;
+    };
     swayidle.enable = true;
+    udiskie.tray = "always";
   };
   wayland.windowManager.sway =
     let
@@ -41,10 +45,9 @@
           smartBorders = "on";
         };
         startup = [
-          { command = "systemctl --user reload-or-restart waybar.service"; always = true; }
-          { command = "systemctl --user reload-or-restart swayr.service"; always = true; }
-          { command = "systemctl --user start keepassxc.service"; }
-          { command = "element"; }
+          { command = "sleep 3s; systemctl --user reload-or-restart waybar.service"; always = true; }
+          { command = "sleep 3s; systemctl --user reload-or-restart swayr.service"; always = true; }
+          { command = "sleep 3s; systemctl --user start keepassxc.service"; }
         ];
         keybindings = {
           "${modifier}+Return" = "exec ${terminal} -e tmux new -As ${curWSName}";
@@ -142,11 +145,15 @@
             output = "DP-1";
           }
           {
+            workspace = "Work";
+            output = "DP-1";
+          }
+          {
             workspace = "Chat";
             output = "DP-2";
           }
           {
-            workspace = "Work";
+            workspace = "Macbook";
             output = "DP-2";
           }
           {
