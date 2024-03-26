@@ -65,10 +65,6 @@
     enable = true;
   };
 
-  programs.ssh = {
-    hashKnownHosts = true;
-  };
-
   xdg.configFile = {
     "neofetch/config.conf".source = ./neofetch.conf;
   };

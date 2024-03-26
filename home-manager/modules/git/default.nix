@@ -1,12 +1,5 @@
-{ pkgs, ... }: {
+{
   programs = {
-    gh = {
-      enable = true;
-      extensions = [
-        pkgs.gh-eco
-        pkgs.gh-dash
-      ];
-    };
     git = {
       enable = true;
 
@@ -71,6 +64,7 @@
         init.defaultBranch = "main";
         pull.rebase = false;
         url."git@github.com:".insteadOf = "github:";
+        url."reyu@gitlab.reyuzenfold.com:".insteadOf = "lab:";
         safe.directory = [
           "/etc/nixos"
         ];

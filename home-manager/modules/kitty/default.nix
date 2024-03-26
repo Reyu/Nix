@@ -14,6 +14,7 @@
       background_opacity = "0.9";
       background_tint = "0.5";
       dynamic_background_opacity = "yes";
+      confirm_os_window_close = 0;
 
       background = "#001e26";
       foreground = "#708183";

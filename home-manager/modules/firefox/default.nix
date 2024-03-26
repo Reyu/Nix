@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nur, ... }:
+{ pkgs, lib, ... }:
 with lib; {
   imports = [ ./librewolf.nix ];
 

@@ -1,12 +1,7 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, ... }:
 with lib;
-let cfg = config.reyu.programs.tmux;
-in
 {
-  options.reyu.programs.tmux.enable =
-    mkEnableOption "tmux terminal mutliplexer";
-
-  config = mkIf cfg.enable {
+  config = {
     home.packages = with pkgs; [
       tmux-xpanes
     ];
@@ -165,7 +160,7 @@ in
         wg_mode="#[push-default,reverse]#{?client_prefix,$wg_mode_prefix,$wg_mode_sync}#[noreverse,pop-default,fg=default,bg=default]"
 
         set -g status-left "$wg_session"
-        set -g status-right "$wg_mode $wg_is_keys_off $wg_is_zoomed | $wg_user_host | $wg_date $wg_battery"
+        set -g status-right "$wg_mode $wg_is_keys_off $wg_is_zoomed $wg_user_host | $wg_date $wg_battery"
 
 
         # =====================================
@@ -227,24 +222,6 @@ in
             set -g @batt_color_low_charge "#[fg=$color_level_stress]"
           '';
         }
-        # {
-        #   plugin = tmuxPlugins.sysstat;
-        #   extraConfig = ''
-        #     set -g @sysstat_mem_view_tmpl 'MEM:#[fg=#{mem.color}]#{mem.pused}#[default] #{mem.used}'
-
-        #     set -g @sysstat_cpu_color_low "$color_level_ok"
-        #     set -g @sysstat_cpu_color_medium "$color_level_warn"
-        #     set -g @sysstat_cpu_color_stress "$color_level_stress"
-
-        #     set -g @sysstat_mem_color_low "$color_level_ok"
-        #     set -g @sysstat_mem_color_medium "$color_level_warn"
-        #     set -g @sysstat_mem_color_stress "$color_level_stress"
-
-        #     set -g @sysstat_swap_color_low "$color_level_ok"
-        #     set -g @sysstat_swap_color_medium "$color_level_warn"
-        #     set -g @sysstat_swap_color_stress "$color_level_stress"
-        #   '';
-        # }
         {
           plugin = tmuxPlugins.resurrect;
           extraConfig = ''

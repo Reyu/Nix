@@ -15,10 +15,6 @@
     ./common.nix
   ];
 
-  reyu.programs = {
-    tmux.enable = true;
-  };
-
   # Install these packages for my user
   home.packages = with pkgs; [
     feh
@@ -32,12 +28,9 @@
   programs.neovim.minimal = false;
   programs.khard.enable = true;
   programs.khard.settings = { };
-  # programs.vdirsyncer.enable = true;
 
   services = {
     udiskie.enable = true;
-    unclutter.enable = true;
-    unclutter.timeout = 5;
     syncthing.enable = true;
     syncthing.tray = {
       enable = true;

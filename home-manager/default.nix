@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ self, inputs, lib, ... }:
 let hmConfig = inputs.home-manager.lib.homeManagerConfiguration;
 in {
 
@@ -8,8 +8,8 @@ in {
     modules = [
       {
         home = {
-          username = "reyu";
-          homeDirectory = "/home/reyu";
+          username = lib.mkDefault "reyu";
+          homeDirectory = lib.mkDefault "/home/reyu";
         };
       }
       ./profiles/desktop.nix
@@ -22,8 +22,8 @@ in {
     modules = [
       {
         home = {
-          username = "reyu";
-          homeDirectory = "/home/reyu";
+          username = lib.mkDefault "reyu";
+          homeDirectory = lib.mkDefault "/home/reyu";
         };
       }
       ./profiles/server.nix
@@ -38,8 +38,8 @@ in {
       {
         manual.manpages.enable = true;
         home = {
-          username = "root";
-          homeDirectory = "/root";
+          username = lib.mkDefault "root";
+          homeDirectory = lib.mkDefault "/root";
         };
       }
     ];
