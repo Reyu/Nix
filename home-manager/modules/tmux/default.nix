@@ -38,9 +38,6 @@ with lib;
         # ===   Key bindings     ===
         # ==========================
 
-        # Prompt to rename window right after it's created
-        set-hook -g after-new-window 'command-prompt -I "#{window_name}" "rename-window '%%'"'
-
         # Rename session and window
         bind r command-prompt -I "#{window_name}" "rename-window '%%'"
         bind R command-prompt -I "#{session_name}" "rename-session '%%'"
@@ -61,6 +58,9 @@ with lib;
 
         # Hide status bar on demand
         bind M-s if -F '#{s/off//:status}' 'set status off' 'set status on'
+
+        # Send KILL signal to process in current pane
+        bind-key '*' run-shell "~/.config/tmux/kill.sh KILL"
 
         # Vim Tmux Navigator
         # Smart pane switching with awareness of Vim splits.
@@ -88,8 +88,8 @@ with lib;
         # ==================================================
         # === Window monitoring for activity and silence ===
         # ==================================================
-        bind m setw monitor-activity \; display-message 'Monitor window activity [#{?monitor-activity,ON,OFF}]'
-        bind M if -F '#{monitor-silence}' \
+        bind 'M-m' setw monitor-activity \; display-message 'Monitor window activity [#{?monitor-activity,ON,OFF}]'
+        bind 'M-M' if -F '#{monitor-silence}' \
             'setw monitor-silence 0 ; display-message "Monitor window silence [OFF]"' \
             'command-prompt -p "Monitor silence: interval (s)" "setw monitor-silence %%"'
 
@@ -99,18 +99,18 @@ with lib;
         # =====================================
         # ===           Theme               ===
         # =====================================
-        color_dark="black"
-        color_light="white"
-        color_session_text="colour39"
-        color_status_text="colour245"
-        color_main="green"
-        color_secondary="colour134"
-        color_level_ok="green"
-        color_level_warn="yellow"
-        color_level_stress="red"
-        color_window_off_indicator="colour088"
-        color_window_off_status_bg="colour238"
-        color_window_off_status_current_bg="colour254"
+        # color_dark="black"
+        # color_light="white"
+        # color_session_text="colour39"
+        # color_status_text="colour245"
+        # color_main="green"
+        # color_secondary="colour134"
+        # color_level_ok="green"
+        # color_level_warn="yellow"
+        # color_level_stress="red"
+        # color_window_off_indicator="colour088"
+        # color_window_off_status_bg="colour238"
+        # color_window_off_status_current_bg="colour254"
 
         # =====================================
         # ===    Appearence and status bar  ===
@@ -209,10 +209,7 @@ with lib;
         tmuxPlugins.sessionist
         tmuxPlugins.pain-control
         tmuxPlugins.logging
-        tmuxPlugins.copycat
-        tmuxPlugins.yank
         tmuxPlugins.open
-        tmuxPlugins.sidebar
         {
           plugin = tmuxPlugins.battery;
           extraConfig = ''
@@ -241,6 +238,7 @@ with lib;
     xdg.configFile = {
       "tmux/renew_env.sh".source = ./renew_env.sh;
       "tmux/tmux.remote.conf".source = ./tmux.remote.conf;
+      "tmux/kill.sh".source = ./kill.sh;
     };
   };
 }
