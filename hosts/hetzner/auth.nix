@@ -21,7 +21,7 @@
     networking.hostName = lib.mkForce "auth";
     networking.domain = "reyuzenfold.com";
     networking.defaultGateway6 = { address = "fe80::1"; interface = "enp1s0"; };
-    networking.firewall.allowedTCPPorts = [ 636 ];
+    networking.firewall.allowedTCPPorts = [ 389 636 ];
     networking.interfaces.enp1s0.ipv6 = {
       addresses = [
         {
@@ -41,8 +41,8 @@
     services = {
       openldap = {
         enable = true;
-        mutableConfig = true;
-        urlList = [ "ldap:///" "ldaps:///" ];
+        mutableConfig = false;
+        urlList = [ "ldaps:///" "ldap:///" "ldapi:///" ];
         settings = {
           attrs = {
             olcLogLevel = [ "conns config" ];
@@ -69,10 +69,10 @@
                 objectClass = "olcDatabaseConfig";
                 olcDatabase = "{-1}frontend";
                 olcAccess = [
-                  ''{0}to *
-                      by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage stop
-                      by * none stop''
-                ];
+                  ''{0}to dn.base="" by * read''
+                  ''{1}to dn.base="cn=subschema" by * read''
+                  ''{2}to * by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage stop''
+                  ];
               };
             };
             "olcDatabase={0}config" = {
@@ -87,38 +87,35 @@
                 objectClass = [ "olcDatabaseConfig" "olcMdbConfig" ];
                 olcDatabase = "{1}mdb";
                 olcDbDirectory = "/var/lib/openldap/data";
-                olcSuffix = "dc=reyuzenfold,dc=com";
-                olcRootDN = "cn=admin,dc=reyuzenfold,dc=com";
+                olcRootDN = "cn=Admin,dc=reyuzenfold,dc=com";
                 olcRootPW.path = config.age.secrets."openldap.rootpw".path;
+                olcDbIndex = [
+                  "objectClass eq"
+                  "cn pres,eq"
+                  "uid pres,eq"
+                  "sn pres,eq,subany"
+                  "krbPrincipalName eq"
+                ];
+                olcSuffix = "dc=reyuzenfold,dc=com";
                 olcAccess = [
                   ''{0}to attrs=userPassword
-                      by self write
                       by anonymous auth
-                      by * none''
-
-                  ''{1}to attrs=shadowLastChange
                       by self write
-                      by * read''
-
-                  ''{2}to attrs=krbPrincipalKey
+                      by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" write
+                      by * none''
+                  ''{1}to attrs=krbPrincipalKey
                       by anonymous auth
-                      by dn.exact="uid=kdc-service,dc=example,dc=com" read
-                      by dn.exact="uid=kadmin-service,dc=example,dc=com" write
+                      by dn.exact="cn=kdc,ou=services,dc=example,dc=com" read
+                      by dn.exact="cn=kadmin,ou=services,dc=example,dc=com" write
                       by self write
                       by * none''
-
-                  ''{3}to dn.subtree="cn=krbcontainer,dc=reyuzenfold,dc=com"
-                      by dn.exact="cn=kdc-service,dc=reyuzenfold,dc=com" write
-                      by dn.exact="cn=adm-service,dc=reyuzenfold,dc=com" write
-                      by * none''
-
-                  ''{4}to dn.subtree="ou=users,dc=reyuzenfold,dc=com"
-                      by dn.exact="cn=kdc-service,dc=reyuzenfold,dc=com" write
-                      by dn.exact="cn=adm-service,dc=reyuzenfold,dc=com" write
-                      by * none''
-
-                  ''{5}to *
-                      by * read''
+                  ''{2}to dn.subtree="dc=reyuzenfold,dc=com"
+                      by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage
+                      by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" write
+                      by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
+                      by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
+                      by * none continue''
+                  ''{3}to * by * read''
                 ];
               };
             };
@@ -128,7 +125,7 @@
     };
 
     services.kerberos_server = {
-      enable = false;
+      enable = true;
       realms = {
         "REYUZENFOLD.COM".acl = [
           {
@@ -142,13 +139,17 @@
         ];
       };
     };
-    security.krb5.settings.dbmodules."REYUZENFOLD.COM" = {
-      db_library = "kldap";
-      ldap_kerberos_container_dn = "cn=krbcontainer,dc=reyuzenfold,dc=com";
-      ldap_kdc_dn = "cn=kdc-service,dc=reyuzenfold,dc=com";
-      ldap_kadmind_dn = "cn=adm-service,dc=reyuzenfold,dc=com";
-      ldap_service_password_file = config.age.secrets."krb5_service.pass".path;
-      ldap_servers = "ldaps://ldap.${config.networking.domain}";
+    security.krb5 = {
+      enable = true;
+      package = pkgs.krb5.override { withLdap = true; };
+      settings.dbmodules."REYUZENFOLD.COM" = {
+        db_library = "kldap";
+        ldap_kerberos_container_dn = "cn=krbcontainer,dc=reyuzenfold,dc=com";
+        ldap_kdc_dn = "cn=kdc,ou=services,dc=reyuzenfold,dc=com";
+        ldap_kadmind_dn = "cn=kadmin,ou=services,dc=reyuzenfold,dc=com";
+        ldap_service_password_file = config.age.secrets."krb5_service.pass".path;
+        ldap_servers = "ldaps://ldap.${config.networking.domain}";
+      };
     };
 
     systemd.services.openldap = {
@@ -157,10 +158,10 @@
     };
 
     users.groups.acme.members = [ config.services.openldap.group ];
-    security.acme.defaults.group = "certs";
+    # security.acme.defaults.group = "certs";
 
     security.acme.certs = {
-      # "${config.networking.fqdn}" = {};
+      "${config.networking.fqdn}" = {};
       "ldap.${config.networking.domain}" = {
         reloadServices = [ "openldap" ];
       };
