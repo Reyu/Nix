@@ -1,4 +1,7 @@
 {
+  imports = [
+    ./mit.nix
+  ];
   config.security.krb5 = {
     enable = true;
     settings = {

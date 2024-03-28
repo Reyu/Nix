@@ -1,7 +1,7 @@
 { self, inputs, ... }:
 with inputs.nixpkgs.lib;
 let
-  mkPkgs = { system, config ? { }, overlays ? [ ] }: import inputs.nixpkgs {
+  mkPkgs = { system, config ? { }, overlays ? [ ] }: import inputs.unstable {
     inherit system config overlays;
   };
 

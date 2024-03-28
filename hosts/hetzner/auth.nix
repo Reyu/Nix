@@ -1,4 +1,7 @@
 { lib, pkgs, config, ... }:
+let
+  krb5 = pkgs.krb5.override { withLdap = true; };
+in
 {
   config = {
     age.secrets = {
@@ -72,7 +75,7 @@
                   ''{0}to dn.base="" by * read''
                   ''{1}to dn.base="cn=subschema" by * read''
                   ''{2}to * by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage stop''
-                  ];
+                ];
               };
             };
             "olcDatabase={0}config" = {
@@ -109,9 +112,14 @@
                       by dn.exact="cn=kadmin,ou=services,dc=example,dc=com" write
                       by self write
                       by * none''
-                  ''{2}to dn.subtree="dc=reyuzenfold,dc=com"
-                      by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage
-                      by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" write
+                  ''{2}to dn.subtree="cn=krbcontainer,dc=reyuzenfold,dc=com"
+                      by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" manage
+                      by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" manage
+                      by group.exact="cn=administrators,dc=reyuzenfold,dc=com" read
+                      by * none continue''
+                  ''{3}to dn.subtree="dc=reyuzenfold,dc=com"
+                      by dn.exact=uidnumber=0+gidnumber=0,cn=peercred,cn=external,cn=auth manage
+                      by group.exact="cn=administrators,dc=reyuzenfold,dc=com" write
                       by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
                       by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
                       by * none continue''
@@ -141,14 +149,14 @@
     };
     security.krb5 = {
       enable = true;
-      package = pkgs.krb5.override { withLdap = true; };
+      package = krb5;
       settings.dbmodules."REYUZENFOLD.COM" = {
         db_library = "kldap";
         ldap_kerberos_container_dn = "cn=krbcontainer,dc=reyuzenfold,dc=com";
         ldap_kdc_dn = "cn=kdc,ou=services,dc=reyuzenfold,dc=com";
         ldap_kadmind_dn = "cn=kadmin,ou=services,dc=reyuzenfold,dc=com";
         ldap_service_password_file = config.age.secrets."krb5_service.pass".path;
-        ldap_servers = "ldaps://ldap.${config.networking.domain}";
+        ldap_servers = "ldap://localhost";
       };
     };
 
@@ -161,7 +169,7 @@
     # security.acme.defaults.group = "certs";
 
     security.acme.certs = {
-      "${config.networking.fqdn}" = {};
+      "${config.networking.fqdn}" = { };
       "ldap.${config.networking.domain}" = {
         reloadServices = [ "openldap" ];
       };
