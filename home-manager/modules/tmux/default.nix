@@ -99,18 +99,18 @@ with lib;
         # =====================================
         # ===           Theme               ===
         # =====================================
-        # color_dark="black"
-        # color_light="white"
-        # color_session_text="colour39"
-        # color_status_text="colour245"
-        # color_main="green"
-        # color_secondary="colour134"
-        # color_level_ok="green"
-        # color_level_warn="yellow"
-        # color_level_stress="red"
-        # color_window_off_indicator="colour088"
-        # color_window_off_status_bg="colour238"
-        # color_window_off_status_current_bg="colour254"
+        color_dark="black"
+        color_light="white"
+        color_session_text="colour39"
+        color_status_text="colour245"
+        color_main="green"
+        color_secondary="colour134"
+        color_level_ok="green"
+        color_level_warn="yellow"
+        color_level_stress="red"
+        color_window_off_indicator="colour088"
+        color_window_off_status_bg="colour238"
+        color_window_off_status_current_bg="colour254"
 
         # =====================================
         # ===    Appearence and status bar  ===
