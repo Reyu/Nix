@@ -12,14 +12,12 @@
       "checkHostIP" = "yes";
       "UpdateHostKeys" = "yes";
       "VisualHostKey" = "yes";
+      # "StrictHostKeyChecking" = "accept-new";
     };
     includes = [
       "local_config"
     ];
     matchBlocks = {
-      "!172.16.0.*,*" = {
-        "StrictHostKeyChecking" = "yes";
-      };
       "deck" = {
         user = "deck";
       };
