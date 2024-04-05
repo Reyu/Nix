@@ -65,6 +65,7 @@
         else
           with pkgs; [
             # Language servers
+            fswatch
             nil
             nodePackages.bash-language-server
             nodePackages.dockerfile-language-server-nodejs
@@ -88,7 +89,7 @@
             # Formatters
             deadnix
             luaformatter
-            nixfmt
+            nixfmt-rfc-style
             shfmt
             stylua
 
