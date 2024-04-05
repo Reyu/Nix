@@ -2,6 +2,7 @@ workflow:
   name: 'NixOS Build Pipeline'
 
 .build-cachix: &build-cachix
+  stage: build
   image: docker.nix-community.org/nixpkgs/cachix-flakes
   before_script:
     - cachix use "$CACHIX_CACHE_NAME"
