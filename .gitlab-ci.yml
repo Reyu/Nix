@@ -1,6 +1,4 @@
 workflow:
-  auto_cancel:
-    on_new_commit: interruptible
   name: 'NixOS Build Pipeline'
 
 .build-cachix: &build-cachix
