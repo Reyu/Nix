@@ -10,6 +10,7 @@ return {
         }
     }, {
         "nvim-neorg/neorg",
+        version = "v7.0.0",
         dependencies = {
             {
                 "nvim-treesitter/nvim-treesitter",
