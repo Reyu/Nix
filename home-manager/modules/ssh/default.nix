@@ -10,7 +10,6 @@
     hashKnownHosts = true;
     extraOptionOverrides = {
       "checkHostIP" = "yes";
-      "StrictHostKeyChecking" = "yes";
       "UpdateHostKeys" = "yes";
       "VisualHostKey" = "yes";
     };
@@ -18,6 +17,9 @@
       "local_config"
     ];
     matchBlocks = {
+      "!172.16.0.*,*" = {
+        "StrictHostKeyChecking" = "yes";
+      };
       "deck" = {
         user = "deck";
       };
