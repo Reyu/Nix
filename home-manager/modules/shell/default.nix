@@ -39,6 +39,12 @@
     enableZshIntegration = true;
   };
 
+  programs.btop = {
+    enable = true;
+    settings = {
+      vim_keys = true;
+    };
+  };
   programs.htop = {
     enable = true;
     settings = {
@@ -63,6 +69,7 @@
 
   programs.bat = {
     enable = true;
+    extraPackages = with pkgs.bat-extras; [ batdiff batman ];
   };
 
   xdg.configFile = {

@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+{ config, pkgs, lib, inputs, ... }: {
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -10,12 +10,12 @@
     defaultKeymap = "viins";
 
     sessionVariables = {
-      EDITOR = "nvim";
-      VISUAL = "nvim";
-      ENHANCD_FILTER = "fzf-tmux --height 50% --reverse --ansi --preview 'lsd -l --color=always {}'";
-      ENHANCD_DOT_SHOW_FULLPATH = "1";
       BAT_THEME = "Solarized (dark)";
+      EDITOR = "nvim";
+      ENHANCD_DOT_SHOW_FULLPATH = "1";
+      ENHANCD_FILTER = "fzf-tmux --height 50% --reverse --ansi --preview 'lsd -l --color=always {}'";
       GOPATH = "~/.go";
+      VISUAL = "nvim";
     };
 
     # initExtraBeforeCompInit
@@ -23,16 +23,11 @@
       export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
       bindkey '^ ' autosuggest-accept
 
-      [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+      # Load local config, if it exists
+      [[ -f ~/.zshrc ]] && source ~/.zshrc
     '';
     loginExtra = ''
       ${pkgs.neofetch}/bin/neofetch
-      ${pkgs.keychain}/bin/keychain --quiet --agents gpg,ssh --systemd
-      source ~/.keychain/$(hostname -s)-sh
-      source ~/.keychain/$(hostname -s)-sh-gpg
-
-      # Link the socket at a known location for KeePass
-      ln -fs $SSH_AUTH_SOCK ~/.keychain/$(hostname -s)-ssh.sock
     '';
 
     history = {
@@ -51,25 +46,19 @@
 
     shellAliases = rec {
       # Prevent globbing/autocorrect on some commands
-      nix-env = "noglob nix-env";
-      mv = "nocorrect mv";
       cp = "nocorrect cp";
       mkdir = "nocorrect mkdir";
-      ipfs = "ipfs --api=/ip4/127.0.0.1/tcp/5001";
+      mv = "nocorrect mv";
 
       # ls replacement
       ls = "${pkgs.lsd}/bin/lsd --group-dirs first";
       ll = "${ls} -lF";
       tree = "${ls} --tree";
 
-      # Git
-      gs = "${pkgs.git}/bin/git status";
-      gc = "${pkgs.git}/bin/git commit";
-      gl = "${pkgs.git}/bin/git log";
-
       # Other
-      lsblk = "lsblk -o name,mountpoint,label,size,type,uuid";
       c = "${pkgs.bat}/bin/bat -n --decorations never";
+      ipfs = "ipfs --api=/ip4/127.0.0.1/tcp/5001";
+      lsblk = "lsblk -o name,mountpoint,label,size,type,uuid";
       qr_gen = "${pkgs.qrencode}/bin/qrencode -t ansi -o-";
       top = "${pkgs.htop}/bin/htop";
       zzz = "systemctl suspend";
@@ -87,6 +76,9 @@
       PN2 = "2> /dev/null";
       PN = "&> /dev/null";
 
+      # Clipboard
+      CLIP = lib.mkIf config.wayland.windowManager.sway.enable "$(wl-paste)";
+
       # Other
       ISODATE = "$(date --iso-8601=date)";
     };
@@ -95,6 +87,10 @@
       {
         name = "zsh-vimode-visual";
         src = inputs.zsh-vimode-visual;
+      }
+      {
+        name = "zsh-navigation-tools";
+        src = pkgs.zsh-navigation-tools;
       }
     ];
 

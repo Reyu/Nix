@@ -4,28 +4,13 @@
     enableBashIntegration = true;
     enableZshIntegration = true;
     settings = {
-      username = {
-        show_always = true;
-        style_user = "bold green";
-        style_root = "bold red";
-      };
-
       character = {
         success_symbol = "[𝝺](#c792ea)";
         vicmd_symbol = "[»](bold green)";
         error_symbol = "[×](bold red) ";
       };
 
-      nix_shell = { symbol = "❄  "; };
-
-      git_status = {
-        ahead = "↑";
-        behind = "↓";
-        diverged = "↕";
-        modified = "!";
-        staged = "±";
-        renamed = "→";
-      };
+      continuation_prompt = "▶▶ ";
 
       directory = {
         truncation_length = 4;
@@ -43,12 +28,21 @@
         };
       };
 
-      cmd_duration = {
-        show_notifications = true;
-      };
+      direnv.disabled = false;
+
+      kubernetes.disabled = false;
+
+      nix_shell = { symbol = "❄  "; };
+
+      os.disabled = false;
 
       sudo.disabled = false;
-      status.disabled = false;
+
+      username = {
+        show_always = true;
+        style_user = "bold green";
+        style_root = "bold red";
+      };
     };
   };
 }
