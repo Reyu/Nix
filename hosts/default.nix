@@ -3,7 +3,7 @@ with inputs.nixpkgs.lib;
 let
   flakes = filterAttrs (_name: value: value ? outputs) inputs;
 
-  mkPkgs = { system, config ? { }, overlays ? [ ] }: import inputs.nixpkgs {
+  mkPkgs = { system, pkgs ? inputs.nixpkgs, config ? { }, overlays ? [ ] }: import pkgs {
     inherit system config overlays;
   };
 
@@ -45,6 +45,7 @@ in
     system = "x86_64-linux";
     pkgs = mkPkgs {
       system = "x86_64-linux";
+      pkgs = inputs.unstable;
       config.rocmSupport = true;
       config.allowUnfreePredicate = pkg:
         builtins.elem (getName pkg) [

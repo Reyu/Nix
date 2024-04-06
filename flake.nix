@@ -4,7 +4,7 @@
   inputs = {
     # Core
     nixpkgs.url = "github:nixos/nixpkgs";
-    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable-small";
     systems.url = "github:nix-systems/default";
     devshell = {
       url = "github:numtide/devshell";
