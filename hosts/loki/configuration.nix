@@ -63,12 +63,11 @@ in {
   users.users.reyu.extraGroups = [ config.services.davfs2.davGroup "podman" ];
   home-manager.users.reyu = {
     home.packages = with pkgs; [
-      deluge
       blender-hip
-      freecad
-      calibre
-      simplex-chat
+      deluge
+      steamtinkerlaunch
       tidal-hifi
+      vlc
     ];
     wayland.windowManager.sway.config = {
       startup = [
