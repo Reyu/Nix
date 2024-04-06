@@ -1,7 +1,12 @@
 { self, inputs, ... }:
 with inputs.nixpkgs.lib;
 let
-  mkPkgs = { system, pkgs ? inputs.nixpkgs, config ? { }, overlays ? [ ] }: import pkgs {
+  defaultOverlays = [
+    neovim-nightly.overlay
+    ragenix.overlays.default
+    self.overlays.default
+  ];
+  mkPkgs = { system, pkgs ? inputs.nixpkgs, config ? { }, overlays ? defaultOverlays }: import pkgs {
     inherit system config overlays;
   };
 
@@ -35,28 +40,14 @@ with inputs.nixpkgs.lib;
 {
   base = nixosSystem {
     system = "x86_64-linux";
-    pkgs = mkPkgs {
-      system = "x86_64-linux";
-      overlays = with inputs; [
-        neovim-nightly.overlay
-        ragenix.overlays.default
-        self.overlays.default
-      ];
-    };
+    pkgs = mkPkgs { system = "x86_64-linux"; };
     modules = commonModules;
   };
   auth01 = nixosSystem {
     system = "x86_64-linux";
-    pkgs = mkPkgs {
-      system = "x86_64-linux";
-      pkgs = inputs.unstable;
-      overlays = with inputs; [
-        neovim-nightly.overlay
-        ragenix.overlays.default
-        self.overlays.default
-      ];
-    };
+    pkgs = mkPkgs { system = "x86_64-linux"; };
     modules = commonModules ++ (with self.nixosModules; [
+      { networking.hostName = lib.mkForce "auth"; }
       ./auth.nix
       acme
       kerberos

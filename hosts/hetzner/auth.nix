@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
-let
-  krb5 = pkgs.krb5.override { withLdap = true; };
-in
+# let
+#   krb5 = pkgs.krb5.override { withLdap = true; };
+# in
 {
   config = {
     age.secrets = {
@@ -11,9 +11,9 @@ in
         owner = config.services.openldap.user;
         group = config.services.openldap.group;
       };
-      "krb5_service.pass" = {
-        file = ./secrets/krb5/ldap_service_password;
-      };
+      # "krb5_service.pass" = {
+      #   file = ./secrets/krb5/ldap_service_password;
+      # };
     };
 
     fileSystems."/var/lib/openldap" = {
@@ -21,10 +21,12 @@ in
       fsType = "ext4";
     };
 
-    networking.hostName = lib.mkForce "auth";
-    networking.domain = "reyuzenfold.com";
-    networking.defaultGateway6 = { address = "fe80::1"; interface = "enp1s0"; };
-    networking.firewall.allowedTCPPorts = [ 389 636 ];
+    networking.firewall.allowedTCPPorts = let
+      listeningOn = x: lib.lists.elem x config.services.openldap.urlList;
+    in [
+      (lib.mkIf (listeningOn "ldap:///") 389)
+      (lib.mkIf (listeningOn "ldaps:///") 636)
+    ];
     networking.interfaces.enp1s0.ipv6 = {
       addresses = [
         {
@@ -132,33 +134,33 @@ in
       };
     };
 
-    services.kerberos_server = {
-      enable = true;
-      realms = {
-        "REYUZENFOLD.COM".acl = [
-          {
-            access = "all";
-            principal = "*/admin";
-          }
-          {
-            access = "all";
-            principal = "admin";
-          }
-        ];
-      };
-    };
-    security.krb5 = {
-      enable = true;
-      package = krb5;
-      settings.dbmodules."REYUZENFOLD.COM" = {
-        db_library = "kldap";
-        ldap_kerberos_container_dn = "cn=krbcontainer,dc=reyuzenfold,dc=com";
-        ldap_kdc_dn = "cn=kdc,ou=services,dc=reyuzenfold,dc=com";
-        ldap_kadmind_dn = "cn=kadmin,ou=services,dc=reyuzenfold,dc=com";
-        ldap_service_password_file = config.age.secrets."krb5_service.pass".path;
-        ldap_servers = "ldap://localhost";
-      };
-    };
+    # services.kerberos_server = {
+    #   enable = true;
+    #   realms = {
+    #     "REYUZENFOLD.COM".acl = [
+    #       {
+    #         access = "all";
+    #         principal = "*/admin";
+    #       }
+    #       {
+    #         access = "all";
+    #         principal = "admin";
+    #       }
+    #     ];
+    #   };
+    # };
+    # security.krb5 = {
+    #   enable = true;
+    #   package = krb5;
+    #   settings.dbmodules."REYUZENFOLD.COM" = {
+    #     db_library = "kldap";
+    #     ldap_kerberos_container_dn = "cn=krbcontainer,dc=reyuzenfold,dc=com";
+    #     ldap_kdc_dn = "cn=kdc,ou=services,dc=reyuzenfold,dc=com";
+    #     ldap_kadmind_dn = "cn=kadmin,ou=services,dc=reyuzenfold,dc=com";
+    #     ldap_service_password_file = config.age.secrets."krb5_service.pass".path;
+    #     ldap_servers = "ldap://localhost";
+    #   };
+    # };
 
     systemd.services.openldap = {
       wants = [ "acme-ldap.${config.networking.domain}.service" ];
@@ -173,13 +175,13 @@ in
       "ldap.${config.networking.domain}" = {
         reloadServices = [ "openldap" ];
       };
-      "kerberos.${config.networking.domain}" = {
-        extraDomainNames = [
-          "kadmin.${config.networking.domain}"
-          "kdc.${config.networking.domain}"
-        ];
-        reloadServices = [ "kadmind" "kdc" ];
-      };
+      # "kerberos.${config.networking.domain}" = {
+      #   extraDomainNames = [
+      #     "kadmin.${config.networking.domain}"
+      #     "kdc.${config.networking.domain}"
+      #   ];
+      #   reloadServices = [ "kadmind" "kdc" ];
+      # };
     };
   };
 }
