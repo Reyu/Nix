@@ -27,11 +27,12 @@ let
     age
     cachix
     environment
+    home-manager
+    ldap
     locale
     nix-common
-    security
-    home-manager
     openssh
+    security
     {
       home-manager.extraSpecialArgs = { inherit inputs self; };
       home-manager.useGlobalPkgs = true;

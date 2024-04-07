@@ -1,6 +1,8 @@
 {
   config.users.ldap = {
-    server = "ldap://ismene.home.reyuzenfold.com";
+    enable = true;
     base = "dc=reyuzenfold,dc=com";
+    server = "ldap://ldap.reyuzenfold.com";
+    useTLS = true;
   };
 }
