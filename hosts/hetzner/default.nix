@@ -1,7 +1,7 @@
 { self, inputs, ... }:
 with inputs.nixpkgs.lib;
 let
-  defaultOverlays = [
+  defaultOverlays = with inputs; [
     neovim-nightly.overlay
     ragenix.overlays.default
     self.overlays.default
@@ -36,7 +36,6 @@ let
     }
   ];
 in
-with inputs.nixpkgs.lib;
 {
   base = nixosSystem {
     system = "x86_64-linux";
@@ -47,7 +46,7 @@ with inputs.nixpkgs.lib;
     system = "x86_64-linux";
     pkgs = mkPkgs { system = "x86_64-linux"; };
     modules = commonModules ++ (with self.nixosModules; [
-      { networking.hostName = lib.mkForce "auth"; }
+      { networking.hostName = mkForce "auth"; }
       ./auth.nix
       acme
       kerberos

@@ -53,9 +53,9 @@
             olcLogLevel = [ "conns config" ];
 
             /* settings for acme ssl */
-            olcTLSCACertificateFile = "/var/lib/acme/${config.networking.fqdn}/full.pem";
-            olcTLSCertificateFile = "/var/lib/acme/${config.networking.fqdn}/cert.pem";
-            olcTLSCertificateKeyFile = "/var/lib/acme/${config.networking.fqdn}/key.pem";
+            olcTLSCACertificateFile = config.security.acme.certs.ldap.directory + "/full.pem";
+            olcTLSCertificateFile = config.security.acme.certs.ldap.directory + "/cert.pem";
+            olcTLSCertificateKeyFile = config.security.acme.certs.ldap.directory + "/key.pem";
             olcTLSCipherSuite = "HIGH:MEDIUM:+3DES:+RC4:+aNULL";
             olcTLSCRLCheck = "none";
             olcTLSVerifyClient = "never";
@@ -171,12 +171,17 @@
     # security.acme.defaults.group = "certs";
 
     security.acme.certs = {
-      "${config.networking.fqdn}" = { };
-      "ldap.${config.networking.domain}" = {
+      "ldap" = {
+        domain = config.networking.fqdn;
+        extraDomainNames = [
+          "ldap.${config.networking.domain}"
+        ];
         reloadServices = [ "openldap" ];
       };
-      # "kerberos.${config.networking.domain}" = {
+      # "kerberos" = {
+      #   domain = config.networking.fqdn;
       #   extraDomainNames = [
+      #     "kerberos.${config.networking.domain}"
       #     "kadmin.${config.networking.domain}"
       #     "kdc.${config.networking.domain}"
       #   ];
