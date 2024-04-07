@@ -25,6 +25,7 @@ let
     age
     cachix
     environment
+    ldap
     locale
     nix-common
     security

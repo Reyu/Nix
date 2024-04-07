@@ -124,8 +124,14 @@
                       by group.exact="cn=administrators,dc=reyuzenfold,dc=com" write
                       by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
                       by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
-                      by * read continue''
-                  ''{3}to * by * read''
+                      by users read
+                      by * none continue''
+                  ''{4}to dn.subtree="ou=users,dc=reyuzenfold,dc=com" attrs=cn,sn,uid
+                      by * read''
+                  ''{5}to dn.subtree="ou=users,dc=reyuzenfold,dc=com"
+                      by anonymous search''
+                  ''{6}to dn.subtree="ou=groups,dc=reyuzenfold,dc=com"
+                      by anonymous read''
                 ];
               };
             };
