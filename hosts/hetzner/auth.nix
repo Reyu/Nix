@@ -124,7 +124,7 @@
                       by group.exact="cn=administrators,dc=reyuzenfold,dc=com" write
                       by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
                       by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
-                      by * none continue''
+                      by * read continue''
                   ''{3}to * by * read''
                 ];
               };
