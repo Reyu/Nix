@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
-# let
-#   krb5 = pkgs.krb5.override { withLdap = true; };
-# in
+let
+  krb5 = pkgs.krb5.override { withLdap = true; };
+in
 {
   config = {
     age.secrets = {
@@ -11,9 +11,9 @@
         owner = config.services.openldap.user;
         group = config.services.openldap.group;
       };
-      # "krb5_service.pass" = {
-      #   file = ./secrets/krb5/ldap_service_password;
-      # };
+      "krb5_service.pass" = {
+        file = ./secrets/krb5/ldap_service_password;
+      };
     };
 
     fileSystems."/var/lib/openldap" = {
@@ -50,7 +50,7 @@
         urlList = [ "ldaps:///" "ldap:///" "ldapi:///" ];
         settings = {
           attrs = {
-            olcLogLevel = [ "conns config" ];
+            olcLogLevel = [ "acl stats" ];
 
             /* settings for acme ssl */
             olcTLSCACertificateFile = config.security.acme.certs.ldap.directory + "/full.pem";
@@ -60,6 +60,11 @@
             olcTLSCRLCheck = "none";
             olcTLSVerifyClient = "never";
             olcTLSProtocolMin = "3.1";
+
+            /* SASL authentication */
+            olcAuthzRegexp = [
+              ''{0}uid=([^,]*),cn=.* uid=$1,ou=users,dc=reyuzenfold,dc=com''
+            ];
           };
 
           children = {
@@ -67,6 +72,7 @@
               "${pkgs.openldap}/etc/schema/core.ldif"
               "${pkgs.openldap}/etc/schema/cosine.ldif"
               "${pkgs.openldap}/etc/schema/inetorgperson.ldif"
+              "${pkgs.openldap}/etc/schema/nis.ldif"
               ./kerberos.openldap.ldif
             ];
             "olcDatabase={-1}frontend" = {
@@ -76,7 +82,9 @@
                 olcAccess = [
                   ''{0}to dn.base="" by * read''
                   ''{1}to dn.base="cn=subschema" by * read''
-                  ''{2}to * by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage stop''
+                  ''{2}to *
+                      by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" read
+                      by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage stop''
                 ];
               };
             };
@@ -84,7 +92,12 @@
               attrs = {
                 objectClass = "olcDatabaseConfig";
                 olcDatabase = "{0}config";
-                olcAccess = [ "{0}to * by * none break" ];
+                olcAccess = [
+                  ''{0}to *
+                      by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" read
+                      by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage stop''
+                  ''{2}to * by * none break''
+                ];
               };
             };
             "olcDatabase={1}mdb" = {
@@ -108,29 +121,32 @@
                       by self write
                       by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" write
                       by * none''
-                  ''{1}to attrs=krbPrincipalKey
-                      by anonymous auth
-                      by dn.exact="cn=kdc,ou=services,dc=example,dc=com" read
-                      by dn.exact="cn=kadmin,ou=services,dc=example,dc=com" write
-                      by self write
-                      by * none''
-                  ''{2}to dn.subtree="cn=krbcontainer,dc=reyuzenfold,dc=com"
+                  ''{1}to dn.subtree="cn=REYUZENFOLD.COM,cn=krbcontainer,dc=reyuzenfold,dc=com"
                       by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" manage
                       by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" manage
                       by group.exact="cn=administrators,dc=reyuzenfold,dc=com" read
-                      by * none continue''
+                      by * none''
+                  ''{2}to attrs=krbPrincipalKey
+                      by anonymous auth
+                      by dn.exact="cn=kdc,ou=services,dc=example,dc=com" write
+                      by dn.exact="cn=kadmin,ou=services,dc=example,dc=com" write
+                      by self write
+                      by * none''
                   ''{3}to dn.subtree="dc=reyuzenfold,dc=com"
-                      by dn.exact=uidnumber=0+gidnumber=0,cn=peercred,cn=external,cn=auth manage
                       by group.exact="cn=administrators,dc=reyuzenfold,dc=com" write
                       by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
                       by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
                       by users read
-                      by * none continue''
-                  ''{4}to dn.subtree="ou=users,dc=reyuzenfold,dc=com" attrs=cn,sn,uid
-                      by * read''
+                      by * read break''
+                  ''{4}to dn.subtree="ou=users,dc=reyuzenfold,dc=com" attrs=cn,uid
+                      by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
+                      by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
+                      by * read break''
                   ''{5}to dn.subtree="ou=users,dc=reyuzenfold,dc=com"
-                      by anonymous search''
+                      by anonymous read''
                   ''{6}to dn.subtree="ou=groups,dc=reyuzenfold,dc=com"
+                      by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
+                      by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
                       by anonymous read''
                 ];
               };
@@ -140,33 +156,33 @@
       };
     };
 
-    # services.kerberos_server = {
-    #   enable = true;
-    #   realms = {
-    #     "REYUZENFOLD.COM".acl = [
-    #       {
-    #         access = "all";
-    #         principal = "*/admin";
-    #       }
-    #       {
-    #         access = "all";
-    #         principal = "admin";
-    #       }
-    #     ];
-    #   };
-    # };
-    # security.krb5 = {
-    #   enable = true;
-    #   package = krb5;
-    #   settings.dbmodules."REYUZENFOLD.COM" = {
-    #     db_library = "kldap";
-    #     ldap_kerberos_container_dn = "cn=krbcontainer,dc=reyuzenfold,dc=com";
-    #     ldap_kdc_dn = "cn=kdc,ou=services,dc=reyuzenfold,dc=com";
-    #     ldap_kadmind_dn = "cn=kadmin,ou=services,dc=reyuzenfold,dc=com";
-    #     ldap_service_password_file = config.age.secrets."krb5_service.pass".path;
-    #     ldap_servers = "ldap://localhost";
-    #   };
-    # };
+    services.kerberos_server = {
+      enable = true;
+      realms = {
+        "REYUZENFOLD.COM".acl = [
+          {
+            access = "all";
+            principal = "*/admin";
+          }
+          {
+            access = "all";
+            principal = "admin";
+          }
+        ];
+      };
+    };
+    security.krb5 = {
+      enable = true;
+      package = krb5;
+      settings.dbmodules."REYUZENFOLD.COM" = {
+        db_library = "kldap";
+        ldap_kerberos_container_dn = "cn=krbcontainer,dc=reyuzenfold,dc=com";
+        ldap_kdc_dn = "cn=kdc,ou=services,dc=reyuzenfold,dc=com";
+        ldap_kadmind_dn = "cn=kadmin,ou=services,dc=reyuzenfold,dc=com";
+        ldap_service_password_file = config.age.secrets."krb5_service.pass".path;
+        ldap_servers = "ldapi://";
+      };
+    };
 
     systemd.services.openldap = {
       wants = [ "acme-ldap.${config.networking.domain}.service" ];
@@ -174,7 +190,6 @@
     };
 
     users.groups.acme.members = [ config.services.openldap.group ];
-    # security.acme.defaults.group = "certs";
 
     security.acme.certs = {
       "ldap" = {
@@ -184,15 +199,15 @@
         ];
         reloadServices = [ "openldap" ];
       };
-      # "kerberos" = {
-      #   domain = config.networking.fqdn;
-      #   extraDomainNames = [
-      #     "kerberos.${config.networking.domain}"
-      #     "kadmin.${config.networking.domain}"
-      #     "kdc.${config.networking.domain}"
-      #   ];
-      #   reloadServices = [ "kadmind" "kdc" ];
-      # };
+      "kerberos" = {
+        domain = config.networking.fqdn;
+        extraDomainNames = [
+          "kerberos.${config.networking.domain}"
+          "kadmin.${config.networking.domain}"
+          "kdc.${config.networking.domain}"
+        ];
+        reloadServices = [ "kadmind" "kdc" ];
+      };
     };
   };
 }

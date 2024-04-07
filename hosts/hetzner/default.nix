@@ -25,6 +25,7 @@ let
     age
     cachix
     environment
+    kerberos
     ldap
     locale
     nix-common
@@ -50,7 +51,6 @@ in
       { networking.hostName = mkForce "auth"; }
       ./auth.nix
       acme
-      kerberos
     ]);
   };
 }
