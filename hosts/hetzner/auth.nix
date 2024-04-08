@@ -7,12 +7,18 @@ in
     age.secrets = {
       "openldap.rootpw" = {
         file = ./secrets/openldap/rootpw;
-        mode = "660";
+        mode = "440";
         owner = config.services.openldap.user;
         group = config.services.openldap.group;
       };
-      "krb5_service.pass" = {
-        file = ./secrets/krb5/ldap_service_password;
+      "ldap.keytab" = {
+        file = ./secrets/auth/ldap.keytab;
+        mode = "440";
+        owner = config.services.openldap.user;
+        group = config.services.openldap.group;
+      };
+      "kdb5.stash" = {
+        file = ./secrets/krb5/kdb5.stash;
       };
     };
 
@@ -26,6 +32,15 @@ in
     in [
       (lib.mkIf (listeningOn "ldap:///") 389)
       (lib.mkIf (listeningOn "ldaps:///") 636)
+      88   # Kerberos V5 KDC
+      543  # Kerberos authenticated rlogin
+      544  # and remote shell
+      749  # Kerberos 5 admin/changepw
+      2105 # Kerberos auth. & encrypted rlogin
+    ];
+    networking.firewall.allowedUDPPorts = [
+      88  # Kerberos V5 KDC
+      749 # Kerberos 5 admin/changepw
     ];
     networking.interfaces.enp1s0.ipv6 = {
       addresses = [
@@ -42,12 +57,27 @@ in
         }
       ];
     };
+    networking.hostFiles = let
+      # Copied from nixpkgs to put real hostname first,
+      # because it seems whatever the first option is, is what
+      # slapd tries to use for the SASL hostname...
+      localhostHosts = pkgs.writeText "localhost-hosts" ''
+        127.0.0.1 localhost
+        ${lib.optionalString config.networking.enableIPv6 "::1 localhost"}
+      '';
+      stringHosts =
+        let
+          oneToString = set: ip: ip + " " + lib.concatStringsSep " " set.${ip} + "\n";
+          allToString = set: lib.concatMapStrings (oneToString set) (lib.attrNames set);
+        in pkgs.writeText "string-hosts" (allToString (lib.filterAttrs (_: v: v != []) config.networking.hosts));
+      extraHosts = pkgs.writeText "extra-hosts" config.networking.extraHosts;
+    in lib.mkBefore [ stringHosts localhostHosts extraHosts ];
 
     services = {
       openldap = {
         enable = true;
         mutableConfig = false;
-        urlList = [ "ldaps:///" "ldap:///" "ldapi:///" ];
+        urlList = [ "ldaps://" "ldap:///" "ldapi:///" ];
         settings = {
           attrs = {
             olcLogLevel = [ "acl stats" ];
@@ -62,8 +92,13 @@ in
             olcTLSProtocolMin = "3.1";
 
             /* SASL authentication */
+            olcSaslHost = "auth.reyuzenfold.com";
+            olcSaslRealm = "REYUZENFOLD.COM";
+            olcSaslSecProps = "noplain,noanonymous";
             olcAuthzRegexp = [
-              ''{0}uid=([^,]*),cn=.* uid=$1,ou=users,dc=reyuzenfold,dc=com''
+              ''{0}"uid=([^/]*)/admin,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=admin,dc=reyuzenfold,dc=com"''
+              ''{1}"uid=([^/]*),(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "uid=$1,ou=users,dc=reyuzenfold,dc=com''
+              ''{2}"uid=[^/]*/([^,]*).reyuzenfold.com,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=$1,ou=systems,dc=reyuzenfold,dc=com''
             ];
           };
 
@@ -81,10 +116,6 @@ in
                 olcDatabase = "{-1}frontend";
                 olcAccess = [
                   ''{0}to dn.base="" by * read''
-                  ''{1}to dn.base="cn=subschema" by * read''
-                  ''{2}to *
-                      by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" read
-                      by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage stop''
                 ];
               };
             };
@@ -105,49 +136,68 @@ in
                 objectClass = [ "olcDatabaseConfig" "olcMdbConfig" ];
                 olcDatabase = "{1}mdb";
                 olcDbDirectory = "/var/lib/openldap/data";
-                olcRootDN = "cn=Admin,dc=reyuzenfold,dc=com";
-                olcRootPW.path = config.age.secrets."openldap.rootpw".path;
+                olcRootDN = "cn=admin,dc=reyuzenfold,dc=com";
+                # olcRootPW.path = config.age.secrets."openldap.rootpw".path;
                 olcDbIndex = [
                   "objectClass eq"
                   "cn pres,eq"
                   "uid pres,eq"
                   "sn pres,eq,subany"
-                  "krbPrincipalName eq"
+                  "krbPrincipalName eq,pres,sub"
                 ];
                 olcSuffix = "dc=reyuzenfold,dc=com";
-                olcAccess = [
-                  ''{0}to attrs=userPassword
-                      by anonymous auth
-                      by self write
-                      by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" write
-                      by * none''
-                  ''{1}to dn.subtree="cn=REYUZENFOLD.COM,cn=krbcontainer,dc=reyuzenfold,dc=com"
-                      by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" manage
-                      by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" manage
-                      by group.exact="cn=administrators,dc=reyuzenfold,dc=com" read
-                      by * none''
+                olcAccess = let
+                    root = ''dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth'';
+                    admins = ''group.exact="cn=administrators,dc=reyuzenfold,dc=com"'';
+                    kdc = ''dn.exact="uid=kdc,ou=kerberos,ou=services,dc=reyuzenfold,dc=com"'';
+                    kadmin = ''dn.exact="uid=kadmin,ou=kerberos,ou=services,dc=reyuzenfold,dc=com"'';
+                in [
+                  ''{0}to * by ${root} manage by * none break''
+                  /* === Restrict access to sensitive keys === */
+                  ''{1}to attrs=userPassword
+                      by ssf=256 self write
+                      by ssf=256 ${admins} write
+                      by ssf=64 anonymous auth''
                   ''{2}to attrs=krbPrincipalKey
-                      by anonymous auth
-                      by dn.exact="cn=kdc,ou=services,dc=example,dc=com" write
-                      by dn.exact="cn=kadmin,ou=services,dc=example,dc=com" write
+                      by ${kdc} manage
+                      by ${kadmin} manage
+                      by ssf=256 self write
+                      by ssf=64 anonymous auth''
+                  /* === Restrict access to kerberos containers === */
+                  ''{3}to dn.subtree="cn=krbcontainer,dc=reyuzenfold,dc=com"
+                      by ${kdc} manage
+                      by ${kadmin} manage
+                      by ${admins} read''
+                  /* === Allow some self management === */
+                  ''{4}to attrs=mail,mobile,displayName,givenName,sn
+                      by ssf=256 ${admins} write
                       by self write
-                      by * none''
-                  ''{3}to dn.subtree="dc=reyuzenfold,dc=com"
-                      by group.exact="cn=administrators,dc=reyuzenfold,dc=com" write
-                      by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
-                      by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
-                      by users read
-                      by * read break''
-                  ''{4}to dn.subtree="ou=users,dc=reyuzenfold,dc=com" attrs=cn,uid
-                      by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
-                      by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
-                      by * read break''
+                      by users read''
+                  /* === Some extra container config === */
                   ''{5}to dn.subtree="ou=users,dc=reyuzenfold,dc=com"
-                      by anonymous read''
+                      by ${kdc} write
+                      by ${kadmin} write
+                      by ssf=256 ${admins} write
+                      by users read''
                   ''{6}to dn.subtree="ou=groups,dc=reyuzenfold,dc=com"
-                      by dn.exact="cn=kdc,ou=services,dc=reyuzenfold,dc=com" write
-                      by dn.exact="cn=kadmin,ou=services,dc=reyuzenfold,dc=com" write
-                      by anonymous read''
+                      by ${kdc} write
+                      by ${kadmin} write
+                      by ssf=256 ${admins} write
+                      by users read''
+                  ''{7}to dn.subtree="ou=systems,dc=reyuzenfold,dc=com"
+                      by ${kdc} write
+                      by ${kadmin} write
+                      by ssf=256 ${admins} write
+                      by users read''
+                  ''{8}to dn.subtree="ou=services,dc=reyuzenfold,dc=com"
+                      by ${kdc} write
+                      by ${kadmin} write
+                      by ssf=256 ${admins} write
+                      by users read''
+                  /* General fallback */
+                  ''{9}to dn.subtree="dc=reyuzenfold,dc=com"
+                      by ssf=256 ${admins} write
+                      by users read''
                 ];
               };
             };
@@ -155,6 +205,7 @@ in
         };
       };
     };
+    systemd.services.openldap.environment = { KRB5_KTNAME = config.age.secrets."ldap.keytab".path; };
 
     services.kerberos_server = {
       enable = true;
@@ -177,19 +228,20 @@ in
       settings.dbmodules."REYUZENFOLD.COM" = {
         db_library = "kldap";
         ldap_kerberos_container_dn = "cn=krbcontainer,dc=reyuzenfold,dc=com";
-        ldap_kdc_dn = "cn=kdc,ou=services,dc=reyuzenfold,dc=com";
-        ldap_kadmind_dn = "cn=kadmin,ou=services,dc=reyuzenfold,dc=com";
-        ldap_service_password_file = config.age.secrets."krb5_service.pass".path;
+        ldap_kdc_dn = "uid=kdc,ou=kerberos,ou=services,dc=reyuzenfold,dc=com";
+        ldap_kadmind_dn = "uid=kadmin,ou=kerberos,ou=services,dc=reyuzenfold,dc=com";
+        ldap_service_password_file = config.age.secrets."kdb5.stash".path;
         ldap_servers = "ldapi://";
       };
     };
-
-    systemd.services.openldap = {
-      wants = [ "acme-ldap.${config.networking.domain}.service" ];
-      after = [ "acme-ldap.${config.networking.domain}.service" ];
+    systemd.services.kdc = {
+      wants = [ "openldap.service" ];
+      after = [ "openldap.service" ];
     };
-
-    users.groups.acme.members = [ config.services.openldap.group ];
+    systemd.services.kadmind = {
+      wants = [ "openldap.service" ];
+      after = [ "openldap.service" ];
+    };
 
     security.acme.certs = {
       "ldap" = {
@@ -199,15 +251,20 @@ in
         ];
         reloadServices = [ "openldap" ];
       };
-      "kerberos" = {
-        domain = config.networking.fqdn;
-        extraDomainNames = [
-          "kerberos.${config.networking.domain}"
-          "kadmin.${config.networking.domain}"
-          "kdc.${config.networking.domain}"
-        ];
-        reloadServices = [ "kadmind" "kdc" ];
-      };
+      # "kerberos" = {
+      #   domain = config.networking.fqdn;
+      #   extraDomainNames = [
+      #     "kerberos.${config.networking.domain}"
+      #     "kadmin.${config.networking.domain}"
+      #     "kdc.${config.networking.domain}"
+      #   ];
+      #   reloadServices = [ "kadmind" "kdc" ];
+      # };
     };
+    systemd.services.openldap = {
+      wants = [ "acme-ldap.${config.networking.domain}.service" ];
+      after = [ "acme-ldap.${config.networking.domain}.service" ];
+    };
+    users.groups.acme.members = [ config.services.openldap.group ];
   };
 }

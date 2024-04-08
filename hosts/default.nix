@@ -29,6 +29,7 @@ let
     environment
     home-manager
     ldap
+    kerberos
     locale
     nix-common
     openssh
