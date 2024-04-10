@@ -26,6 +26,9 @@ in
   auth = {
     inherit (metadata.hetzner-auth) publicKey extraHostNames;
   };
+  database = {
+    inherit (metadata.hetzner-ash-db) publicKey extraHostNames;
+  };
 
   # Other Hosts
   cloud = {

@@ -6,7 +6,7 @@ let
   hosts = builtins.mapAttrs (_: x: x.publicKey) (import ./modules/openssh/knownHosts.nix { self = ./.; });
 
   # Hosts generating Lets Encrypt certs
-  acme = [ reyu hosts.auth ];
+  acme = [ reyu hosts.auth hosts.database ];
 in
 with hosts;
 {

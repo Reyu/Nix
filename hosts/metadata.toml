@@ -17,5 +17,12 @@ extraHostNames = [
   "auth.reyuzenfold.com"
 ]
 
+[hetzner-ash-db]
+publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICJ3ud5Xx9DsLPQs1c/cHk2tkclLQGE788OKC/1TQVBW"
+extraHostNames = [
+  "database.reyuzenfold.com",
+  "database.ash.reyuzenfold.com"
+]
+
 [traveler]
 publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhbhOKgiYOV65i4DVIHjjeiDI6OSHc/6ci1nIb7j99v"
