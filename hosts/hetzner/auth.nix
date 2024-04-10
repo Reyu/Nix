@@ -97,8 +97,8 @@ in
             olcSaslSecProps = "noplain,noanonymous";
             olcAuthzRegexp = [
               ''{0}"uid=([^/]*)/admin,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=admin,dc=reyuzenfold,dc=com"''
-              ''{1}"uid=([^/]*),(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "uid=$1,ou=users,dc=reyuzenfold,dc=com''
-              ''{2}"uid=[^/]*/([^,]*).reyuzenfold.com,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=$1,ou=systems,dc=reyuzenfold,dc=com''
+              ''{1}"uid=([^,]*),(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "uid=$1,ou=users,dc=reyuzenfold,dc=com''
+              ''{2}"uid=host/([^,]*).reyuzenfold.com,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=$1,ou=systems,dc=reyuzenfold,dc=com''
             ];
           };
 
@@ -251,15 +251,6 @@ in
         ];
         reloadServices = [ "openldap" ];
       };
-      # "kerberos" = {
-      #   domain = config.networking.fqdn;
-      #   extraDomainNames = [
-      #     "kerberos.${config.networking.domain}"
-      #     "kadmin.${config.networking.domain}"
-      #     "kdc.${config.networking.domain}"
-      #   ];
-      #   reloadServices = [ "kadmind" "kdc" ];
-      # };
     };
     systemd.services.openldap = {
       wants = [ "acme-ldap.${config.networking.domain}.service" ];
