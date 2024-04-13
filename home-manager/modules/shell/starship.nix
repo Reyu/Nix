@@ -32,10 +32,6 @@
 
       kubernetes.disabled = false;
 
-      nix_shell = { symbol = "❄  "; };
-
-      os.disabled = false;
-
       sudo.disabled = false;
 
       username = {
