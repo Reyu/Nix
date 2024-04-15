@@ -111,8 +111,8 @@ in
               "${pkgs.openldap}/etc/schema/core.ldif"
               "${pkgs.openldap}/etc/schema/cosine.ldif"
               "${pkgs.openldap}/etc/schema/inetorgperson.ldif"
-              ./rfc2307bis.ldif
-              ./kerberos.openldap.ldif
+              ./files/rfc2307bis.ldif
+              ./files/kerberos.openldap.ldif
             ];
             "cn=module{1}" = {
               attrs = {
