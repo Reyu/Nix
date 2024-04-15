@@ -10,9 +10,7 @@ let
     sha256 = "0p51ln102csnq801icbc09jlyvdcl9vqp7nzz42y4b4i8z1a3vb9";
   };
 
-  appimageContents = appimageTools.extractType2 {
-    inherit name src;
-  };
+  appimageContents = appimageTools.extractType2 { inherit name src; };
 in
 appimageTools.wrapType2 {
   inherit name src;

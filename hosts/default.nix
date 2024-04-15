@@ -3,12 +3,21 @@ with inputs.nixpkgs.lib;
 let
   flakes = filterAttrs (_name: value: value ? outputs) inputs;
 
-  mkPkgs = { system, pkgs ? inputs.nixpkgs, config ? { }, overlays ? [ ] }: import pkgs {
-    inherit system config overlays;
-  };
+  mkPkgs =
+    {
+      system,
+      pkgs ? inputs.nixpkgs,
+      config ? { },
+      overlays ? [ ],
+    }:
+    import pkgs { inherit system config overlays; };
 
   commonModules = with self.nixosModules; [
-    { _module.args = { inherit self inputs; }; }
+    {
+      _module.args = {
+        inherit self inputs;
+      };
+    }
     {
       # Let 'nixos-version --json' know the Git revision of this flake.
       system.configurationRevision = mkIf (self ? rev) self.rev;
@@ -19,9 +28,12 @@ let
       # Allow lookup of flakes via search path (e.g. "<unstable>")
       nix.nixPath = builtins.map (n: n + "=flake:" + n) (builtins.attrNames flakes);
       # Symlink flakes into /etc/nix/inputs
-      environment.etc = mapAttrs'
-        (name: value: { name = "nix/inputs/${name}"; value = { source = value.outPath; }; })
-        inputs;
+      environment.etc = mapAttrs' (name: value: {
+        name = "nix/inputs/${name}";
+        value = {
+          source = value.outPath;
+        };
+      }) inputs;
     }
     users.root
     age
@@ -35,12 +47,13 @@ let
     openssh
     security
     {
-      home-manager.extraSpecialArgs = { inherit inputs self; };
+      home-manager.extraSpecialArgs = {
+        inherit inputs self;
+      };
       home-manager.useGlobalPkgs = true;
       home-manager.backupFileExtension = "bck";
     }
   ];
-
 in
 {
   loki = nixosSystem {
@@ -49,7 +62,8 @@ in
       system = "x86_64-linux";
       pkgs = inputs.unstable;
       config.rocmSupport = true;
-      config.allowUnfreePredicate = pkg:
+      config.allowUnfreePredicate =
+        pkg:
         builtins.elem (getName pkg) [
           "discord"
           "steam"
@@ -65,38 +79,41 @@ in
         self.overlays.default
       ];
     };
-    modules = with self.nixosModules; [
-      ./loki/configuration.nix
-      (users.reyu { profile = "desktop"; })
-      kmonad
-      onlykey
-      podman
-      qflipper
-      sound
-      u2f
-      xserver
-    ] ++ commonModules;
+    modules =
+      with self.nixosModules;
+      [
+        ./loki/configuration.nix
+        (users.reyu { profile = "desktop"; })
+        kmonad
+        onlykey
+        podman
+        qflipper
+        sound
+        u2f
+        xserver
+      ]
+      ++ commonModules;
   };
 
   burrow = nixosSystem {
     system = "x86_64-linux";
     pkgs = mkPkgs {
       system = "x86_64-linux";
-      config.allowUnfreePredicate = pkg:
-        builtins.elem (getName pkg) [
-          "plexmediaserver"
-        ];
+      config.allowUnfreePredicate = pkg: builtins.elem (getName pkg) [ "plexmediaserver" ];
       overlays = with inputs; [
         neovim-nightly.overlay
         ragenix.overlays.default
         self.overlays.default
       ];
     };
-    modules = with self.nixosModules; [
-      ./burrow/configuration.nix
-      (users.reyu { profile = "server"; })
-      podman
-    ] ++ commonModules;
+    modules =
+      with self.nixosModules;
+      [
+        ./burrow/configuration.nix
+        (users.reyu { profile = "server"; })
+        podman
+      ]
+      ++ commonModules;
   };
 
   # Currently has problems, but isn't used anyway.
@@ -124,10 +141,7 @@ in
     system = "x86_64-linux";
     pkgs = mkPkgs {
       system = "x86_64-linux";
-      config.allowUnfreePredicate = pkg:
-        builtins.elem (getName pkg) [
-          "discord"
-        ];
+      config.allowUnfreePredicate = pkg: builtins.elem (getName pkg) [ "discord" ];
       overlays = with inputs; [
         neovim-nightly.overlay
         nur.overlay
@@ -135,46 +149,52 @@ in
         self.overlays.default
       ];
     };
-    modules = with self.nixosModules; [
-      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x230
-      inputs.impermanence.nixosModules.impermanence
-      ./traveler/configuration.nix
-      (users.reyu { profile = "server"; })
-      {
-        home-manager.users.reyu = {
-          imports = [
-            inputs.impermanence.nixosModules.home-manager.impermanence
-            ../home-manager/modules/impermanence
-          ];
-        };
-      }
-      heads
-      kmonad
-      onlykey
-      podman
-      qflipper
-    ] ++ commonModules;
+    modules =
+      with self.nixosModules;
+      [
+        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x230
+        inputs.impermanence.nixosModules.impermanence
+        ./traveler/configuration.nix
+        (users.reyu { profile = "server"; })
+        {
+          home-manager.users.reyu = {
+            imports = [
+              inputs.impermanence.nixosModules.home-manager.impermanence
+              ../home-manager/modules/impermanence
+            ];
+          };
+        }
+        heads
+        kmonad
+        onlykey
+        podman
+        qflipper
+      ]
+      ++ commonModules;
   };
+}
+// (
+  /*
+    Cloud Providers
 
-} // (
-  /* Cloud Providers
-   *
-   * Import a submodule containing various profiles distinct to a cloud
-   * provider so that the resulting name is "$PROVIDER-$PROFILE"
-   * (e.g. "hetzner-consul" for a consul server running on Hetzner)
-   */
+    Import a submodule containing various profiles distinct to a cloud
+    provider so that the resulting name is "$PROVIDER-$PROFILE"
+    (e.g. "hetzner-consul" for a consul server running on Hetzner)
+  */
   let
-    prefixNames = prefix: attrs: map
-      (x: {
+    prefixNames =
+      prefix: attrs:
+      map (x: {
         name = "${prefix}-${x}";
         value = attrs.${x};
-      })
-      (builtins.attrNames attrs);
-    providers = x: builtins.listToAttrs (builtins.concatMap
-      (n: prefixNames n (import x.${n} { inherit self inputs; }))
-      (builtins.attrNames x));
+      }) (builtins.attrNames attrs);
+    providers =
+      x:
+      builtins.listToAttrs (
+        builtins.concatMap (n: prefixNames n (import x.${n} { inherit self inputs; })) (
+          builtins.attrNames x
+        )
+      );
   in
-  providers {
-    hetzner = ./hetzner;
-  }
+  providers { hetzner = ./hetzner; }
 )

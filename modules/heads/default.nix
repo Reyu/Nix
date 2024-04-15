@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -32,7 +37,6 @@ in
           Maximum number of configurations in the boot menu.
         '';
       };
-
     };
   };
 

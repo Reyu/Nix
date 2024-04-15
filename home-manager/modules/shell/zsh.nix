@@ -1,4 +1,11 @@
-{ config, pkgs, lib, inputs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+{
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -63,8 +70,7 @@
       top = "${pkgs.htop}/bin/htop";
       zzz = "systemctl suspend";
 
-      serve =
-        "nix-shell -p python38Packages.httpcore --run 'python -m http.server 8080'";
+      serve = "nix-shell -p python38Packages.httpcore --run 'python -m http.server 8080'";
     };
 
     shellGlobalAliases = {
@@ -93,6 +99,5 @@
         src = pkgs.zsh-navigation-tools;
       }
     ];
-
   };
 }

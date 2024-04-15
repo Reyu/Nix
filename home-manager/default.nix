@@ -1,9 +1,18 @@
-{ self, inputs, lib, ... }:
-let hmConfig = inputs.home-manager.lib.homeManagerConfiguration;
-in {
+{
+  self,
+  inputs,
+  lib,
+  ...
+}:
+let
+  hmConfig = inputs.home-manager.lib.homeManagerConfiguration;
+in
+{
 
   desktop = hmConfig {
-    extraSpecialArgs = { inherit inputs self; };
+    extraSpecialArgs = {
+      inherit inputs self;
+    };
     pkgs = self.pkgs.x86_64-linux.nixpkgs;
     modules = [
       {
@@ -17,7 +26,9 @@ in {
   };
 
   server = hmConfig {
-    extraSpecialArgs = { inherit inputs self; };
+    extraSpecialArgs = {
+      inherit inputs self;
+    };
     pkgs = self.pkgs.x86_64-linux.nixpkgs;
     modules = [
       {
@@ -31,7 +42,9 @@ in {
   };
 
   minimalRoot = hmConfig {
-    extraSpecialArgs = { inherit inputs self; };
+    extraSpecialArgs = {
+      inherit inputs self;
+    };
     pkgs = self.pkgs.x86_64-linux.nixpkgs;
     modules = [
       ./profiles/common.nix

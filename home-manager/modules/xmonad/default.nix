@@ -11,8 +11,8 @@
 
   xsession.windowManager.xmonad = {
     enable = true;
-    extraPackages = haskellPackages:
-      with haskellPackages; [
+    extraPackages =
+      haskellPackages: with haskellPackages; [
         containers
         dbus
         directory

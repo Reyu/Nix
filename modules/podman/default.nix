@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 with lib;
 {
   options.virtualisation.podman.zfs = mkEnableOption "podman zfs support";

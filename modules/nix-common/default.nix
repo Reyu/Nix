@@ -1,4 +1,10 @@
-{ self, pkgs, lib, ... }: {
+{
+  self,
+  pkgs,
+  lib,
+  ...
+}:
+{
   config = {
     nix = {
       # Enable flakes

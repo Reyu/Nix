@@ -29,7 +29,10 @@
         defaultSession = "plasma-mobile";
         sddm.enable = true;
       };
-      videoDrivers = lib.mkDefault [ "modesetting" "fbdev" ];
+      videoDrivers = lib.mkDefault [
+        "modesetting"
+        "fbdev"
+      ];
     };
 
     powerManagement.enable = true;

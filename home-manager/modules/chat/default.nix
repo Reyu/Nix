@@ -4,9 +4,17 @@
     (inputs.replugged.lib.makeDiscordPlugged {
       inherit pkgs;
       plugins = {
-        inherit (inputs) discord-better-status discord-read-all discord-theme-toggler discord-tweaks discord-vc-timer;
+        inherit (inputs)
+          discord-better-status
+          discord-read-all
+          discord-theme-toggler
+          discord-tweaks
+          discord-vc-timer
+          ;
       };
-      themes = { inherit (inputs) discord-theme-slate; };
+      themes = {
+        inherit (inputs) discord-theme-slate;
+      };
     })
     element-desktop
     tdesktop

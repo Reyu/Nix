@@ -1,8 +1,6 @@
 {
   # Imports
-  imports = [
-    ../modules/shell
-  ];
+  imports = [ ../modules/shell ];
 
   programs.git = {
     enable = true;

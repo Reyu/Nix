@@ -103,43 +103,59 @@
     };
   };
 
-  outputs = { self, nixpkgs, systems, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      systems,
+      ...
+    }@inputs:
     let
-      eachSystem = f: nixpkgs.lib.genAttrs (import systems)
-        (system: f (import nixpkgs {
-          inherit system; overlays = [
-          inputs.devshell.overlays.default
-          inputs.ragenix.overlays.default
-        ];
-        }));
+      eachSystem =
+        f:
+        nixpkgs.lib.genAttrs (import systems) (
+          system:
+          f (
+            import nixpkgs {
+              inherit system;
+              overlays = [
+                inputs.devshell.overlays.default
+                inputs.ragenix.overlays.default
+              ];
+            }
+          )
+        );
     in
     {
 
       nixosConfigurations = import ./hosts { inherit self inputs; };
 
-      nixosModules = {
-        inherit (inputs.ragenix.nixosModules) age;
-        inherit (inputs.home-manager.nixosModules) home-manager;
-        kmonad = inputs.kmonad.nixosModules.default;
-      } // builtins.listToAttrs (map
-        (x: {
-          name = x;
-          value = import (./modules + "/${x}");
-        })
-        (builtins.attrNames (builtins.readDir ./modules)));
+      nixosModules =
+        {
+          inherit (inputs.ragenix.nixosModules) age;
+          inherit (inputs.home-manager.nixosModules) home-manager;
+          kmonad = inputs.kmonad.nixosModules.default;
+        }
+        // builtins.listToAttrs (
+          map (x: {
+            name = x;
+            value = import (./modules + "/${x}");
+          }) (builtins.attrNames (builtins.readDir ./modules))
+        );
 
       homeConfigurations = import ./home-manager { inherit self inputs; };
 
-      homeModules = builtins.listToAttrs (map
-        (x: {
+      homeModules = builtins.listToAttrs (
+        map (x: {
           name = x;
           value = import ./home-manager/modules/${x};
-        })
-        (builtins.attrNames (builtins.readDir ./home-manager/modules)));
+        }) (builtins.attrNames (builtins.readDir ./home-manager/modules))
+      );
 
       overlays.default = import ./overlays { inherit inputs; };
 
-      devShells = eachSystem (pkgs:
+      devShells = eachSystem (
+        pkgs:
         let
           formatter = pkg: {
             package = pkg;
@@ -151,41 +167,47 @@
           };
         in
         {
-          default = pkgs.devshell.mkShell (with pkgs; {
-            name = "FoxNet-Nix";
-            packages = [ cachix ];
-            commands = [
-              {
-                package = ragenix;
-                category = "secrets management";
-              }
-              {
-                package = "linode-cli";
-                category = "deployment";
-              }
-              {
-                package = "hcloud";
-                category = "deployment";
-              }
-              (buildTool nixos-generators)
-              (formatter treefmt)
-              (formatter nixpkgs-fmt)
-              (formatter luaformatter)
-              (formatter hclfmt)
-              (formatter shfmt)
-            ];
-          });
-        });
+          default = pkgs.devshell.mkShell (
+            with pkgs;
+            {
+              name = "FoxNet-Nix";
+              packages = [ cachix ];
+              commands = [
+                {
+                  package = ragenix;
+                  category = "secrets management";
+                }
+                {
+                  package = "linode-cli";
+                  category = "deployment";
+                }
+                {
+                  package = "hcloud";
+                  category = "deployment";
+                }
+                (buildTool nixos-generators)
+                (formatter treefmt)
+                (formatter nixfmt-rfc-style)
+                (formatter luaformatter)
+                (formatter hclfmt)
+                (formatter shfmt)
+              ];
+            }
+          );
+        }
+      );
 
       apps = eachSystem (pkgs: {
         linode-image-upload = {
           type = "app";
-          program = toString (pkgs.writeShellScript "linode-image-upload" ''
-            LINODE_LABEL="NixOS_$(date -I)"
-            LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
-            LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
-            ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
-          '');
+          program = toString (
+            pkgs.writeShellScript "linode-image-upload" ''
+              LINODE_LABEL="NixOS_$(date -I)"
+              LINODE_DESCR="Commit: $(${pkgs.git}/bin/git describe --always --abbrev=40 --dirty)"
+              LINODE_IMAGE=${self.packages.${pkgs.system}.linode}/nixos.img.gz
+              ${pkgs.linode-cli}/bin/linode-cli image-upload --label "$LINODE_LABEL" --description "$LINODE_DESCR" $LINODE_IMAGE
+            ''
+          );
         };
       });
 
@@ -199,11 +221,15 @@
             format = "linode";
             modules = with self.nixosModules; [
               {
-                _module.args = { inherit self; };
+                _module.args = {
+                  inherit self;
+                };
                 system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
               }
               {
-                home-manager.extraSpecialArgs = { inherit inputs self; };
+                home-manager.extraSpecialArgs = {
+                  inherit inputs self;
+                };
                 home-manager.useGlobalPkgs = true;
               }
               home-manager
@@ -216,32 +242,38 @@
           };
       };
 
-      formatter = eachSystem (pkgs: inputs.treefmt-nix.lib.mkWrapper pkgs {
-        projectRootFile = "flake.nix";
-        programs = {
-          deadnix.enable = true;
-          nixpkgs-fmt.enable = true;
-        };
-      });
+      formatter = eachSystem (
+        pkgs:
+        inputs.treefmt-nix.lib.mkWrapper pkgs {
+          projectRootFile = "flake.nix";
+          programs = {
+            deadnix.enable = true;
+            nixpkgs-fmt.enable = true;
+          };
+        }
+      );
 
-      checks = eachSystem (_:
+      checks = eachSystem (
+        _:
         with builtins;
         # Checks to run with `nix flake check -L`, will run in a QEMU VM.
         # Looks for all ./modules/<module name>/test.nix files and adds them to
         # the flake's checks output. The test.nix file is optional and may be
         # added to any module.
-        listToAttrs (map
-          (x: {
-            name = x;
-            value = (import ./modules/${x}/test.nix) {
-              pkgs = nixpkgs;
-              inherit self;
-            };
-          })
-          # Filter list of modules, leaving only modules which contain a
-          # `test.nix` file
-          (filter (p: pathExists (./modules/${p}/test.nix))
-            (attrNames (readDir ./modules)))));
+        listToAttrs (
+          map
+            (x: {
+              name = x;
+              value = (import ./modules/${x}/test.nix) {
+                pkgs = nixpkgs;
+                inherit self;
+              };
+            })
+            # Filter list of modules, leaving only modules which contain a
+            # `test.nix` file
+            (filter (p: pathExists (./modules/${p}/test.nix)) (attrNames (readDir ./modules)))
+        )
+      );
     };
   nixConfig = {
     extra-substituters = [ "https://foxnet.cachix.org" ];

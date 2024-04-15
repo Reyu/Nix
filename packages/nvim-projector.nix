@@ -1,4 +1,9 @@
-{ pkgs, lib, inputs, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 pkgs.vimUtils.buildVimPlugin {
   pname = "nvim-projector";
   version = "latest";
@@ -10,4 +15,3 @@ pkgs.vimUtils.buildVimPlugin {
     license = licenses.gpl3;
   };
 }
-

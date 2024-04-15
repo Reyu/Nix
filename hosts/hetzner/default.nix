@@ -6,16 +6,25 @@ let
     ragenix.overlays.default
     self.overlays.default
   ];
-  mkPkgs = { system, pkgs ? inputs.nixpkgs, config ? { }, overlays ? defaultOverlays }: import pkgs {
-    inherit system config overlays;
-  };
+  mkPkgs =
+    {
+      system,
+      pkgs ? inputs.nixpkgs,
+      config ? { },
+      overlays ? defaultOverlays,
+    }:
+    import pkgs { inherit system config overlays; };
 
   commonModules = with self.nixosModules; [
     inputs.impermanence.nixosModules.impermanence
     ./configuration.nix
     hetzner
 
-    { _module.args = { inherit self inputs; }; }
+    {
+      _module.args = {
+        inherit self inputs;
+      };
+    }
     {
       # Let 'nixos-version --json' know the Git revision of this flake.
       system.configurationRevision = mkIf (self ? rev) self.rev;
@@ -32,7 +41,9 @@ let
     security
     home-manager
     {
-      home-manager.extraSpecialArgs = { inherit inputs self; };
+      home-manager.extraSpecialArgs = {
+        inherit inputs self;
+      };
       home-manager.useGlobalPkgs = true;
       home-manager.backupFileExtension = "bck";
     }
@@ -47,19 +58,23 @@ in
   auth01 = nixosSystem {
     system = "x86_64-linux";
     pkgs = mkPkgs { system = "x86_64-linux"; };
-    modules = commonModules ++ (with self.nixosModules; [
-      { networking.hostName = mkForce "auth"; }
-      ./auth.nix
-      acme
-    ]);
+    modules =
+      commonModules
+      ++ (with self.nixosModules; [
+        { networking.hostName = mkForce "auth"; }
+        ./auth.nix
+        acme
+      ]);
   };
   ash-db = nixosSystem {
     system = "x86_64-linux";
     pkgs = mkPkgs { system = "x86_64-linux"; };
-    modules = commonModules ++ (with self.nixosModules; [
-      { networking.hostName = mkForce "database"; }
-      ./database.nix
-      acme
-    ]);
+    modules =
+      commonModules
+      ++ (with self.nixosModules; [
+        { networking.hostName = mkForce "database"; }
+        ./database.nix
+        acme
+      ]);
   };
 }

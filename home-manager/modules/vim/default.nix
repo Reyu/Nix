@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   options = {
     programs.neovim.minimal = lib.mkOption {
       type = lib.types.bool;
@@ -12,11 +18,7 @@
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
-    home.packages = [
-      (pkgs.neovim-qt.override {
-        neovim = config.programs.neovim.finalPackage;
-      })
-    ];
+    home.packages = [ (pkgs.neovim-qt.override { neovim = config.programs.neovim.finalPackage; }) ];
     programs.neovim = {
       enable = true;
       viAlias = true;
@@ -24,14 +26,22 @@
       vimdiffAlias = true;
       withPython3 = true;
       withNodeJs = true;
-      extraPython3Packages = ps: with ps; [ rope jedi ];
+      extraPython3Packages =
+        ps: with ps; [
+          rope
+          jedi
+        ];
       package = pkgs.neovim-nightly;
       extraLuaConfig =
         let
           plugins = import ./plugins.nix { inherit config pkgs; };
-          mkEntryFromDrv = drv:
+          mkEntryFromDrv =
+            drv:
             if lib.isDerivation drv then
-              { name = "${lib.getName drv}"; path = drv; }
+              {
+                name = "${lib.getName drv}";
+                path = drv;
+              }
             else
               drv;
           lazyPath = pkgs.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv plugins);
@@ -58,12 +68,20 @@
               }
           })
         '';
-      plugins = [ pkgs.vimPlugins.lazy-nvim pkgs.vimPlugins.nvim-treesitter.withAllGrammars ];
+      plugins = [
+        pkgs.vimPlugins.lazy-nvim
+        pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+      ];
       extraPackages =
         if config.programs.neovim.minimal then
-          with pkgs; [ fd tree-sitter ]
+          with pkgs;
+          [
+            fd
+            tree-sitter
+          ]
         else
-          with pkgs; [
+          with pkgs;
+          [
             # Language servers
             fswatch
             nil
@@ -106,49 +124,53 @@
             xsel
           ];
     };
-    xdg.configFile = {
-      "nvim/lua/plugins/lsp/init.lua".source = ./lua/plugins/lsp/init.lua;
-      "nvim/lua/plugins/lsp/keymaps.lua".source = ./lua/plugins/lsp/keymaps.lua;
-      "nvim/lua/plugins/lsp/util.lua".source = ./lua/plugins/lsp/util.lua;
-      "nvim/lua/plugins/coding.lua".source = ./lua/plugins/coding.lua;
-      "nvim/lua/plugins/diagnostics.lua".source = ./lua/plugins/diagnostics.lua;
-      "nvim/lua/plugins/editor.lua".source = ./lua/plugins/editor.lua;
-      "nvim/lua/plugins/extra.lua".source = ./lua/plugins/extra.lua;
-      "nvim/lua/plugins/git.lua".source = ./lua/plugins/git.lua;
-      "nvim/lua/plugins/init.lua".source = ./lua/plugins/init.lua;
-      "nvim/lua/plugins/treesitter.lua".source = ./lua/plugins/treesitter.lua;
-      "nvim/lua/plugins/ui.lua".source = ./lua/plugins/ui.lua;
-      "nvim/lua/reyu/init.lua".source = ./lua/reyu/init.lua;
-      "nvim/lua/reyu/options.lua".source = ./lua/reyu/options.lua;
-      "nvim/lua/reyu/util.lua".source = ./lua/reyu/util.lua;
-    } // (with builtins;
-      let
-        # Includes all files in the given directory
-        dirContets = dir:
-          let
-            files = attrNames (readDir ./${dir});
-            mapped_files = map
-              (file: {
+    xdg.configFile =
+      {
+        "nvim/lua/plugins/lsp/init.lua".source = ./lua/plugins/lsp/init.lua;
+        "nvim/lua/plugins/lsp/keymaps.lua".source = ./lua/plugins/lsp/keymaps.lua;
+        "nvim/lua/plugins/lsp/util.lua".source = ./lua/plugins/lsp/util.lua;
+        "nvim/lua/plugins/coding.lua".source = ./lua/plugins/coding.lua;
+        "nvim/lua/plugins/diagnostics.lua".source = ./lua/plugins/diagnostics.lua;
+        "nvim/lua/plugins/editor.lua".source = ./lua/plugins/editor.lua;
+        "nvim/lua/plugins/extra.lua".source = ./lua/plugins/extra.lua;
+        "nvim/lua/plugins/git.lua".source = ./lua/plugins/git.lua;
+        "nvim/lua/plugins/init.lua".source = ./lua/plugins/init.lua;
+        "nvim/lua/plugins/treesitter.lua".source = ./lua/plugins/treesitter.lua;
+        "nvim/lua/plugins/ui.lua".source = ./lua/plugins/ui.lua;
+        "nvim/lua/reyu/init.lua".source = ./lua/reyu/init.lua;
+        "nvim/lua/reyu/options.lua".source = ./lua/reyu/options.lua;
+        "nvim/lua/reyu/util.lua".source = ./lua/reyu/util.lua;
+      }
+      // (
+        with builtins;
+        let
+          # Includes all files in the given directory
+          dirContets =
+            dir:
+            let
+              files = attrNames (readDir ./${dir});
+              mapped_files = map (file: {
                 name = "nvim/${dir}/${file}";
-                value = { source = ./${dir}/${file}; };
-              })
-              files;
-          in
-          listToAttrs mapped_files;
+                value = {
+                  source = ./${dir}/${file};
+                };
+              }) files;
+            in
+            listToAttrs mapped_files;
 
-        # Needs to find `after/queries/{type}/{file}`
-        query_files = concatMap
-          (x: map (y: "${x}/${y}") (attrNames (readDir ./after/queries/${x})))
-          (attrNames (readDir ./after/queries));
-        query_map = map
-          (x: {
+          # Needs to find `after/queries/{type}/{file}`
+          query_files = concatMap (x: map (y: "${x}/${y}") (attrNames (readDir ./after/queries/${x}))) (
+            attrNames (readDir ./after/queries)
+          );
+          query_map = map (x: {
             name = "nvim/after/queries/${x}";
-            value = { source = ./after/queries/${x}; };
-          })
-          query_files;
-        queries = listToAttrs query_map;
-
-      in
-      queries // dirContets "luasnippets" // dirContets "syntax");
+            value = {
+              source = ./after/queries/${x};
+            };
+          }) query_files;
+          queries = listToAttrs query_map;
+        in
+        queries // dirContets "luasnippets" // dirContets "syntax"
+      );
   };
 }

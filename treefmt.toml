@@ -1,5 +1,6 @@
 [formatter.nix]
-command = "nixpkgs-fmt"
+command = "nixfmt"
+arguments = "-v"
 includes = [ "*.nix" ]
 
 [formatter.lua]

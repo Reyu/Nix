@@ -1,4 +1,6 @@
-{ config, pkgs, ... }: with pkgs.vimPlugins; let
+{ config, pkgs, ... }:
+with pkgs.vimPlugins;
+let
   minimal = config.programs.neovim.minimal;
 in
 [
@@ -9,10 +11,16 @@ in
   telescope-undo-nvim
   telescope_hoogle
   telescope-ui-select-nvim
-  { name = "telescope-fzf-native.nvim"; path = telescope-fzf-native-nvim; }
+  {
+    name = "telescope-fzf-native.nvim";
+    path = telescope-fzf-native-nvim;
+  }
 
   # Coding
-  { name = "LuaSnip"; path = luasnip; }
+  {
+    name = "LuaSnip";
+    path = luasnip;
+  }
   cmp-buffer
   cmp-calc
   cmp-dap
@@ -46,15 +54,42 @@ in
   nvim-ts-context-commentstring
   neorg
   nvim-projector
-  { name = "mini.ai"; path = mini-nvim; }
-  { name = "mini.align"; path = mini-nvim; }
-  { name = "mini.bracketed"; path = mini-nvim; }
-  { name = "mini.bufremove"; path = mini-nvim; }
-  { name = "mini.comment"; path = mini-nvim; }
-  { name = "mini.indentscope"; path = mini-nvim; }
-  { name = "mini.pairs"; path = mini-nvim; }
-  { name = "mini.surround"; path = mini-nvim; }
-  { name = "mini.misc"; path = mini-nvim; }
+  {
+    name = "mini.ai";
+    path = mini-nvim;
+  }
+  {
+    name = "mini.align";
+    path = mini-nvim;
+  }
+  {
+    name = "mini.bracketed";
+    path = mini-nvim;
+  }
+  {
+    name = "mini.bufremove";
+    path = mini-nvim;
+  }
+  {
+    name = "mini.comment";
+    path = mini-nvim;
+  }
+  {
+    name = "mini.indentscope";
+    path = mini-nvim;
+  }
+  {
+    name = "mini.pairs";
+    path = mini-nvim;
+  }
+  {
+    name = "mini.surround";
+    path = mini-nvim;
+  }
+  {
+    name = "mini.misc";
+    path = mini-nvim;
+  }
 
   # Git
   gitsigns-nvim
@@ -90,15 +125,24 @@ in
   plenary-nvim
   nui-nvim
   promise-async
-] ++ (if minimal then [ ] else [
-  # Coding
-  { name = "lspkind.nvim"; path = lspkind-nvim; }
+]
+++ (
+  if minimal then
+    [ ]
+  else
+    [
+      # Coding
+      {
+        name = "lspkind.nvim";
+        path = lspkind-nvim;
+      }
 
-  # Extra
-  firenvim
+      # Extra
+      firenvim
 
-  # LSP
-  nvim-lspconfig
-  lsp_lines-nvim
-  haskell-tools-nvim
-])
+      # LSP
+      nvim-lspconfig
+      lsp_lines-nvim
+      haskell-tools-nvim
+    ]
+)

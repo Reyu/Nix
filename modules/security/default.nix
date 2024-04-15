@@ -1,9 +1,7 @@
 { config, lib, ... }:
 with lib;
 {
-  imports = [
-    ./fail2ban.nix
-  ];
+  imports = [ ./fail2ban.nix ];
 
   # Enable GPG Agent by default
   programs.gnupg.agent.enable = true;
@@ -89,6 +87,8 @@ with lib;
   boot.kernelModules = [ "tcp_bbr" ];
 
   # Add custom CA Roots
-  security.pki.certificateFiles =
-    [ ../../certs/ReyuZenfold.crt ../../certs/CAcert.crt ];
+  security.pki.certificateFiles = [
+    ../../certs/ReyuZenfold.crt
+    ../../certs/CAcert.crt
+  ];
 }

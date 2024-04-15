@@ -1,6 +1,8 @@
-{ pkgs, ... }: {
-  imports = [
-    ./common.nix
+{ pkgs, ... }:
+{
+  imports = [ ./common.nix ];
+  home.packages = with pkgs; [
+    ripgrep
+    rsync
   ];
-  home.packages = with pkgs; [ ripgrep rsync ];
 }

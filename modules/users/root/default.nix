@@ -1,4 +1,5 @@
-{ self, pkgs, ... }: {
+{ self, pkgs, ... }:
+{
   users.users.root = {
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [

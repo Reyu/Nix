@@ -14,5 +14,4 @@
     dnsProvider = "hetzner";
     email = "acme@reyu.slmail.me";
   };
-
 }

@@ -1,11 +1,12 @@
-{ autoPatchelfHook
-, fetchurl
-, gmp
-, lib
-, openssl
-, stdenv
-, zlib
-, ...
+{
+  autoPatchelfHook,
+  fetchurl,
+  gmp,
+  lib,
+  openssl,
+  stdenv,
+  zlib,
+  ...
 }:
 let
   version = "5.3.2";
@@ -20,9 +21,7 @@ stdenv.mkDerivation {
   inherit pname version src;
   system = "x86_64-linux";
 
-  nativeBuildInputs = [
-    autoPatchelfHook
-  ];
+  nativeBuildInputs = [ autoPatchelfHook ];
 
   buildInputs = [
     gmp

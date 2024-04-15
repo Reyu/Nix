@@ -14,9 +14,7 @@
       "VisualHostKey" = "yes";
       # "StrictHostKeyChecking" = "accept-new";
     };
-    includes = [
-      "local_config"
-    ];
+    includes = [ "local_config" ];
     matchBlocks = {
       "deck" = {
         user = "deck";

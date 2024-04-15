@@ -2,9 +2,7 @@
 with lib;
 {
   config = {
-    home.packages = with pkgs; [
-      tmux-xpanes
-    ];
+    home.packages = with pkgs; [ tmux-xpanes ];
     programs.tmux = {
       enable = true;
       prefix = "M-b";

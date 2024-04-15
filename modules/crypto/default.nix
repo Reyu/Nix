@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 # Shamelessly stolen from Christine Dodrill with minor changes
 # https://christine.website/blog/nixos-encrypted-secrets-2021-01-20
@@ -43,8 +48,17 @@ let
     };
   };
 
-  mkService = name:
-    { source, dest, owner, group, permissions, ... }: {
+  mkService =
+    name:
+    {
+      source,
+      dest,
+      owner,
+      group,
+      permissions,
+      ...
+    }:
+    {
       description = "decrypt secret for ${name}";
       wantedBy = [ "multi-user.target" ];
 
@@ -68,12 +82,10 @@ in
 
   config.systemd.services =
     let
-      units = mapAttrs'
-        (name: info: {
-          name = "${name}-key";
-          value = mkService name info;
-        })
-        cfg;
+      units = mapAttrs' (name: info: {
+        name = "${name}-key";
+        value = mkService name info;
+      }) cfg;
     in
     units;
 }

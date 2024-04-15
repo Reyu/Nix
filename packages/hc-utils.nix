@@ -1,10 +1,11 @@
-{ stdenv
-, fetchurl
-, lib
-, dpkg
-, bash
-, coreutils
-, ...
+{
+  stdenv,
+  fetchurl,
+  lib,
+  dpkg,
+  bash,
+  coreutils,
+  ...
 }:
 let
   version = "0.0.4";
@@ -23,9 +24,7 @@ stdenv.mkDerivation {
   sourceRoot = ".";
   unpackCmd = "dpkg-deb -x $curSrc .";
 
-  nativeBuildInputs = [
-    dpkg
-  ];
+  nativeBuildInputs = [ dpkg ];
 
   dontConfigure = true;
   dontBuild = true;
@@ -48,7 +47,14 @@ stdenv.mkDerivation {
     description = "Hetzner Cloud Networks Configuration";
     homepage = "https://docs.hetzner.com/cloud/networks/server-configuration";
     license = lib.licenses.mit;
-    maintainers = [{ email = "reyu@reyuzenfold.com"; github = "Reyu"; githubId = 1259365; name = "Timothy Millican"; }];
+    maintainers = [
+      {
+        email = "reyu@reyuzenfold.com";
+        github = "Reyu";
+        githubId = 1259365;
+        name = "Timothy Millican";
+      }
+    ];
     platforms = lib.platforms.linux;
   };
 }

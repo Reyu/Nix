@@ -1,5 +1,14 @@
-{ config, lib, pkgs, ... }: {
-  imports = [ ./hardware-configuration.nix ./MAS.nix ];
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./MAS.nix
+  ];
   config = {
     boot = {
       supportedFilesystems = [ "zfs" ];
@@ -11,7 +20,10 @@
         };
         efi.canTouchEfiVariables = true;
       };
-      initrd.kernelModules = [ "igb" "ixgbe" ];
+      initrd.kernelModules = [
+        "igb"
+        "ixgbe"
+      ];
       initrd.network = {
         enable = true;
         ssh = {
@@ -48,7 +60,10 @@
       };
     };
     home-manager.users.${config.services.syncoid.user} = {
-      home.packages = [ pkgs.mbuffer pkgs.lzop ];
+      home.packages = [
+        pkgs.mbuffer
+        pkgs.lzop
+      ];
       home.stateVersion = "22.11";
     };
 
@@ -62,8 +77,11 @@
       };
       syncoid = {
         enable = true;
-        commonArgs = [ "--no-sync-snap" "--create-bookmark" "--use-hold" ];
-
+        commonArgs = [
+          "--no-sync-snap"
+          "--create-bookmark"
+          "--use-hold"
+        ];
       };
       tailscale.enable = true;
     };

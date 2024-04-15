@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   age.secrets."romm.env" = {
     file = ./secrets/romm.env;
   };
@@ -11,7 +12,11 @@
         isSystemUser = true;
       };
     };
-    extraGroups = { media = { gid = 994; }; };
+    extraGroups = {
+      media = {
+        gid = 994;
+      };
+    };
   };
   services = {
     bazarr = {
@@ -122,11 +127,14 @@
     backend = "podman";
     containers =
       let
-        mediaUser = with builtins;
-          concatStringsSep ":" (map toString [
-            config.users.extraUsers.media.uid
-            config.users.extraGroups.media.gid
-          ]);
+        mediaUser =
+          with builtins;
+          concatStringsSep ":" (
+            map toString [
+              config.users.extraUsers.media.uid
+              config.users.extraGroups.media.gid
+            ]
+          );
       in
       {
         romm = {
@@ -137,9 +145,7 @@
             PGID = builtins.toString config.users.extraGroups.media.gid;
             TZ = "America/New_York";
           };
-          environmentFiles = [
-            config.age.secrets."romm.env".path
-          ];
+          environmentFiles = [ config.age.secrets."romm.env".path ];
           volumes = [
             "/data/media/roms:/romm/library/roms"
             "/data/service/romm/config.yml:/romm/config.yml"

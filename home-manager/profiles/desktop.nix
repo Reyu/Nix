@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # Imports
   imports = [
     ../modules/accounts
@@ -43,13 +44,16 @@
   systemd.user = {
     services = {
       keepassxc = {
-        Unit = { Description = "KeePassXC - Password Manager"; };
-        Service = { ExecStart = "${pkgs.keepassxc}/bin/keepassxc"; };
-        Install = { WantedBy = [ "tray.target" ]; };
+        Unit = {
+          Description = "KeePassXC - Password Manager";
+        };
+        Service = {
+          ExecStart = "${pkgs.keepassxc}/bin/keepassxc";
+        };
+        Install = {
+          WantedBy = [ "tray.target" ];
+        };
       };
     };
   };
-
-
-
 }

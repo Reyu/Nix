@@ -1,8 +1,10 @@
 { pkgs, ... }:
 {
   config = {
-    environment.systemPackages =
-      [ pkgs.docker-client pkgs.docker-credential-helpers ];
+    environment.systemPackages = [
+      pkgs.docker-client
+      pkgs.docker-credential-helpers
+    ];
     virtualisation.docker = {
       enable = true;
       enableOnBoot = true;

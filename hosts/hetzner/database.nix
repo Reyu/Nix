@@ -1,8 +1,13 @@
-{ pkgs, lib, config, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   config = {
 
-    fileSystems."/boot" = lib.mkForce
-    {
+    fileSystems."/boot" = lib.mkForce {
       device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_45152206-part15";
       fsType = "vfat";
     };
@@ -59,13 +64,15 @@
       ensureUsers = [
         {
           name = "reyu";
-          ensureClauses = { login = true; createrole = true; createdb = true; };
+          ensureClauses = {
+            login = true;
+            createrole = true;
+            createdb = true;
+          };
           ensureDBOwnership = true;
         }
       ];
-      ensureDatabases = [
-        "reyu"
-      ];
+      ensureDatabases = [ "reyu" ];
       authentication = ''
         # TYPE          DATABASE    USER    ADDRESS         METHOD
         host            all         all     100.64.0.0/10   gss map=foxnet
@@ -76,30 +83,32 @@
       identMap = ''
         foxnet /^(.*)@reyuzenfold\.com$ \1
       '';
-      settings = let
-        certDir = "/run/credentials/postgresql.service";
-      in {
-        ssl = true;
-        ssl_cert_file = "${certDir}/cert.pem";
-        ssl_key_file = "${certDir}/key.pem";
-        krb_server_keyfile = config.age.secrets."psql.keytab".path;
-      };
+      settings =
+        let
+          certDir = "/run/credentials/postgresql.service";
+        in
+        {
+          ssl = true;
+          ssl_cert_file = "${certDir}/cert.pem";
+          ssl_key_file = "${certDir}/key.pem";
+          krb_server_keyfile = config.age.secrets."psql.keytab".path;
+        };
     };
 
     security.acme.certs.postgres = {
       domain = config.networking.fqdn;
-      extraDomainNames = [
-        "database.${config.networking.domain}"
-      ];
+      extraDomainNames = [ "database.${config.networking.domain}" ];
       group = "postgres";
       postRun = "systemctl restart postgresql";
     };
-    systemd.services.postgresql.requires = ["acme-finished-postgres.target"];
-    systemd.services.postgresql.serviceConfig.LoadCredential = let
-      certDir = config.security.acme.certs.postgres.directory;
-    in [
-      "cert.pem:${certDir}/cert.pem"
-      "key.pem:${certDir}/key.pem"
-    ];
+    systemd.services.postgresql.requires = [ "acme-finished-postgres.target" ];
+    systemd.services.postgresql.serviceConfig.LoadCredential =
+      let
+        certDir = config.security.acme.certs.postgres.directory;
+      in
+      [
+        "cert.pem:${certDir}/cert.pem"
+        "key.pem:${certDir}/key.pem"
+      ];
   };
 }

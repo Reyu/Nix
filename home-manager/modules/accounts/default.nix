@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   config = {
     accounts = {
       contact.basePath = "Contacts";
@@ -11,8 +12,7 @@
           };
           remote = {
             type = "carddav";
-            url =
-              "https://cloud.reyuzenfold.com/remote.php/dav/addressbooks/users/reyu/contacts/";
+            url = "https://cloud.reyuzenfold.com/remote.php/dav/addressbooks/users/reyu/contacts/";
             userName = "reyu";
             passwordCommand = [
               "${pkgs.libsecret}/bin/secret-tool"
@@ -51,7 +51,10 @@
           };
           vdirsyncer = {
             enable = true;
-            collections = [ "personal" "contact_birthdays" ];
+            collections = [
+              "personal"
+              "contact_birthdays"
+            ];
             conflictResolution = "remote wins";
           };
         };
@@ -61,8 +64,7 @@
           primary = true;
           address = "reyu@reyuzenfold.com";
           userName = "reyu@reyuzenfold.com";
-          passwordCommand =
-            "${pkgs.libsecret}/bin/secret-tool lookup account protonmail";
+          passwordCommand = "${pkgs.libsecret}/bin/secret-tool lookup account protonmail";
 
           realName = "Reyu Zenfold";
           mbsync = {
@@ -122,30 +124,31 @@
               };
             };
           };
-          neomutt = { enable = true; };
-          notmuch = { enable = true; };
+          neomutt = {
+            enable = true;
+          };
+          notmuch = {
+            enable = true;
+          };
 
           imap = {
             host = "127.0.0.1";
             port = 1143;
             tls.useStartTls = true;
-            tls.certificatesFile =
-              "${config.xdg.configHome}/protonmail/cert.pem";
+            tls.certificatesFile = "${config.xdg.configHome}/protonmail/cert.pem";
           };
           smtp = {
             host = "127.0.0.1";
             port = 1025;
             tls.useStartTls = true;
-            tls.certificatesFile =
-              "${config.xdg.configHome}/protonmail/cert.pem";
+            tls.certificatesFile = "${config.xdg.configHome}/protonmail/cert.pem";
           };
           msmtp.enable = true;
           imapnotify = {
             enable = true;
             boxes = [ "Inbox" ];
             onNotify = "${pkgs.isync}/bin/mbsync %s";
-            onNotifyPost =
-              "${pkgs.notmuch}/bin/notmuch new && ${pkgs.libnotify}/bin/notify-send 'New mail arrived in %s'";
+            onNotifyPost = "${pkgs.notmuch}/bin/notmuch new && ${pkgs.libnotify}/bin/notify-send 'New mail arrived in %s'";
           };
         };
       };

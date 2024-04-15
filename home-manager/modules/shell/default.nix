@@ -69,7 +69,10 @@
 
   programs.bat = {
     enable = true;
-    extraPackages = with pkgs.bat-extras; [ batdiff batman ];
+    extraPackages = with pkgs.bat-extras; [
+      batdiff
+      batman
+    ];
   };
 
   xdg.configFile = {

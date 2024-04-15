@@ -9,49 +9,45 @@
     zfs rollback -r rpool/local/root@blank
   '';
 
-  fileSystems."/" =
-    {
-      device = "rpool/local/root";
-      fsType = "zfs";
-    };
+  fileSystems."/" = {
+    device = "rpool/local/root";
+    fsType = "zfs";
+  };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_40659075-part15";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_40659075-part15";
+    fsType = "vfat";
+  };
 
-  fileSystems."/nix" =
-    {
-      device = "rpool/local/nix";
-      fsType = "zfs";
-    };
+  fileSystems."/nix" = {
+    device = "rpool/local/nix";
+    fsType = "zfs";
+  };
 
-  fileSystems."/persist" =
-    {
-      device = "rpool/safe/persist";
-      fsType = "zfs";
-      neededForBoot = true;
-    };
+  fileSystems."/persist" = {
+    device = "rpool/safe/persist";
+    fsType = "zfs";
+    neededForBoot = true;
+  };
 
-  fileSystems."/var/log" =
-    {
-      device = "rpool/safe/logs";
-      fsType = "zfs";
-    };
+  fileSystems."/var/log" = {
+    device = "rpool/safe/logs";
+    fsType = "zfs";
+  };
 
   swapDevices = [ ];
 
   hetzner-cloud.enable = true;
 
   networking.domain = lib.mkDefault "reyuzenfold.com";
-  networking.defaultGateway6 = { address = "fe80::1"; interface = "enp1s0"; };
+  networking.defaultGateway6 = {
+    address = "fe80::1";
+    interface = "enp1s0";
+  };
 
   environment.persistence = {
     "/persist/system" = {
-      directories = [
-        "/var/lib/tailscale"
-      ];
+      directories = [ "/var/lib/tailscale" ];
       files = [
         "/etc/machine-id"
         "/etc/krb5.keytab"

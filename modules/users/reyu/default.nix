@@ -1,10 +1,17 @@
-{ profile }: { self, pkgs, ... }: {
+{ profile }:
+{ self, pkgs, ... }:
+{
 
   users.users.reyu = {
     isNormalUser = true;
     home = "/home/reyu";
     description = "Reyu Zenfold";
-    extraGroups = [ "wheel" "audio" "adbusers" "dialout" ];
+    extraGroups = [
+      "wheel"
+      "audio"
+      "adbusers"
+      "dialout"
+    ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAzblSY1FnK7aeaVK8z+cyEfDI9sIER8s4PIQhLI5QRHAAAABHNzaDo= ok-greater"

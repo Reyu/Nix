@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 
 let
@@ -8,7 +13,5 @@ in
   options = {
     hetzner-cloud.enable = mkEnableOption "Hetzner Cloud Utilities";
   };
-  config = mkIf cfg.enable {
-    services.udev.packages = [ pkgs.hc-utils ];
-  };
+  config = mkIf cfg.enable { services.udev.packages = [ pkgs.hc-utils ]; };
 }

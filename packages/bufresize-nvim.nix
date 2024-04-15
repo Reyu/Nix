@@ -1,4 +1,9 @@
-{ pkgs, lib, inputs, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 pkgs.vimUtils.buildVimPlugin {
   pname = "bufresize.nvim";
   version = "latest";
@@ -10,4 +15,3 @@ pkgs.vimUtils.buildVimPlugin {
     license = licenses.mit;
   };
 }
-

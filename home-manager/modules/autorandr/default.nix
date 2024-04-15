@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
 
   programs.autorandr = {
     enable = true;
@@ -79,7 +80,12 @@
         RemainAfterExit = "false";
         KillMode = "process";
       };
-      Install = { WantedBy = [ "graphical-session.target" "sleep.target" ]; };
+      Install = {
+        WantedBy = [
+          "graphical-session.target"
+          "sleep.target"
+        ];
+      };
     };
   };
 }

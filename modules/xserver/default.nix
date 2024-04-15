@@ -1,6 +1,9 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   config = {
-    services.physlock = { enable = true; };
+    services.physlock = {
+      enable = true;
+    };
     services.greetd = {
       enable = true;
       settings = rec {
@@ -20,7 +23,9 @@
         layout = "us";
       };
 
-      libinput = { enable = true; };
+      libinput = {
+        enable = true;
+      };
 
       config = ''
         Section "InputClass"
@@ -39,13 +44,15 @@
 
       desktopManager = {
         xterm.enable = false;
-        session = [{
-          name = "home-manager";
-          start = ''
-             ${pkgs.runtimeShell} $HOME/.hm-xsession &
-            waitPID=$!
-          '';
-        }];
+        session = [
+          {
+            name = "home-manager";
+            start = ''
+               ${pkgs.runtimeShell} $HOME/.hm-xsession &
+              waitPID=$!
+            '';
+          }
+        ];
       };
     };
   };

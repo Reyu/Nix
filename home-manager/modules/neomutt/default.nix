@@ -1,6 +1,10 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   config = {
-    home.packages = with pkgs; [ neomutt notmuch ];
+    home.packages = with pkgs; [
+      neomutt
+      notmuch
+    ];
     programs = {
       neomutt = {
         enable = true;
@@ -11,13 +15,10 @@
           delete = "no";
           delete_untag = "yes";
           edit_headers = "yes";
-          editor = ''
-            "nvim -c 'set colorcolumn=80 textwidth=72 formatprg=par\ w72qe' +10"'';
+          editor = ''"nvim -c 'set colorcolumn=80 textwidth=72 formatprg=par\ w72qe' +10"'';
           implicit_auto_view = "yes";
-          index_format = ''
-            "%4C %2e/%-2E %Z %H %N [ %-35.40F ] %s %> %{%d%b%y %H:%M %z} | %<M?%5M Msgs &%<l?%5l Lines&%5c Bytes>> "'';
-          ispell = ''
-            "${pkgs.aspell}/bin/aspell --language-tag=en --lang=en --mode=email check"'';
+          index_format = ''"%4C %2e/%-2E %Z %H %N [ %-35.40F ] %s %> %{%d%b%y %H:%M %z} | %<M?%5M Msgs &%<l?%5l Lines&%5c Bytes>> "'';
+          ispell = ''"${pkgs.aspell}/bin/aspell --language-tag=en --lang=en --mode=email check"'';
           move = "no";
           user_agent = "no";
         };
@@ -66,8 +67,12 @@
         new.tags = [ "unread" ];
         hooks.postNew = "";
       };
-      mbsync = { enable = true; };
-      khal = { enable = false; }; # BROKEN
+      mbsync = {
+        enable = true;
+      };
+      khal = {
+        enable = false;
+      }; # BROKEN
     };
 
     home.file.".config/mailcap" = {
@@ -88,10 +93,11 @@
       Service = {
         Type = "simple";
         Restart = "always";
-        ExecStart =
-          "${pkgs.protonmail-bridge}/bin/protonmail-bridge --noninteractive";
+        ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge --noninteractive";
       };
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
     };
   };
 }

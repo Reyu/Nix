@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   config = {
     networking.firewall = {
       allowedTCPPorts = [
@@ -23,19 +24,24 @@
             isReadOnly = false;
           };
         };
-        config = { config, ... }: {
-          imports = [ ../../modules/common ../../modules/kerberos ];
-          config = {
-            foxnet.krb = {
-              kdc.enabled = true;
-              kadmind.enabled = true;
-            };
-            networking = {
-              hostName = "kerberos";
-              domain = "home.reyuzenfold.com";
+        config =
+          { config, ... }:
+          {
+            imports = [
+              ../../modules/common
+              ../../modules/kerberos
+            ];
+            config = {
+              foxnet.krb = {
+                kdc.enabled = true;
+                kadmind.enabled = true;
+              };
+              networking = {
+                hostName = "kerberos";
+                domain = "home.reyuzenfold.com";
+              };
             };
           };
-        };
       };
       ldap = {
         autoStart = true;
@@ -49,20 +55,28 @@
             isReadOnly = false;
           };
         };
-        config = { config, ... }: {
-          imports = [ ../../modules/common ../../modules/kerberos ];
-          config = {
-            services.openldap = {
-              enable = true;
-              configDir = "/etc/slapd.d";
-              urlList = [ "ldapi:///" "ldap:///" ];
-            };
-            networking = {
-              hostName = "ldap";
-              domain = "home.reyuzenfold.com";
+        config =
+          { config, ... }:
+          {
+            imports = [
+              ../../modules/common
+              ../../modules/kerberos
+            ];
+            config = {
+              services.openldap = {
+                enable = true;
+                configDir = "/etc/slapd.d";
+                urlList = [
+                  "ldapi:///"
+                  "ldap:///"
+                ];
+              };
+              networking = {
+                hostName = "ldap";
+                domain = "home.reyuzenfold.com";
+              };
             };
           };
-        };
       };
     };
   };

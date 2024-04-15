@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [ ./swayr.nix ];
   home.packages = with pkgs; [
     grim
@@ -45,8 +46,14 @@
           smartBorders = "on";
         };
         startup = [
-          { command = "sleep 3s; systemctl --user reload-or-restart waybar.service"; always = true; }
-          { command = "sleep 3s; systemctl --user reload-or-restart swayr.service"; always = true; }
+          {
+            command = "sleep 3s; systemctl --user reload-or-restart waybar.service";
+            always = true;
+          }
+          {
+            command = "sleep 3s; systemctl --user reload-or-restart swayr.service";
+            always = true;
+          }
           { command = "sleep 3s; systemctl --user start keepassxc.service"; }
         ];
         keybindings = {
@@ -108,7 +115,7 @@
           "Web" = [ ];
           "Chat" = [ ];
           "Video" = [ ];
-          "Games" = [{ class = "steam"; }];
+          "Games" = [ { class = "steam"; } ];
         };
         floating = {
           criteria = [

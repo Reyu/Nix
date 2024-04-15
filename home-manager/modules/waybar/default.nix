@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   programs.waybar = {
     enable = true;
     settings = {
@@ -11,9 +12,7 @@
           "custom/arrowRight#workspaces"
           "wlr/taskbar"
         ];
-        modules-center = [
-          "sway/window"
-        ];
+        modules-center = [ "sway/window" ];
         modules-right = [
           "custom/arrowLeft#network"
           "network"
@@ -76,7 +75,6 @@
           format = "";
           tooltip = false;
         };
-
       };
     };
     style = lib.fileContents ./style.css;

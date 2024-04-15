@@ -1,4 +1,5 @@
-{ self, pkgs, ... }: {
+{ self, pkgs, ... }:
+{
   config = {
     programs.ssh = {
       package = pkgs.openssh_gssapi;

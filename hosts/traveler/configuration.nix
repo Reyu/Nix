@@ -1,9 +1,13 @@
-{ self, config, lib, ... }: {
-  imports =
-    [ ./hardware-configuration.nix ];
+{
+  self,
+  config,
+  lib,
+  ...
+}:
+{
+  imports = [ ./hardware-configuration.nix ];
 
-  age.secrets."wpa_supplicant.env".file =
-    builtins.toString "${self}/secrets/networks/wpa_supplicant.env";
+  age.secrets."wpa_supplicant.env".file = builtins.toString "${self}/secrets/networks/wpa_supplicant.env";
 
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -50,8 +54,7 @@
       keyboards.kinesis = {
         # Useful when docked at KVM
         name = "kinesis";
-        device =
-          "/dev/input/by-id/usb-Kinesis_Advantage2_Keyboard_314159265359-if01-event-kbd";
+        device = "/dev/input/by-id/usb-Kinesis_Advantage2_Keyboard_314159265359-if01-event-kbd";
         defcfg = {
           enable = true;
           compose.key = "lalt";
@@ -70,9 +73,7 @@
 
   environment.persistence = {
     "/persist/system" = {
-      directories = [
-        "/var/lib/tailscale"
-      ];
+      directories = [ "/var/lib/tailscale" ];
       files = [
         "/etc/machine-id"
         "/etc/ssh/ssh_host_ed25519_key"

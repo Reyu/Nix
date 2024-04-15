@@ -1,6 +1,13 @@
-{ self, config, pkgs, ... }:
-let browser = "librewolf";
-in {
+{
+  self,
+  config,
+  pkgs,
+  ...
+}:
+let
+  browser = "librewolf";
+in
+{
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -17,8 +24,7 @@ in {
         path = "/boot2";
       }
     ];
-    users.reyu.hashedPasswordFile =
-      builtins.toString "${self}/secrets/grub/reyu.passwd";
+    users.reyu.hashedPasswordFile = builtins.toString "${self}/secrets/grub/reyu.passwd";
     zfsSupport = true;
   };
   boot.supportedFilesystems = [ "zfs" ];
@@ -60,7 +66,10 @@ in {
   networking.hostName = "loki";
   networking.hostId = "d540cb4f";
 
-  users.users.reyu.extraGroups = [ config.services.davfs2.davGroup "podman" ];
+  users.users.reyu.extraGroups = [
+    config.services.davfs2.davGroup
+    "podman"
+  ];
   home-manager.users.reyu = {
     home.packages = with pkgs; [
       blender-hip
@@ -100,8 +109,7 @@ in {
       enable = true;
       keyboards.kinesis = {
         name = "kinesis";
-        device =
-          "/dev/input/by-id/usb-Kinesis_Advantage2_Keyboard_314159265359-if01-event-kbd";
+        device = "/dev/input/by-id/usb-Kinesis_Advantage2_Keyboard_314159265359-if01-event-kbd";
         defcfg = {
           enable = true;
           compose.key = "lalt";
@@ -143,7 +151,11 @@ in {
     };
     syncoid = {
       enable = true;
-      commonArgs = [ "--no-sync-snap" "--create-bookmark" "--use-hold" ];
+      commonArgs = [
+        "--no-sync-snap"
+        "--create-bookmark"
+        "--use-hold"
+      ];
       commands =
         let
           user = config.services.syncoid.user;
@@ -196,6 +208,7 @@ in {
 
   virtualisation.podman.zfs = true;
 
-  systemd.tmpfiles.rules =
-    [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}/hip" ];
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}/hip"
+  ];
 }

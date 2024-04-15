@@ -9,4 +9,3 @@ pkgs.vimUtils.buildVimPlugin {
     homepage = "https://github.com/folke/edgy.nvim";
   };
 }
-

@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   fonts.fontconfig.enable = true;
   gtk.font = {
     name = "hasklig";
