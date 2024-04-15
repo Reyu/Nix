@@ -44,7 +44,7 @@
 
   hetzner-cloud.enable = true;
 
-  networking.domain = "reyuzenfold.com";
+  networking.domain = lib.mkDefault "reyuzenfold.com";
   networking.defaultGateway6 = { address = "fe80::1"; interface = "enp1s0"; };
 
   environment.persistence = {

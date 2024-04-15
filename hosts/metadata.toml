@@ -5,10 +5,9 @@ extraHostNames = [
 ]
 
 [burrow]
-publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMTxnWiWCer2tijhkTDA9RfxELHy0/HxY7zA8VgbnnFl"
+publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOTwRlYlNlqITSJKBNz1dLA+koS+GhMQNMMLbPkD/Bvm"
 extraHostNames = [
   "burrow.home.reyuzenfold.com",
-  "100.83.149.127",
 ]
 
 [hetzner-auth]

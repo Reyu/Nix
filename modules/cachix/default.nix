@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 
 let
   folder = ./cachix;
@@ -9,4 +9,6 @@ in
 {
   inherit imports;
   nix.settings.substituters = [ "https://cache.nixos.org/" ];
+  # Enable Cachix deploy agent, if we have a token for it.
+  services.cachix-agent.enable = lib.mkIf (lib.elem "cachix-agent.token" (builtins.attrNames config.age.secrets)) true;
 }

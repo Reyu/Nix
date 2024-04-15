@@ -6,7 +6,7 @@ in
 {
   # NixOS Hosts
   burrow = {
-    inherit (metadata.hetzner-auth) publicKey;
+    inherit (metadata.burrow) publicKey;
     extraHostNames = metadata.burrow.extraHostNames ++ [
       "burrow.${tailscale_domain}"
     ];
@@ -26,8 +26,11 @@ in
   auth = {
     inherit (metadata.hetzner-auth) publicKey extraHostNames;
   };
-  database = {
-    inherit (metadata.hetzner-ash-db) publicKey extraHostNames;
+  ash-db = {
+    inherit (metadata.hetzner-ash-db) publicKey;
+    extraHostNames = metadata.hetzner-ash-db.extraHostNames ++ [
+      "database.${tailscale_domain}"
+    ];
   };
 
   # Other Hosts

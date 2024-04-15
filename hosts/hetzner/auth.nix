@@ -5,14 +5,18 @@ in
 {
   config = {
     age.secrets = {
-      "openldap.rootpw" = {
-        file = ./secrets/openldap/rootpw;
+      "cachix-agent.token" = {
+        file = ./secrets/auth/cachix-agent.token;
+        path = "/etc/cachix-agent.token";
+      };
+      "ldap.keytab" = {
+        file = ./secrets/auth/ldap.keytab;
         mode = "440";
         owner = config.services.openldap.user;
         group = config.services.openldap.group;
       };
-      "ldap.keytab" = {
-        file = ./secrets/auth/ldap.keytab;
+      "openldap.rootpw" = {
+        file = ./secrets/openldap/rootpw;
         mode = "440";
         owner = config.services.openldap.user;
         group = config.services.openldap.group;
@@ -97,7 +101,7 @@ in
             olcSaslSecProps = "noplain,noanonymous";
             olcAuthzRegexp = [
               ''{0}"uid=([^/]*)/admin,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=admin,dc=reyuzenfold,dc=com"''
-              ''{1}"uid=([^,]*),(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "uid=$1,ou=users,dc=reyuzenfold,dc=com''
+              ''{1}"uid=([^/,]*)(/[^,]*)?,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "uid=$1,ou=users,dc=reyuzenfold,dc=com''
               ''{2}"uid=host/([^,]*).reyuzenfold.com,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=$1,ou=systems,dc=reyuzenfold,dc=com''
             ];
           };
@@ -107,9 +111,16 @@ in
               "${pkgs.openldap}/etc/schema/core.ldif"
               "${pkgs.openldap}/etc/schema/cosine.ldif"
               "${pkgs.openldap}/etc/schema/inetorgperson.ldif"
-              "${pkgs.openldap}/etc/schema/nis.ldif"
+              ./rfc2307bis.ldif
               ./kerberos.openldap.ldif
             ];
+            "cn=module{1}" = {
+              attrs = {
+                objectClass = [ "olcModuleList" ];
+                olcModuleLoad = [ "memberof" "refint" ];
+                olcModulePath = "/usr/lib/ldap";
+              };
+            };
             "olcDatabase={-1}frontend" = {
               attrs = {
                 objectClass = "olcDatabaseConfig";
@@ -199,6 +210,26 @@ in
                       by ssf=256 ${admins} write
                       by users read''
                 ];
+              };
+              children = {
+                "olcOverlay={0}memberof" = {
+                  attrs = {
+                    objectClass = [ "olcConfig" "olcMemberOf" "olcOverlayConfig" ];
+                    olcOverlay = "memberof";
+                    olcMemberOfDangling = "ignore";
+                    olcMemberOfRefInt = "TRUE";
+                    olcMemberOfGroupOC = "groupOfNames";
+                    olcMemberOfMemberAD = "member";
+                    olcMemberOfMemberOfAD = "memberOf";
+                  };
+                };
+                "olcOverlay={1}refint" = {
+                  attrs = {
+                    objectClass = [ "olcConfig" "olcRefintConfig" "olcOverlayConfig" ];
+                    olcOverlay = "refint";
+                    olcRefintAttribute = [ "memberof" "member" "manager" "owner" ];
+                  };
+                };
               };
             };
           };

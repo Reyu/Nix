@@ -23,7 +23,6 @@ with lib;
       X11Forwarding no
       AllowAgentForwarding no
       AllowStreamLocalForwarding no
-      AuthenticationMethods publickey
     '';
   };
 
