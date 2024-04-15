@@ -243,4 +243,8 @@
           (filter (p: pathExists (./modules/${p}/test.nix))
             (attrNames (readDir ./modules)))));
     };
+  nixConfig = {
+    extra-substituters = [ "https://foxnet.cachix.org" ];
+    extra-trusted-public-keys = [ "foxnet.cachix.org-1:Ks4Si8oE6KfTXTwLlaLiE8M/I3XyfVO4IP4Q17DudAs=" ];
+  };
 }

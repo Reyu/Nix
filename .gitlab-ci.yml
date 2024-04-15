@@ -1,28 +1,35 @@
 workflow:
   name: 'NixOS Build Pipeline'
+  auto_cancel:
+    on_new_commit: interruptible
+    on_job_failure: all
 
-.build-cachix: &build-cachix
+variables:
+  CACHIX_CACHE_NAME:
+    value: foxnet
+    description: "Cachix.org binary cache where built objects will be pushed"
+
+
+.cachix-build-host:
   stage: build
   image: docker.nix-community.org/nixpkgs/cachix-flakes
+  interruptible: true
   before_script:
     - cachix use "$CACHIX_CACHE_NAME"
   script:
     - cachix watch-exec $CACHIX_CACHE_NAME -- nix build .#nixosConfigurations.$HOST.config.system.build.toplevel
 
 build-loki:
-  <<: *build-cachix
+  extends: .cachix-build-host
   variables:
-    CACHIX_CACHE_NAME: foxnet
     HOST: loki
 
 build-burrow:
-  <<: *build-cachix
+  extends: .cachix-build-host
   variables:
-    CACHIX_CACHE_NAME: foxnet
     HOST: burrow
 
 build-hetzner-auth:
-  <<: *build-cachix
+  extends: .cachix-build-host
   variables:
-    CACHIX_CACHE_NAME: foxnet
     HOST: hetzner-auth01
