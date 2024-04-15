@@ -12,7 +12,7 @@ variables:
 
 .cachix-build-host:
   stage: build
-  image: docker.nix-community.org/nixpkgs/cachix-flakes
+  image: docker.io/nixpkgs/cachix-flakes
   interruptible: true
   before_script:
     - cachix use "$CACHIX_CACHE_NAME"
