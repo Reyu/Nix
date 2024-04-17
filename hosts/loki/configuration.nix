@@ -120,6 +120,11 @@ in
     };
     davfs2.enable = true;
     udev.packages = [ pkgs.android-udev-rules ];
+    keybase.enable = true;
+    kbfs = {
+      enable = true;
+      enableRedirector = true;
+    };
     kubo = {
       enable = true;
       settings.Addresses.API = [ "/ip4/127.0.0.1/tcp/5001" ];
@@ -181,6 +186,11 @@ in
     xserver.wacom.enable = true;
     xserver.videoDrivers = [ "amdgpu" ];
     zfs.autoScrub.enable = true;
+  };
+
+  security.wrappers.keybase-redirector = {
+    owner = "root";
+    group = "root";
   };
 
   hardware = {
