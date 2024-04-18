@@ -76,6 +76,7 @@
       authentication = ''
         # TYPE          DATABASE    USER    ADDRESS         METHOD
         host            all         all     100.64.0.0/10   gss map=foxnet
+        host            all         all     172.16.0.0/16   scram-sha-256
         hostgssenc      all         all     all             gss map=foxnet
 
         # include_if_exists  ${config.age.secrets."pg_hba.ldap.conf".path}
