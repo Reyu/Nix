@@ -19,7 +19,6 @@ let
     inputs.impermanence.nixosModules.impermanence
     ./configuration.nix
     hetzner
-
     {
       _module.args = {
         inherit self inputs;
@@ -74,6 +73,20 @@ in
       ++ (with self.nixosModules; [
         { networking.hostName = mkForce "database"; }
         ./database.nix
+        acme
+      ]);
+  };
+  kube1-ash = nixosSystem {
+    system = "x86_64-linux";
+    pkgs = mkPkgs { system = "x86_64-linux"; };
+    modules =
+      commonModules
+      ++ (with self.nixosModules; [
+        {
+          networking.hostName = mkForce "kube01";
+          networking.domain = "ash.reyuzenfold.com";
+        }
+        ./kube.nix
         acme
       ]);
   };

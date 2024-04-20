@@ -7,8 +7,19 @@ with lib;
   programs.gnupg.agent.enable = true;
 
   ## System security tweaks
-  security.sudo.execWheelOnly = true;
   environment.defaultPackages = mkForce [ ];
+  security.sudo.execWheelOnly = true;
+  security.sudo.extraRules = [
+    {
+      groups = [ "wheel" ];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
   # Configure OpenSSH to be a bit more secure
   services.openssh = {

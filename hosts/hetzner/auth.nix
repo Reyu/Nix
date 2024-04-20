@@ -6,6 +6,18 @@
 }:
 let
   krb5 = pkgs.krb5.override { withLdap = true; };
+  olcRuleMap =
+    # Remove newlines and consecutive whitespace.
+    # Lets the config, here, be easier to read, while minimizing in config files.
+    with builtins;
+    with lib.lists;
+    with lib.strings;
+    imap0 (
+      index: rule:
+      "{${toString index}}" + concatStringsSep " " (
+        filter (char: char != "") (splitString " " (replaceStrings [ "\n" ] [ " " ] rule))
+      )
+    );
 in
 {
   config = {
@@ -119,10 +131,10 @@ in
             olcSaslHost = "auth.reyuzenfold.com";
             olcSaslRealm = "REYUZENFOLD.COM";
             olcSaslSecProps = "noplain,noanonymous";
-            olcAuthzRegexp = [
-              ''{0}"uid=([^/]*)/admin,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=admin,dc=reyuzenfold,dc=com"''
-              ''{1}"uid=([^/,]*)(/[^,]*)?,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "uid=$1,ou=users,dc=reyuzenfold,dc=com''
-              ''{2}"uid=host/([^,]*).reyuzenfold.com,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=$1,ou=systems,dc=reyuzenfold,dc=com''
+            olcAuthzRegexp = olcRuleMap [
+              ''"uid=([^/]*)/admin,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=admin,dc=reyuzenfold,dc=com"''
+              ''"uid=([^/,]*)(/[^,]*)?,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "uid=$1,ou=users,dc=reyuzenfold,dc=com''
+              ''"uid=host/([^,]*).reyuzenfold.com,(cn=reyuzenfold.com,)?cn=gssapi,cn=auth" "cn=$1,ou=systems,dc=reyuzenfold,dc=com''
             ];
           };
 
@@ -148,19 +160,19 @@ in
               attrs = {
                 objectClass = "olcDatabaseConfig";
                 olcDatabase = "{-1}frontend";
-                olcAccess = [ ''{0}to dn.base="" by * read'' ];
+                olcAccess = olcRuleMap [ ''to dn.base="" by * read'' ];
               };
             };
             "olcDatabase={0}config" = {
               attrs = {
                 objectClass = "olcDatabaseConfig";
                 olcDatabase = "{0}config";
-                olcAccess = [
-                  ''
-                    {0}to *
-                                          by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" read
-                                          by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth manage stop''
-                  ''{2}to * by * none break''
+                olcAccess = olcRuleMap [
+                  ''to *
+                      by group.exact="cn=Administrators,dc=reyuzenfold,dc=com" read
+                      by dn.exact=uidNumber=0+gidNumber=0,cn=peercred,cn=external,cn=auth write stop''
+                  ''to *
+                      by * none break''
                 ];
               };
             };
@@ -189,62 +201,80 @@ in
                     kdc = ''dn.exact="uid=kdc,ou=kerberos,ou=services,dc=reyuzenfold,dc=com"'';
                     kadmin = ''dn.exact="uid=kadmin,ou=kerberos,ou=services,dc=reyuzenfold,dc=com"'';
                   in
-                  [
-                    ''{0}to * by ${root} manage by * none break''
-                    # === Restrict access to sensitive keys ===
-                    ''
-                      {1}to attrs=userPassword
-                                            by ssf=256 self write
-                                            by ssf=256 ${admins} write
-                                            by ssf=64 anonymous auth''
-                    ''
-                      {2}to attrs=krbPrincipalKey
-                                            by ${kdc} manage
-                                            by ${kadmin} manage
-                                            by ssf=256 self write
-                                            by ssf=64 anonymous auth''
-                    # === Restrict access to kerberos containers ===
-                    ''
-                      {3}to dn.subtree="cn=krbcontainer,dc=reyuzenfold,dc=com"
-                                            by ${kdc} manage
-                                            by ${kadmin} manage
-                                            by ${admins} read''
-                    # === Allow some self management ===
-                    ''
-                      {4}to attrs=mail,mobile,displayName,givenName,sn
-                                            by ssf=256 ${admins} write
-                                            by self write
-                                            by users read''
-                    # === Some extra container config ===
-                    ''
-                      {5}to dn.subtree="ou=users,dc=reyuzenfold,dc=com"
-                                            by ${kdc} write
-                                            by ${kadmin} write
-                                            by ssf=256 ${admins} write
-                                            by users read''
-                    ''
-                      {6}to dn.subtree="ou=groups,dc=reyuzenfold,dc=com"
-                                            by ${kdc} write
-                                            by ${kadmin} write
-                                            by ssf=256 ${admins} write
-                                            by users read''
-                    ''
-                      {7}to dn.subtree="ou=systems,dc=reyuzenfold,dc=com"
-                                            by ${kdc} write
-                                            by ${kadmin} write
-                                            by ssf=256 ${admins} write
-                                            by users read''
-                    ''
-                      {8}to dn.subtree="ou=services,dc=reyuzenfold,dc=com"
-                                            by ${kdc} write
-                                            by ${kadmin} write
-                                            by ssf=256 ${admins} write
-                                            by users read''
-                    # General fallback
-                    ''
-                      {9}to dn.subtree="dc=reyuzenfold,dc=com"
-                                            by ssf=256 ${admins} write
-                                            by users read''
+                  olcRuleMap [
+                    ''to * by ${root} write by * none break''
+                    # ================================================================================
+                    # ============= Ensure authentication keys are protected but usable ==============
+                    # ================================================================================
+                    ''to attrs=userPassword
+                        by self write
+                        by ${admins} write
+                        by anonymous auth''
+                    ''to attrs=krbPrincipalKey
+                        by self write
+                        by ${kdc} write
+                        by ${kadmin} write
+                        by anonymous auth''
+                    # ================================================================================
+                    # ================= Restrict access to core kerberos containers ==================
+                    # ================================================================================
+                    ''to dn.subtree="cn=krbcontainer,dc=reyuzenfold,dc=com"
+                        by ${kdc} write
+                        by ${kadmin} write
+                        by ${admins} read''
+                    # ================================================================================
+                    # ====================== Restrict access to kerberos fields ======================
+                    # ================================================================================
+                    ''to attrs=krbLastFailedAuth,krbLastSuccessfulAuth,krbLoginFailedCount
+                        by ${kdc} write
+                        by ${kadmin} write
+                        by ${admins} read
+                        by self read''
+                    ''to attrs=krbLastPwdChange,krbPasswordExpiration,krbCanonicalName,krbPrincipalName
+                        by ${kdc} read
+                        by ${kadmin} write
+                        by ${admins} read
+                        by self read''
+                    ''to attrs=krbExtraData,krbObjectReferences,krbPwdPolicyReference,krbTicketFlags
+                        by ${kdc} read
+                        by ${kadmin} write
+                        by ${admins} read''
+                    # ================================================================================
+                    # ========================== Allow some self management ==========================
+                    # ================================================================================
+                    ''to attrs=displayName,givenName,mail,mobile,sn
+                        by ${admins} write
+                        by self write
+                        by users read''
+                    # ================================================================================
+                    # ========================= Some extra container config ==========================
+                    # ================================================================================
+                    ''to dn.subtree="ou=users,dc=reyuzenfold,dc=com"
+                        by ${kdc} read
+                        by ${kadmin} write
+                        by ${admins} write
+                        by users read''
+                    ''to dn.subtree="ou=groups,dc=reyuzenfold,dc=com"
+                        by ${kdc} read
+                        by ${kadmin} write
+                        by ${admins} write
+                        by users read''
+                    ''to dn.subtree="ou=systems,dc=reyuzenfold,dc=com"
+                        by ${kdc} read
+                        by ${kadmin} write
+                        by ${admins} write
+                        by users read''
+                    ''to dn.subtree="ou=services,dc=reyuzenfold,dc=com"
+                        by ${kdc} read
+                        by ${kadmin} write
+                        by ${admins} write
+                        by users read''
+                    # ================================================================================
+                    # =============================== General fallback ===============================
+                    # ================================================================================
+                    ''to dn.subtree="dc=reyuzenfold,dc=com"
+                        by ${admins} write
+                        by users read''
                   ];
               };
               children = {
@@ -337,5 +367,9 @@ in
       after = [ "acme-ldap.${config.networking.domain}.service" ];
     };
     users.groups.acme.members = [ config.services.openldap.group ];
+
+    services.fail2ban.jails.slapd = {
+      enabled = true;
+    };
   };
 }

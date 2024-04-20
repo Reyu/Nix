@@ -15,7 +15,7 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_40659075-part15";
+    device = "/dev/disk/by-label/BOOT";
     fsType = "vfat";
   };
 
