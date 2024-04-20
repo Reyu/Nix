@@ -60,7 +60,6 @@ in
     system = "x86_64-linux";
     pkgs = mkPkgs {
       system = "x86_64-linux";
-      pkgs = inputs.unstable;
       config.rocmSupport = true;
       config.allowUnfreePredicate =
         pkg:

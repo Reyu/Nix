@@ -14,6 +14,10 @@
         default_session = initial_session;
       };
     };
+    services.displayManager.autoLogin = {
+      enable = true;
+      user = "reyu";
+    };
     services.xserver = {
       enable = true;
       autorun = true;
@@ -36,11 +40,6 @@
         Option "AccelSpeed" "0"
         EndSection
       '';
-
-      displayManager.autoLogin = {
-        enable = true;
-        user = "reyu";
-      };
 
       desktopManager = {
         xterm.enable = false;
