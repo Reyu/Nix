@@ -87,15 +87,15 @@ in
       ];
       output = {
           DP-1 = {
-            bg = "~/Pictures/Backgrounds/The Downbelow.jpg fill";
+            bg = "${./.background_images/center.png} fill";
             position = "3840 720 res 3440x1440";
           };
           DP-2 = {
-            bg = "~/Pictures/Backgrounds/Locker.png fill";
+            bg = "${./.background_images/right.png} fill";
             position = "7280 720 res 2560x1440";
           };
           DP-3 = {
-            bg = "~/Pictures/Backgrounds/Locker_Fliped.png fill";
+            bg = "${./.background_images/left.png} fill";
             position = "0 0 res 3840x2160";
           };
         };
