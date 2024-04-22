@@ -9,10 +9,11 @@ end
 return {
     {
         "Tsuzat/NeoSolarized.nvim",
-        cond = not vim.g.started_by_firenvim,
+        priority = 1000,
+        event = "VeryLazy",
         opts = {
             style = 'dark',
-            transparent = true,
+            transparent = not vim.g.started_by_firenvim,
             terminal_colors = true,
             enable_italics = true,
             styles = {
@@ -24,19 +25,13 @@ return {
                 underline = true,
                 undercurl = true
             }
-        }
-    }, {
-        "projekt0n/github-nvim-theme",
-        lazy = false,
-        priority = 1000,
-        opts = {options = {transparent = true}},
-        config = function(_, opts)
-            require('github-theme').setup(opts)
-            vim.cmd([[ colorscheme github_dark ]])
+        },
+        config = function (_, opts)
+            require('NeoSolarized').setup(opts)
+            vim.cmd([[ colorscheme NeoSolarized ]])
         end
     }, {
         "folke/zen-mode.nvim",
-        cond = not vim.g.started_by_firenvim,
         cmd = "ZenMode",
         keys = {
             {'<Leader>z', desc = '+ZenMode'}, {
@@ -72,7 +67,6 @@ return {
         }
     }, {
         "folke/twilight.nvim",
-        cond = not vim.g.started_by_firenvim,
         cmd = {"Twilight", "TwilightEnable"},
         keys = {
             {
@@ -106,8 +100,8 @@ return {
         }
     }, {
         "folke/noice.nvim",
-        cond = not vim.g.started_by_firenvim,
         event = "VeryLazy",
+        cond = not vim.g.started_by_firenvim,
         dependencies = {{"MunifTanjim/nui.nvim"}},
         keys = {
             {'<Leader>n', desc = "+Noice"}, {
@@ -445,7 +439,6 @@ return {
         end
     }, {"nvim-tree/nvim-web-devicons", lazy = true}, {
         "folke/edgy.nvim",
-        cond = not vim.g.started_by_firenvim,
         event = "VeryLazy",
         keys = {
             {"<Leader>e", desc = "+Edgy"}, {

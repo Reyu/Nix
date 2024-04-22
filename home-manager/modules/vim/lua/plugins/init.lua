@@ -16,8 +16,8 @@ return {
         }
     }, {
         "nvimtools/hydra.nvim",
-        cond = not vim.g.started_by_firenvim,
         keys = {{"<Leader>o", mode = {"n", "x"}, desc = "Options Hydra"}},
+        cond = not vim.g.started_by_firenvim,
         config = function()
             local Hydra = require("hydra")
 

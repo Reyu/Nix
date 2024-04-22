@@ -35,11 +35,11 @@ return {
         }
     }, {
         "glacambre/firenvim",
-        cond = not not vim.g.started_by_firenvim,
+        cond = vim.g.started_by_firenvim or false,
         lazy = false;
         build = function() vim.fn['firenvim#install'](0) end,
         keys = {{"<Esc><Esc>", vim.fn['firenvim#focus_page']}},
-        init = function()
+        config = function()
             vim.g.firenvim_config = {
                 globalSettings = {alt = 'all'},
                 localSettings = {
@@ -53,24 +53,29 @@ return {
                 }
             }
 
-            if vim.fn.exists('g:started_by_firenvim') == 1 then
-                vim.g.firenvim_timer_started = false
-                vim.api.nvim_create_autocmd({"TextChanged"}, {
-                    pattern = {"*"},
-                    nested = true,
-                    callback = function()
-                        if vim.g.firenvim_timer_started then
-                            return
-                        else
-                            vim.g.firenvim_timer_started = true
-                            vim.fn.timer_start(1000, function()
-                                vim.g.firenvim_timer_started = false
-                                vim.cmd('write')
-                            end)
-                        end
+            local au_group = vim.api.nvim_create_augroup("FireNvim", { clear = true })
+            vim.o.laststatus = 1
+            vim.g.firenvim_timer_started = false
+            vim.api.nvim_create_autocmd({"TextChanged"}, {
+                pattern = {"*"},
+                group = au_group,
+                nested = true,
+                callback = function()
+                    if vim.g.firenvim_timer_started then
+                        return
+                    else
+                        vim.g.firenvim_timer_started = true
+                        vim.fn.timer_start(1000, function()
+                            vim.g.firenvim_timer_started = false
+                            vim.cmd('write')
+                        end)
                     end
-                })
-            end
+                end
+            })
+            vim.api.nvim_create_user_command("Fullscreen", function ()
+                vim.o.lines = 999
+                vim.o.columns = 999
+            end, { desc = "Set lines/columns to max" })
         end
     }, {
         "kndndrj/nvim-dbee",
