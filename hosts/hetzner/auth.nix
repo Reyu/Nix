@@ -99,7 +99,7 @@ in
           );
         extraHosts = pkgs.writeText "extra-hosts" config.networking.extraHosts;
       in
-      lib.mkBefore [
+      lib.mkForce [
         stringHosts
         localhostHosts
         extraHosts
@@ -128,7 +128,7 @@ in
             olcTLSProtocolMin = "3.1";
 
             # SASL authentication
-            olcSaslHost = "auth.reyuzenfold.com";
+            olcSaslHost = "auth.ash.reyuzenfold.com";
             olcSaslRealm = "REYUZENFOLD.COM";
             olcSaslSecProps = "noplain,noanonymous";
             olcAuthzRegexp = olcRuleMap [
@@ -346,14 +346,8 @@ in
         ldap_servers = "ldapi://";
       };
     };
-    systemd.services.kdc = {
-      wants = [ "openldap.service" ];
-      after = [ "openldap.service" ];
-    };
-    systemd.services.kadmind = {
-      wants = [ "openldap.service" ];
-      after = [ "openldap.service" ];
-    };
+    systemd.services.kdc.wants = [ "openldap.service" ];
+    systemd.services.kadmind.wants = [ "openldap.service" ];
 
     security.acme.certs = {
       "ldap" = {
@@ -362,10 +356,9 @@ in
         reloadServices = [ "openldap" ];
       };
     };
-    systemd.services.openldap = {
-      wants = [ "acme-ldap.${config.networking.domain}.service" ];
-      after = [ "acme-ldap.${config.networking.domain}.service" ];
-    };
+    systemd.services.openldap.wants = [
+      "acme-ldap.${config.networking.domain}.service"
+    ];
     users.groups.acme.members = [ config.services.openldap.group ];
 
     services.fail2ban.jails.slapd = {

@@ -60,7 +60,10 @@ in
     modules =
       commonModules
       ++ (with self.nixosModules; [
-        { networking.hostName = mkForce "auth"; }
+        {
+          networking.hostName = mkForce "auth";
+          networking.domain = "ash.reyuzenfold.com";
+        }
         ./auth.nix
         acme
       ]);

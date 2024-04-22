@@ -6,6 +6,10 @@
       settings = {
         domain_realm = {
           "reyuzenfold.com" = "REYUZENFOLD.COM";
+          ".reyuzenfold.com" = "REYUZENFOLD.COM";
+          # Tailscale domin
+          "wolf-diatonic.ts.net" = "REYUZENFOLD.COM";
+          ".wolf-diatonic.ts.net" = "REYUZENFOLD.COM";
         };
         libdefaults = {
           default_realm = "REYUZENFOLD.COM";
